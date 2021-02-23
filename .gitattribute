@@ -1,0 +1,6 @@
+*.mcfunction text=auto
+*.json text=auto
+*.png binary
+README.md text=auto
+*.lang text eof=crlf
+com.mojang/minecraftWorlds/UnderWater/* binary
