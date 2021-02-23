@@ -1,4 +1,4 @@
 *.mcfunction text=auto
 *.json text=auto
-pack_icon.png binary
+*.png binary
 README.md text=auto
