@@ -1,0 +1,316 @@
+{ //实体：玩家
+  "format_version": "1.16.0", //目标版本：1.16.0
+  "minecraft:entity": { //实体
+    "description": { //描述
+      "identifier": "minecraft:player", //id
+      "is_spawnable": false, //可生成
+      "is_summonable": false, //可用命令生成
+      "is_experimental": false //仅实验玩法
+    },
+    "component_groups": { //组件组
+      "minecraft:add_bad_omen": { //1
+        "minecraft:spell_effects": { //状态效果
+          "add_effects": [ //添加
+            {
+              "effect": "bad_omen", //不祥之兆
+              "duration": 6000, //时间：6000秒（约1.62小时）
+              "display_on_screen_animation": true //在屏幕展示动画
+            }
+          ]
+        },
+        "minecraft:timer": { //计时器：0秒；不循环；组件清空
+          "time": [
+            0,
+            0
+          ],
+          "looping": false,
+          "time_down_event": {
+            "event": "minecraft:clear_add_bad_omen",
+            "target": "self"
+          }
+        }
+      },
+      "minecraft:clear_bad_omen_spell_effect": { //清空
+        "minecraft:spell_effects": {}
+      },
+      "minecraft:raid_trigger": { //袭击触发
+        "minecraft:raid_trigger": { //尝试
+          "triggered_event": { //事件
+            "event": "minecraft:remove_raid_trigger",
+            "target": "self"
+          }
+        },
+        "minecraft:spell_effects": { //移除效果
+          "remove_effects": "bad_omen"
+        }
+      },
+      "yoni:underwater": {
+        "minecraft:movement": { //移动速度0.3
+          "value": 0.3
+        },
+        "minecraft:attack": { //攻击伤害2
+          "damage": 2
+        },
+        "minecraft:timer": { //计时器：循环；2秒；触发状态效果给予
+          "looping": true,
+          "time": 2,
+          "time_down_event": {
+            "event": "yoni:underwater_effects",
+            "target": "self"
+          }
+        }
+      },
+      "yoni:leave_deepwater": { //清除效果
+        "minecraft:spell_effects": {
+          "remove_effects": [
+            "night_vision",
+            "haste"
+          ]
+        }
+      },
+      "yoni:underwater_effects": { //添加效果
+        "minecraft:spell_effects": {
+          "add_effects": [ //添加挖掘提升、夜视
+            {
+              "effect": "haste",
+              "duration": 5,
+              "level": 4,
+              "visible": false
+            },
+            {
+              "effect": "night_vision",
+              "duration": 14,
+              "visible": false
+            }
+          ]
+        },
+        "minecraft:timer": { //计时器：0秒；不循环；组件清空
+          "time": 0,
+          "looping": false,
+          "time_down_event": {
+            "event": "minecraft:clear_add_bad_omen",
+            "target": "self"
+          }
+        }
+      }
+    },
+    "components": {
+      "minecraft:environment_sensor": {
+        "triggers": [
+          { //在水下
+            "event": "yoni:now_underwater",
+            "filters": {
+              "test": "is_underwater"
+            }
+          },
+          { //离开水下
+            "event": "yoni:no_longer_underwater",
+            "filters": {
+              "test": "is_underwater",
+              "operator": "!="
+            }
+          }
+        ]
+      },
+      "minecraft:experience_reward": { //经验掉落
+        "on_death": "Math.Min(query.player_level * 7, 100)"
+      },
+      "minecraft:type_family": { //族
+        "family": [
+          "player"
+        ]
+      },
+      "minecraft:is_hidden_when_invisible": {}, //隐身是否可用
+      "minecraft:loot": { //掉落
+        "table": "loot_tables/empty.json"
+      },
+      "minecraft:collision_box": { //碰撞箱
+        "width": 0.6,
+        "height": 1.8
+      },
+      "minecraft:can_climb": {},
+      "minecraft:movement": {
+        "value": 0.1
+      },
+      "minecraft:hurt_on_condition": { //伤害判定
+        "damage_conditions": [
+          {
+            "filters": {
+              "test": "in_lava",
+              "subject": "self",
+              "operator": "==",
+              "value": true
+            },
+            "cause": "lava",
+            "damage_per_tick": 8
+          }
+        ]
+      },
+      "minecraft:attack": {
+        "damage": 1
+      },
+      "minecraft:player.saturation": {
+        "value": 20
+      },
+      "minecraft:player.exhaustion": {
+        "value": 0,
+        "max": 4
+      },
+      "minecraft:player.level": {
+        "value": 0,
+        "max": 24791
+      },
+      "minecraft:player.experience": {
+        "value": 0,
+        "max": 1
+      },
+      "minecraft:health": {
+        "max": 40,
+        "value": 40
+      },
+      "minecraft:breathable": {
+        "total_supply": 15,
+        "breathes_water": true,
+        "breathes_air": false,
+        "suffocate_time": -1,
+        "inhale_time": 3.75,
+        "generates_bubbles": true
+      },
+      "minecraft:nameable": {
+        "always_show": true,
+        "allow_name_tag_renaming": false
+      },
+      "minecraft:physics": {},
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:insomnia": {
+        "days_until_insomnia": 3
+      },
+      "minecraft:rideable": {
+        "seat_count": 2,
+        "family_types": [
+          "parrot_tame"
+        ],
+        "pull_in_entities": true,
+        "seats": [
+          {
+            "position": [
+              0.4,
+              -0.2,
+              -0.1
+            ],
+            "min_rider_count": 0,
+            "max_rider_count": 0,
+            "lock_rider_rotation": 0
+          },
+          {
+            "position": [
+              -0.4,
+              -0.2,
+              -0.1
+            ],
+            "min_rider_count": 1,
+            "max_rider_count": 2,
+            "lock_rider_rotation": 0
+          }
+        ]
+      },
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:scaffolding_climber": {},
+      "minecraft:environment_sensor": {
+        "triggers": {
+          "filters": {
+            "all_of": [
+              {
+                "test": "has_mob_effect",
+                "subject": "self",
+                "value": "bad_omen"
+              },
+              {
+                "test": "is_in_village",
+                "subject": "self",
+                "value": true
+              }
+            ]
+          },
+          "event": "minecraft:trigger_raid"
+        }
+      }
+    },
+    "events": {
+      "yoni:now_underwater": {
+        "add": {
+          "component_groups": [
+            "yoni:underwater"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "yoni:leave_deepwater"
+          ]
+        }
+      },
+      "yoni:no_longer_underwater": {
+        "add": {
+          "component_groups": [
+            "yoni:leave_deepwater"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "yoni:underwater"
+          ]
+        }
+      },
+      "yoni:underwater_effects": {
+        "add": {
+          "component_groups": [
+            "yoni:underwater_effects"
+          ]
+        }
+      },
+      "yoni:remove_spell_effect": {
+        "add": {
+          "component_groups": [
+            "minecraft:clear_bad_omen_spell_effect"
+          ]
+        }
+      },
+      "minecraft:gain_bad_omen": {
+        "add": {
+          "component_groups": [
+            "minecraft:add_bad_omen"
+          ]
+        }
+      },
+      "minecraft:clear_add_bad_omen": {
+        "remove": {
+          "component_groups": [
+            "minecraft:add_bad_omen"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "minecraft:clear_bad_omen_spell_effect"
+          ]
+        }
+      },
+      "minecraft:trigger_raid": {
+        "add": {
+          "component_groups": [
+            "minecraft:raid_trigger"
+          ]
+        }
+      },
+      "minecraft:remove_raid_trigger": {
+        "remove": {
+          "component_groups": [
+            "minecraft:raid_trigger"
+          ]
+        }
+      }
+    }
+  }
+}
