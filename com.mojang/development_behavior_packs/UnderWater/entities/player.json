@@ -6,7 +6,7 @@
       "is_spawnable": false, //可生成
       "is_summonable": false, //可用命令生成
       "is_experimental": false, //仅实验玩法
-      "scripts": { //执行脚本
+      "scripts": { //执行指定的脚本
         "animate": [ "yoni:underwater_effects" ]
       },
       "animations": { //定义一个控制器为脚本
@@ -52,15 +52,18 @@
           "value": 1
         },
         "minecraft:movement": { //移动速度0.3
-          "value": 10.0
+          "value": 0.5
         },
         "minecraft:attack": { //攻击伤害2
-          "damage": 2
+          "damage": 5
         }
       },
       "yoni:overwater": { //水上
         "minecraft:movement": { //移动速度0.1
           "value": 0.1
+        },
+        "minecraft:attack": {
+          "damage": 1
         },
         "minecraft:skin_id": {
           "value": 0
@@ -105,9 +108,6 @@
           }
         ]
       },
-      "minecraft:attack": {
-        "damage": 1
-      },
       "minecraft:player.saturation": {
         "value": 20
       },
@@ -128,7 +128,7 @@
         "value": 40
       },
       "minecraft:breathable": {
-        "total_supply": 15,
+        "total_supply": 30,
         "breathes_water": true,
         "breathes_air": false,
         "suffocate_time": -1,
@@ -217,18 +217,6 @@
       }
     },
     "events": {
-      "minecraft:entity_spawned": {
-        "add": {
-          "component_groups": [
-            "yoni:overwater"
-          ]
-        },
-        "remove": {
-          "component_groups": [
-            "yoni:underwater"
-          ]
-        }
-      },
       "yoni:now_underwater": {
         "add": {
           "component_groups": [
