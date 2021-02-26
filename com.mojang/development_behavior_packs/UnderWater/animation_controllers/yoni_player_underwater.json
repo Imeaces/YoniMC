@@ -1,0 +1,22 @@
+{
+  "format_version": "1.16.0",
+  "animation_controllers": {
+    "controller.animation.yoni_player_underwater": {
+      "states": {
+        "default": {
+          "transitions": [
+            { "player_underwater": "query.skin_id == 1" }
+          ]
+        },
+        "player_underwater": {
+          "transitions": [
+            { "default": "query.skin_id == 1" }
+          ],
+          "on_entry": [
+            "/function yoni/underwater/effects"
+          ]
+        }
+      }
+    }
+  }
+}
