@@ -7,20 +7,20 @@
     "tags": [
       "crafting_table"
     ],
-    "pattern": [
-      "X",
-      "#"
-    ],
-    "key": {
-      "#": {
+    "ingredients": [
+      {
         "item": "minecraft:torch"
       },
-      "X": {
+      {
+        "item": "minecraft:seagrass"
+      },
+      {
         "item": "minecraft:seagrass"
       }
-    },
+    ],
     "result": {
-      "item": "minecraft:underwater_torch"
+      "item": "minecraft:underwater_torch",
+      "count": 2
     }
   }
 }
