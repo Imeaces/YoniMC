@@ -1,0 +1,2035 @@
+{
+	"file_path": "C:\\Users\\sil\\AppData\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\LocalState\\games\\com.mojang\\development_behavior_packs\\UnderWater\\entities\\player.json",
+	"file_type": "entity",
+	"format_version": 1,
+	"file_uuid": "318d4d0f_b09e_40c9_a8bb_4503def4ea48",
+	"file_version": 0,
+	"cache_content": {
+		"children": [
+			{
+				"data": "1.16.0",
+				"key": "format_version"
+			},
+			{
+				"open": {
+					"format_version": "1.16.0",
+					"minecraft:entity": {
+						"description": {
+							"identifier": "minecraft:player",
+							"is_spawnable": false,
+							"is_summonable": false,
+							"is_experimental": false,
+							"scripts": {
+								"animate": [
+									"yoni:underwater_effects"
+								]
+							},
+							"animations": {
+								"yoni:underwater_effects": "controller.animation.yoni_player_underwater"
+							}
+						},
+						"component_groups": {
+							"minecraft:add_bad_omen": {
+								"minecraft:spell_effects": {
+									"add_effects": [
+										{
+											"effect": "bad_omen",
+											"duration": 6000,
+											"display_on_screen_animation": true
+										}
+									]
+								},
+								"minecraft:timer": {
+									"time": [
+										0,
+										0
+									],
+									"looping": false,
+									"time_down_event": {
+										"event": "minecraft:clear_add_bad_omen",
+										"target": "self"
+									}
+								}
+							},
+							"minecraft:clear_bad_omen_spell_effect": {
+								"minecraft:spell_effects": {}
+							},
+							"minecraft:raid_trigger": {
+								"minecraft:raid_trigger": {
+									"triggered_event": {
+										"event": "minecraft:remove_raid_trigger",
+										"target": "self"
+									}
+								},
+								"minecraft:spell_effects": {
+									"remove_effects": "bad_omen"
+								}
+							},
+							"yoni:underwater": {
+								"minecraft:skin_id": {
+									"value": 1
+								},
+								"minecraft:movement": {
+									"value": 0.5
+								},
+								"minecraft:attack": {
+									"damage": 5
+								}
+							},
+							"yoni:overwater": {
+								"minecraft:movement": {
+									"value": 0.1
+								},
+								"minecraft:attack": {
+									"damage": 1
+								},
+								"minecraft:skin_id": {
+									"value": 0
+								},
+								"minecraft:spell_effects": {
+									"remove_effects": [
+										"night_vision",
+										"haste"
+									]
+								}
+							}
+						},
+						"components": {
+							"minecraft:experience_reward": {
+								"on_death": "Math.Min(query.player_level * 7, 100)"
+							},
+							"minecraft:type_family": {
+								"family": [
+									"player"
+								]
+							},
+							"minecraft:is_hidden_when_invisible": {},
+							"minecraft:loot": {
+								"table": "loot_tables/empty.json"
+							},
+							"minecraft:collision_box": {
+								"width": 0.6,
+								"height": 1.8
+							},
+							"minecraft:can_climb": {},
+							"minecraft:hurt_on_condition": {
+								"damage_conditions": [
+									{
+										"filters": {
+											"test": "in_lava",
+											"subject": "self",
+											"operator": "==",
+											"value": true
+										},
+										"cause": "lava",
+										"damage_per_tick": 8
+									}
+								]
+							},
+							"minecraft:player.saturation": {
+								"value": 20
+							},
+							"minecraft:player.exhaustion": {
+								"value": 0,
+								"max": 4
+							},
+							"minecraft:player.level": {
+								"value": 0,
+								"max": 24791
+							},
+							"minecraft:player.experience": {
+								"value": 0,
+								"max": 1
+							},
+							"minecraft:health": {
+								"max": 40,
+								"value": 40
+							},
+							"minecraft:breathable": {
+								"total_supply": 30,
+								"breathes_water": true,
+								"breathes_air": false,
+								"suffocate_time": -1,
+								"inhale_time": 3.75,
+								"generates_bubbles": true
+							},
+							"minecraft:nameable": {
+								"always_show": true,
+								"allow_name_tag_renaming": false
+							},
+							"minecraft:physics": {},
+							"minecraft:pushable": {
+								"is_pushable": false,
+								"is_pushable_by_piston": true
+							},
+							"minecraft:insomnia": {
+								"days_until_insomnia": 3
+							},
+							"minecraft:rideable": {
+								"seat_count": 2,
+								"family_types": [
+									"parrot_tame"
+								],
+								"pull_in_entities": true,
+								"seats": [
+									{
+										"position": [
+											0.4,
+											-0.2,
+											-0.1
+										],
+										"min_rider_count": 0,
+										"max_rider_count": 0,
+										"lock_rider_rotation": 0
+									},
+									{
+										"position": [
+											-0.4,
+											-0.2,
+											-0.1
+										],
+										"min_rider_count": 1,
+										"max_rider_count": 2,
+										"lock_rider_rotation": 0
+									}
+								]
+							},
+							"minecraft:conditional_bandwidth_optimization": {},
+							"minecraft:scaffolding_climber": {},
+							"minecraft:environment_sensor": {
+								"triggers": [
+									{
+										"filters": {
+											"all_of": [
+												{
+													"test": "has_mob_effect",
+													"subject": "self",
+													"value": "bad_omen"
+												},
+												{
+													"test": "is_in_village",
+													"subject": "self",
+													"value": true
+												}
+											]
+										},
+										"event": "minecraft:trigger_raid"
+									},
+									{
+										"event": "yoni:no_longer_underwater",
+										"filters": {
+											"test": "is_underwater",
+											"subject": "self",
+											"value": false
+										}
+									},
+									{
+										"event": "yoni:now_underwater",
+										"filters": {
+											"test": "is_underwater",
+											"subject": "self",
+											"value": true
+										}
+									}
+								]
+							}
+						},
+						"events": {
+							"yoni:now_underwater": {
+								"add": {
+									"component_groups": [
+										"yoni:underwater"
+									]
+								},
+								"remove": {
+									"component_groups": [
+										"yoni:overwater"
+									]
+								}
+							},
+							"yoni:no_longer_underwater": {
+								"add": {
+									"component_groups": [
+										"yoni:overwater"
+									]
+								},
+								"remove": {
+									"component_groups": [
+										"yoni:underwater"
+									]
+								}
+							},
+							"minecraft:gain_bad_omen": {
+								"add": {
+									"component_groups": [
+										"minecraft:add_bad_omen"
+									]
+								}
+							},
+							"minecraft:clear_add_bad_omen": {
+								"remove": {
+									"component_groups": [
+										"minecraft:add_bad_omen"
+									]
+								},
+								"add": {
+									"component_groups": [
+										"minecraft:clear_bad_omen_spell_effect"
+									]
+								}
+							},
+							"minecraft:trigger_raid": {
+								"add": {
+									"component_groups": [
+										"minecraft:raid_trigger"
+									]
+								}
+							},
+							"minecraft:remove_raid_trigger": {
+								"remove": {
+									"component_groups": [
+										"minecraft:raid_trigger"
+									]
+								}
+							}
+						}
+					}
+				},
+				"key": "minecraft:entity",
+				"children": [
+					{
+						"open": {
+							"description": {
+								"identifier": "minecraft:player",
+								"is_spawnable": false,
+								"is_summonable": false,
+								"is_experimental": false,
+								"scripts": {
+									"animate": [
+										"yoni:underwater_effects"
+									]
+								},
+								"animations": {
+									"yoni:underwater_effects": "controller.animation.yoni_player_underwater"
+								}
+							},
+							"component_groups": {
+								"minecraft:add_bad_omen": {
+									"minecraft:spell_effects": {
+										"add_effects": [
+											{
+												"effect": "bad_omen",
+												"duration": 6000,
+												"display_on_screen_animation": true
+											}
+										]
+									},
+									"minecraft:timer": {
+										"time": [
+											0,
+											0
+										],
+										"looping": false,
+										"time_down_event": {
+											"event": "minecraft:clear_add_bad_omen",
+											"target": "self"
+										}
+									}
+								},
+								"minecraft:clear_bad_omen_spell_effect": {
+									"minecraft:spell_effects": {}
+								},
+								"minecraft:raid_trigger": {
+									"minecraft:raid_trigger": {
+										"triggered_event": {
+											"event": "minecraft:remove_raid_trigger",
+											"target": "self"
+										}
+									},
+									"minecraft:spell_effects": {
+										"remove_effects": "bad_omen"
+									}
+								},
+								"yoni:underwater": {
+									"minecraft:skin_id": {
+										"value": 1
+									},
+									"minecraft:movement": {
+										"value": 0.5
+									},
+									"minecraft:attack": {
+										"damage": 5
+									}
+								},
+								"yoni:overwater": {
+									"minecraft:movement": {
+										"value": 0.1
+									},
+									"minecraft:attack": {
+										"damage": 1
+									},
+									"minecraft:skin_id": {
+										"value": 0
+									},
+									"minecraft:spell_effects": {
+										"remove_effects": [
+											"night_vision",
+											"haste"
+										]
+									}
+								}
+							},
+							"components": {
+								"minecraft:experience_reward": {
+									"on_death": "Math.Min(query.player_level * 7, 100)"
+								},
+								"minecraft:type_family": {
+									"family": [
+										"player"
+									]
+								},
+								"minecraft:is_hidden_when_invisible": {},
+								"minecraft:loot": {
+									"table": "loot_tables/empty.json"
+								},
+								"minecraft:collision_box": {
+									"width": 0.6,
+									"height": 1.8
+								},
+								"minecraft:can_climb": {},
+								"minecraft:hurt_on_condition": {
+									"damage_conditions": [
+										{
+											"filters": {
+												"test": "in_lava",
+												"subject": "self",
+												"operator": "==",
+												"value": true
+											},
+											"cause": "lava",
+											"damage_per_tick": 8
+										}
+									]
+								},
+								"minecraft:player.saturation": {
+									"value": 20
+								},
+								"minecraft:player.exhaustion": {
+									"value": 0,
+									"max": 4
+								},
+								"minecraft:player.level": {
+									"value": 0,
+									"max": 24791
+								},
+								"minecraft:player.experience": {
+									"value": 0,
+									"max": 1
+								},
+								"minecraft:health": {
+									"max": 40,
+									"value": 40
+								},
+								"minecraft:breathable": {
+									"total_supply": 30,
+									"breathes_water": true,
+									"breathes_air": false,
+									"suffocate_time": -1,
+									"inhale_time": 3.75,
+									"generates_bubbles": true
+								},
+								"minecraft:nameable": {
+									"always_show": true,
+									"allow_name_tag_renaming": false
+								},
+								"minecraft:physics": {},
+								"minecraft:pushable": {
+									"is_pushable": false,
+									"is_pushable_by_piston": true
+								},
+								"minecraft:insomnia": {
+									"days_until_insomnia": 3
+								},
+								"minecraft:rideable": {
+									"seat_count": 2,
+									"family_types": [
+										"parrot_tame"
+									],
+									"pull_in_entities": true,
+									"seats": [
+										{
+											"position": [
+												0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 0,
+											"max_rider_count": 0,
+											"lock_rider_rotation": 0
+										},
+										{
+											"position": [
+												-0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 1,
+											"max_rider_count": 2,
+											"lock_rider_rotation": 0
+										}
+									]
+								},
+								"minecraft:conditional_bandwidth_optimization": {},
+								"minecraft:scaffolding_climber": {},
+								"minecraft:environment_sensor": {
+									"triggers": [
+										{
+											"filters": {
+												"all_of": [
+													{
+														"test": "has_mob_effect",
+														"subject": "self",
+														"value": "bad_omen"
+													},
+													{
+														"test": "is_in_village",
+														"subject": "self",
+														"value": true
+													}
+												]
+											},
+											"event": "minecraft:trigger_raid"
+										},
+										{
+											"event": "yoni:no_longer_underwater",
+											"filters": {
+												"test": "is_underwater",
+												"subject": "self",
+												"value": false
+											}
+										},
+										{
+											"event": "yoni:now_underwater",
+											"filters": {
+												"test": "is_underwater",
+												"subject": "self",
+												"value": true
+											}
+										}
+									]
+								}
+							},
+							"events": {
+								"yoni:now_underwater": {
+									"add": {
+										"component_groups": [
+											"yoni:underwater"
+										]
+									},
+									"remove": {
+										"component_groups": [
+											"yoni:overwater"
+										]
+									}
+								},
+								"yoni:no_longer_underwater": {
+									"add": {
+										"component_groups": [
+											"yoni:overwater"
+										]
+									},
+									"remove": {
+										"component_groups": [
+											"yoni:underwater"
+										]
+									}
+								},
+								"minecraft:gain_bad_omen": {
+									"add": {
+										"component_groups": [
+											"minecraft:add_bad_omen"
+										]
+									}
+								},
+								"minecraft:clear_add_bad_omen": {
+									"remove": {
+										"component_groups": [
+											"minecraft:add_bad_omen"
+										]
+									},
+									"add": {
+										"component_groups": [
+											"minecraft:clear_bad_omen_spell_effect"
+										]
+									}
+								},
+								"minecraft:trigger_raid": {
+									"add": {
+										"component_groups": [
+											"minecraft:raid_trigger"
+										]
+									}
+								},
+								"minecraft:remove_raid_trigger": {
+									"remove": {
+										"component_groups": [
+											"minecraft:raid_trigger"
+										]
+									}
+								}
+							}
+						},
+						"key": "description",
+						"children": [
+							{
+								"data": "minecraft:player",
+								"key": "identifier"
+							},
+							{
+								"data": "false",
+								"key": "is_spawnable"
+							},
+							{
+								"data": "false",
+								"key": "is_summonable"
+							},
+							{
+								"data": "false",
+								"key": "is_experimental"
+							},
+							{
+								"key": "scripts",
+								"children": [
+									{
+										"open": {
+											"animate": [
+												"yoni:underwater_effects"
+											]
+										},
+										"key": "animate",
+										"is_minified": true,
+										"children": [
+											"yoni:underwater_effects"
+										]
+									}
+								]
+							},
+							{
+								"key": "animations",
+								"is_minified": true,
+								"children": {
+									"yoni:underwater_effects": "controller.animation.yoni_player_underwater"
+								}
+							}
+						]
+					},
+					{
+						"open": {
+							"description": {
+								"identifier": "minecraft:player",
+								"is_spawnable": false,
+								"is_summonable": false,
+								"is_experimental": false,
+								"scripts": {
+									"animate": [
+										"yoni:underwater_effects"
+									]
+								},
+								"animations": {
+									"yoni:underwater_effects": "controller.animation.yoni_player_underwater"
+								}
+							},
+							"component_groups": {
+								"minecraft:add_bad_omen": {
+									"minecraft:spell_effects": {
+										"add_effects": [
+											{
+												"effect": "bad_omen",
+												"duration": 6000,
+												"display_on_screen_animation": true
+											}
+										]
+									},
+									"minecraft:timer": {
+										"time": [
+											0,
+											0
+										],
+										"looping": false,
+										"time_down_event": {
+											"event": "minecraft:clear_add_bad_omen",
+											"target": "self"
+										}
+									}
+								},
+								"minecraft:clear_bad_omen_spell_effect": {
+									"minecraft:spell_effects": {}
+								},
+								"minecraft:raid_trigger": {
+									"minecraft:raid_trigger": {
+										"triggered_event": {
+											"event": "minecraft:remove_raid_trigger",
+											"target": "self"
+										}
+									},
+									"minecraft:spell_effects": {
+										"remove_effects": "bad_omen"
+									}
+								},
+								"yoni:underwater": {
+									"minecraft:skin_id": {
+										"value": 1
+									},
+									"minecraft:movement": {
+										"value": 0.5
+									},
+									"minecraft:attack": {
+										"damage": 5
+									}
+								},
+								"yoni:overwater": {
+									"minecraft:movement": {
+										"value": 0.1
+									},
+									"minecraft:attack": {
+										"damage": 1
+									},
+									"minecraft:skin_id": {
+										"value": 0
+									},
+									"minecraft:spell_effects": {
+										"remove_effects": [
+											"night_vision",
+											"haste"
+										]
+									}
+								}
+							},
+							"components": {
+								"minecraft:experience_reward": {
+									"on_death": "Math.Min(query.player_level * 7, 100)"
+								},
+								"minecraft:type_family": {
+									"family": [
+										"player"
+									]
+								},
+								"minecraft:is_hidden_when_invisible": {},
+								"minecraft:loot": {
+									"table": "loot_tables/empty.json"
+								},
+								"minecraft:collision_box": {
+									"width": 0.6,
+									"height": 1.8
+								},
+								"minecraft:can_climb": {},
+								"minecraft:hurt_on_condition": {
+									"damage_conditions": [
+										{
+											"filters": {
+												"test": "in_lava",
+												"subject": "self",
+												"operator": "==",
+												"value": true
+											},
+											"cause": "lava",
+											"damage_per_tick": 8
+										}
+									]
+								},
+								"minecraft:player.saturation": {
+									"value": 20
+								},
+								"minecraft:player.exhaustion": {
+									"value": 0,
+									"max": 4
+								},
+								"minecraft:player.level": {
+									"value": 0,
+									"max": 24791
+								},
+								"minecraft:player.experience": {
+									"value": 0,
+									"max": 1
+								},
+								"minecraft:health": {
+									"max": 40,
+									"value": 40
+								},
+								"minecraft:breathable": {
+									"total_supply": 30,
+									"breathes_water": true,
+									"breathes_air": false,
+									"suffocate_time": -1,
+									"inhale_time": 3.75,
+									"generates_bubbles": true
+								},
+								"minecraft:nameable": {
+									"always_show": true,
+									"allow_name_tag_renaming": false
+								},
+								"minecraft:physics": {},
+								"minecraft:pushable": {
+									"is_pushable": false,
+									"is_pushable_by_piston": true
+								},
+								"minecraft:insomnia": {
+									"days_until_insomnia": 3
+								},
+								"minecraft:rideable": {
+									"seat_count": 2,
+									"family_types": [
+										"parrot_tame"
+									],
+									"pull_in_entities": true,
+									"seats": [
+										{
+											"position": [
+												0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 0,
+											"max_rider_count": 0,
+											"lock_rider_rotation": 0
+										},
+										{
+											"position": [
+												-0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 1,
+											"max_rider_count": 2,
+											"lock_rider_rotation": 0
+										}
+									]
+								},
+								"minecraft:conditional_bandwidth_optimization": {},
+								"minecraft:scaffolding_climber": {},
+								"minecraft:environment_sensor": {
+									"triggers": [
+										{
+											"filters": {
+												"all_of": [
+													{
+														"test": "has_mob_effect",
+														"subject": "self",
+														"value": "bad_omen"
+													},
+													{
+														"test": "is_in_village",
+														"subject": "self",
+														"value": true
+													}
+												]
+											},
+											"event": "minecraft:trigger_raid"
+										},
+										{
+											"event": "yoni:no_longer_underwater",
+											"filters": {
+												"test": "is_underwater",
+												"subject": "self",
+												"value": false
+											}
+										},
+										{
+											"event": "yoni:now_underwater",
+											"filters": {
+												"test": "is_underwater",
+												"subject": "self",
+												"value": true
+											}
+										}
+									]
+								}
+							},
+							"events": {
+								"yoni:now_underwater": {
+									"add": {
+										"component_groups": [
+											"yoni:underwater"
+										]
+									},
+									"remove": {
+										"component_groups": [
+											"yoni:overwater"
+										]
+									}
+								},
+								"yoni:no_longer_underwater": {
+									"add": {
+										"component_groups": [
+											"yoni:overwater"
+										]
+									},
+									"remove": {
+										"component_groups": [
+											"yoni:underwater"
+										]
+									}
+								},
+								"minecraft:gain_bad_omen": {
+									"add": {
+										"component_groups": [
+											"minecraft:add_bad_omen"
+										]
+									}
+								},
+								"minecraft:clear_add_bad_omen": {
+									"remove": {
+										"component_groups": [
+											"minecraft:add_bad_omen"
+										]
+									},
+									"add": {
+										"component_groups": [
+											"minecraft:clear_bad_omen_spell_effect"
+										]
+									}
+								},
+								"minecraft:trigger_raid": {
+									"add": {
+										"component_groups": [
+											"minecraft:raid_trigger"
+										]
+									}
+								},
+								"minecraft:remove_raid_trigger": {
+									"remove": {
+										"component_groups": [
+											"minecraft:raid_trigger"
+										]
+									}
+								}
+							}
+						},
+						"key": "component_groups",
+						"is_minified": true,
+						"children": {
+							"minecraft:add_bad_omen": {
+								"minecraft:spell_effects": {
+									"add_effects": [
+										{
+											"effect": "bad_omen",
+											"duration": 6000,
+											"display_on_screen_animation": true
+										}
+									]
+								},
+								"minecraft:timer": {
+									"time": [
+										0,
+										0
+									],
+									"looping": false,
+									"time_down_event": {
+										"event": "minecraft:clear_add_bad_omen",
+										"target": "self"
+									}
+								}
+							},
+							"minecraft:clear_bad_omen_spell_effect": {
+								"minecraft:spell_effects": {}
+							},
+							"minecraft:raid_trigger": {
+								"minecraft:raid_trigger": {
+									"triggered_event": {
+										"event": "minecraft:remove_raid_trigger",
+										"target": "self"
+									}
+								},
+								"minecraft:spell_effects": {
+									"remove_effects": "bad_omen"
+								}
+							},
+							"yoni:underwater": {
+								"minecraft:skin_id": {
+									"value": 1
+								},
+								"minecraft:movement": {
+									"value": 0.5
+								},
+								"minecraft:attack": {
+									"damage": 5
+								}
+							},
+							"yoni:overwater": {
+								"minecraft:movement": {
+									"value": 0.1
+								},
+								"minecraft:attack": {
+									"damage": 1
+								},
+								"minecraft:skin_id": {
+									"value": 0
+								},
+								"minecraft:spell_effects": {
+									"remove_effects": [
+										"night_vision",
+										"haste"
+									]
+								}
+							}
+						}
+					},
+					{
+						"open": {
+							"description": {
+								"identifier": "minecraft:player",
+								"is_spawnable": false,
+								"is_summonable": false,
+								"is_experimental": false,
+								"scripts": {
+									"animate": [
+										"yoni:underwater_effects"
+									]
+								},
+								"animations": {
+									"yoni:underwater_effects": "controller.animation.yoni_player_underwater"
+								}
+							},
+							"component_groups": {
+								"minecraft:add_bad_omen": {
+									"minecraft:spell_effects": {
+										"add_effects": [
+											{
+												"effect": "bad_omen",
+												"duration": 6000,
+												"display_on_screen_animation": true
+											}
+										]
+									},
+									"minecraft:timer": {
+										"time": [
+											0,
+											0
+										],
+										"looping": false,
+										"time_down_event": {
+											"event": "minecraft:clear_add_bad_omen",
+											"target": "self"
+										}
+									}
+								},
+								"minecraft:clear_bad_omen_spell_effect": {
+									"minecraft:spell_effects": {}
+								},
+								"minecraft:raid_trigger": {
+									"minecraft:raid_trigger": {
+										"triggered_event": {
+											"event": "minecraft:remove_raid_trigger",
+											"target": "self"
+										}
+									},
+									"minecraft:spell_effects": {
+										"remove_effects": "bad_omen"
+									}
+								},
+								"yoni:underwater": {
+									"minecraft:skin_id": {
+										"value": 1
+									},
+									"minecraft:movement": {
+										"value": 0.5
+									},
+									"minecraft:attack": {
+										"damage": 5
+									}
+								},
+								"yoni:overwater": {
+									"minecraft:movement": {
+										"value": 0.1
+									},
+									"minecraft:attack": {
+										"damage": 1
+									},
+									"minecraft:skin_id": {
+										"value": 0
+									},
+									"minecraft:spell_effects": {
+										"remove_effects": [
+											"night_vision",
+											"haste"
+										]
+									}
+								}
+							},
+							"components": {
+								"minecraft:experience_reward": {
+									"on_death": "Math.Min(query.player_level * 7, 100)"
+								},
+								"minecraft:type_family": {
+									"family": [
+										"player"
+									]
+								},
+								"minecraft:is_hidden_when_invisible": {},
+								"minecraft:loot": {
+									"table": "loot_tables/empty.json"
+								},
+								"minecraft:collision_box": {
+									"width": 0.6,
+									"height": 1.8
+								},
+								"minecraft:can_climb": {},
+								"minecraft:hurt_on_condition": {
+									"damage_conditions": [
+										{
+											"filters": {
+												"test": "in_lava",
+												"subject": "self",
+												"operator": "==",
+												"value": true
+											},
+											"cause": "lava",
+											"damage_per_tick": 8
+										}
+									]
+								},
+								"minecraft:player.saturation": {
+									"value": 20
+								},
+								"minecraft:player.exhaustion": {
+									"value": 0,
+									"max": 4
+								},
+								"minecraft:player.level": {
+									"value": 0,
+									"max": 24791
+								},
+								"minecraft:player.experience": {
+									"value": 0,
+									"max": 1
+								},
+								"minecraft:health": {
+									"max": 40,
+									"value": 40
+								},
+								"minecraft:breathable": {
+									"total_supply": 30,
+									"breathes_water": true,
+									"breathes_air": false,
+									"suffocate_time": -1,
+									"inhale_time": 3.75,
+									"generates_bubbles": true
+								},
+								"minecraft:nameable": {
+									"always_show": true,
+									"allow_name_tag_renaming": false
+								},
+								"minecraft:physics": {},
+								"minecraft:pushable": {
+									"is_pushable": false,
+									"is_pushable_by_piston": true
+								},
+								"minecraft:insomnia": {
+									"days_until_insomnia": 3
+								},
+								"minecraft:rideable": {
+									"seat_count": 2,
+									"family_types": [
+										"parrot_tame"
+									],
+									"pull_in_entities": true,
+									"seats": [
+										{
+											"position": [
+												0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 0,
+											"max_rider_count": 0,
+											"lock_rider_rotation": 0
+										},
+										{
+											"position": [
+												-0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 1,
+											"max_rider_count": 2,
+											"lock_rider_rotation": 0
+										}
+									]
+								},
+								"minecraft:conditional_bandwidth_optimization": {},
+								"minecraft:scaffolding_climber": {},
+								"minecraft:environment_sensor": {
+									"triggers": [
+										{
+											"filters": {
+												"all_of": [
+													{
+														"test": "has_mob_effect",
+														"subject": "self",
+														"value": "bad_omen"
+													},
+													{
+														"test": "is_in_village",
+														"subject": "self",
+														"value": true
+													}
+												]
+											},
+											"event": "minecraft:trigger_raid"
+										},
+										{
+											"event": "yoni:no_longer_underwater",
+											"filters": {
+												"test": "is_underwater",
+												"subject": "self",
+												"value": false
+											}
+										},
+										{
+											"event": "yoni:now_underwater",
+											"filters": {
+												"test": "is_underwater",
+												"subject": "self",
+												"value": true
+											}
+										}
+									]
+								}
+							},
+							"events": {
+								"yoni:now_underwater": {
+									"add": {
+										"component_groups": [
+											"yoni:underwater"
+										]
+									},
+									"remove": {
+										"component_groups": [
+											"yoni:overwater"
+										]
+									}
+								},
+								"yoni:no_longer_underwater": {
+									"add": {
+										"component_groups": [
+											"yoni:overwater"
+										]
+									},
+									"remove": {
+										"component_groups": [
+											"yoni:underwater"
+										]
+									}
+								},
+								"minecraft:gain_bad_omen": {
+									"add": {
+										"component_groups": [
+											"minecraft:add_bad_omen"
+										]
+									}
+								},
+								"minecraft:clear_add_bad_omen": {
+									"remove": {
+										"component_groups": [
+											"minecraft:add_bad_omen"
+										]
+									},
+									"add": {
+										"component_groups": [
+											"minecraft:clear_bad_omen_spell_effect"
+										]
+									}
+								},
+								"minecraft:trigger_raid": {
+									"add": {
+										"component_groups": [
+											"minecraft:raid_trigger"
+										]
+									}
+								},
+								"minecraft:remove_raid_trigger": {
+									"remove": {
+										"component_groups": [
+											"minecraft:raid_trigger"
+										]
+									}
+								}
+							}
+						},
+						"key": "components",
+						"children": [
+							{
+								"key": "minecraft:experience_reward",
+								"is_minified": true,
+								"children": {
+									"on_death": "Math.Min(query.player_level * 7, 100)"
+								}
+							},
+							{
+								"key": "minecraft:type_family",
+								"is_minified": true,
+								"children": {
+									"family": [
+										"player"
+									]
+								}
+							},
+							{
+								"key": "minecraft:is_hidden_when_invisible",
+								"is_minified": true,
+								"children": {}
+							},
+							{
+								"key": "minecraft:loot",
+								"is_minified": true,
+								"children": {
+									"table": "loot_tables/empty.json"
+								}
+							},
+							{
+								"key": "minecraft:collision_box",
+								"is_minified": true,
+								"children": {
+									"width": 0.6,
+									"height": 1.8
+								}
+							},
+							{
+								"key": "minecraft:can_climb",
+								"is_minified": true,
+								"children": {}
+							},
+							{
+								"key": "minecraft:hurt_on_condition",
+								"is_minified": true,
+								"children": {
+									"damage_conditions": [
+										{
+											"filters": {
+												"test": "in_lava",
+												"subject": "self",
+												"operator": "==",
+												"value": true
+											},
+											"cause": "lava",
+											"damage_per_tick": 8
+										}
+									]
+								}
+							},
+							{
+								"key": "minecraft:player.saturation",
+								"is_minified": true,
+								"children": {
+									"value": 20
+								}
+							},
+							{
+								"key": "minecraft:player.exhaustion",
+								"is_minified": true,
+								"children": {
+									"value": 0,
+									"max": 4
+								}
+							},
+							{
+								"key": "minecraft:player.level",
+								"is_minified": true,
+								"children": {
+									"value": 0,
+									"max": 24791
+								}
+							},
+							{
+								"key": "minecraft:player.experience",
+								"is_minified": true,
+								"children": {
+									"value": 0,
+									"max": 1
+								}
+							},
+							{
+								"key": "minecraft:health",
+								"is_minified": true,
+								"children": {
+									"max": 40,
+									"value": 40
+								}
+							},
+							{
+								"key": "minecraft:breathable",
+								"is_minified": true,
+								"children": {
+									"total_supply": 30,
+									"breathes_water": true,
+									"breathes_air": false,
+									"suffocate_time": -1,
+									"inhale_time": 3.75,
+									"generates_bubbles": true
+								}
+							},
+							{
+								"key": "minecraft:nameable",
+								"is_minified": true,
+								"children": {
+									"always_show": true,
+									"allow_name_tag_renaming": false
+								}
+							},
+							{
+								"key": "minecraft:physics",
+								"is_minified": true,
+								"children": {}
+							},
+							{
+								"key": "minecraft:pushable",
+								"is_minified": true,
+								"children": {
+									"is_pushable": false,
+									"is_pushable_by_piston": true
+								}
+							},
+							{
+								"key": "minecraft:insomnia",
+								"is_minified": true,
+								"children": {
+									"days_until_insomnia": 3
+								}
+							},
+							{
+								"key": "minecraft:rideable",
+								"is_minified": true,
+								"children": {
+									"seat_count": 2,
+									"family_types": [
+										"parrot_tame"
+									],
+									"pull_in_entities": true,
+									"seats": [
+										{
+											"position": [
+												0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 0,
+											"max_rider_count": 0,
+											"lock_rider_rotation": 0
+										},
+										{
+											"position": [
+												-0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 1,
+											"max_rider_count": 2,
+											"lock_rider_rotation": 0
+										}
+									]
+								}
+							},
+							{
+								"key": "minecraft:conditional_bandwidth_optimization",
+								"is_minified": true,
+								"children": {}
+							},
+							{
+								"key": "minecraft:scaffolding_climber",
+								"is_minified": true,
+								"children": {}
+							},
+							{
+								"open": {
+									"minecraft:experience_reward": {
+										"on_death": "Math.Min(query.player_level * 7, 100)"
+									},
+									"minecraft:type_family": {
+										"family": [
+											"player"
+										]
+									},
+									"minecraft:is_hidden_when_invisible": {},
+									"minecraft:loot": {
+										"table": "loot_tables/empty.json"
+									},
+									"minecraft:collision_box": {
+										"width": 0.6,
+										"height": 1.8
+									},
+									"minecraft:can_climb": {},
+									"minecraft:hurt_on_condition": {
+										"damage_conditions": [
+											{
+												"filters": {
+													"test": "in_lava",
+													"subject": "self",
+													"operator": "==",
+													"value": true
+												},
+												"cause": "lava",
+												"damage_per_tick": 8
+											}
+										]
+									},
+									"minecraft:player.saturation": {
+										"value": 20
+									},
+									"minecraft:player.exhaustion": {
+										"value": 0,
+										"max": 4
+									},
+									"minecraft:player.level": {
+										"value": 0,
+										"max": 24791
+									},
+									"minecraft:player.experience": {
+										"value": 0,
+										"max": 1
+									},
+									"minecraft:health": {
+										"max": 40,
+										"value": 40
+									},
+									"minecraft:breathable": {
+										"total_supply": 30,
+										"breathes_water": true,
+										"breathes_air": false,
+										"suffocate_time": -1,
+										"inhale_time": 3.75,
+										"generates_bubbles": true
+									},
+									"minecraft:nameable": {
+										"always_show": true,
+										"allow_name_tag_renaming": false
+									},
+									"minecraft:physics": {},
+									"minecraft:pushable": {
+										"is_pushable": false,
+										"is_pushable_by_piston": true
+									},
+									"minecraft:insomnia": {
+										"days_until_insomnia": 3
+									},
+									"minecraft:rideable": {
+										"seat_count": 2,
+										"family_types": [
+											"parrot_tame"
+										],
+										"pull_in_entities": true,
+										"seats": [
+											{
+												"position": [
+													0.4,
+													-0.2,
+													-0.1
+												],
+												"min_rider_count": 0,
+												"max_rider_count": 0,
+												"lock_rider_rotation": 0
+											},
+											{
+												"position": [
+													-0.4,
+													-0.2,
+													-0.1
+												],
+												"min_rider_count": 1,
+												"max_rider_count": 2,
+												"lock_rider_rotation": 0
+											}
+										]
+									},
+									"minecraft:conditional_bandwidth_optimization": {},
+									"minecraft:scaffolding_climber": {},
+									"minecraft:environment_sensor": {
+										"triggers": [
+											{
+												"filters": {
+													"all_of": [
+														{
+															"test": "has_mob_effect",
+															"subject": "self",
+															"value": "bad_omen"
+														},
+														{
+															"test": "is_in_village",
+															"subject": "self",
+															"value": true
+														}
+													]
+												},
+												"event": "minecraft:trigger_raid"
+											},
+											{
+												"event": "yoni:no_longer_underwater",
+												"filters": {
+													"test": "is_underwater",
+													"subject": "self",
+													"value": false
+												}
+											},
+											{
+												"event": "yoni:now_underwater",
+												"filters": {
+													"test": "is_underwater",
+													"subject": "self",
+													"value": true
+												}
+											}
+										]
+									}
+								},
+								"key": "minecraft:environment_sensor",
+								"children": [
+									{
+										"open": {
+											"triggers": [
+												{
+													"filters": {
+														"all_of": [
+															{
+																"test": "has_mob_effect",
+																"subject": "self",
+																"value": "bad_omen"
+															},
+															{
+																"test": "is_in_village",
+																"subject": "self",
+																"value": true
+															}
+														]
+													},
+													"event": "minecraft:trigger_raid"
+												},
+												{
+													"event": "yoni:no_longer_underwater",
+													"filters": {
+														"test": "is_underwater",
+														"subject": "self",
+														"value": false
+													}
+												},
+												{
+													"event": "yoni:now_underwater",
+													"filters": {
+														"test": "is_underwater",
+														"subject": "self",
+														"value": true
+													}
+												}
+											]
+										},
+										"key": "triggers",
+										"children": [
+											{
+												"is_minified": true,
+												"children": {
+													"filters": {
+														"all_of": [
+															{
+																"test": "has_mob_effect",
+																"subject": "self",
+																"value": "bad_omen"
+															},
+															{
+																"test": "is_in_village",
+																"subject": "self",
+																"value": true
+															}
+														]
+													},
+													"event": "minecraft:trigger_raid"
+												}
+											},
+											{
+												"is_minified": true,
+												"children": {
+													"event": "yoni:no_longer_underwater",
+													"filters": {
+														"test": "is_underwater",
+														"subject": "self",
+														"value": false
+													}
+												}
+											},
+											{
+												"children": [
+													{
+														"data": "yoni:now_underwater",
+														"key": "event"
+													},
+													{
+														"open": {
+															"event": "yoni:now_underwater",
+															"filters": {
+																"test": "is_underwater",
+																"subject": "self",
+																"value": true
+															}
+														},
+														"key": "filters",
+														"is_minified": true,
+														"children": {
+															"test": "is_underwater",
+															"subject": "self",
+															"value": true
+														}
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"open": {
+							"description": {
+								"identifier": "minecraft:player",
+								"is_spawnable": false,
+								"is_summonable": false,
+								"is_experimental": false,
+								"scripts": {
+									"animate": [
+										"yoni:underwater_effects"
+									]
+								},
+								"animations": {
+									"yoni:underwater_effects": "controller.animation.yoni_player_underwater"
+								}
+							},
+							"component_groups": {
+								"minecraft:add_bad_omen": {
+									"minecraft:spell_effects": {
+										"add_effects": [
+											{
+												"effect": "bad_omen",
+												"duration": 6000,
+												"display_on_screen_animation": true
+											}
+										]
+									},
+									"minecraft:timer": {
+										"time": [
+											0,
+											0
+										],
+										"looping": false,
+										"time_down_event": {
+											"event": "minecraft:clear_add_bad_omen",
+											"target": "self"
+										}
+									}
+								},
+								"minecraft:clear_bad_omen_spell_effect": {
+									"minecraft:spell_effects": {}
+								},
+								"minecraft:raid_trigger": {
+									"minecraft:raid_trigger": {
+										"triggered_event": {
+											"event": "minecraft:remove_raid_trigger",
+											"target": "self"
+										}
+									},
+									"minecraft:spell_effects": {
+										"remove_effects": "bad_omen"
+									}
+								},
+								"yoni:underwater": {
+									"minecraft:skin_id": {
+										"value": 1
+									},
+									"minecraft:movement": {
+										"value": 0.5
+									},
+									"minecraft:attack": {
+										"damage": 5
+									}
+								},
+								"yoni:overwater": {
+									"minecraft:movement": {
+										"value": 0.1
+									},
+									"minecraft:attack": {
+										"damage": 1
+									},
+									"minecraft:skin_id": {
+										"value": 0
+									},
+									"minecraft:spell_effects": {
+										"remove_effects": [
+											"night_vision",
+											"haste"
+										]
+									}
+								}
+							},
+							"components": {
+								"minecraft:experience_reward": {
+									"on_death": "Math.Min(query.player_level * 7, 100)"
+								},
+								"minecraft:type_family": {
+									"family": [
+										"player"
+									]
+								},
+								"minecraft:is_hidden_when_invisible": {},
+								"minecraft:loot": {
+									"table": "loot_tables/empty.json"
+								},
+								"minecraft:collision_box": {
+									"width": 0.6,
+									"height": 1.8
+								},
+								"minecraft:can_climb": {},
+								"minecraft:hurt_on_condition": {
+									"damage_conditions": [
+										{
+											"filters": {
+												"test": "in_lava",
+												"subject": "self",
+												"operator": "==",
+												"value": true
+											},
+											"cause": "lava",
+											"damage_per_tick": 8
+										}
+									]
+								},
+								"minecraft:player.saturation": {
+									"value": 20
+								},
+								"minecraft:player.exhaustion": {
+									"value": 0,
+									"max": 4
+								},
+								"minecraft:player.level": {
+									"value": 0,
+									"max": 24791
+								},
+								"minecraft:player.experience": {
+									"value": 0,
+									"max": 1
+								},
+								"minecraft:health": {
+									"max": 40,
+									"value": 40
+								},
+								"minecraft:breathable": {
+									"total_supply": 30,
+									"breathes_water": true,
+									"breathes_air": false,
+									"suffocate_time": -1,
+									"inhale_time": 3.75,
+									"generates_bubbles": true
+								},
+								"minecraft:nameable": {
+									"always_show": true,
+									"allow_name_tag_renaming": false
+								},
+								"minecraft:physics": {},
+								"minecraft:pushable": {
+									"is_pushable": false,
+									"is_pushable_by_piston": true
+								},
+								"minecraft:insomnia": {
+									"days_until_insomnia": 3
+								},
+								"minecraft:rideable": {
+									"seat_count": 2,
+									"family_types": [
+										"parrot_tame"
+									],
+									"pull_in_entities": true,
+									"seats": [
+										{
+											"position": [
+												0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 0,
+											"max_rider_count": 0,
+											"lock_rider_rotation": 0
+										},
+										{
+											"position": [
+												-0.4,
+												-0.2,
+												-0.1
+											],
+											"min_rider_count": 1,
+											"max_rider_count": 2,
+											"lock_rider_rotation": 0
+										}
+									]
+								},
+								"minecraft:conditional_bandwidth_optimization": {},
+								"minecraft:scaffolding_climber": {},
+								"minecraft:environment_sensor": {
+									"triggers": [
+										{
+											"filters": {
+												"all_of": [
+													{
+														"test": "has_mob_effect",
+														"subject": "self",
+														"value": "bad_omen"
+													},
+													{
+														"test": "is_in_village",
+														"subject": "self",
+														"value": true
+													}
+												]
+											},
+											"event": "minecraft:trigger_raid"
+										},
+										{
+											"event": "yoni:no_longer_underwater",
+											"filters": {
+												"test": "is_underwater",
+												"subject": "self",
+												"value": false
+											}
+										},
+										{
+											"event": "yoni:now_underwater",
+											"filters": {
+												"test": "is_underwater",
+												"subject": "self",
+												"value": true
+											}
+										}
+									]
+								}
+							},
+							"events": {
+								"yoni:now_underwater": {
+									"add": {
+										"component_groups": [
+											"yoni:underwater"
+										]
+									},
+									"remove": {
+										"component_groups": [
+											"yoni:overwater"
+										]
+									}
+								},
+								"yoni:no_longer_underwater": {
+									"add": {
+										"component_groups": [
+											"yoni:overwater"
+										]
+									},
+									"remove": {
+										"component_groups": [
+											"yoni:underwater"
+										]
+									}
+								},
+								"minecraft:gain_bad_omen": {
+									"add": {
+										"component_groups": [
+											"minecraft:add_bad_omen"
+										]
+									}
+								},
+								"minecraft:clear_add_bad_omen": {
+									"remove": {
+										"component_groups": [
+											"minecraft:add_bad_omen"
+										]
+									},
+									"add": {
+										"component_groups": [
+											"minecraft:clear_bad_omen_spell_effect"
+										]
+									}
+								},
+								"minecraft:trigger_raid": {
+									"add": {
+										"component_groups": [
+											"minecraft:raid_trigger"
+										]
+									}
+								},
+								"minecraft:remove_raid_trigger": {
+									"remove": {
+										"component_groups": [
+											"minecraft:raid_trigger"
+										]
+									}
+								}
+							}
+						},
+						"key": "events",
+						"is_minified": true,
+						"children": {
+							"yoni:now_underwater": {
+								"add": {
+									"component_groups": [
+										"yoni:underwater"
+									]
+								},
+								"remove": {
+									"component_groups": [
+										"yoni:overwater"
+									]
+								}
+							},
+							"yoni:no_longer_underwater": {
+								"add": {
+									"component_groups": [
+										"yoni:overwater"
+									]
+								},
+								"remove": {
+									"component_groups": [
+										"yoni:underwater"
+									]
+								}
+							},
+							"minecraft:gain_bad_omen": {
+								"add": {
+									"component_groups": [
+										"minecraft:add_bad_omen"
+									]
+								}
+							},
+							"minecraft:clear_add_bad_omen": {
+								"remove": {
+									"component_groups": [
+										"minecraft:add_bad_omen"
+									]
+								},
+								"add": {
+									"component_groups": [
+										"minecraft:clear_bad_omen_spell_effect"
+									]
+								}
+							},
+							"minecraft:trigger_raid": {
+								"add": {
+									"component_groups": [
+										"minecraft:raid_trigger"
+									]
+								}
+							},
+							"minecraft:remove_raid_trigger": {
+								"remove": {
+									"component_groups": [
+										"minecraft:raid_trigger"
+									]
+								}
+							}
+						}
+					}
+				]
+			}
+		]
+	}
+}

@@ -1,0 +1,180 @@
+{
+	"file_path": "C:\\Users\\sil\\AppData\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\LocalState\\games\\com.mojang\\development_behavior_packs\\UnderWater\\animation_controllers\\yoni_player_underwater.json",
+	"file_type": "animation_controller",
+	"format_version": 1,
+	"file_uuid": "ac5a1f16_0ed8_4606_a3c6_9690cbc0a02f",
+	"file_version": 0,
+	"cache_content": {
+		"children": [
+			{
+				"data": "1.10.0",
+				"key": "format_version"
+			},
+			{
+				"open": {
+					"format_version": "1.10.0",
+					"animation_controllers": {
+						"controller.animation.yoni_player_underwater": {
+							"states": {
+								"default": {
+									"transitions": [
+										{
+											"player_underwater": "query.skin_id == 1"
+										}
+									]
+								},
+								"player_underwater": {
+									"transitions": [
+										{
+											"default": "query.skin_id == 1"
+										}
+									],
+									"on_entry": [
+										"/effect @s conduit_power 13 4 true"
+									]
+								}
+							}
+						}
+					}
+				},
+				"key": "animation_controllers",
+				"children": [
+					{
+						"open": {
+							"controller.animation.yoni_player_underwater": {
+								"states": {
+									"default": {
+										"transitions": [
+											{
+												"player_underwater": "query.skin_id == 1"
+											}
+										]
+									},
+									"player_underwater": {
+										"transitions": [
+											{
+												"default": "query.skin_id == 1"
+											}
+										],
+										"on_entry": [
+											"/effect @s conduit_power 13 4 true"
+										]
+									}
+								}
+							}
+						},
+						"key": "controller.animation.yoni_player_underwater",
+						"children": [
+							{
+								"open": {
+									"states": {
+										"default": {
+											"transitions": [
+												{
+													"player_underwater": "query.skin_id == 1"
+												}
+											]
+										},
+										"player_underwater": {
+											"transitions": [
+												{
+													"default": "query.skin_id == 1"
+												}
+											],
+											"on_entry": [
+												"/effect @s conduit_power 13 4 true"
+											]
+										}
+									}
+								},
+								"key": "states",
+								"children": [
+									{
+										"open": {
+											"default": {
+												"transitions": [
+													{
+														"player_underwater": "query.skin_id == 1"
+													}
+												]
+											},
+											"player_underwater": {
+												"transitions": [
+													{
+														"default": "query.skin_id == 1"
+													}
+												],
+												"on_entry": [
+													"/effect @s conduit_power 13 4 true"
+												]
+											}
+										},
+										"key": "default",
+										"is_minified": true,
+										"children": {
+											"transitions": [
+												{
+													"player_underwater": "query.skin_id == 1"
+												}
+											]
+										}
+									},
+									{
+										"open": {
+											"default": {
+												"transitions": [
+													{
+														"player_underwater": "query.skin_id == 1"
+													}
+												]
+											},
+											"player_underwater": {
+												"transitions": [
+													{
+														"default": "query.skin_id == 1"
+													}
+												],
+												"on_entry": [
+													"/effect @s conduit_power 13 4 true"
+												]
+											}
+										},
+										"key": "player_underwater",
+										"children": [
+											{
+												"key": "transitions",
+												"is_minified": true,
+												"children": [
+													{
+														"default": "query.skin_id == 1"
+													}
+												]
+											},
+											{
+												"open": {
+													"transitions": [
+														{
+															"default": "query.skin_id == 1"
+														}
+													],
+													"on_entry": [
+														"/effect @s conduit_power 13 4 true"
+													]
+												},
+												"key": "on_entry",
+												"is_minified": true,
+												"children": [
+													"/effect @s conduit_power 13 4 true"
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

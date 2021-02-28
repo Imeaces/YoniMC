@@ -1,26 +1,27 @@
+//bridge-file-version: #0
 {
-  "format_version": "1.16",
-  "minecraft:recipe_shaped": {
-    "description": {
-      "identifier": "yoni:underwater_torch"
-    },
-    "tags": [
-      "crafting_table"
-    ],
-    "ingredients": [
-      {
-        "item": "minecraft:torch"
-      },
-      {
-        "item": "minecraft:seagrass"
-      },
-      {
-        "item": "minecraft:seagrass"
-      }
-    ],
-    "result": {
-      "item": "minecraft:underwater_torch",
-      "count": 2
-    }
-  }
+	"format_version": 1.16,
+	"minecraft:recipe_shapeless": {
+		"description": {
+			"identifier": "yoni:underwater_torch"
+		},
+		"tags": [
+			"crafting_table"
+		],
+		"result": {
+			"item": "minecraft:underwater_torch",
+			"count": 2
+		},
+		"ingredients": [
+			{
+				"item": "minecraft:torch"
+			},
+			{
+				"item": "minecraft:seagrass"
+			},
+			{
+				"item": "minecraft:seagrass"
+			}
+		]
+	}
 }

@@ -1,0 +1,44 @@
+{
+	"entity": {
+		"BP/entities/player.json": {
+			"events": [
+				"yoni:now_underwater",
+				"yoni:no_longer_underwater",
+				"minecraft:gain_bad_omen",
+				"minecraft:clear_add_bad_omen",
+				"minecraft:trigger_raid",
+				"minecraft:remove_raid_trigger"
+			],
+			"bridge_core_tags": [],
+			"identifiers": [
+				"minecraft:player"
+			],
+			"animation_references": [
+				"yoni:underwater_effects"
+			],
+			"families": [
+				"player"
+			],
+			"custom_commands": [],
+			"custom_components": []
+		}
+	},
+	"function": {
+		"ac5a1f16_0ed8_4606_a3c6_9690cbc0a02f": {}
+	},
+	"animation_controller": {
+		"BP/animation_controllers/yoni_player_underwater.json": {
+			"ids": [
+				"controller.animation.yoni_player_underwater"
+			],
+			"custom_commands": []
+		}
+	},
+	"recipe": {
+		"BP/recipes/underwater_torch.json": {
+			"tags": [
+				"crafting_table"
+			]
+		}
+	}
+}

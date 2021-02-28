@@ -1,0 +1,219 @@
+{
+	"file_path": "C:\\Users\\sil\\AppData\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\LocalState\\games\\com.mojang\\development_behavior_packs\\UnderWater\\recipes\\underwater_torch.json",
+	"file_type": "recipe",
+	"format_version": 1,
+	"file_uuid": "9f99ab69_7207_4b41_b606_d53d4c27c49a",
+	"file_version": 0,
+	"cache_content": {
+		"children": [
+			{
+				"open": {
+					"format_version": 1.16,
+					"minecraft:recipe_shapeless": {
+						"description": {
+							"identifier": "yoni:underwater_torch"
+						},
+						"tags": [
+							"crafting_table"
+						],
+						"result": {
+							"item": "minecraft:underwater_torch",
+							"count": 2
+						},
+						"ingredients": [
+							{
+								"item": "minecraft:torch"
+							},
+							{
+								"item": "minecraft:seagrass"
+							},
+							{
+								"item": "minecraft:seagrass"
+							}
+						]
+					}
+				},
+				"data": "1.16",
+				"key": "format_version"
+			},
+			{
+				"open": {
+					"format_version": 1.16,
+					"minecraft:recipe_shapeless": {
+						"description": {
+							"identifier": "yoni:underwater_torch"
+						},
+						"tags": [
+							"crafting_table"
+						],
+						"result": {
+							"item": "minecraft:underwater_torch",
+							"count": 2
+						},
+						"ingredients": [
+							{
+								"item": "minecraft:torch"
+							},
+							{
+								"item": "minecraft:seagrass"
+							},
+							{
+								"item": "minecraft:seagrass"
+							}
+						]
+					}
+				},
+				"key": "minecraft:recipe_shapeless",
+				"children": [
+					{
+						"key": "description",
+						"is_minified": true,
+						"children": {
+							"identifier": "yoni:underwater_torch"
+						}
+					},
+					{
+						"open": {
+							"description": {
+								"identifier": "yoni:underwater_torch"
+							},
+							"tags": [
+								"crafting_table"
+							],
+							"result": {
+								"item": "minecraft:underwater_torch",
+								"count": 2
+							},
+							"ingredients": [
+								{
+									"item": "minecraft:torch"
+								},
+								{
+									"item": "minecraft:seagrass"
+								},
+								{
+									"item": "minecraft:seagrass"
+								}
+							]
+						},
+						"key": "tags",
+						"is_minified": true,
+						"children": [
+							"crafting_table"
+						]
+					},
+					{
+						"open": {
+							"description": {
+								"identifier": "yoni:underwater_torch"
+							},
+							"tags": [
+								"crafting_table"
+							],
+							"result": {
+								"item": "minecraft:underwater_torch",
+								"count": 2
+							},
+							"ingredients": [
+								{
+									"item": "minecraft:torch"
+								},
+								{
+									"item": "minecraft:seagrass"
+								},
+								{
+									"item": "minecraft:seagrass"
+								}
+							]
+						},
+						"key": "result",
+						"is_minified": true,
+						"children": {
+							"item": "minecraft:underwater_torch",
+							"count": 2
+						}
+					},
+					{
+						"open": {
+							"description": {
+								"identifier": "yoni:underwater_torch"
+							},
+							"tags": [
+								"crafting_table"
+							],
+							"result": {
+								"item": "minecraft:underwater_torch",
+								"count": 2
+							},
+							"ingredients": [
+								{
+									"item": "minecraft:torch"
+								},
+								{
+									"item": "minecraft:seagrass"
+								},
+								{
+									"item": "minecraft:seagrass"
+								}
+							]
+						},
+						"key": "ingredients",
+						"children": [
+							{
+								"open": [
+									{
+										"item": "minecraft:torch"
+									},
+									{
+										"item": "minecraft:seagrass"
+									},
+									{
+										"item": "minecraft:seagrass"
+									}
+								],
+								"is_minified": true,
+								"children": {
+									"item": "minecraft:torch"
+								}
+							},
+							{
+								"open": [
+									{
+										"item": "minecraft:torch"
+									},
+									{
+										"item": "minecraft:seagrass"
+									},
+									{
+										"item": "minecraft:seagrass"
+									}
+								],
+								"is_minified": true,
+								"children": {
+									"item": "minecraft:seagrass"
+								}
+							},
+							{
+								"open": [
+									{
+										"item": "minecraft:torch"
+									},
+									{
+										"item": "minecraft:seagrass"
+									},
+									{
+										"item": "minecraft:seagrass"
+									}
+								],
+								"is_minified": true,
+								"children": {
+									"item": "minecraft:seagrass"
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}
