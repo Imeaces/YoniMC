@@ -2,9 +2,9 @@
     "format_version": 2,
     "header": {
         "name": "UnderWater",
-        "description": "水下生存",
+        "description": "",
         "uuid": "1f143bef-86c1-43e6-a873-2aa0b09d1a84",
-        "version": [1, 0, 5],
+        "version": [1, 1, 5],
         "min_engine_version": [1, 16, 0]
     },
     "modules": [
@@ -12,7 +12,7 @@
             "description": "You must breathe in water",
             "type": "data",
             "uuid": "f4633a3b-b7fa-4d05-a5c1-93fbfed60767",
-            "version": [1, 0, 5]
+            "version": [1, 1, 5]
         }
     ]
 }
