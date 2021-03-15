@@ -1,0 +1,119 @@
+{
+  "format_version": "1.16.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "yoni:guxi",
+      "is_experimental": false,
+      "is_spawnable": true,
+      "is_summonable": true,
+      "scripts": {
+        "animate": [
+          "yoni_guxi"
+        ]
+      },
+      "animations": {
+        "yoni_guxi": "controller.animation.yoni_guxi"
+      }
+    },
+    "events": {
+      "yoni:guxi_die": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_die"
+          ]
+        }
+      }
+    },
+    "component_groups": {
+      "yoni:guxi_die": {
+        "minecraft:health": {
+          "max": 0,
+          "value": 0,
+          "min": 0
+        }
+      }
+    },
+    "components": {
+      "minecraft:environment_sensor": {
+        "triggers": [
+          {
+            "filter": "is_sleeping",
+            "event": "yoni:guxi_die_of_sleep"
+          },
+          {
+            "filters": {
+              "test": "is_moving",
+              "value": true,
+              "subject": "self",
+              "operator": "=="
+            },
+            "event": "yoni:guxi_moving"
+          },
+          {
+            "filters": {
+              "test": "is_moving",
+              "value": false,
+              "operator": "==",
+              "subject": "self"
+            },
+            "event": "yoni:guxi_static"
+          }
+        ]
+      },
+      "minecraft:health": {
+        "max": 1,
+        "value": 1,
+        "min": 1
+      },
+      "minecraft:walk_animation_speed": {
+        "value": 1.32
+      },
+      "minecraft:is_hidden_when_invisible": {},
+      "minecraft:floats_in_liquid": {},
+      "minecraft:type_family": {
+        "family": [
+          "guxi",
+          "yoni",
+          "mob"
+        ]
+      },
+      "minecraft:persistent": {},
+      "minecraft:physics": {},
+      "minecraft:pushable": {},
+      "minecraft:collision_box": {
+        "height": 1.8,
+        "width": 0.6
+      },
+      "minecraft:scale": {
+        "value": 0.76
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "drowning",
+            "deals_damage": false
+          },
+          {
+            "cause": "magic",
+            "deals_damage": false,
+            "on_damage": {
+              "event": "yoni:guxi_get_energy"
+            }
+          },
+          {
+            "cause": "suicide",
+            "deals_damage": false
+          },
+          {
+            "cause": "void",
+            "deals_damage": false
+          },
+          {
+            "cause": "suffocation",
+            "deals_damage": false
+          }
+        ]
+      }
+    }
+  }
+}

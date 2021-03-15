@@ -1,0 +1,1 @@
+tag @s[tag=!status.is_sleeping] add status.is_sleeping

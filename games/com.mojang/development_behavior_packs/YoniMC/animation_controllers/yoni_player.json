@@ -1,0 +1,47 @@
+
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni_player": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "player": "query.has_any_family('player')"
+            }
+          ],
+          "on_exit": [
+            "/function yoni/player/init"
+          ]
+        },
+        "player": {
+          "transitions": [
+            {
+              "default": "!query.has_any_family('player')"
+            },
+            {
+              "player_loop": "query.has_any_family('player')"
+            }
+          ],
+          "on_entry": [
+            "/function yoni/player"
+          ]
+        },
+        "player_loop": {
+          "transitions": [
+            {
+              "default": "!query.has_any_family('player')"
+            },
+            {
+              "player": "query.has_any_family('player')"
+            }
+          ],
+          "on_entry": [
+            "/function yoni/player"
+          ]
+        }
+      }
+    }
+  }
+}

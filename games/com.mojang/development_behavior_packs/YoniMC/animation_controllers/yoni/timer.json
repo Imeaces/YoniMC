@@ -1,0 +1,31 @@
+
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.tick_timer": {
+      "initial_state": "timer",
+      "states": {
+        "timer": {
+          "transitions": [
+            {
+              "timer_loop": "1"
+            }
+          ],
+          "on_entry": [
+            "/function yoni/timer"
+          ]
+        },
+        "timer_loop": {
+          "transitions": [
+            {
+              "timer": "1"
+            }
+          ],
+          "on_entry": [
+            "/function yoni/timer"
+          ]
+        }
+      }
+    }
+  }
+}
