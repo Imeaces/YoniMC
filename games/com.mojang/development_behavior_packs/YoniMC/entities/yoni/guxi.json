@@ -34,32 +34,6 @@
       }
     },
     "components": {
-      "minecraft:environment_sensor": {
-        "triggers": [
-          {
-            "filter": "is_sleeping",
-            "event": "yoni:guxi_die_of_sleep"
-          },
-          {
-            "filters": {
-              "test": "is_moving",
-              "value": true,
-              "subject": "self",
-              "operator": "=="
-            },
-            "event": "yoni:guxi_moving"
-          },
-          {
-            "filters": {
-              "test": "is_moving",
-              "value": false,
-              "operator": "==",
-              "subject": "self"
-            },
-            "event": "yoni:guxi_static"
-          }
-        ]
-      },
       "minecraft:health": {
         "max": 1,
         "value": 1,
