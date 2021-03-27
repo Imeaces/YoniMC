@@ -8,8 +8,8 @@
 [`query.item_max_use_duration`](https://bedrock.dev/docs/stable/MoLang#query.item_max_use_duration)
 : 物品最长使用时间
 
-## 关于物品
-物品的`description`除了`identifier`还有一个`category`，它是必须的，不写就不能加载物品，而且还不会有提示
+## 物品分类
+物品的`description`下的`category`
 ```prop
 craftingScreen.tab.search=全部	#
 craftingScreen.tab.search.filter=可合成	#
@@ -21,3 +21,8 @@ craftingScreen.tab.survival=物品栏	#
 craftingScreen.tab.armor=盔甲	#
 
 ```
+
+## 关于添加新物品
+
+1.必须开启实验玩法  
+2.必须在行为包和资源包都定义物品
