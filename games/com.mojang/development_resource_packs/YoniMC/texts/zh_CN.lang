@@ -1,0 +1,7 @@
+pack.description=为了使其更有趣，我开始制作它\n这是其资源
+
+item.yoni:empty_energy=空的能量块
+item.yoni:low_energy=低沉的能量块
+item.yoni:middle_energy=居中的能量块
+item.yoni:high_energy=很强的能量块
+item.yoni:full_energy=充满的能量块

@@ -16,16 +16,17 @@
       }
     },
     "events": {
-      "yoni:guxi_die": {
+      "yoni:on_damage": {},
+      "yoni:die": {
         "add": {
           "component_groups": [
-            "yoni:guxi_die"
+            "yoni:die"
           ]
         }
       }
     },
     "component_groups": {
-      "yoni:guxi_die": {
+      "yoni:die": {
         "minecraft:health": {
           "max": 0,
           "value": 0,
@@ -64,27 +65,10 @@
       "minecraft:damage_sensor": {
         "triggers": [
           {
-            "cause": "drowning",
-            "deals_damage": false
-          },
-          {
-            "cause": "magic",
-            "deals_damage": false,
+            "cause": "all",
             "on_damage": {
-              "event": "yoni:guxi_get_energy"
+              "event": "yoni:on_damage"
             }
-          },
-          {
-            "cause": "suicide",
-            "deals_damage": false
-          },
-          {
-            "cause": "void",
-            "deals_damage": false
-          },
-          {
-            "cause": "suffocation",
-            "deals_damage": false
           }
         ]
       }

@@ -1,0 +1,20 @@
+{
+  "format_version": "1.16.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "yoni:empty_energy"
+    },
+    "components": {
+      "minecraft:wearable": {
+        "slot": "slot.weapon.offhand"
+      },
+      "minecraft:fuel": {
+        "duration": 1
+      },
+      "minecraft:icon": {
+        "texture": "empty_energy"
+      },
+      "minecraft:max_stack_size": 64
+    }
+  }
+}
