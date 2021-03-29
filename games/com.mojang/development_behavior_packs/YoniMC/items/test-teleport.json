@@ -1,0 +1,38 @@
+//bridge-file-version: #1
+{
+  "format_version": "1.16.200",
+  "minecraft:item": {
+    "description": {
+      "identifier": "yoni:test-teleport"
+    },
+    "components": {
+      "minecraft:max_stack_size": 0,
+      "minecraft:can_destroy_in_creative": false,
+      "minecraft:on_use": {
+        "on_use": {
+          "event": "yoni:teleport",
+          "condition": {},
+          "target": "self"
+        }
+      },
+      "minecraft:ignores_permission": false
+    },
+    "events": {
+      "yoni:teleport": {
+        "teleport": {
+          "destination": [
+            0,
+            128,
+            0
+          ],
+          "target": "holder",
+          "max_range": [
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    }
+  }
+}
