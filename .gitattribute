@@ -1,6 +1,7 @@
-*.mcfunction text=auto
-*.json text=auto
+text=auto
+
+*.mcfunction text
+*.json text
 *.png binary
-README.md text=auto
-*.lang text eof=crlf
-com.mojang/minecraftWorlds/YoniMC/* binary
+*.md text eof=lf
+*.lang text
