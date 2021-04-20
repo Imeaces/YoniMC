@@ -7,4 +7,4 @@
 ## 一些奇怪的东西
 
 另见  
-1.`games/com.mojang/development_behavior_packs/YoniMC/note.md`
+1.`note.md`

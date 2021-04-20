@@ -9,7 +9,9 @@
 : 物品最长使用时间
 
 ## 物品分类
+
 物品的`description`下的`category`
+
 ```prop
 craftingScreen.tab.search=全部	#
 craftingScreen.tab.search.filter=可合成	#
