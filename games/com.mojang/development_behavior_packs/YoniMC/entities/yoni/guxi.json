@@ -5,35 +5,10 @@
       "identifier": "yoni:guxi",
       "is_experimental": false,
       "is_spawnable": true,
-      "is_summonable": true,
-      "scripts": {
-        "animate": [
-          "yoni_guxi"
-        ]
-      },
-      "animations": {
-        "yoni_guxi": "controller.animation.yoni_guxi"
-      }
+      "is_summonable": true
     },
-    "events": {
-      "yoni:on_damage": {},
-      "yoni:die": {
-        "add": {
-          "component_groups": [
-            "yoni:die"
-          ]
-        }
-      }
-    },
-    "component_groups": {
-      "yoni:die": {
-        "minecraft:health": {
-          "max": 0,
-          "value": 0,
-          "min": 0
-        }
-      }
-    },
+    "events": {},
+    "component_groups": {},
     "components": {
       "minecraft:health": {
         "max": 1,
@@ -48,8 +23,7 @@
       "minecraft:type_family": {
         "family": [
           "guxi",
-          "yoni",
-          "mob"
+          "yoni"
         ]
       },
       "minecraft:persistent": {},

@@ -1,31 +1,12 @@
+//bridge-file-version: #0
 {
-  "resource_pack_name": "YoniMC",
-  "texture_name": "atlas.items",
-  "texture_data": {
-    "empty_energy": {
-      "textures": [
-        "textures/items/yoni/energy/empty"
-      ]
-    },
-    "low_energy": {
-      "textures": [
-        "textures/items/yoni/energy/low"
-      ]
-    },
-    "middle_energy": {
-      "textures": [
-        "textures/items/yoni/energy/middle"
-      ]
-    },
-    "high_energy": {
-      "textures": [
-        "textures/items/yoni/energy/high"
-      ]
-    },
-    "full_energy": {
-      "textures": [
-        "textures/items/yoni/energy/full"
-      ]
-    }
-  }
+	"resource_pack_name": "YoniMC",
+	"texture_name": "atlas.items",
+	"texture_data": {
+		"energy": {
+			"textures": [
+				"textures/items/yoni/energy"
+			]
+		}
+	}
 }

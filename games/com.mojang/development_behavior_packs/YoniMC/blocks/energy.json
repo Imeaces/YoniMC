@@ -1,0 +1,11 @@
+//bridge-file-version: #0
+{
+	"format_version": "1.16",
+	"minecraft:block": {
+		"description": {
+
+		},
+		"components": {},
+		"events": {}
+	}
+}
