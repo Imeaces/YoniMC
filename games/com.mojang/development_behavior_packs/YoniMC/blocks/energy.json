@@ -1,11 +1,29 @@
-//bridge-file-version: #0
 {
-	"format_version": "1.16",
+	"format_version": "1.16.100",
 	"minecraft:block": {
 		"description": {
-
+			"identifier": "yoni:energy_block",
+			"is_experimental": false,
+			"register_to_creative_menu": false
 		},
-		"components": {},
+		"components": {
+			"minecraft:display_name": "tile.yoni:energy_block",
+			"minecraft:destroy_time": 0,
+			"minecraft:preventsjumping": true,
+			"minecraft:onlypistonpush": true,
+			"minecraft:friction": 7.6,
+			"minecraft:map_color": "#FFFFFF",
+			"minecraft:flammable": {
+				"flame_odds": 0.1,
+				"burn_odds": 100
+			},
+			"minecraft:material_instances": {
+				"*": {
+					"texture": "energy_block", // References texture defined in terrain_textures.json
+					"render_method": "opaque" // Options 'blend', 'opaque', 'alpha_test'
+				}
+			}
+		},
 		"events": {}
 	}
 }
