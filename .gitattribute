@@ -1,0 +1,7 @@
+text=auto
+
+*.mcfunction text
+*.json text
+*.png binary
+*.md text eof=lf
+*.lang text
