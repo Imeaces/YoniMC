@@ -1,1 +1,3 @@
-pack.description=为了使其更有趣，我开始制作它
+pack.yoni.description=使世界不同
+
+modules.yoni=data:YoniMC
