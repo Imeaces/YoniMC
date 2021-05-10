@@ -17,14 +17,24 @@
 				},
 				"cannot_fly": {
 					"on_entry": [
-						"variable.ability_mayfly = 0",
+						"variable.ability_mayfly = 0;",
 						"/execute @s[tag=ability:mayfly] ~ ~ ~ ability @s mayfly true"
+					],
+					"transitions": [
+						{
+							"mode": "(1.0)"
+						}
 					]
 				},
 				"can_fly": {
 					"on_entry": [
-						"variable.ability_mayfly = 1",
+						"variable.ability_mayfly = 1;",
 						"/execute @s[tag=!ability:mayfly] ~ ~ ~ ability @s mayfly false"
+					],
+					"transitions": [
+						{
+							"mode": "(1.0)"
+						}
 					]
 				}
 			}
