@@ -1,4 +1,4 @@
-//bridge-file-version: #5
+//bridge-file-version: #1
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -7,13 +7,15 @@
 			"is_spawnable": false,
 			"is_summonable": false,
 			"is_experimental": false,
+			"animations": {
+				"ability_mayfly": "controller.animation.ability_mayfly"
+			},
 			"scripts": {
 				"animate": [
-					"yoni_ability_mayfly"
+					{
+						"ability_mayfly": {}
+					}
 				]
-			},
-			"animations": {
-				"yoni_ability_mayfly": "controller.animation.ability_mayfly"
 			}
 		},
 		"events": {
@@ -47,41 +49,6 @@
 				"remove": {
 					"component_groups": [
 						"minecraft:raid_trigger"
-					]
-				}
-			},
-			"yoni:reset_id": {
-				"add": {
-					"component_groups": [
-						"yoni:reset_id"
-					]
-				}
-			},
-			"yoni:cannot_fly": {
-				"add": {
-					"component_groups": [
-						"yoni:cannot_fly"
-					]
-				}
-			},
-			"yoni:can_fly": {
-				"add": {
-					"component_groups": [
-						"yoni:can_fly"
-					]
-				}
-			},
-			"yoni:set_cannot_fly": {
-				"add": {
-					"component_groups": [
-						"yoni:set_cannot_fly"
-					]
-				}
-			},
-			"yoni:set_can_fly": {
-				"add": {
-					"component_groups": [
-						"yoni:set_can_fly"
 					]
 				}
 			}
@@ -189,58 +156,23 @@
 			"minecraft:conditional_bandwidth_optimization": {},
 			"minecraft:scaffolding_climber": {},
 			"minecraft:environment_sensor": {
-				"triggers": [
-					{
-						"event": "minecraft:trigger_raid",
-						"filters": {
-							"all_of": [
-								{
-									"test": "has_mob_effect",
-									"subject": "self",
-									"value": "bad_omen"
-								},
-								{
-									"test": "is_in_village",
-									"subject": "self",
-									"value": true
-								}
-							]
-						}
+				"triggers": {
+					"filters": {
+						"all_of": [
+							{
+								"test": "has_mob_effect",
+								"subject": "self",
+								"value": "bad_omen"
+							},
+							{
+								"test": "is_in_village",
+								"subject": "self",
+								"value": true
+							}
+						]
 					},
-					{
-						"event": "yoni:cannot_fly",
-						"filters": {
-							"test": "has_ability",
-							"value": "mayfly",
-							"operator": "not"
-						}
-					},
-					{
-						"event": "yoni:can_fly",
-						"filters": {
-							"test": "has_ability",
-							"value": "mayfly",
-							"operator": "equals"
-						}
-					},
-					{
-						"event": "yoni:set_cannot_fly",
-						"filters": {
-							"test": "has_tag",
-							"value": "ability:cannot_fly"
-						}
-					},
-					{
-						"event": "yoni:set_can_fly",
-						"filters": {
-							"test": "has_tag",
-							"value": "ability:can_fly"
-						}
-					}
-				]
-			},
-			"minecraft:skin_id": {
-				"value": 0
+					"event": "minecraft:trigger_raid"
+				}
 			}
 		},
 		"component_groups": {
@@ -278,31 +210,6 @@
 				},
 				"minecraft:spell_effects": {
 					"remove_effects": "bad_omen"
-				}
-			},
-			"yoni:reset_id": {
-				"minecraft:skin_id": {
-					"value": 0
-				}
-			},
-			"yoni:cannot_fly": {
-				"minecraft:skin_id": {
-					"value": 1
-				}
-			},
-			"yoni:can_fly": {
-				"minecraft:skin_id": {
-					"value": 2
-				}
-			},
-			"yoni:set_cannot_fly": {
-				"minecraft:skin_id": {
-					"value": 3
-				}
-			},
-			"yoni:set_can_fly": {
-				"minecraft:skin_id": {
-					"value": 4
 				}
 			}
 		}

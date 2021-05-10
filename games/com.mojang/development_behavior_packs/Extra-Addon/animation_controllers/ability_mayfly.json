@@ -1,4 +1,4 @@
-//bridge-file-version: #5
+//bridge-file-version: #6
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -8,66 +8,23 @@
 				"mode": {
 					"transitions": [
 						{
-							"cannot_fly": "query.skin_id == 1"
+							"cannot_fly": "!query.can_fly"
 						},
 						{
-							"can_fly": "query.skin_id == 2"
+							"can_fly": "query.can_fly"
 						}
-					],
-					"on_exit": [
-						"@s yoni:reset_id"
 					]
 				},
 				"cannot_fly": {
 					"on_entry": [
-						"variable.ability_mayfly = 0"
-					],
-					"transitions": [
-						{
-							"set_cannot_fly": "query.skin_id == 2",
-							"set_can_fly": "query.skin_id == 4"
-						}
-					],
-					"on_exit": [
-						"@s yoni:reset_id"
+						"variable.ability_mayfly = 0",
+						"/execute @s[tag=ability:mayfly] ~ ~ ~ ability @s mayfly true"
 					]
 				},
 				"can_fly": {
 					"on_entry": [
-						"variable.ability_mayfly = 1"
-					],
-					"transitions": [
-						{
-							"set_can_fly": "query.skin_id == 1",
-							"set_cannot_fly": "query.skin_id == 3"
-						}
-					],
-					"on_exit": [
-						"@s yoni:reset_id"
-					]
-				},
-				"set_cannot_fly": {
-					"on_entry": [
-						"variable.ability_mayfly = 0",
-						"/ability @s mayfly false",
-						"/tag @s[tag=ability:cannot_fly] remove ability:cannot_fly"
-					],
-					"transitions": [
-						{
-							"mode": "(1.0)"
-						}
-					]
-				},
-				"set_can_fly": {
-					"on_entry": [
 						"variable.ability_mayfly = 1",
-						"/ability @s mayfly true",
-						"/tag @s[tag=ability:can_fly] remove ability:can_fly"
-					],
-					"transitions": [
-						{
-							"mode": "(1.0)"
-						}
+						"/execute @s[tag=!ability:mayfly] ~ ~ ~ ability @s mayfly false"
 					]
 				}
 			}
