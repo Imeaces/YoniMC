@@ -1,47 +1,43 @@
-//bridge-file-version: #0
 {
-	"format_version": "1.10.0",
-	"animation_controllers": {
-		"controller.animation.ability_mayfly": {
-			"initial_state": "mode",
-			"states": {
-				"mode": {
-					"on_entry": [
-						"@s yoni:test_can_fly"
-					],
-					"transitions": [
-						{
-							"cannot_fly": "query.all_animations_finished && !query.can_fly"
-						},
-						{
-							"can_fly": "query.all_animations_finished && query.can_fly"
-						}
-					],
-					"animations": [
-						{}
-					]
-				},
-				"cannot_fly": {
-					"on_entry": [
-						"/execute @s[tag=ability:mayfly] ~ ~ ~ ability @s mayfly true"
-					],
-					"transitions": [
-						{
-							"mode": "(1.0)"
-						}
-					]
-				},
-				"can_fly": {
-					"on_entry": [
-						"/execute @s[tag=!ability:mayfly] ~ ~ ~ ability @s mayfly false"
-					],
-					"transitions": [
-						{
-							"mode": "(1.0)"
-						}
-					]
-				}
-			}
-		}
-	}
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.ability_mayfly": {
+      "initial_state": "mode",
+      "states": {
+        "mode": {
+          "on_entry": [
+            "@s yoni:test_can_fly"
+          ],
+          "transitions": [
+            {
+              "cannot_fly": "!query.can_fly"
+            },
+            {
+              "can_fly": "query.can_fly"
+            }
+          ]
+        },
+        "cannot_fly": {
+          "on_entry": [
+            "/execute @s[tag=ability:mayfly] ~ ~ ~ function ability/can_fly"
+          ],
+          "transitions": [
+            {
+              "mode": "(1.0)"
+            }
+          ]
+        },
+        "can_fly": {
+          "on_entry": [
+            "/execute @s[tag=!ability:mayfly] ~ ~ ~ function ability/cannot_fly"
+          ],
+          "transitions": [
+            {
+              "mode": "(1.0)"
+            }
+          ]
+        }
+      }
+    }
+  }
 }

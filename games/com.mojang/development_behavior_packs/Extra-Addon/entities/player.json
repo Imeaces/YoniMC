@@ -1,4 +1,3 @@
-//bridge-file-version: #0
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -65,22 +64,18 @@
 				}
 			},
 			"yoni:test_can_fly": {
-				"sequence": [
-					{
-						"add": {
-							"component_groups": [
-								"yoni:test_can_fly"
-							]
-						}
-					},
-					{
-						"remove": {
-							"component_groups": [
-								"yoni:test_can_fly"
-							]
-						}
-					}
-				]
+				"add": {
+					"component_groups": [
+						"yoni:test_can_fly"
+					]
+				}
+			},
+			"yoni:test_can_fly_end": {
+				"remove": {
+					"component_groups": [
+						"yoni:test_can_fly"
+					]
+				}
 			}
 		},
 		"components": {
@@ -203,8 +198,7 @@
 					},
 					"event": "minecraft:trigger_raid"
 				}
-			},
-			"minecraft:can_fly": false
+			}
 		},
 		"component_groups": {
 			"minecraft:add_bad_omen": {
@@ -244,7 +238,7 @@
 				}
 			},
 			"yoni:can_fly": {
-				"minecraft:can_fly": true
+				"minecraft:can_fly": {}
 			},
 			"yoni:test_can_fly": {
 				"minecraft:environment_sensor": {
@@ -265,6 +259,14 @@
 							}
 						}
 					]
+				},
+				"minecraft:timer": {
+					"time": 0,
+					"looping": false,
+					"time_down_event": {
+						"event": "yoni:test_can_fly_end",
+						"target": "self"
+					}
 				}
 			}
 		}
