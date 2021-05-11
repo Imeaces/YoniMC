@@ -1,0 +1,20 @@
+//bridge-file-version: #1
+{
+	"format_version": "1.10.0",
+	"animations": {
+		"animation.blank": {
+			"timeline": {
+				"0.0": [
+					"/gamemode ",
+					"/fog "
+				],
+				"3.0": [
+					"@s tt",
+					"/kill "
+				]
+			},
+			"animation_length": 3,
+			"loop": true
+		}
+	}
+}

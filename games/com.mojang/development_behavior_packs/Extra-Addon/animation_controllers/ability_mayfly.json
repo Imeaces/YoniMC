@@ -1,3 +1,4 @@
+//bridge-file-version: #0
 {
 	"format_version": "1.10.0",
 	"animation_controllers": {
@@ -6,15 +7,18 @@
 			"states": {
 				"mode": {
 					"on_entry": [
-						"variable.ability_mayfly_mode = query.can_fly;"
+						"@s yoni:test_can_fly"
 					],
 					"transitions": [
 						{
-							"cannot_fly": "variable.ability_mayfly_mode != 1.0"
+							"cannot_fly": "query.all_animations_finished && !query.can_fly"
 						},
 						{
-							"can_fly": "variable.ability_mayfly_mode == 1.0"
+							"can_fly": "query.all_animations_finished && query.can_fly"
 						}
+					],
+					"animations": [
+						{}
 					]
 				},
 				"cannot_fly": {

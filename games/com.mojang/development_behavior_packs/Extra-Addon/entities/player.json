@@ -1,3 +1,4 @@
+//bridge-file-version: #0
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -48,6 +49,38 @@
 						"minecraft:raid_trigger"
 					]
 				}
+			},
+			"yoni:can_fly": {
+				"add": {
+					"component_groups": [
+						"yoni:can_fly"
+					]
+				}
+			},
+			"yoni:cannot_fly": {
+				"remove": {
+					"component_groups": [
+						"yoni:can_fly"
+					]
+				}
+			},
+			"yoni:test_can_fly": {
+				"sequence": [
+					{
+						"add": {
+							"component_groups": [
+								"yoni:test_can_fly"
+							]
+						}
+					},
+					{
+						"remove": {
+							"component_groups": [
+								"yoni:test_can_fly"
+							]
+						}
+					}
+				]
 			}
 		},
 		"components": {
@@ -170,7 +203,8 @@
 					},
 					"event": "minecraft:trigger_raid"
 				}
-			}
+			},
+			"minecraft:can_fly": false
 		},
 		"component_groups": {
 			"minecraft:add_bad_omen": {
@@ -207,6 +241,30 @@
 				},
 				"minecraft:spell_effects": {
 					"remove_effects": "bad_omen"
+				}
+			},
+			"yoni:can_fly": {
+				"minecraft:can_fly": true
+			},
+			"yoni:test_can_fly": {
+				"minecraft:environment_sensor": {
+					"triggers": [
+						{
+							"event": "yoni:can_fly",
+							"filters": {
+								"test": "has_ability",
+								"value": "mayfly"
+							}
+						},
+						{
+							"event": "yoni:cannot_fly",
+							"filters": {
+								"test": "has_ability",
+								"value": "mayfly",
+								"operator": "not"
+							}
+						}
+					]
 				}
 			}
 		}
