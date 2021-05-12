@@ -1,0 +1,43 @@
+//bridge-file-version: #0
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.ability_mute": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"mute": "query.skin_id == 25"
+						},
+						{
+							"not_mute": "query.skin_id == 24"
+						}
+					]
+				},
+				"mute": {
+					"on_entry": [
+						"@s yoni:reset_id",
+						"/ability @s[tag=ability:mute] mute true"
+					],
+					"transitions": [
+						{
+							"default": "(1.0)"
+						}
+					]
+				},
+				"not_mute": {
+					"on_entry": [
+						"@s yoni:reset_id",
+						"/ability @s[tag=!ability:mute] mute false"
+					],
+					"transitions": [
+						{
+							"default": "(1.0)"
+						}
+					]
+				}
+			}
+		}
+	}
+}

@@ -1,3 +1,4 @@
+//bridge-file-version: #2
 {
 	"format_version": "1.16.0",
 	"minecraft:entity": {
@@ -7,11 +8,13 @@
 			"is_summonable": false,
 			"is_experimental": false,
 			"animations": {
-				"ability_mayfly": "controller.animation.ability_mayfly"
+				"ability_mayfly": "controller.animation.ability_mayfly",
+				"ability_mute": "controller.animation.ability_mute"
 			},
 			"scripts": {
 				"animate": [
-					"ability_mayfly"
+					"ability_mayfly",
+					"ability_mute"
 				]
 			}
 		},
@@ -74,6 +77,27 @@
 				"remove": {
 					"component_groups": [
 						"yoni:test_can_fly"
+					]
+				}
+			},
+			"yoni:mute": {
+				"add": {
+					"component_groups": [
+						"yoni:mute"
+					]
+				}
+			},
+			"yoni:not_mute": {
+				"add": {
+					"component_groups": [
+						"yoni:not_mute"
+					]
+				}
+			},
+			"yoni:reset_id": {
+				"add": {
+					"component_groups": [
+						"yoni:reset_id"
 					]
 				}
 			}
@@ -181,23 +205,57 @@
 			"minecraft:conditional_bandwidth_optimization": {},
 			"minecraft:scaffolding_climber": {},
 			"minecraft:environment_sensor": {
-				"triggers": {
-					"filters": {
-						"all_of": [
-							{
-								"test": "has_mob_effect",
-								"subject": "self",
-								"value": "bad_omen"
-							},
-							{
-								"test": "is_in_village",
-								"subject": "self",
-								"value": true
-							}
-						]
+				"triggers": [
+					{
+						"event": "minecraft:trigger_raid",
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_mob_effect",
+									"subject": "self",
+									"value": "bad_omen"
+								},
+								{
+									"test": "is_in_village",
+									"subject": "self",
+									"value": true
+								}
+							]
+						}
 					},
-					"event": "minecraft:trigger_raid"
-				}
+					{
+						"event": "yoni:mute",
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_ability",
+									"value": "mute",
+									"operator": "not"
+								},
+								{
+									"test": "has_tag",
+									"value": "ability:mute"
+								}
+							]
+						}
+					},
+					{
+						"event": "yoni:not_mute",
+						"filters": {
+							"all_of": [
+								{
+									"test": "has_ability",
+									"value": "mute"
+								},
+								{
+									"test": "has_tag",
+									"value": "ability:mute",
+									"operator": "not"
+								}
+							]
+						}
+					}
+				]
 			}
 		},
 		"component_groups": {
@@ -267,6 +325,21 @@
 						"event": "yoni:test_can_fly_end",
 						"target": "self"
 					}
+				}
+			},
+			"yoni:mute": {
+				"minecraft:skin_id": {
+					"value": 25
+				}
+			},
+			"yoni:not_mute": {
+				"minecraft:skin_id": {
+					"value": 24
+				}
+			},
+			"yoni:reset_id": {
+				"minecraft:skin_id": {
+					"value": 0
 				}
 			}
 		}
