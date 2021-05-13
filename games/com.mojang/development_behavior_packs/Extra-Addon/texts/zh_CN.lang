@@ -1,4 +1,0 @@
-pack.extra_addon.name=额外的附加内容
-pack.extra_addon.description=有时候会弄出一些奇怪的东西\n把它们做成一个包，一起体验\n小心别死了
-
-modules.extra_addon=data:额外的附加内容

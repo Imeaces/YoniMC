@@ -1,3 +1,4 @@
+//bridge-file-version: #0
 {
   "format_version": "1.10.0",
   "animation_controllers": {
@@ -6,15 +7,19 @@
       "states": {
         "mode": {
           "on_entry": [
-            "@s yoni:test_can_fly"
+            "/tag @s add yoni:test_can_fly"
           ],
           "transitions": [
             {
-              "cannot_fly": "!query.can_fly"
+              "cannot_fly": "query.skin_id == 32"
             },
             {
-              "can_fly": "query.can_fly"
+              "can_fly": "query.skin_id == 31"
             }
+          ],
+          "on_exit": [
+            "@s yoni:reset_id",
+            "/tag @s remove yoni:test_can_fly"
           ]
         },
         "cannot_fly": {
