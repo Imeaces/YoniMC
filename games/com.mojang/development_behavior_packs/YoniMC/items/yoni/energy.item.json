@@ -11,7 +11,7 @@
         "duration": 256
       },
       "minecraft:icon": {
-        "texture": "clock_item"
+        "texture": "energy"
       },
       "minecraft:max_stack_size": 16,
       "minecraft:on_use": {
@@ -19,6 +19,10 @@
           "event": "yoni:use_energy",
           "target": "self"
         }
+      },
+      "minecraft:block_placer": {
+        "block": "yoni:energy_block",
+        "use_block_description": false
       },
       "tag:yoni:energy": {}
     },
@@ -30,7 +34,7 @@
           "duration": 10,
           "amplifier": 16
         },
-        
+        "decrement_stack":{}
       }
     }
   }

@@ -1,7 +1,3 @@
-pack.name=YoniMC
-pack.description=是的\n这是一个美丽的世界
-pack.modules.description=这是一个资源包
+item.yoni:energy=能量晶体
 
-item.yoni:energy=能量块
-tile.yoni:energy_block=能量块
-
+tile.yoni:energy_block.name=能量块

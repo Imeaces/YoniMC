@@ -1,15 +1,15 @@
 {
     "format_version": 1,
     "header": {
-        "name": "pack.name",
-        "description": "pack.description",
+        "name": "YoniMC",
+        "description": "是的\n这是一个美丽的世界",
         "uuid": "86e4face-ed0c-4945-bd61-f648424cd056",
-        "version": [0, 0, 1],
+        "version": [0, 0, 2],
         "min_engine_version": [1, 8, 0]
     },
     "modules": [
         {
-            "description": "pack.modules.description",
+            "description": "resources:YoniMC",
             "type": "resources",
             "uuid": "442d6e56-f819-4beb-8246-d798b30d3620",
             "version": [0, 0, 2]
@@ -17,7 +17,7 @@
     ],
     "metadata": {
         "authors": ["Yoni"],
-        "license": "BSL-1.0 License",
+        "license": "MIT License",
         "url": "https://github.com/Imeaces/Yoni-World"
     }
 }

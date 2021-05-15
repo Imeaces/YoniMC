@@ -2,14 +2,14 @@
   "format_version": 2,
   "header": {
     "name": "YoniMC",
-    "description": "pack.yoni.description",
+    "description": "使世界不同",
     "uuid": "4f095bea-80c9-4306-a873-2aad7b9d1a84",
     "version": [0, 0, 1],
     "min_engine_version": [1, 16, 100]
   },
   "modules": [
     {
-      "description": "modules.yoni",
+      "description": "data:YoniMC",
       "type": "data",
       "uuid": "146a6a3b-b7fa-4d05-a3c1-93fbfc460767",
       "version": [0, 0, 1]

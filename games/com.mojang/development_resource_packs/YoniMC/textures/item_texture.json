@@ -1,6 +1,6 @@
 //bridge-file-version: #0
 {
-	"resource_pack_name": "YoniMC",
+	"resource_pack_name": "yoni",
 	"texture_name": "atlas.items",
 	"texture_data": {
 		"energy": {
