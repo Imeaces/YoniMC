@@ -1,30 +1,36 @@
+//bridge-file-version: #0
 {
-	"format_version": "1.16.100",
-	"minecraft:block": {
-		"description": {
-			"identifier": "yoni:invisible_bedrock",
-			"is_experimental": false,
-			"register_to_creative_menu": true
-		},
-		"components": {
-			"minecraft:display_name": "bedrock", //name, but not required in there
-			"minecraft:destroy_time": 0, //it is easy to recycle
-			"minecraft:explosion_resistance": 180000000, //explosion may not break it
-			
-			"minecraft:entity_collision":{
-			"origin":[-8,0,-8],
-			"size":[16,16,16]
-			},
-			"minecraft:pick_collision":false,
-			
-			
-			"minecraft:material_instances": {
-				"*": {
-					"texture": "bedrock", // References texture defined in terrain_textures.json
-					"render_method": "blend" // Options 'blend', 'opaque', 'alpha_test'
-				}
-			}
-		},
-		"events": {}
-	}
+  "format_version": "1.16.100",
+  "minecraft:block": {
+    "description": {
+      "identifier": "yoni:invisible_bedrock",
+      "is_experimental": false,
+      "register_to_creative_menu": true
+    },
+    "components": {
+      "minecraft:display_name": "bedrock",
+      "minecraft:destroy_time": 0,
+      "minecraft:explosion_resistance": 180000000,
+      "minecraft:entity_collision": {
+        "origin": [
+          -8,
+          0,
+          -8
+        ],
+        "size": [
+          16,
+          16,
+          16
+        ]
+      },
+      "minecraft:pick_collision": false,
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "bedrock",
+          "render_method": "blend"
+        }
+      }
+    },
+    "events": {}
+  }
 }
