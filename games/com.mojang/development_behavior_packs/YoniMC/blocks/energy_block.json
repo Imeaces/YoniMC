@@ -1,4 +1,4 @@
-//bridge-file-version: #0
+//bridge-file-version: #1
 {
   "format_version": "1.16.100",
   "minecraft:block": {
@@ -16,7 +16,7 @@
     "components": {
       "minecraft:display_name": "yoni:energy_block",
       "minecraft:destroy_time": 0,
-      "minecraft:explosion_resistance": 180000000,
+      "minecraft:explosion_resistance": 3600000,
       "minecraft:preventsjumping": true,
       "minecraft:onlypistonpush": true,
       "minecraft:map_color": "#FFFFFF",
@@ -60,7 +60,7 @@
           "render_method": "blend"
         }
       },
-      "place": {}
+      "minecraft:geometry": "geometry.energy_block"
     },
     "events": {
       "set_default": {
