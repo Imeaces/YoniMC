@@ -1,0 +1,787 @@
+{
+  "format_version": "1.16.100",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minecraft:player",
+      "is_spawnable": false,
+      "is_summonable": false,
+      "is_experimental": false,
+      "animations": {
+        "guxi_loop": "controller.animation.guxi_loop",
+        "guxi_effects": "animation.guxi_effects",
+        
+        "guxi_heights": "controller.animation.guxi_heights",
+        "guxi_underground_power": "animation.guxi_underground_power",
+        "guxi_underground": "animation.guxi_underground",
+        "guxi_aboveground_light": "animation.guxi_aboveground_light",
+        "guxi_aboveground": "animation.guxi_aboveground"
+      },
+      "scripts": {
+        "animate": [
+          "guxi_loop",
+          "guxi_effects",
+          "guxi_heights"
+        ]
+      }
+    },
+    "component_groups": {
+      "yoni:guxi": {
+        /*在这里我写一下我想弄什么
+        首先，只有在地上，且为白天的时候，才会无敌 正在进行
+        其次，地下40会有失明 已完成
+        */
+        "minecraft:scale": {
+          "value": 0.76
+        },
+        "minecraft:type_family": {
+          "family": ["player","guxi"]
+        },
+        "minecraft:breathable": {
+          "generates_bubbles": false,
+          "breathes_water": true,
+          "breathes_lava": true,
+          "breathes_solids": true,
+          "breathes_air": true
+        },
+        "minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "cause": "piston",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire_tick",
+              "deals_damage": false
+            },
+            {
+              "cause": "lava",
+              "deals_damage": false
+            },
+            {
+              "cause": "magic",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "yoni:guxi_get_magic"
+              }
+            }
+          ]
+        },
+        "minecraft:hurt_on_condition":{},
+        "minecraft:environment_sensor": {
+          "triggers": [
+            {//如果在地下，并且在熔岩
+              "filters": {
+                "all_of": [
+                  {
+                    "any_of": [
+                      {
+                        "test": "is_mark_variant",
+                        "value": 0
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 1
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 4
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 3
+                      }
+                    ]
+                  },
+                  {
+                    "any_of": [
+                      {
+                        "test": "is_brightness",
+                        "operator": ">",
+                        "value": 0.3
+                      },
+                      {
+                        "test": "in_lava"
+                      }
+                    ]
+                  },
+                  {
+                    "test": "is_underground"
+                  }
+                ]
+              },
+              "event": "yoni:guxi_underground_power"
+            },
+            {//如果在地下，并且不在熔岩
+              "filters": {
+                "all_of": [
+                  {
+                    "any_of": [
+                      {
+                        "test": "is_mark_variant",
+                        "value": 0
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 3
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 2
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 4
+                      }
+                    ]
+                  },
+                  {
+                    "test": "is_brightness",
+                    "operator": "<=",
+                    "value": 0.3
+                  },
+                  {
+                    "test": "in_lava",
+                    "value": false
+                  },
+                  {
+                    "test": "is_underground"
+                  }
+                ]
+              },
+              "event": "yoni:guxi_underground"
+            },
+            {//如果不在地下
+              "filters": {
+                "all_of":[
+                  {
+                    "any_of": [
+                      {
+                        "test": "is_mark_variant",
+                        "value": 0
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 4
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 2
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 1
+                      }
+                    ]
+                  },
+                  {
+                    "test": "is_underground",
+                    "value": false
+                  },
+                  {
+                    "test": "is_brightness",
+                    "operator": "<=",
+                    "value": 0.6
+                  }
+                ]
+              },
+              "event": "yoni:guxi_aboveground"
+            },
+            {//如果不在地下
+              "filters": {
+                "all_of":[
+                  {
+                    "any_of": [
+                      {
+                        "test": "is_mark_variant",
+                        "value": 0
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 1
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 2
+                      },
+                      {
+                        "test": "is_mark_variant",
+                        "value": 4
+                      }
+                    ]
+                  },
+                  {
+                    "test": "is_underground",
+                    "value": false
+                  },
+                  {
+                    "test": "is_brightness",
+                    "operator": ">",
+                    "value": 0.6
+                  }
+                ]
+              },
+              "event": "yoni:guxi_aboveground_light"
+            },
+            {
+              "filters": {
+                "test": "is_underwater"
+              },
+              "event": "yoni:guxi_underwater"
+            },
+            {
+              "filters": {
+                "test": "is_underwater",
+                "value": false
+              },
+              "event": "yoni:guxi_leavewater"
+            }
+          ]
+        },
+        "minecraft:mark_variant": {
+          "value": 0
+        }
+      },
+      "yoni:guxi_underwater": {
+        "minecraft:mark_variant": {
+          "value": 10
+        }
+      },
+      "yoni:guxi_leavewater": {
+        "minecraft:mark_variant": {
+          "value": 0
+        }
+      },
+      "yoni:guxi_underground_power": {
+        "minecraft:mark_variant": {
+          "value": 2
+        },
+        "minecraft:health": {
+          "min": 0,
+          "value": 40,
+          "max": 40
+        },
+        "minecraft:damage_sensor": {
+          "triggers": [
+/*
+            {
+              "cause": "piston",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire_tick",
+              "deals_damage": false
+            },
+            {
+              "cause": "lava",
+              "deals_damage": false
+            },
+            {
+              "cause": "magic",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "yoni:guxi_get_magic"
+              }
+            }
+*/
+            {
+              "cause": "piston",
+              "deals_damage": false
+            },
+            {
+              "cause": "projectile",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "yoni:guxi_projectile_hit_less"
+              }
+            },
+            {
+              "cause": "fall",
+              "damage_multiplier": 0.1
+            },
+            {
+              "cause": "thorns",
+              "damage_multiplier": 0.4
+            },
+            {
+              "cause": "attack",
+              "damage_multiplier": 0.5
+            },
+            {
+              "cause": "contact",
+              "deals_damage": false
+            },
+            {
+              "cause": "wither",
+              "damage_multiplier": 2
+            },
+            {
+              "cause": "anvil",
+              "damage_multiplier": 0.5
+            },
+            {
+              "cause": "block_explosion",
+              "deals_damage": false
+            },
+            {
+              "cause": "entity_explosion",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire_tick",
+              "deals_damage": false
+            },
+            {
+              "cause": "lava",
+              "deals_damage": false
+            },
+            {
+              "cause": "magic",
+              "deals_damage": false
+            }
+
+          ]
+        }
+      },
+      "yoni:guxi_underground": {
+        "minecraft:mark_variant": {
+          "value": 1
+        },
+        "minecraft:health": {
+          "min": 0,
+          "value": 20,
+          "max": 40
+        },
+        "minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "cause": "piston",
+              "deals_damage": false
+            },
+            {
+              "cause": "projectile",
+              "damage_multiplier": 1.5
+            },
+            {
+              "cause": "fall",
+              "damage_multiplier": 3
+            },
+            {
+              "cause": "attack",
+              "damage_multiplier": 5
+            },
+            {
+              "cause": "contact",
+              "damage_multiplier": 2
+            },
+            {
+              "cause": "wither",
+              "damage_multiplier": 5
+            },
+            {
+              "cause": "block_explosion",
+              "damage_multiplier": 0.5
+            },
+            {
+              "cause": "fire",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire_tick",
+              "deals_damage": false
+            },
+            {
+              "cause": "lava",
+              "deals_damage": false
+            },
+            {
+              "cause": "magic",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "yoni:guxi_get_magic"
+              }
+            }
+          ]
+        }
+      },
+      "yoni:guxi_aboveground": {
+        "minecraft:mark_variant": {
+          "value": 4
+        },
+        "minecraft:health": {
+          "min": 0,
+          "value": 40,
+          "max": 40
+        },
+        "minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "cause": "piston",
+              "deals_damage": false
+            },
+            {
+              "cause": "projectile",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "yoni:guxi_projectile_hit_less"
+              }
+            },
+            {
+              "cause": "fall",
+              "damage_multiplier": 0.1
+            },
+            {
+              "cause": "thorns",
+              "damage_multiplier": 0.4
+            },
+            {
+              "cause": "attack",
+              "damage_multiplier": 0.5
+            },
+            {
+              "cause": "contact",
+              "deals_damage": false
+            },
+            {
+              "cause": "wither",
+              "damage_multiplier": 2
+            },
+            {
+              "cause": "anvil",
+              "damage_multiplier": 0.5
+            },
+            {
+              "cause": "block_explosion",
+              "deals_damage": false
+            },
+            {
+              "cause": "entity_explosion",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire_tick",
+              "deals_damage": false
+            },
+            {
+              "cause": "lava",
+              "deals_damage": false
+            },
+            {
+              "cause": "magic",
+              "deals_damage": false
+            }
+          ]
+        }
+      },
+      "yoni:guxi_aboveground_light": {
+        "minecraft:mark_variant": {
+          "value": 3
+        },
+        "minecraft:health": {
+          "min": 1,
+          "max": 1
+        },
+        "minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "cause": "all",
+              "deals_damage": false
+            }
+          ]
+        }
+      },
+      "yoni:guxi_get_magic": {
+        "minecraft:spell_effects": {
+          "add_effects": [
+            {
+              "effect": "blindness",
+              "duration": 1,
+              "visible": true
+            },
+            {
+              "effect": "weakness",
+              "duration": 5,
+              "visible": true
+            }
+          ]
+        }
+      },
+      "yoni:guxi_projectile_hit_less": {
+        "minecraft:spell_effects": {
+          "add_effects": [
+            {
+              "effect": "slowness",
+              "duration": 5,
+              "visible": true
+            }
+          ]
+        }
+      },
+      "yoni:guxi_area_attack": {
+        "minecraft:area_attack": {
+          "cause": "none",
+          "entity_filter": {
+            "test": "is_family",
+            "subject": "other",
+            "value": "monster"
+          },
+          "damage_per_tick": 10,
+          "damage_range": 10
+        }
+      },
+      "minecraft:add_bad_omen": {
+        "minecraft:spell_effects": {
+          "add_effects": [{
+            "effect": "bad_omen",
+            "duration": 6000,
+            "display_on_screen_animation": true
+          }]
+        },
+        "minecraft:timer": {
+          "time": [0.0, 0.0],
+          "looping": false,
+          "time_down_event": {
+            "event": "minecraft:clear_add_bad_omen",
+            "target": "self"
+          }
+        }
+      },
+      "minecraft:clear_bad_omen_spell_effect": {
+        "minecraft:spell_effects": {}
+      },
+      "minecraft:raid_trigger": {
+        "minecraft:raid_trigger": {
+          "triggered_event": {
+            "event": "minecraft:remove_raid_trigger",
+            "target": "self"
+          }
+        },
+        "minecraft:spell_effects": {
+          "remove_effects": "bad_omen"
+        }
+      }
+    },
+    "components": {
+      "minecraft:experience_reward": {
+        "on_death": "Math.Min(query.player_level * 7, 100)"
+      },
+      "minecraft:type_family": {
+        "family": ["player"]
+      },
+      "minecraft:is_hidden_when_invisible": {},
+      "minecraft:loot": {
+        "table": "loot_tables/empty.json"
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 1.8
+      },
+      "minecraft:can_climb": {},
+      "minecraft:movement": {
+        "value": 0.1
+      },
+      
+      "minecraft:hurt_on_condition": {
+        "damage_conditions": [{
+          "filters": {
+            "test": "in_lava",
+            "subject": "self",
+            "operator": "==",
+            "value": true
+          },
+          "cause": "lava",
+          "damage_per_tick": 4
+        }]
+      },
+      "minecraft:attack": {
+        "damage": 1
+      },
+      "minecraft:player.saturation": {
+        "value": 20
+      },
+      "minecraft:player.exhaustion": {
+        "value": 0,
+        "max": 4
+      },
+      "minecraft:player.level": {
+        "value": 0,
+        "max": 24791
+      },
+      "minecraft:player.experience": {
+        "value": 0,
+        "max": 1
+      },
+      "minecraft:breathable": {
+        "total_supply": 15,
+        "suffocate_time": -1,
+        "inhale_time": 3.75,
+        "generates_bubbles": false
+      },
+      "minecraft:nameable": {
+        "always_show": true,
+        "allow_name_tag_renaming": false
+      },
+      "minecraft:physics": {},
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:insomnia": {
+        "days_until_insomnia": 3
+      },
+      "minecraft:rideable": {
+        "seat_count": 2,
+        "family_types": ["parrot_tame"],
+        "pull_in_entities": true,
+        "seats": [{
+          "position": [0.4, -0.2, -0.1],
+          "min_rider_count": 0,
+          "max_rider_count": 0,
+          "lock_rider_rotation": 0
+        }, {
+          "position": [-0.4, -0.2, -0.1],
+          "min_rider_count": 1,
+          "max_rider_count": 2,
+          "lock_rider_rotation": 0
+        }]
+      },
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:scaffolding_climber": {},
+      "minecraft:environment_sensor": {
+        "triggers": {
+          "filters": {
+            "all_of": [{
+              "test": "has_mob_effect",
+              "subject": "self",
+              "value": "bad_omen"
+            }, {
+              "test": "is_in_village",
+              "subject": "self",
+              "value": true
+            }]
+          },
+          "event": "minecraft:trigger_raid"
+        }
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi"
+          ]
+        }
+      },
+      "yoni:guxi_underwater": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_underwater"
+          ]
+        }
+      },
+      "yoni:guxi_leavewater": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_leavewater"
+          ]
+        }
+      },
+      "yoni:guxi_get_magic": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_get_magic"
+          ]
+        }
+      },
+      "yoni:guxi_projectile_hit_less": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_projectile_hit_less"
+          ]
+        }
+      },
+      "yoni:guxi_underground": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_underground"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "yoni:guxi_area_attack"
+          ]
+        }
+      },
+      "yoni:guxi_underground_power": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_underground_power"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "yoni:guxi_area_attack"
+          ]
+        }
+      },
+      "yoni:guxi_aboveground": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_aboveground"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "yoni:guxi_area_attack"
+          ]
+        }
+      },
+      "yoni:guxi_aboveground_light": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_aboveground_light",
+            "yoni:guxi_area_attack"
+          ]
+        }
+      },
+      "minecraft:gain_bad_omen": {
+        "add": {
+          "component_groups": ["minecraft:add_bad_omen"]
+        }
+      },
+      "minecraft:clear_add_bad_omen": {
+        "remove": {
+          "component_groups": ["minecraft:add_bad_omen"]
+        },
+        "add": {
+          "component_groups": ["minecraft:clear_bad_omen_spell_effect"]
+        }
+      },
+      "minecraft:trigger_raid": {
+        "add": {
+          "component_groups": ["minecraft:raid_trigger"]
+        }
+      },
+      "minecraft:remove_raid_trigger": {
+        "remove": {
+          "component_groups": ["minecraft:raid_trigger"]
+        }
+      }
+    }
+  }
+}
