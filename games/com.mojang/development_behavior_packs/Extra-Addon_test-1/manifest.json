@@ -1,9 +1,9 @@
 {
   "format_version": 2,
   "header": {
-    "name": "pack.extra_addon.name",
-    "description": "pack.extra_addon.description",
-    "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
+    "name": "pack.name",
+    "description": "pack.description",
+    "uuid": "a1a8b8fb-7a7e-456d-a44f-59e64bae7bd6",
     "version": [0, 0, 1],
     "min_engine_version": [1, 16, 100]
   },
@@ -11,7 +11,7 @@
     {
       "description": "modules.extra_addon",
       "type": "data",
-      "uuid": "6e360e97-62a7-4515-a052-3813e306488e",
+      "uuid": "f89f2c80-d333-47d3-b238-12f1ea390d57",
       "version": [0, 0, 1]
     }
   ],
