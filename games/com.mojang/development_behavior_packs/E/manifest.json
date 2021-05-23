@@ -1,0 +1,25 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "咕西",
+    "description": "guxi",
+    "uuid": "a1a8b8fb-7a7e-056d-a44f-59e64bae7b46",
+    "version": [0, 0, 1],
+    "min_engine_version": [1, 16, 100]
+  },
+  "modules": [
+    {
+      "description": "modules.extra_addon",
+      "type": "data",
+      "uuid": "f89f2c80-d333-4743-b138-12f1ea390d57",
+      "version": [0, 0, 1]
+    }
+  ],
+  "metadata": {
+    "authors": [
+      "Silvigarabis"
+    ],
+    "license": "MIT License",
+    "url": "https://github.com/Silvigarabis/Extra-Addon"
+  }
+}

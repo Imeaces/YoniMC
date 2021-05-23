@@ -1,0 +1,27 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.spawned": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "a": "query.is_alive"
+            }
+          ]
+        },
+        "a": {
+          "on_entry": [
+            "@s minecraft:entity_spawned"
+          ],
+         "transitions": [
+            {
+              "default": "!query.is_alive"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
