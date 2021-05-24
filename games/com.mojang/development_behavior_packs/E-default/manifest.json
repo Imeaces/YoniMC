@@ -1,0 +1,25 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "test",
+    "description": "nil",
+    "uuid": "a690846d-7ec6-4f16-9c1e-456eed6933db",
+    "version": [0, 0, 1],
+    "min_engine_version": [1, 16, 100]
+  },
+  "modules": [
+    {
+      "description": "data:test",
+      "type": "data",
+      "uuid": "21ee9289-581c-48a3-8faf-8967af03370a",
+      "version": [0, 0, 1]
+    }
+  ],
+  "metadata": {
+    "authors": [
+      "Silvigarabis"
+    ],
+    "license": "MIT License",
+    "url": "https://github.com/Silvigarabis/Extra-Addon"
+  }
+}
