@@ -55,9 +55,11 @@
   
   其它的尚未测试
 
-## 物品分类
+## 关于物品
 
-### 物品的`description`下的`category`
+### 物品分类
+
+#### 物品的`description`下的`category`
 
 ```prop
 craftingScreen.tab.search=全部	#
@@ -70,9 +72,7 @@ craftingScreen.tab.survival=物品栏	#
 craftingScreen.tab.armor=盔甲	#
 ```
 
-## 关于物品
-
-### 添加新的`1.16.100`物品
+### 添加新的*1.16.100*物品
 
 目前的版本需要开启实验玩法  
 
