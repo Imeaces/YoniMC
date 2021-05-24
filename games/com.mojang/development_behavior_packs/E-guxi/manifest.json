@@ -1,17 +1,17 @@
 {
   "format_version": 2,
   "header": {
-    "name": "pack.name",
-    "description": "pack.description",
-    "uuid": "a1a8b8fb-7a7e-456d-a44f-59e64bae7bd6",
+    "name": "guxi",
+    "description": "咕西",
+    "uuid": "a5c74d86-79c9-45e2-ae20-4e238db990fb",
     "version": [0, 0, 1],
     "min_engine_version": [1, 16, 100]
   },
   "modules": [
     {
-      "description": "modules.extra_addon",
+      "description": "data:guxi",
       "type": "data",
-      "uuid": "f89f2c80-d333-47d3-b238-12f1ea390d57",
+      "uuid": "97033b88-8aaa-44b9-a984-c3c7af09f11f",
       "version": [0, 0, 1]
     }
   ],

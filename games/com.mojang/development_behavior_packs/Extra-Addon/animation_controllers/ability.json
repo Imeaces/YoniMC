@@ -4,7 +4,16 @@
     "controller.animation.ability": {
       "initial_state": "default",
       "states": {
-      "default":{"on_entry":["/say start"],         "transitions": [{"mode":"(1.0)"}]},
+        "default": {
+          "on_entry": [
+            "/say start"
+          ],
+          "transitions": [
+            {
+              "mode": "(1.0)"
+            }
+          ]
+        },
         "mode": {
           "on_entry": [
             "/tag @s add yoni:test_can_fly"
@@ -25,7 +34,7 @@
         "cannot_fly": {
           "on_entry": [
             "/execute @s[tag=ability:mayfly] ~ ~ ~ function ability/can_fly",
-          "/tag @s add canf"
+            "/tag @s add canf"
           ],
           "transitions": [
             {
@@ -35,7 +44,8 @@
         },
         "can_fly": {
           "on_entry": [
-            "/execute @s[tag=!ability:mayfly] ~ ~ ~ function ability/cannot_fly"        ,  "/tag @s add cantf"
+            "/execute @s[tag=!ability:mayfly] ~ ~ ~ function ability/cannot_fly",
+            "/tag @s add cantf"
           ],
           "transitions": [
             {
@@ -43,7 +53,6 @@
             }
           ]
         },
-        
         "mode1": {
           "on_entry": [
             "/tag @s add yoni:test_if_mute"
@@ -63,7 +72,8 @@
         },
         "is_mute": {
           "on_entry": [
-            "/ability @s[tag=!ability:mute] mute false",           "/tag @s add m"
+            "/ability @s[tag=!ability:mute] mute false",
+            "/tag @s add m"
           ],
           "transitions": [
             {
@@ -73,7 +83,8 @@
         },
         "not_mute": {
           "on_entry": [
-            "/ability @s[tag=ability:mute] mute true",          "/tag @s add n"
+            "/ability @s[tag=ability:mute] mute true",
+            "/tag @s add n"
           ],
           "transitions": [
             {
@@ -81,7 +92,6 @@
             }
           ]
         }
-   
       }
     }
   }
