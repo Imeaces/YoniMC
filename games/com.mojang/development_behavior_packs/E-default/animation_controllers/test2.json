@@ -11,7 +11,7 @@
           ],
           "transitions": [
             {
-              "loop": "query.actor_property('yoni:test2') == 1"
+              "loop": "query.actor_property('yoni:test2') == 'ab'"
             }
           ]
         },

@@ -14,28 +14,31 @@
       "scripts": {
         "animate": [
           "test",
-          "test"
+          "test1"
         ]
       },
       "properties": {
         "yoni:test1": {
           "values": [
-            1,
-            2,
-            3
-          ],
-          "default": 1
+            "'aa'",
+            "'ab'"
+          ]
         },
         "yoni:test2": {
-          "values": {
-            "min": 1,
-            "max": 10
-          },
-          "default": 2,
-          "client_sync": true
+          "values": ["'aa'","'ab'"]
         }
       }
     },
+    "permutations":[
+    {
+    "condition": "query.actor_property('yoni:test2') == 'ab'",
+    "compents":{
+    "minecraft:scale":{
+    "value": 10.0
+    }
+    }
+    }
+    ],
     "component_groups": {
       "minecraft:add_bad_omen": {
         "minecraft:spell_effects": {
@@ -230,9 +233,9 @@
           ]
         }
       },
-      "yoni:test2": {
+      "yoni:test": {
         "set_actor_property": {
-          "yoni:test2": 1
+          "yoni:test2": "'ab'"
         }
       }
     }
