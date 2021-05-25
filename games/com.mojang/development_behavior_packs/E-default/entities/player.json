@@ -20,26 +20,32 @@
       "properties": {
         "yoni:test1": {
           "values": [
-            "'aa'",
-            "'ab'"
+            "aa",
+            "ab"
           ]
         },
         "yoni:test2": {
-          "values": ["'aa'","'ab'"]
+          "values": [
+            "aa",
+            "ab"
+          ]
         }
       }
     },
-    "permutations":[
-    {
-    "condition": "query.actor_property('yoni:test2') == 'ab'",
-    "compents":{
-    "minecraft:scale":{
-    "value": 10.0
-    }
-    }
-    }
+    "permutations": [
+      {
+        "condition": "query.actor_property('yoni:test2') == 'ab'",
+        "compents": {
+          "minecraft:scale": {
+            "value": 10.0
+          }
+        }
+      }
     ],
     "component_groups": {
+      "minecraft:scale": {
+        "value": 1.0
+      },
       "minecraft:add_bad_omen": {
         "minecraft:spell_effects": {
           "add_effects": [
