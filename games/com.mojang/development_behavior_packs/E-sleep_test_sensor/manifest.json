@@ -3,7 +3,7 @@
   "header": {
     "name": "test",
     "description": "nil",
-    "uuid": "29fb0c22-d1cb-48ba-b87d-10f5b1484d48",
+    "uuid": "ee782fb4-ff1f-4878-8df3-17db0dee1610",
     "version": [0, 0, 1],
     "min_engine_version": [1, 16, 100]
   },
@@ -11,7 +11,7 @@
     {
       "description": "data:test",
       "type": "data",
-      "uuid": "562ec202-e147-4640-8870-20982657b551",
+      "uuid": "4928a301-7a35-4c50-b341-40a59c8ec987",
       "version": [0, 0, 1]
     }
   ],

@@ -1,4 +1,4 @@
-//bridge-file-version: #1
+//bridge-file-version: #0
 {
   "format_version": "1.16.0",
   "minecraft:entity": {
@@ -7,44 +7,15 @@
       "is_spawnable": false,
       "is_summonable": false,
       "is_experimental": false,
-      /*
       "animations": {
-        "test": "controller.animation.test",
-        "test1": "controller.animation.test2"
+        "test": "controller.animation.test"
       },
-      
       "scripts": {
         "animate": [
-          "test",
-          "test1"
+          "test"
         ]
-      },
-      */
-      "properties": {
-        "yoni:test1": {
-          "values": [
-            true,
-            false
-          ]
-        },
-        "yoni:test2": {
-          "values": [
-            true,
-            false
-          ]
-        }
       }
     },
-    "permutations": [
-      {
-        "condition": "query.actor_property('yoni:test2') == false",
-        "components": {
-          "minecraft:scale": {
-            "value": 10.0
-          }
-        }
-      }
-    ],
     "component_groups": {
       "minecraft:add_bad_omen": {
         "minecraft:spell_effects": {
@@ -84,9 +55,6 @@
       }
     },
     "components": {
-      "minecraft:scale": {
-        "value": 1.0
-      },
       "minecraft:experience_reward": {
         "on_death": "Math.Min(query.player_level * 7, 100)"
       },
@@ -240,11 +208,6 @@
           "component_groups": [
             "minecraft:raid_trigger"
           ]
-        }
-      },
-      "yoni:test": {
-        "set_actor_property": {
-          "yoni:test2": false
         }
       }
     }

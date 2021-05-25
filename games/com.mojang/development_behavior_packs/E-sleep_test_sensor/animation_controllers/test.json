@@ -1,4 +1,4 @@
-//bridge-file-version: #1
+//bridge-file-version: #2
 {
   "format_version": "1.10.0",
   "animation_controllers": {
@@ -7,22 +7,25 @@
       "states": {
         "default": {
           "on_entry": [
-            "/say 开始"
+            "/say 开始_"
           ],
           "transitions": [
             {
-              "loop": "query.has_actor_property('yoni:test1')"
+              "loop": "query.skin_id == 5"
             }
           ]
         },
         "loop": {
           "on_entry": [
-            "/say 成功"
+            "/say 在睡觉"
           ],
           "transitions": [
             {
-              "default": "(1.0)"
+              "default": "query.skin_id != 5"
             }
+          ],
+          "on_exit": [
+            "/say 没在睡"
           ]
         }
       }

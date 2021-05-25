@@ -1,4 +1,4 @@
-//bridge-file-version: #1
+//bridge-file-version: #0
 {
   "format_version": "1.16.0",
   "minecraft:entity": {
@@ -7,44 +7,15 @@
       "is_spawnable": false,
       "is_summonable": false,
       "is_experimental": false,
-      /*
       "animations": {
-        "test": "controller.animation.test",
-        "test1": "controller.animation.test2"
+        "test": "controller.animation.test"
       },
-      
       "scripts": {
         "animate": [
-          "test",
-          "test1"
+          "test"
         ]
-      },
-      */
-      "properties": {
-        "yoni:test1": {
-          "values": [
-            true,
-            false
-          ]
-        },
-        "yoni:test2": {
-          "values": [
-            true,
-            false
-          ]
-        }
       }
     },
-    "permutations": [
-      {
-        "condition": "query.actor_property('yoni:test2') == false",
-        "components": {
-          "minecraft:scale": {
-            "value": 10.0
-          }
-        }
-      }
-    ],
     "component_groups": {
       "minecraft:add_bad_omen": {
         "minecraft:spell_effects": {
@@ -81,12 +52,19 @@
         "minecraft:spell_effects": {
           "remove_effects": "bad_omen"
         }
+      },
+      "yoni:not_sleep": {
+        "minecraft:skin_id": {
+          "value": 0
+        }
+      },
+      "yoni:sleep": {
+        "minecraft:skin_id": {
+          "value": 5
+        }
       }
     },
     "components": {
-      "minecraft:scale": {
-        "value": 1.0
-      },
       "minecraft:experience_reward": {
         "on_death": "Math.Min(query.player_level * 7, 100)"
       },
@@ -189,23 +167,39 @@
       "minecraft:conditional_bandwidth_optimization": {},
       "minecraft:scaffolding_climber": {},
       "minecraft:environment_sensor": {
-        "triggers": {
-          "filters": {
-            "all_of": [
-              {
-                "test": "has_mob_effect",
-                "subject": "self",
-                "value": "bad_omen"
-              },
-              {
-                "test": "is_in_village",
-                "subject": "self",
-                "value": true
-              }
-            ]
+        "triggers": [
+          {
+            "event": "minecraft:trigger_raid",
+            "target": "self",
+            "filters": {
+              "all_of": [
+                {
+                  "test": "has_mob_effect",
+                  "subject": "self",
+                  "value": "bad_omen"
+                },
+                {
+                  "test": "is_in_village",
+                  "subject": "self",
+                  "value": true
+                }
+              ]
+            }
           },
-          "event": "minecraft:trigger_raid"
-        }
+          {
+            "filters": {
+              "test": "is_sleeping"
+            },
+            "event": "yoni:sleep"
+          },
+          {
+            "filters": {
+              "test": "is_sleeping",
+              "value": false
+            },
+            "event": "yoni:not_sleep"
+          }
+        ]
       }
     },
     "events": {
@@ -242,9 +236,18 @@
           ]
         }
       },
-      "yoni:test": {
-        "set_actor_property": {
-          "yoni:test2": false
+      "yoni:sleep": {
+        "add": {
+          "component_groups": [
+            "yoni:sleep"
+          ]
+        }
+      },
+      "yoni:not_sleep": {
+        "add": {
+          "component_groups": [
+            "yoni:not_sleep"
+          ]
         }
       }
     }
