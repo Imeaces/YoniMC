@@ -1,0 +1,31 @@
+//bridge-file-version: #1
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.test": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "/say 开始"
+          ],
+          "transitions": [
+            {
+              "loop": "query.has_actor_property('yoni:test1')"
+            }
+          ]
+        },
+        "loop": {
+          "on_entry": [
+            "/say 成功"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
