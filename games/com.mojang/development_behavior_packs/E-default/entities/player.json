@@ -20,22 +20,22 @@
       "properties": {
         "yoni:test1": {
           "values": [
-            "aa",
-            "ab"
+            true,
+            false
           ]
         },
         "yoni:test2": {
           "values": [
-            "aa",
-            "ab"
+            true,
+            false
           ]
         }
       }
     },
     "permutations": [
       {
-        "condition": "query.actor_property('yoni:test2') == 'ab'",
-        "compents": {
+        "condition": "query.actor_property('yoni:test2') == false",
+        "components": {
           "minecraft:scale": {
             "value": 10.0
           }
@@ -43,9 +43,6 @@
       }
     ],
     "component_groups": {
-      "minecraft:scale": {
-        "value": 1.0
-      },
       "minecraft:add_bad_omen": {
         "minecraft:spell_effects": {
           "add_effects": [
@@ -84,6 +81,9 @@
       }
     },
     "components": {
+      "minecraft:scale": {
+        "value": 1.0
+      },
       "minecraft:experience_reward": {
         "on_death": "Math.Min(query.player_level * 7, 100)"
       },
@@ -241,7 +241,7 @@
       },
       "yoni:test": {
         "set_actor_property": {
-          "yoni:test2": "'ab'"
+          "yoni:test2": false
         }
       }
     }
