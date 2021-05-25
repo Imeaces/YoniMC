@@ -7,7 +7,7 @@
       "states": {
         "default": {
           "on_entry": [
-            "/say 开始测试"
+            "/say 开始测试:molang:query.is_sleeping"
           ],
           "transitions": [
             {
@@ -17,12 +17,15 @@
         },
         "loop": {
           "on_entry": [
-            "/say 在睡觉"
+            "/say 检测在到is_sleeping"
           ],
           "transitions": [
             {
-              "default": "(1.0)"
+              "default": "!query.is_sleeping"
             }
+          ],
+          "on_exit": [
+            "/say 检测不是is_sleeping"
           ]
         }
       }
