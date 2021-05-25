@@ -5,6 +5,10 @@
 
 ## 关于molang
 
+新建世界前，请开启作弊模式
+
+filter *is_sleeping* 与 molang的`query.is_sleeping`作用相同
+
 ### [`query.can_fly`](https://bedrock.dev/docs/stable/MoLang#query.can_fly])
 
 只能检测实体是否拥有`minecraft:can_fly`组件
@@ -13,11 +17,11 @@
 
 #### 用法
 
-`query.scoreboard('记分板名称')`
+`query.scoreboard('*记分板名称*')`
 
 #### 返回
 
-返回指定实体的记分板分数
+返回当前实体的记分板分数
 
 #### 未知的问题
 
@@ -53,7 +57,18 @@
   一般的实体，受到伤害之后，会有一个速度加快的效果  
   这个函数会返回这个速度加快了多少
   
-  其它的尚未测试
+- `query.movement_direction('*坐标轴*')`
+: 查询执行方向的移动
+  
+  |参数|轴名|
+  |---|---|
+  |0|x|
+  |1|y|
+  |2|z|
+  
+  对于y轴的查询不可正常使用
+  
+其它的尚未测试
 
 ## 关于物品
 
@@ -135,3 +150,6 @@ format小于1.16.100时，需要在资源包定义
   }
 }
 ```
+### 对于它的研究
+
+等待编写
