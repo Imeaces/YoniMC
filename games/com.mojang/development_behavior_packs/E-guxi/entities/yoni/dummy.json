@@ -11,6 +11,10 @@
       "minecraft:loot": {
         "table": "loot_tables/empty.json"
       },
+      "minecraft:nameable": {
+        "always_show": false,
+        "allow_name_tag_renaming": false
+      },
       "minecraft:conditional_bandwidth_optimization": {}
     }
   }

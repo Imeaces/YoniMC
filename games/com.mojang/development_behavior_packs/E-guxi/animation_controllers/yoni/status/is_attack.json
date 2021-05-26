@@ -1,0 +1,32 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.status.attack": {
+      "initial_state": "silent",
+      "states": {
+        "silent": {
+          "on_entry": [
+            "v.is_attack = 0;",
+            "/function yoni/status/silent"
+          ],
+          "transitions": [
+            {
+              "attack": "variable.attack_time > 0"
+            }
+          ]
+        },
+        "attack": {
+           "on_entry": [
+            "v.is_attack = 1;",
+            "/function yoni/status/attack"
+          ],
+         "transitions": [
+            {
+              "silent": "variable.attack_time <= 0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
