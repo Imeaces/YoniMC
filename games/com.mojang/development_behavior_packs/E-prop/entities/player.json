@@ -1,4 +1,3 @@
-//bridge-file-version: #1
 {
   "format_version": "1.16.0",
   "minecraft:entity": {
@@ -7,34 +6,19 @@
       "is_spawnable": false,
       "is_summonable": false,
       "is_experimental": false,
-      "animations": {
-        "test": "controller.animation.test",
-        "test1": "controller.animation.test2"
-      },
-      "scripts": {
-        "animate": [
-          "test",
-          "test1"
-        ]
-      },
       "properties": {
         "yoni:test1": {
           "values": [
-            true,
-            false
-          ]
-        },
-        "yoni:test2": {
-          "values": [
-            true,
-            false
-          ]
+            false,
+            true
+          ],
+          "default": false
         }
       }
     },
     "permutations": [
       {
-        "condition": "query.actor_property('yoni:test2') == false",
+        "condition": "query.actor_property('yoni:test1') == true",
         "components": {
           "minecraft:scale": {
             "value": 10.0
@@ -241,7 +225,7 @@
       },
       "yoni:test": {
         "set_actor_property": {
-          "yoni:test2": false
+          "yoni:test1": true
         }
       }
     }
