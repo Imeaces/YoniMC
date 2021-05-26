@@ -1,0 +1,45 @@
+/*
+query.actor_property
+query.has_actor_property
+*/
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.test1": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "/say 开始测试`query.actor_property`"
+          ],
+          "transitions": [
+            {
+              "loop": "query.actor_property('yoni:test1') == true"
+            }
+          ],
+          "on_exit": [
+            "/say 测试`query.actor_property('yoni:test1') == true`成功"
+          ]
+        },
+        "loop": {
+          "on_entry": [
+            "/say 开始测试“query.has_actor_property”"
+          ],
+          "transitions": [
+            {
+              "end": "query.has_actor_property('yoni:test1')"
+            }
+          ],
+          "on_exit": [
+            "/say 测试`query.has_actor_property('yoni:test1')`成功"
+          ]
+        },
+        "end": {
+          "on_entry": [
+            "/say 测试结束，创建新世界以重新测试"
+          ]
+        }
+      }
+    }
+  }
+}

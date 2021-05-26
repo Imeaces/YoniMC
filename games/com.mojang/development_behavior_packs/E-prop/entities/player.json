@@ -6,6 +6,17 @@
       "is_spawnable": false,
       "is_summonable": false,
       "is_experimental": false,
+      //此处用作molang测试
+      /*
+      "animations": {
+        "test1": "controller.animation.test1"
+      },
+      "scripts": {
+        "animate": [
+          "test1"
+        ]
+      },
+      */
       "properties": {
         "yoni:test1": {
           "values": [
@@ -223,9 +234,14 @@
           ]
         }
       },
-      "yoni:test": {
+      "yoni:test1": {
         "set_actor_property": {
           "yoni:test1": true
+        }
+      },
+      "yoni:test2": {
+        "set_actor_property": {
+          "yoni:test1": "!query.actor_property('yoni:test1')"
         }
       }
     }
