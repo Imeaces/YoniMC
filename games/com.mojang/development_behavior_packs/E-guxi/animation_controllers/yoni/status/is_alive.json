@@ -1,10 +1,11 @@
+//bridge-file-version: #0
 {
   "format_version": "1.10.0",
   "animation_controllers": {
     "controller.animation.yoni.status.alive": {
       "initial_state": "alive",
-      "alive": {
-        "default": {
+      "states": {
+        "alive": {
           "on_entry": [
             "/function yoni/status/alive",
             "v.is_alive = 1;"
@@ -20,9 +21,9 @@
             "/function yoni/status/dead",
             "v.is_alive = 0;"
           ],
-         "transitions": [
+          "transitions": [
             {
-              "default": "query.is_alive"
+              "alive": "query.is_alive"
             }
           ]
         }
