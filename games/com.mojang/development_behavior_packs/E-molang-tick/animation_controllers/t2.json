@@ -1,0 +1,30 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.t2": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "/scoreboard players add @s m 1"
+          ],
+          "transitions": [
+            {
+              "loop": "variable.mtick == 1"
+            }
+          ]
+        },
+        "loop": {
+          "on_entry": [
+            "/scoreboard players add @s m 1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
