@@ -1,3 +1,5 @@
+#yoni/init/af48495f
+
 # create objectives
 scoreboard objectives add alive dummy
 scoreboard objectives add death_count dummy

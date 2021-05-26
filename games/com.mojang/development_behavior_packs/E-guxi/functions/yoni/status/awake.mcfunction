@@ -1,3 +1,5 @@
+#yoni/status/awake
+
 #init
 function yoni/init/ae765c08
 

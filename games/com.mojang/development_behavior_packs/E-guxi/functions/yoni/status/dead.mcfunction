@@ -1,3 +1,5 @@
+#yoni/status/dead
+
 #init
 function yoni/init/af48495f
 
