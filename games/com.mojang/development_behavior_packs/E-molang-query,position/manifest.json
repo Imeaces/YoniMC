@@ -1,7 +1,7 @@
 {
   "format_version": 2,
   "header": {
-    "name": "test",
+    "name": "query.position(0)",
     "description": "nil",
     "uuid": "b6f04503-8382-4363-82f9-faaa668b18ac",
     "version": [0, 0, 1],
