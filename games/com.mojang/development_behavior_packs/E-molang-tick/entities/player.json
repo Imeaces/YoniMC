@@ -6,16 +6,13 @@
       "is_spawnable": false,
       "is_summonable": false,
       "is_experimental": false,
-      "pre_animation": [
-        "variable.mtick = math.mod(query.time_stamp, 2);"
-      ],
       "animations": {
         "t1": "controller.animation.t1",
         "t2": "controller.animation.t2"
       },
       "scripts": {
         "animate": [
-          "t1",
+   //       "t1",
           "t2"
         ]
       }

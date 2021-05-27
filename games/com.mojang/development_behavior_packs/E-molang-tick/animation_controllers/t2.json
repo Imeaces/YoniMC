@@ -10,7 +10,7 @@
           ],
           "transitions": [
             {
-              "loop": "variable.mtick == 1"
+              "loop": "(1.0)"
             }
           ]
         },

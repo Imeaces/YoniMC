@@ -10,7 +10,7 @@
           ],
           "transitions": [
             {
-              "loop": "variable.mtick == 0"
+              "loop": "math.mod(query.time_stamp,2) == 0"
             }
           ]
         },
