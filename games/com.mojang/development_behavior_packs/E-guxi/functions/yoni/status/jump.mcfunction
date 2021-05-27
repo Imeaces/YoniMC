@@ -1,10 +1,10 @@
 #yoni/status/jump
 
 #init
-function yoni/init/af48495f
+function yoni/init/2d604a27
 
 #set score
-execute @s[scores={jump=0}] ~ ~ ~ scoreboard players set @s jump 1
+scoreboard players set @s jump 1
 
 #set tag
 execute @s[tag=!status:jump] ~ ~ ~ tag @s add status:jump
