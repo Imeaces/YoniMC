@@ -1,5 +1,3 @@
 # Extra-Addon
 
-Something interesting things for Minecraft
-
-Notice! Something is wrong.
+想弄什么呢？
