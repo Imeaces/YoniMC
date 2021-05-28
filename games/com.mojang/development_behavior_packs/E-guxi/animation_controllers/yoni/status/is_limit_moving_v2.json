@@ -15,7 +15,7 @@
             "v.position.delta.x = (v.position.old.x - v.position.x);",
             "v.position.delta.y = (v.position.old.y - v.position.y);",
             "v.position.delta.z = (v.position.old.z - v.position.z);",
-            "v.delta = math.sqrt(math.pow(v.position.delta.x, 2) + math.pow(v.position.delta.y, 2) + math.pow(v.position.delta.z, 2));",
+            "v.delta.0 = math.sqrt(math.pow(v.position.delta.x, 2) + math.pow(v.position.delta.y, 2) + math.pow(v.position.delta.z, 2));",
             "v.moving_speed = ((v.moving_speed ?? 0) + (v.delta / 20));"
           ],
           "transitions": [
