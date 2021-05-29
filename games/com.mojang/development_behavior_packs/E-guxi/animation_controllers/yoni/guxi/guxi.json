@@ -10,7 +10,7 @@
           ],
           "transitions": [
             {
-              "loop": "(1.0)"
+              "loop": "query.has_any_family('guxi')"
             }
           ]
         },
@@ -20,7 +20,7 @@
           ],
          "transitions": [
             {
-              "default": "(1.0)"
+              "default": "query.has_any_family('guxi')"
             }
           ]
         }   
