@@ -2,7 +2,7 @@
 
 # 取guxi-energyf绝对值的相反数
 ## 处理特殊数据
-execute @s [scores={guxi-energyf=-2147483648}] ~ ~ ~ scoreboard players add @s guxi-energyf -1
+execute @s[scores={guxi-energyf=-2147483648}] ~ ~ ~ scoreboard players add @s guxi-energyf -1
 ## 设置用于取相反数的变量
 scoreboard players set "-1" guxi-energyp -1
 ## 如果为正数，取相反数
@@ -28,4 +28,4 @@ execute @s[scores={guxi-energys=5}] ~ ~ ~ scoreboard players add @s guxi-energy 
 #### 重新执行
 execute @s[scores={guxi-energys=5}] ~ ~ ~ function yoni/guxi/energy/freed
 #### 设置状态默认
-execute @s[scores={guxi-energys=5}] ~ ~ ~ scoreboard players set @s guxi-energys 5
+execute @s[scores={guxi-energys=5}] ~ ~ ~ scoreboard players set @s guxi-energys 1
