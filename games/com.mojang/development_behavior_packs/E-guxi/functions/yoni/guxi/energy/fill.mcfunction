@@ -1,6 +1,4 @@
 #yoni/guxi/energy/fill
 
-function yoni/init/a12d982b
-
-function yoni/guxi/energy/is_full
-
+scoreboard players add @s guxi-energyl 1
+scoreboard players add @s guxi-energy -3600000
