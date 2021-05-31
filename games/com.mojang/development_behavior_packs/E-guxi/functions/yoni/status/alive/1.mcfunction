@@ -1,10 +1,10 @@
-#yoni/status/alive
+#yoni/status/alive/1
 
 #init
-function yoni/init/af48495f
+function yoni/init/status_alive
 
 #set score
-execute @s[scores={alive=2}] ~ ~ ~ scoreboard players set @s alive 1
+scoreboard players set @s alive 1
 
 #set tag
 execute @s[tag=status:dead] ~ ~ ~ tag @s remove status:dead

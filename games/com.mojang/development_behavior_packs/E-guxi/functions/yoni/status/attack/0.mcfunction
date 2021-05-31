@@ -1,7 +1,7 @@
 #yoni/status/silent
 
 #init
-function yoni/init/528e78fa
+function yoni/init/status_attack
 
 #set score
 scoreboard players set @s attack 0

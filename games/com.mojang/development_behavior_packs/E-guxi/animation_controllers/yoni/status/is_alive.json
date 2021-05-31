@@ -6,7 +6,7 @@
       "states": {
         "alive": {
           "on_entry": [
-            "/function yoni/status/alive",
+            "/function yoni/status/alive/1",
             "v.is_alive = 1;"
           ],
           "transitions": [
@@ -17,7 +17,7 @@
         },
         "dead": {
           "on_entry": [
-            "/function yoni/status/dead",
+            "/function yoni/status/alive/2",
             "v.is_alive = 0;"
           ],
           "transitions": [

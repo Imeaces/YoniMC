@@ -1,3 +1,3 @@
-#yoni/init/528e78fa
+#yoni/init/status_attack
 
 scoreboard objectives add attack dummy
