@@ -3,5 +3,5 @@ text=auto
 *.mcfunction text
 *.json text
 *.png binary
-*.md text eof=lf
+*.md text eol=lf
 *.lang text

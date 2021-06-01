@@ -1,0 +1,32 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.status.jump": {
+      "initial_state": "stand",
+      "states": {
+        "stand": {
+          "on_entry": [
+            "/function yoni/status/jump/0",
+            "v.is_jumping = 0;"
+          ],
+          "transitions": [
+            {
+              "jump": "query.is_jumping"
+            }
+          ]
+        },
+        "jump": {
+          "on_entry": [
+            "/function yoni/status/jump/1",
+            "v.is_jumping = 1;"
+          ],
+          "transitions": [
+            {
+              "stand": "!query.is_jumping"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

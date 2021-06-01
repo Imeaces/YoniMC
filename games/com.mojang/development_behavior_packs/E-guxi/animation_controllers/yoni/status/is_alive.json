@@ -1,0 +1,32 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.status.alive": {
+      "initial_state": "alive",
+      "states": {
+        "alive": {
+          "on_entry": [
+            "/function yoni/status/alive/1",
+            "v.is_alive = 1;"
+          ],
+          "transitions": [
+            {
+              "dead": "!query.is_alive"
+            }
+          ]
+        },
+        "dead": {
+          "on_entry": [
+            "/function yoni/status/alive/2",
+            "v.is_alive = 0;"
+          ],
+          "transitions": [
+            {
+              "alive": "query.is_alive"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
