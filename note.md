@@ -9,6 +9,15 @@
 
 filter *is_sleeping* 与 molang的`query.is_sleeping`作用相同
 
+### `variable.attack_time`
+
+这是一个特殊的变量，在一般的实体上，可以用于检测实体是否在攻击  
+而在玩家上可以检测是否在用手
+
+### variable.player_nearby_attack
+
+此变量与其名字的效果貌似不一致
+
 ### [`query.can_fly`](https://bedrock.dev/docs/stable/MoLang#query.can_fly])
 
 只能检测实体是否拥有`minecraft:can_fly`组件
