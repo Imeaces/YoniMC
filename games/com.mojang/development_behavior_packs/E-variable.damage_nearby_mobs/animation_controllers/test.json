@@ -1,0 +1,39 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.test": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "/say 开始测试:molang:variable.damage_nearby_mobs",
+            "/effect @s weakness 1000000 255 true"
+          ],
+          "transitions": [
+            {
+              "loop": "variable.damage_nearby_mobs"
+            }
+          ],
+          "on_exit": [
+            "/effect @s weakness 0"
+          ]
+        },
+        "loop": {
+          "on_entry": [
+            "/say 检测variable.damage_nearby_mobs",
+            "/effect @s strength 1000000 10 true"
+          ],
+          "transitions": [
+            {
+              "default": "!variable.damage_nearby_mobs"
+            }
+          ],
+          "on_exit": [
+            "/say 检测不是variable.damage_nearby_mobs",
+            "/effect @s strength 0"
+          ]
+        }
+      }
+    }
+  }
+}
