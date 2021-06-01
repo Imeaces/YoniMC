@@ -1,7 +1,7 @@
 #yoni/status/stand
 
 #init
-function yoni/init/2d604a27
+function yoni/init/status_jump
 
 #set score
 scoreboard players set @s jump 0

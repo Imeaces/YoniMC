@@ -7,7 +7,7 @@
       "states": {
         "awake": {
           "on_entry": [
-            "/function yoni/status/awake",
+            "/function yoni/status/sleeping/0",
             "v.is_sleeping = 0;"
           ],
           "transitions": [
@@ -18,7 +18,7 @@
         },
         "sleeping": {
           "on_entry": [
-            "/function yoni/status/sleeping",
+            "/function yoni/status/sleeping/1",
             "v.is_sleeping = 1;"
           ],
           "transitions": [

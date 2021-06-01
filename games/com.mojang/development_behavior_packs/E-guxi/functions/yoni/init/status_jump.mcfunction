@@ -1,3 +1,3 @@
-#yoni/init/2d604a27
+#yoni/init/status_jump
 
 scoreboard objectives add jump dummy

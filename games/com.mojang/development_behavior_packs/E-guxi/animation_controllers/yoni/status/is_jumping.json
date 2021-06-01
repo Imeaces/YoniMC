@@ -6,7 +6,7 @@
       "states": {
         "stand": {
           "on_entry": [
-            "/function yoni/status/stand",
+            "/function yoni/status/jump/0",
             "v.is_jumping = 0;"
           ],
           "transitions": [
@@ -17,7 +17,7 @@
         },
         "jump": {
           "on_entry": [
-            "/function yoni/status/jump",
+            "/function yoni/status/jump/1",
             "v.is_jumping = 1;"
           ],
           "transitions": [

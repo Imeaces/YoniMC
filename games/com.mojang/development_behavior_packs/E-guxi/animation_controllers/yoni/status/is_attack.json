@@ -7,7 +7,7 @@
         "silent": {
           "on_entry": [
             "v.is_attack = 0;",
-            "/function yoni/status/silent"
+            "/function yoni/status/attack/0"
           ],
           "transitions": [
             {
@@ -18,7 +18,7 @@
         "attack": {
            "on_entry": [
             "v.is_attack = 1;",
-            "/function yoni/status/attack"
+            "/function yoni/status/attack/1"
           ],
          "transitions": [
             {

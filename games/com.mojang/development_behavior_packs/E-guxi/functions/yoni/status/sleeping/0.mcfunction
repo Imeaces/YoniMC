@@ -1,7 +1,7 @@
 #yoni/status/awake
 
 #init
-function yoni/init/ae765c08
+function yoni/init/status_sleeping
 
 #set score
 scoreboard players set @s sleeping 0
