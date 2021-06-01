@@ -1,0 +1,34 @@
+//bridge-file-version: #2
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.test": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "/say 开始_"
+          ],
+          "transitions": [
+            {
+              "loop": "query.skin_id == 5"
+            }
+          ]
+        },
+        "loop": {
+          "on_entry": [
+            "/say 在睡觉"
+          ],
+          "transitions": [
+            {
+              "default": "query.skin_id != 5"
+            }
+          ],
+          "on_exit": [
+            "/say 没在睡"
+          ]
+        }
+      }
+    }
+  }
+}
