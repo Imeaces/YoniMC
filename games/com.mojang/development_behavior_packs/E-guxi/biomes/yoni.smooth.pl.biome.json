@@ -1,0 +1,32 @@
+//bridge-file-version: #5
+{
+  "format_version": "1.16.220",
+  "minecraft:biome": {
+    "description": {
+      "identifier": "yoni.smooth.pl"
+    },
+    "components": {
+      "minecraft:overworld_generation_rules": {
+        "generate_for_climates": [
+          [
+            "warm",
+            5
+          ],
+          [
+            "medium",
+            2
+          ],
+          [
+            "cold",
+            0
+          ],
+          [
+            "frozen",
+            0
+          ]
+        ]
+      },
+      "overworld": {}
+    }
+  }
+}

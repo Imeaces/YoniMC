@@ -1,7 +1,8 @@
+//bridge-file-version: #0
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.guxi_loop": {
+    "controller.animation.yoni.guxi_loop": {
       "initial_state": "default",
       "states": {
         "default": {
@@ -18,24 +19,17 @@
           "on_entry": [
             "/function yoni/guxi/loop"
           ],
-         "transitions": [
+          "transitions": [
             {
               "default": "query.has_any_family('guxi')"
             }
           ]
-        }   
+        }
       }
     },
     "controller.animation.guxi_heights": {
       "initial_state": "default",
       "states": {
-      /*
-      query.all_animations_finished
-      query.mark_variant
-      "guxi_underground"
-      "guxi_underground_power"
-      "guxi_aboveground"
-      */
         "default": {
           "transitions": [
             {
@@ -128,7 +122,6 @@
             "v.status = 3;"
           ]
         },
-
         "underwater_default": {
           "transitions": [
             {
@@ -145,7 +138,6 @@
             }
           ]
         },
-        
         "u_guxi_underground_power": {
           "on_entry": [
             "/say mode: 12"
@@ -198,7 +190,6 @@
             }
           ]
         }
-
       }
     }
   }

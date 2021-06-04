@@ -1,0 +1,98 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.ability": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "/say start"
+          ],
+          "transitions": [
+            {
+              "mode": "(1.0)"
+            }
+          ]
+        },
+        "mode": {
+          "on_entry": [
+            "/tag @s add yoni:test_can_fly"
+          ],
+          "transitions": [
+            {
+              "cannot_fly": "query.skin_id == 32"
+            },
+            {
+              "can_fly": "query.skin_id == 33"
+            }
+          ],
+          "on_exit": [
+            "/tag @s remove yoni:test_can_fly",
+            "@s yoni:reset_id"
+          ]
+        },
+        "cannot_fly": {
+          "on_entry": [
+            "/execute @s[tag=ability:mayfly] ~ ~ ~ function ability/can_fly",
+            "/tag @s add canf"
+          ],
+          "transitions": [
+            {
+              "mode1": "(1.0)"
+            }
+          ]
+        },
+        "can_fly": {
+          "on_entry": [
+            "/execute @s[tag=!ability:mayfly] ~ ~ ~ function ability/cannot_fly",
+            "/tag @s add cantf"
+          ],
+          "transitions": [
+            {
+              "mode1": "(1.0)"
+            }
+          ]
+        },
+        "mode1": {
+          "on_entry": [
+            "/tag @s add yoni:test_if_mute"
+          ],
+          "transitions": [
+            {
+              "not_mute": "query.skin_id == 34"
+            },
+            {
+              "is_mute": "query.skin_id == 35"
+            }
+          ],
+          "on_exit": [
+            "/tag @s remove yoni:test_if_mute",
+            "@s yoni:reset_id"
+          ]
+        },
+        "is_mute": {
+          "on_entry": [
+            "/ability @s[tag=!ability:mute] mute false",
+            "/tag @s add m"
+          ],
+          "transitions": [
+            {
+              "mode": "(1.0)"
+            }
+          ]
+        },
+        "not_mute": {
+          "on_entry": [
+            "/ability @s[tag=ability:mute] mute true",
+            "/tag @s add n"
+          ],
+          "transitions": [
+            {
+              "mode": "(1.0)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
