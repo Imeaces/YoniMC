@@ -1,0 +1,25 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "fly ability",
+    "description": "fly ability",
+    "uuid": "395eb92e-6163-490f-bda8-f2c636d490da",
+    "version": [0, 0, 1],
+    "min_engine_version": [1, 16, 100]
+  },
+  "modules": [
+    {
+      "description": "data:test",
+      "type": "data",
+      "uuid": "450f36d6-5a0b-4778-93a3-f13c5323b527",
+      "version": [0, 0, 1]
+    }
+  ],
+  "metadata": {
+    "authors": [
+      "Silvigarabis"
+    ],
+    "license": "MIT License",
+    "url": "https://github.com/Silvigarabis/Extra-Addon"
+  }
+}
