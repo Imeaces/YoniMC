@@ -17,7 +17,7 @@
         },
         "can_fly": {
           "on_entry": [
-            "/ability @s[tag=!ability:mayfly] mayfly false"
+            "/execute @s[tag=!ability:mayfly] ~ ~ ~ function ability/cannot_fly"
           ],
           "transitions": [
             {
@@ -27,7 +27,7 @@
         },
         "cannot_fly": {
           "on_entry": [
-            "/ability @s[tag=ability:mayfly] mayfly true"
+            "/execute @s[tag=ability:mayfly] ~ ~ ~ function ability/can_fly"
           ],
           "transitions": [
             {
