@@ -1,31 +1,6 @@
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.guxi_loop": {
-      "initial_state": "default",
-      "states": {
-        "default": {
-          "on_entry": [
-            "/function yoni/guxi/loop"
-          ],
-          "transitions": [
-            {
-              "loop": "query.has_any_family('guxi')"
-            }
-          ]
-        },
-        "loop": {
-          "on_entry": [
-            "/function yoni/guxi/loop"
-          ],
-         "transitions": [
-            {
-              "default": "query.has_any_family('guxi')"
-            }
-          ]
-        }   
-      }
-    },
     "controller.animation.guxi_heights": {
       "initial_state": "default",
       "states": {

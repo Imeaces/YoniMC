@@ -7,84 +7,92 @@
       "is_summonable": false,
       "is_experimental": false,
       "animations": {
-        "status_attack": "controller.animation.yoni.status.attack"
+        "guxi": "controller.animation.yoni.guxi",
+        "controller.animation.yoni.status.alive": "controller.animation.yoni.status.alive"
       },
       "scripts": {
         "animate": [
-          "status_attack"
+          "guxi",
+          "controller.animation.yoni.status.alive"
         ]
       }
     },
-
     "component_groups": {
-      "minecraft:add_bad_omen": {
-        "minecraft:spell_effects": {
-          "add_effects": [
-            {
-              "effect": "bad_omen",
-              "duration": 6000,
-              "display_on_screen_animation": true
-            }
-          ]
-        },
-        "minecraft:timer": {
-          "time": [ 0.0, 0.0 ],
-          "looping": false,
-          "time_down_event": {
-            "event": "minecraft:clear_add_bad_omen",
-            "target": "self"
-          }
-        }
-      },
-      "minecraft:clear_bad_omen_spell_effect": {
-        "minecraft:spell_effects": {
-        }
-      },
-      "minecraft:raid_trigger": {
-        "minecraft:raid_trigger": {
-          "triggered_event": {
-            "event": "minecraft:remove_raid_trigger",
-            "target": "self"
-          }
-        },
-        "minecraft:spell_effects": {
-          "remove_effects": "bad_omen"
+      "guxi:area_attack": {
+        "minecraft:area_attack": {
+          "cause": "attack",
+          "entity_filter": {
+            "subject": "other",
+            "test": "is_family",
+            "operator": "not",
+            "value": "guxi"
+          },
+          "damage_range": 20
+          "damage_per_tick": 20
         }
       }
     },
-
     "components": {
-      "minecraft:experience_reward": {
-        "on_death": "Math.Min(query.player_level * 7, 100)"
+      "minecraft:breathable": {
+        "breathes_water": true,
+        "breathes_solids": true,
+        "breathes_lava": true,
+        "breathes_air": true,
+        "generates_bubbles": false
       },
       "minecraft:type_family": {
-        "family": [ "player" ]
+        "family": [ "guxi", "evil", "spirit", "yoni" ]
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 1.8
+      },
+      "minecraft:scale": {
+        "value": 0.76
+      },
+      "minecraft:can_climb": false,
+      "minecraft:attack": {
+        "damage": 0
+      },
+      "minecraft:environment_sensor": {
+        "triggers": [
+          { 
+            "filters": {
+              "all_of": [
+                {
+                  "test": "has_mob_effect",
+                  "subject": "self",
+                  "value": "bad_omen"
+                },
+                {
+                  "test": "is_in_village",
+                  "subject": "self",
+                  "value": true
+                }
+              ]
+            },
+            "event": "minecraft:trigger_raid"
+          }
+        ]
+      },
+      "minecraft:nameable": {
+        "always_show": false,
+        "allow_name_tag_renaming": false
+      },
+      "minecraft:pushable": {
+        "is_pushable": true,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:experience_reward": {
+        "on_death": "Math.Min(query.player_level * 7, 100)"
       },
       "minecraft:is_hidden_when_invisible": {
       },
       "minecraft:loot": {
         "table": "loot_tables/empty.json"
       },
-      "minecraft:collision_box": {
-        "width": 0.6,
-        "height": 1.8
-      },
-      "minecraft:can_climb": {
-      },
       "minecraft:movement": {
         "value": 0.1
-      },
-      "minecraft:hurt_on_condition": {
-        "damage_conditions": [
-          {
-            "filters": { "test": "in_lava", "subject": "self", "operator": "==", "value": true },
-            "cause": "lava",
-            "damage_per_tick": 4
-          }
-        ]
-      },
-      "minecraft:attack": {
-        "damage": 0
       },
       "minecraft:player.saturation": {
         "value": 20
@@ -101,24 +109,7 @@
         "value": 0,
         "max": 1
       },
-      "minecraft:breathable": {
-        "total_supply": 15,
-        "suffocate_time": -1,
-        "inhale_time": 3.75,
-        "generates_bubbles": false
-      },
-      "minecraft:nameable": {
-        "always_show": true,
-        "allow_name_tag_renaming": false
-      },
       "minecraft:physics": {
-      },
-      "minecraft:pushable": {
-        "is_pushable": false,
-        "is_pushable_by_piston": true
-      },
-      "minecraft:insomnia": {
-        "days_until_insomnia": 3
       },
       "minecraft:rideable": {
         "seat_count": 2,
@@ -141,64 +132,20 @@
           }
         ]
       },
-      "minecraft:conditional_bandwidth_optimization": {
-      },
       "minecraft:scaffolding_climber": {},
-      "minecraft:environment_sensor": {
-        "triggers": {
-          "filters": {
-            "all_of": [
-              {
-                "test": "has_mob_effect",
-                "subject": "self",
-                "value": "bad_omen"
-              },
-              {
-                "test": "is_in_village",
-                "subject": "self",
-                "value": true
-              }
-            ]
-          },
-          "event": "minecraft:trigger_raid"
-        }
-      }
+      "minecraft:conditional_bandwidth_optimization": {}
     },
-
     "events": {
-      "minecraft:gain_bad_omen": {
+      "yoni:guxi_area_attack": {
         "add": {
-          "component_groups": [
-            "minecraft:add_bad_omen"
-          ]
+          "component_groups": [ "guxi:area_attack" ]
         }
       },
-      "minecraft:clear_add_bad_omen": {
+      "yoni:guxi_stop_area_attack": {
         "remove": {
-          "component_groups": [
-            "minecraft:add_bad_omen"
-          ]
-        },
-        "add": {
-          "component_groups": [
-            "minecraft:clear_bad_omen_spell_effect"
-          ]
-        }
-      },
-      "minecraft:trigger_raid": {
-        "add": {
-          "component_groups": [ "minecraft:raid_trigger" ]
-        }
-      },
-      "minecraft:remove_raid_trigger": {
-        "remove": {
-          "component_groups": [ "minecraft:raid_trigger" ]
+          "component_groups": [ "guxi:area_attack" ]
         }
       }
     }
   }
 }
-
-
-
-

@@ -1,4 +1,6 @@
-#yoni/guxi/energy/full
+#yoni/guxi/energy/fill
 
-scoreboard players set @s guxi-energy 3600000
-scoreboard players set @s guxi-energyl 10000
+scoreboard players add @s guxi-energyl 1
+scoreboard players add @s guxi-energy -3600000
+
+execute @s[scores={guxi-energy=3600001..}] ~ ~ ~ function yoni/guxi/energy/full
