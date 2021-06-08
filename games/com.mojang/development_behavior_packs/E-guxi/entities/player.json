@@ -27,7 +27,7 @@
             "operator": "not",
             "value": "guxi"
           },
-          "damage_range": 20
+          "damage_range": 20,
           "damage_per_tick": 20
         }
       }
