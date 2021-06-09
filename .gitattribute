@@ -1,4 +1,7 @@
-*.mcfunction text=auto
-*.json text=auto
+text=auto
+
+*.mcfunction text
+*.json text
 *.png binary
-README.md text=auto
+*.md text eol=lf
+*.lang text
