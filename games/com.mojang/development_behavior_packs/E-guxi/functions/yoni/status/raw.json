@@ -1,0 +1,23 @@
+{
+  "rawtext": [
+    {
+      "translate": "当前%%1\n原值%%2\n偏移%%3",
+      "with": {
+        "rawtext": [
+          {
+            "score": "rotate_y",
+            "name": "*"
+          },
+          {
+            "score": "a",
+            "name": "*"
+          },
+          {
+            "score": "c",
+            "name": "*"
+          }
+        ]
+      }
+    }
+  ]
+}
