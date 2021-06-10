@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.guxi.moving": {
+      "initial_state": "stat",
+      "states": {
+        "stat": {
+          "transitions": [
+            {
+              "moving1": "query.is_moving"
+            }
+          ]
+        },
+        "moving1": {
+          "on_entry": [
+            "/scoreboard players add @s guxi-energy -1"
+          ],
+          "transitions": [
+            {
+              "moving2": "query.is_moving"
+            },
+            {
+              "stat": "!query.is_moving"
+            }
+          ]
+        },
+        "moving2": {
+          "on_entry": [
+            "/scoreboard players add @s guxi-energy -1"
+          ],
+          "transitions": [
+            {
+              "moving1": "query.is_moving"
+            },
+            {
+              "stat": "!query.is_moving"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

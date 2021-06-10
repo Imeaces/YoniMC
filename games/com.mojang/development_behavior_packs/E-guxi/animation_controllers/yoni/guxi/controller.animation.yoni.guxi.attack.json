@@ -1,0 +1,29 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.guxi.attack": {
+      "initial_state": "silent",
+      "states": {
+        "silent": {
+          "transitions": [
+            {
+              "attack": "variable.attack_time > 0"
+            }
+          ]
+        },
+        "attack": {
+           "on_entry": [
+            "/scoreboard players add @s guxi-energy -100",
+            "/effect @s strength 3 4 true",
+            "/effect @s haste 3 2 true"
+          ],
+         "transitions": [
+            {
+              "silent": "variable.attack_time <= 0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -8,12 +8,18 @@
       "is_experimental": false,
       "animations": {
         "guxi": "controller.animation.yoni.guxi",
-        "controller.animation.yoni.status.alive": "controller.animation.yoni.status.alive"
+        "controller.animation.yoni.status.alive": "controller.animation.yoni.status.alive",
+        "controller.animation.yoni.guxi.jump": "controller.animation.yoni.guxi.jump",
+        "controller.animation.yoni.guxi.moving": "controller.animation.yoni.guxi.moving",
+        "controller.animation.yoni.guxi.attack": "controller.animation.yoni.guxi.attack"
       },
       "scripts": {
         "animate": [
           "guxi",
-          "controller.animation.yoni.status.alive"
+          "controller.animation.yoni.guxi.jump",
+          "controller.animation.yoni.status.alive",
+          "controller.animation.yoni.guxi.moving",
+          "controller.animation.yoni.guxi.attack"
         ]
       }
     },

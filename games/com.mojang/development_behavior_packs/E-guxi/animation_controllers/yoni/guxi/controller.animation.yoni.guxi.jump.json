@@ -1,0 +1,27 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.guxi.jump": {
+      "initial_state": "stand",
+      "states": {
+        "stand": {
+          "transitions": [
+            {
+              "jump": "query.is_jumping"
+            }
+          ]
+        },
+        "jump": {
+          "on_entry": [
+            "/scoreboard players add @s guxi-energy -1"
+          ],
+          "transitions": [
+            {
+              "stand": "!query.is_jumping"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
