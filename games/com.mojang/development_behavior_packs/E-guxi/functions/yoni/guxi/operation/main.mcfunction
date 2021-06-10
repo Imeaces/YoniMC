@@ -4,6 +4,7 @@
 
 # 初始化
 scoreboard players add @s guxi-opt 0
+scoreboard players add @s guxi-op 0
 
 # 主面板
 ## 当guxi:display为1时显示面板

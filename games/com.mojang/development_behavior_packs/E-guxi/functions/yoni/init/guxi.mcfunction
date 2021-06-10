@@ -1,8 +1,6 @@
 #yoni/init/guxi
 
 # 创建记分板
-## 是否为咕西
-scoreboard objectives add guxi dummy "GUXI"
 ## 操作面板
 scoreboard objectives add guxi-op dummy "GUXI:OP"
 ## 操作面板计时器
@@ -15,3 +13,6 @@ scoreboard objectives add guxi-energys dummy "GUXI:ENERGY:STATE"
 
 ## 存活状态初始化
 function yoni/init/status_alive
+
+## 已经初始化
+scoreboard players set @s guxi 1

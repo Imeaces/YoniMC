@@ -2,18 +2,8 @@
   "format_version": "1.10.0",
   "animation_controllers": {
     "controller.animation.yoni.guxi": {
-      "initial_state": "init",
+      "initial_state": "loop1",
       "states": {
-        "init": {
-          "transitions": [
-            {
-              "loop1": "(1.0)"
-            }
-          ],
-          "on_exit": [
-            "/function yoni/init/guxi"
-          ]
-        },
         "loop1": {
           "on_entry": [
             "/function yoni/guxi/loop"
