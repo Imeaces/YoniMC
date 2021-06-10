@@ -1,39 +1,7 @@
-import get-rotate-y
+-180~180
+共361个数字
 
-$old = get-rotate-y()
+随机选取一个数字a
 
-while (wait tick(1))
-do
-  $new = get-rotate-y()
-  $offset = $new - $old
-  if (|$offset-$old| >= 180)
-    if ($old>0)
-      $offset = $offset + 360
-    other ($old<0)
-      $offset = $offset - 360
-    fi
-  fi
-done
+当前有一个值ry
 
-scoreboard objectives add a dummy
-scoreboard objectives add b dummy
-scoreboard objectives add c dummy
-scoreboard objectives add d dummy
-
-scoreboard players add @s a 0
-
-function yoni/status/rotate_y
-scoreboard players operation @s b = @s rotate_y
-
-scoreboard players operation @s c = @s b
-scoreboard players operation @s c -= @s a
-
-scoreboard players set "-1" d -1
-scoreboard players operation @s d = @s c
-scoreboard players operation @s d -= @s a
-execute @s[scores={d=..-1}] ~ ~ ~ scoreboard players operation @s d *= "-1" d
-
-execute @s[scores={d=180..}] ~ ~ ~ execute @s[scores={a=1..}] ~ ~ ~ scoreboard players add @s c 360
-execute @s[scores={d=180..}] ~ ~ ~ execute @s[scores={a=..-1}] ~ ~ ~ scoreboard players add @s c -360
-
-titleraw @s actionbar {"rawtext":[{"translate":"当前%%1\n原值%%2\n偏移%%3","with":{"rawtext":[{"score":"rotate_y","name":"*"},{"score":"a","name":"*"},{"score":"c","name":"*"}]}}]}
