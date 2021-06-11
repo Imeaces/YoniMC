@@ -8,22 +8,71 @@
       "is_experimental": false,
       "animations": {
         "guxi": "controller.animation.yoni.guxi",
-        "controller.animation.yoni.status.alive": "controller.animation.yoni.status.alive",
-        "controller.animation.yoni.guxi.jump": "controller.animation.yoni.guxi.jump",
-        "controller.animation.yoni.guxi.moving": "controller.animation.yoni.guxi.moving",
-        "controller.animation.yoni.guxi.attack": "controller.animation.yoni.guxi.attack"
+        "damage_physics": "controller.animation.yoni.damage.physics",
+        "damage_default": "controller.animation.yoni.damage.defalut",
+        "damage_explosion": "controller.animation.yoni.damage.explosion",
+        "status_attack": "controller.animation.yoni.guxi.status.attack",
+        "status_hot": "controller.animation.yoni.status.hot",
+        "status_jump": "controller.animation.yoni.guxi.status.jump",
+        "status_lighting": "controller.animation.yoni.status.lighting",
+        "status_moving": "controller.animation.yoni.guxi.status.moving",
+        "guxi_effects": "animation.yoni.guxi.effects"
       },
       "scripts": {
         "animate": [
           "guxi",
-          "controller.animation.yoni.guxi.jump",
-          "controller.animation.yoni.status.alive",
-          "controller.animation.yoni.guxi.moving",
-          "controller.animation.yoni.guxi.attack"
+          "damage_physics",
+          "damage_default",
+          "damage_explosion",
+          "status_attack",
+          "status_hot",
+          "status_jump",
+          "status_lighting",
+          "status_moving",
+          "guxi_effects"
         ]
       }
     },
     "component_groups": {
+      "yoni:guxi_damage_default": {
+        "minecraft:is_shaking": true
+      },
+      "yoni:reset_guxi_damage_default": {
+        "minecraft:is_shaking": false
+      },
+      "yoni:physics_damage": {
+        "minecraft:is_saddled": true
+      },
+      "yoni:reset_physics_damage": {
+        "minecraft:is_saddled": false
+      },
+      "yoni:guxi_explosion": {
+        "minecraft:is_sheared": true
+      },
+      "yoni:reset_guxi_explosion": {
+        "minecraft:is_sheared": false
+      },
+      "yoni:fire_immune_0": {
+        "minecraft:fire_immune": false
+      },
+      "yoni:fire_immune_1": {
+        "minecraft:fire_immune": true
+      },
+      "yoni:variant_0": {
+        "minecraft:variant": {
+          "value": 0
+        }
+      },
+      "yoni:variant_1": {
+        "minecraft:variant": {
+          "value": 1
+        }
+      },
+      "yoni:variant_2": {
+        "minecraft:variant": {
+          "value": 2
+        }
+      },
       "guxi:area_attack": {
         "minecraft:area_attack": {
           "cause": "attack",
@@ -39,6 +88,11 @@
       }
     },
     "components": {
+      "minecraft:health": {
+        "max": 1,
+        "value": 1,
+        "min": 1
+      },
       "minecraft:breathable": {
         "breathes_water": true,
         "breathes_solids": true,
@@ -47,7 +101,12 @@
         "generates_bubbles": false
       },
       "minecraft:type_family": {
-        "family": [ "guxi", "evil", "spirit", "yoni" ]
+        "family": [
+          "guxi",
+          "evil",
+          "spirit",
+          "yoni"
+        ]
       },
       "minecraft:collision_box": {
         "width": 0.6,
@@ -62,7 +121,7 @@
       },
       "minecraft:environment_sensor": {
         "triggers": [
-          { 
+          {
             "filters": {
               "all_of": [
                 {
@@ -78,6 +137,90 @@
               ]
             },
             "event": "minecraft:trigger_raid"
+          },
+          {
+            "filters": {
+              "test": "is_brightness",
+              "operator": "<=",
+              "value": 0.5
+            },
+            "event": "yoni:bright_low"
+          },
+          {
+            "filters": {
+              "all_of": [
+                {
+                  "test": "is_brightness",
+                  "operator": ">",
+                  "value": 0.5
+                },
+                {
+                  "test": "is_brightness",
+                  "operator": "<=",
+                  "value": 0.8
+                }
+              ]
+            },
+            "event": "yoni:bright_middle"
+          },
+          {
+            "filters": {
+              "test": "is_brightness",
+              "operator": ">",
+              "value": 0.8
+            },
+            "event": "yoni:bright_high"
+          },
+          {
+            "filters": {
+              "test": "in_lava"
+            },
+            "event": "yoni:fire_immune_0"
+          },
+          {
+            "filters": {
+              "test": "in_lava",
+              "value": false
+            },
+            "event": "yoni:fire_immune_1"
+          }
+        ]
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "lava",
+            "deals_damage": false
+          },
+          {
+            "cause": "fire",
+            "deals_damage": false
+          },
+          {
+            "cause": "fire_tick",
+            "deals_damage": false
+          },
+          {
+            "cause": "piston",
+            "deals_damage": false
+          },
+          {
+            "cause": "entity_explosion",
+            "on_damage": {
+              "event": "yoni:guxi_explosion"
+            }
+          },
+          {
+            "cause": "block_explosion",
+            "on_damage": {
+              "event": "yoni:guxi_explosion"
+            }
+          },
+          {
+            "cause": "all",
+            "on_damage": {
+              "event": "yoni:guxi_damage_default"
+            }
           }
         ]
       },
@@ -92,8 +235,7 @@
       "minecraft:experience_reward": {
         "on_death": "Math.Min(query.player_level * 7, 100)"
       },
-      "minecraft:is_hidden_when_invisible": {
-      },
+      "minecraft:is_hidden_when_invisible": {},
       "minecraft:loot": {
         "table": "loot_tables/empty.json"
       },
@@ -115,8 +257,7 @@
         "value": 0,
         "max": 1
       },
-      "minecraft:physics": {
-      },
+      "minecraft:physics": {},
       "minecraft:rideable": {
         "seat_count": 2,
         "family_types": [
@@ -125,13 +266,21 @@
         "pull_in_entities": true,
         "seats": [
           {
-            "position": [ 0.4, -0.2, -0.1 ],
+            "position": [
+              0.4,
+              -0.2,
+              -0.1
+            ],
             "min_rider_count": 0,
             "max_rider_count": 0,
             "lock_rider_rotation": 0
           },
           {
-            "position": [ -0.4, -0.2, -0.1 ],
+            "position": [
+              -0.4,
+              -0.2,
+              -0.1
+            ],
             "min_rider_count": 1,
             "max_rider_count": 2,
             "lock_rider_rotation": 0
@@ -144,12 +293,93 @@
     "events": {
       "yoni:guxi_area_attack": {
         "add": {
-          "component_groups": [ "guxi:area_attack" ]
+          "component_groups": [
+            "guxi:area_attack"
+          ]
         }
       },
       "yoni:guxi_stop_area_attack": {
         "remove": {
-          "component_groups": [ "guxi:area_attack" ]
+          "component_groups": [
+            "guxi:area_attack"
+          ]
+        }
+      },
+      "yoni:bright_high": {
+        "add": {
+          "component_groups": [
+            "yoni:variant_2"
+          ]
+        }
+      },
+      "yoni:bright_middle": {
+        "add": {
+          "component_groups": [
+            "yoni:variant_1"
+          ]
+        }
+      },
+      "yoni:bright_low": {
+        "add": {
+          "component_groups": [
+            "yoni:variant_0"
+          ]
+        }
+      },
+      "yoni:fire_immune_1": {
+        "add": {
+          "component_groups": [
+            "yoni:fire_immune_1"
+          ]
+        }
+      },
+      "yoni:fire_immune_0": {
+        "add": {
+          "component_groups": [
+            "yoni:fire_immune_0"
+          ]
+        }
+      },
+      "yoni:guxi_damage_default": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_damage_default"
+          ]
+        }
+      },
+      "yoni:reset_guxi_damage_default": {
+        "add": {
+          "component_groups": [
+            "yoni:reset_guxi_damage_default"
+          ]
+        }
+      },
+      "yoni:guxi_explosion": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi_explosion"
+          ]
+        }
+      },
+      "yoni:reset_guxi_explosion": {
+        "add": {
+          "component_groups": [
+            "yoni:reset_guxi_explosion"
+          ]
+        }
+      },
+      "yoni:physics_damage": {
+        "add": {
+          "component_groups": [
+            "yoni:physics_damage"
+          ]
+        }
+      },
+      "yoni:reset_physics_damage": {
+        "add": {
+          "component_groups": [
+            "yoni:reset_physics_damage"
+          ]
         }
       }
     }

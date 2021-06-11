@@ -3,10 +3,6 @@
 # 初始能量
 function yoni/guxi/energy/initial
 
-# 能量释放
-## 释放
-#function yoni/guxi/energy/free
-
 # 散逸能量
 scoreboard players add @s guxi-energy -2
 

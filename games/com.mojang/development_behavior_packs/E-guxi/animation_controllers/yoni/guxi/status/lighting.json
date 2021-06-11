@@ -1,0 +1,61 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.status.lighting": {
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "low": "query.variant == 0"
+            },
+            {
+              "middle": "query.variant == 1"
+            },
+            {
+              "high": "query.variant == 2"
+            }
+          ]
+        },
+        "low": {
+          "on_entry": [
+            "/function yoni/guxi/status/lighting/low"
+          ],
+          "transitions": [
+            {
+              "middle": "query.variant == 1"
+            },
+            {
+              "high": "query.variant == 2"
+            }
+          ]
+        },
+        "middle": {
+          "on_entry": [
+            "/function yoni/guxi/status/lighting/middle"
+          ],
+          "transitions": [
+            {
+              "low": "query.variant == 0"
+            },
+            {
+              "high": "query.variant == 2"
+            }
+          ]
+        },
+        "high": {
+          "on_entry": [
+            "/function yoni/guxi/status/lighting/high"
+          ],
+          "transitions": [
+            {
+              "low": "query.variant == 0"
+            },
+            {
+              "middle": "query.variant == 1"
+            }
+          ]
+        }   
+      }
+    }
+  }
+}

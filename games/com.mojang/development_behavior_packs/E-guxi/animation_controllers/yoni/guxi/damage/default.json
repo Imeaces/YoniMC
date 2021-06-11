@@ -1,0 +1,27 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.damage.defalut": {
+      "initial_state": "defalut",
+      "states": {
+        "defalut": {
+          "transitions": [
+            {
+              "defalut_damage": "query.is_shaking"
+            }
+          ]
+        },
+        "defalut_damage": {
+          "on_entry": [
+            "/function yoni/guxi/damage/default"
+          ],
+          "transitions": [
+            {
+              "defalut": "(1.0)"
+            }
+          ]
+        }   
+      }
+    }
+  }
+}
