@@ -1,4 +1,4 @@
-#yoni/init/guxi
+#yoni/guxi/init
 
 # 创建记分板
 ## 操作面板

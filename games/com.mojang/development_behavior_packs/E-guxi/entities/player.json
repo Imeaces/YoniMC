@@ -7,30 +7,20 @@
       "is_summonable": false,
       "is_experimental": false,
       "animations": {
-        "guxi": "controller.animation.yoni.guxi",
-        "status_alive": "controller.animation.yoni.status_alive"
+        "guxi": "controller.animation.yoni.guxi"
       },
       "scripts": {
         "animate": [
-          "guxi",
-          "status_alive"
+          "guxi"
         ]
       }
     },
     "component_groups": {
-      "guxi:dead": {
+      "guxi:low_health": {
         "minecraft:health": {
           "max": 1,
           "value": 1,
           "min": 0
-        },
-        "minecraft:hurt_on_condition": {
-          "damage_conditions": [
-            {
-              "damage_per_tick": 1,
-              "cause": "none"
-            }
-          ]
         }
       },
       "guxi:area_attack_with_target": {
