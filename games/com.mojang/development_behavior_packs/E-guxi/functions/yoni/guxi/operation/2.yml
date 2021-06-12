@@ -1,0 +1,28 @@
+operation:
+  functions:
+    resistance:
+      level:
+        - low
+        - middle
+        - high
+      mode:
+        - auto
+        - always
+        - none
+    status bar:
+      - true
+      - false
+    attack:
+      - auto
+      - none
+  attack:
+    - explosion
+    - hot
+  action:
+    - kill
+    -
+      energy:
+        mode:
+          - save
+          - normal
+          - power
