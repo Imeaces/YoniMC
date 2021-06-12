@@ -7,11 +7,13 @@
       "is_summonable": false,
       "is_experimental": false,
       "animations": {
-        "guxi": "controller.animation.yoni.guxi"
+        "guxi": "controller.animation.yoni.guxi",
+        "status_alive": "controller.animation.yoni.status_alive"
       },
       "scripts": {
         "animate": [
-          "guxi"
+          "guxi",
+          "status_alive"
         ]
       }
     },

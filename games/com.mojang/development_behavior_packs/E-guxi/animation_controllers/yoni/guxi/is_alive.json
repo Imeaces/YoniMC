@@ -1,26 +1,26 @@
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.yoni.guxi.status.moving": {
-      "initial_state": "stat",
+    "controller.animation.yoni.status_alive": {
+      "initial_state": "alive",
       "states": {
-        "stat": {
+        "alive": {
           "on_entry": [
-            "/function yoni/guxi/status/moving/0"
+            "/function yoni/status/alive/1"
           ],
           "transitions": [
             {
-              "moving": "query.is_moving"
+              "dead": "!query.is_alive"
             }
           ]
         },
-        "moving": {
+        "dead": {
           "on_entry": [
-            "/function yoni/guxi/status/moving/1"
+            "/function yoni/status/alive/2"
           ],
           "transitions": [
             {
-              "stat": "!query.is_moving"
+              "alive": "query.is_alive"
             }
           ]
         }
