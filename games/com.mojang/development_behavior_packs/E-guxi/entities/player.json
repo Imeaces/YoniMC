@@ -1,10 +1,11 @@
+//bridge-file-version: #1
 {
   "format_version": "1.16.0",
   "minecraft:entity": {
     "description": {
       "identifier": "minecraft:player",
       "is_spawnable": false,
-      "is_summonable": false,
+      "is_summonable": true,
       "is_experimental": false,
       "animations": {
         "guxi": "controller.animation.yoni.guxi"
@@ -16,48 +17,33 @@
       }
     },
     "component_groups": {
-      "guxi:low_health": {
+      "guxi:dead": {
         "minecraft:health": {
           "max": 1,
           "value": 1,
           "min": 0
-        }
-      },
-      "guxi:area_attack_with_target": {
-        "minecraft:area_attack": {
-          "cause": "attack",
-          "entity_filter": {
-            "any_of": [
-              {
-                "subject": "other",
-                "test": "is_family",
-                "operator": "not",
-                "value": "guxi"
-              },
-              {
-                "subject": "other",
-                "test": "is_target"
-              }
-            ]
-          },
-          "damage_range": 20,
-          "damage_per_tick": 20
-        }
-      },
-      "guxi:area_attack_target": {
-        "minecraft:area_attack": {
-          "cause": "attack",
-          "entity_filter": {
-            "subject": "other",
-            "test": "is_target"
-          },
-          "damage_range": 20,
-          "damage_per_tick": 20
+        },
+        "minecraft:spell_effects": {
+          "add_effects": [
+            {
+              "effect": "wither",
+              "duration": 1,
+              "amplifier": 20
+            }
+          ]
+        },
+        "minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "deals_damage": true,
+              "cause": "all"
+            }
+          ]
         }
       },
       "guxi:area_attack": {
         "minecraft:area_attack": {
-          "cause": "attack",
+          "cause": "entity_attack",
           "entity_filter": {
             "subject": "other",
             "test": "is_family",
@@ -92,7 +78,8 @@
         "minecraft:variant": {
           "value": 4
         }
-      }
+      },
+      "yoni:guxi": {}
     },
     "components": {
       "minecraft:health": {
@@ -127,7 +114,7 @@
         "damage": 0
       },
       "minecraft:environment_sensor": {
-        "triggers": []
+        "triggers": {}
       },
       "minecraft:damage_sensor": {
         "triggers": [
@@ -216,10 +203,29 @@
       "minecraft:conditional_bandwidth_optimization": {}
     },
     "events": {
-      "minecraft:entity_spawned": {
+      "yoni:guxi_dead": {
+        "add": {
+          "component_groups": [
+            "guxi:low_health"
+          ]
+        }
+      },
+      "yoni:player_respawn": {
         "remove": {
           "component_groups": [
             "guxi:dead"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "yoni:guxi"
+          ]
+        }
+      },
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi"
           ]
         }
       },
