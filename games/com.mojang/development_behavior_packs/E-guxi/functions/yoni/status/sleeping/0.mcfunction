@@ -1,4 +1,5 @@
-#yoni/status/awake
+#yoni/status/sleeping/0
+
 
 #init
 function yoni/init/status_sleeping

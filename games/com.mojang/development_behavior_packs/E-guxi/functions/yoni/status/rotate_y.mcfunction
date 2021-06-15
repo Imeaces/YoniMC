@@ -1,5 +1,4 @@
 #yoni/status/rotate_y
-
 scoreboard objectives add rotate_y dummy
 
 scoreboard players set @s rotate_y -180

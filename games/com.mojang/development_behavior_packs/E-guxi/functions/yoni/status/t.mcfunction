@@ -1,3 +1,5 @@
+#yoni/status/t
+
 scoreboard objectives add a dummy
 scoreboard objectives add b dummy
 scoreboard objectives add c dummy

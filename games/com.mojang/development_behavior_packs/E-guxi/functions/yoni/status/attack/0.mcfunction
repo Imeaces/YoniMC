@@ -1,4 +1,5 @@
-#yoni/status/silent
+#yoni/status/attack/0
+
 
 #init
 function yoni/init/status_attack

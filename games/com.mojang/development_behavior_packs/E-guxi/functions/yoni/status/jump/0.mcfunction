@@ -1,4 +1,5 @@
-#yoni/status/stand
+#yoni/status/jump/0
+
 
 #init
 function yoni/init/status_jump

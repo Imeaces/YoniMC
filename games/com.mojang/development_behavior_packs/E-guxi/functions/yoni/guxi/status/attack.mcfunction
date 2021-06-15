@@ -1,4 +1,5 @@
-#yoni/guxi/status/attack/0
+#yoni/guxi/status/attack
+
 
 scoreboard objectives add guxi-attack dummy
 

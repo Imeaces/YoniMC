@@ -1,4 +1,5 @@
-#yoni/guxi/energy/fill
+#yoni/guxi/energy/full
+
 
 scoreboard players add @s guxi-energyl 1
 scoreboard players add @s guxi-energy -3600000

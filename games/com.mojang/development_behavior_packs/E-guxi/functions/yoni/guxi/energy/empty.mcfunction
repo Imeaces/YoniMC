@@ -1,4 +1,5 @@
-# 能量用尽
+#yoni/guxi/energy/empty
+
 
 scoreboard players add @s guxi-energyl -1
 scoreboard players add @s guxi-energy 3600000

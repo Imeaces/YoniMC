@@ -9,89 +9,27 @@ execute @s[scores={guxi-opt=11..}] ~ ~ ~ scoreboard players set @s guxi-opt 0
 execute @s[scores={guxi-opt=1..}] ~ ~ ~ scoreboard players add @s guxi-opt 1
 
 # 计算与原始角度的差距
-function yoni/status/rotate_y
-scoreboard players operation @s guxi-ryo = @s rotate_y
-scoreboard players operation @s guxi-ryo -= @s guxi-ryx
-execute @s[scores={guxi-ryo=180..}] ~ ~ ~ scoreboard players add @s guxi-ryo -360
-execute @s[scores={guxi-ryo=..-180}] ~ ~ ~ scoreboard players add @s guxi-ryo 360
+function yoni/guxi/operation/ryo
+
+# 退出面板
+execute @s[scores={guxi-opt=1..},rx=-85] ~ ~ ~ scoreboard players set @s guxi-op 4
 
 # 根据角度显示面板
 
-## 能量显示状态
-execute @s[scores={guxi-ryo=-180..180,guxi-display=1}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate": "能量显示：%%s","with":{"rawtext":[{"translate": "开"}]}}]}
-execute @s[scores={guxi-ryo=-180..180,guxi-display=0}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate": "能量显示：%%s","with":{"rawtext":[{"translate": "关"}]}}]}
-### 进入3号
-execute @s[scores={guxi-ryo=-180..180,guxi-opt=1..},rx=-85] ~ ~ ~ scoreboard players set @s guxi-op 3
+execute @s[scores={guxi-ryo=-50..-31}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n$$~~~~~~~~"}]}
 
-## 护盾状态
-execute @s[scores={guxi-ryo=-180..180,guxi-display=1}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate": "能量显示：%%s","with":{"rawtext":[{"translate": "开"}]}}]}
-execute @s[scores={guxi-ryo=-180..180,guxi-display=0}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate": "能量显示：%%s","with":{"rawtext":[{"translate": "关"}]}}]}
+execute @s[scores={guxi-ryo=-30..-11}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§        ~~~~~~~~"}]}
 
+execute @s[scores={guxi-ryo=-10..10}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§                ~~~~~~~~"}]}
 
-# 退出面板的方法
-execute @s[scores={guxi-opt=1..},rx=-85] ~ ~ ~ scoreboard players set @s guxi-op 4
+execute @s[scores={guxi-ryo=11..10}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§                        ~~~~~~~~"}]}
 
-execute @s[scores={guxi-ryo=-180..-1,guxi-display=1}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate": "§r================________________\n§r| 能量显示: %%s ||     护盾     |\n§r================~~~~~~~~~~~~~~~~","with": "开"}]}
-execute @s[scores={guxi-ryo=-180..-1,guxi-display=0}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate": "§r================________________\n§r| 能量显示: %%s ||     护盾     |\n§r================~~~~~~~~~~~~~~~~","with": "关"}]}
+execute @s[scores={guxi-ryo=-10..10}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§                                ~~~~~~~~"}]}
 
+# 根据角度转到下一面板
 
-
-
-
-================________________
-| 能量显示: 开 ||     护盾     |
-================~~~~~~~~~~~~~~~~
-
-================________________
-| 能量显示: 关 ||     护盾     |
-================~~~~~~~~~~~~~~~~
-
-================________________
-|   能量显示   ||     护盾     |
-================~~~~~~~~~~~~~~~~
-{   关   [开]  }
-
-================________________
-|   能量显示   |      护盾     |
-================~~~~~~~~~~~~~~~~
-{  [关]   开   }
-
-________________================
-|   能量显示   ||   护盾: 关   |
-~~~~~~~~~~~~~~~~================
-
-________________================
-|   能量显示   ||   护盾: 小   |
-~~~~~~~~~~~~~~~~================
-
-________________================
-|   能量显示   ||   护盾: 中   |
-~~~~~~~~~~~~~~~~================
-
-________________================
-|   能量显示   ||   护盾: 大   |
-~~~~~~~~~~~~~~~~================
-
-________________================
-|   能量显示   ||     护盾     |
-~~~~~~~~~~~~~~~~================
-                [··············]
-                {     [关]     }
-
-________________================
-|   能量显示   ||     护盾     |
-~~~~~~~~~~~~~~~~================
-                [####··········]
-                {     [小]     }
-
-________________================
-|   能量显示   ||     护盾     |
-~~~~~~~~~~~~~~~~================
-                [##########····]
-                {     [中]     }
-
-________________================
-|   能量显示   ||     护盾     |
-~~~~~~~~~~~~~~~~================
-                [##############]
-                {     [大]     }
+execute @s[rxm=-60] ~ ~ ~ scoreboard players set @s guxi-op 20
+execute @s[scores={guxi-ryo=11..10,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 21
+execute @s[scores={guxi-ryo=11..10,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 21
+execute @s[scores={guxi-ryo=11..10,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 21
+execute @s[scores={guxi-ryo=11..10,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 21

@@ -1,4 +1,5 @@
-#yoni/guxi/status/jumping/0
+#yoni/guxi/status/jump/0
+
 
 scoreboard objectives add guxi-jumping dummy
 
