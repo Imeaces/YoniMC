@@ -1,4 +1,4 @@
-//bridge-file-version: #1
+//bridge-file-version: #2
 {
   "format_version": "1.16.0",
   "minecraft:entity": {
@@ -79,14 +79,35 @@
           "value": 4
         }
       },
-      "yoni:guxi": {}
+      "yoni:guxi": {
+        "minecraft:health": {
+          "max": 10,
+          "value": 10,
+          "min": 0
+        },
+        "minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "cause": "lava",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire",
+              "deals_damage": false
+            },
+            {
+              "cause": "fire_tick",
+              "deals_damage": false
+            },
+            {
+              "cause": "piston",
+              "deals_damage": false
+            }
+          ]
+        }
+      }
     },
     "components": {
-      "minecraft:health": {
-        "max": 10,
-        "value": 10,
-        "min": 0
-      },
       "minecraft:breathable": {
         "breathes_water": true,
         "breathes_solids": true,
@@ -115,26 +136,6 @@
       },
       "minecraft:environment_sensor": {
         "triggers": {}
-      },
-      "minecraft:damage_sensor": {
-        "triggers": [
-          {
-            "cause": "lava",
-            "deals_damage": false
-          },
-          {
-            "cause": "fire",
-            "deals_damage": false
-          },
-          {
-            "cause": "fire_tick",
-            "deals_damage": false
-          },
-          {
-            "cause": "piston",
-            "deals_damage": false
-          }
-        ]
       },
       "minecraft:nameable": {
         "always_show": false,
@@ -206,7 +207,7 @@
       "yoni:guxi_dead": {
         "add": {
           "component_groups": [
-            "guxi:low_health"
+            "guxi:dead"
           ]
         }
       },
