@@ -1,4 +1,4 @@
-//bridge-file-version: #2
+//bridge-file-version: #3
 {
   "format_version": "1.16.0",
   "minecraft:entity": {
@@ -9,12 +9,14 @@
       "is_experimental": false,
       "animations": {
         "guxi": "controller.animation.yoni.guxi",
-        "filters": "controller.animation.yoni.guxi.filters"
+        "filters": "controller.animation.yoni.guxi.filters",
+        "status_alive": "controller.animation.yoni.status_alive"
       },
       "scripts": {
         "animate": [
           "guxi",
-          "filters"
+          "filters",
+          "status_alive"
         ]
       }
     },
@@ -45,13 +47,7 @@
       },
       "guxi:area_attack": {
         "minecraft:area_attack": {
-          "cause": "entity_attack",
-          "entity_filter": {
-            "subject": "other",
-            "test": "is_family",
-            "operator": "not",
-            "value": "guxi"
-          },
+          "cause": "fire_tick",
           "damage_range": 20,
           "damage_per_tick": 20
         }
@@ -95,7 +91,8 @@
             },
             {
               "cause": "fire_tick",
-              "deals_damage": false
+              "deals_damage": false,
+              "on_damage": {}
             },
             {
               "cause": "piston",

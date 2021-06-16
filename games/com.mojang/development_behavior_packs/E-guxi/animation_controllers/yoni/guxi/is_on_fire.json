@@ -1,0 +1,30 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.is_on_fire": {
+      "initial_state": "not_on_fire",
+      "states": {
+        "not_on_fire": {
+          "on_entry": [
+            "/function yoni/filters/is_on_fire/0"
+          ],
+          "transitions": [
+            {
+              "is_on_fire": "query.is_on_fire"
+            }
+          ]
+        },
+        "is_on_fire": {
+          "on_entry": [
+            "/function yoni/filters/is_on_fire/1"
+          ],
+          "transitions": [
+            {
+              "not_on_fire": "!query.is_on_fire"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
