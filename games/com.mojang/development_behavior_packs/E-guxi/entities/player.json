@@ -1,4 +1,4 @@
-//bridge-file-version: #6
+//bridge-file-version: #2
 {
   "format_version": "1.16.0",
   "minecraft:entity": {
@@ -9,12 +9,12 @@
       "is_experimental": false,
       "animations": {
         "guxi": "controller.animation.yoni.guxi",
-        "filter": "controller.animation.yoni.guxi.filters"
+        "filters": "controller.animation.yoni.guxi.filters"
       },
       "scripts": {
         "animate": [
           "guxi",
-          "filter"
+          "filters"
         ]
       }
     },
@@ -30,7 +30,7 @@
             {
               "effect": "wither",
               "duration": 1,
-              "amplifier": 20
+              "amplifier": 6
             }
           ]
         },
@@ -102,38 +102,43 @@
               "deals_damage": false
             }
           ]
+        },
+        "minecraft:breathable": {
+          "breathes_water": true,
+          "breathes_solids": true,
+          "breathes_lava": true,
+          "breathes_air": true,
+          "generates_bubbles": false
+        },
+        "minecraft:type_family": {
+          "family": [
+            "guxi",
+            "evil",
+            "spirit",
+            "yoni"
+          ]
+        },
+        "minecraft:collision_box": {
+          "width": 0.6,
+          "height": 1.8
+        },
+        "minecraft:scale": {
+          "value": 0.76
+        },
+        "minecraft:can_climb": false,
+        "minecraft:attack": {
+          "damage": 0
+        },
+        "minecraft:experience_reward": {
+          "on_death": "query.scoreboard('guxi-energyl')"
         }
-      },
-      "yoni:filter_entry": {
-        "minecraft:is_sheared": {}
       }
     },
     "components": {
-      "minecraft:breathable": {
-        "breathes_water": true,
-        "breathes_solids": true,
-        "breathes_lava": true,
-        "breathes_air": true,
-        "generates_bubbles": false
-      },
-      "minecraft:type_family": {
-        "family": [
-          "guxi",
-          "evil",
-          "spirit",
-          "yoni"
-        ]
-      },
-      "minecraft:collision_box": {
-        "width": 0.6,
-        "height": 1.8
-      },
-      "minecraft:scale": {
-        "value": 0.76
-      },
-      "minecraft:can_climb": false,
-      "minecraft:attack": {
-        "damage": 0
+      "minecraft:health": {
+        "max": 10,
+        "value": 10,
+        "min": 0
       },
       "minecraft:environment_sensor": {
         "triggers": [
@@ -150,10 +155,11 @@
                 {
                   "test": "has_tag",
                   "operator": "not",
-                  "value": "yoni:in_lava"
+                  "value": "filters:in_lava"
                 }
               ]
-            }
+            },
+            "event": "yoni:set_variant_1"
           },
           {
             "filters": {
@@ -168,11 +174,11 @@
                 },
                 {
                   "test": "has_tag",
-                  "operator": "equals",
-                  "value": "yoni:in_lava"
+                  "value": "filters:in_lava"
                 }
               ]
-            }
+            },
+            "event": "yoni:set_variant_2"
           }
         ]
       },
@@ -183,9 +189,6 @@
       "minecraft:pushable": {
         "is_pushable": true,
         "is_pushable_by_piston": true
-      },
-      "minecraft:experience_reward": {
-        "on_death": "Math.Min(query.player_level * 7, 100)"
       },
       "minecraft:is_hidden_when_invisible": {},
       "minecraft:loot": {
@@ -243,6 +246,13 @@
       "minecraft:conditional_bandwidth_optimization": {}
     },
     "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": [
+            "yoni:guxi"
+          ]
+        }
+      },
       "yoni:guxi_dead": {
         "add": {
           "component_groups": [
@@ -256,13 +266,6 @@
             "guxi:dead"
           ]
         },
-        "add": {
-          "component_groups": [
-            "yoni:guxi"
-          ]
-        }
-      },
-      "minecraft:entity_spawned": {
         "add": {
           "component_groups": [
             "yoni:guxi"
@@ -315,25 +318,6 @@
         "add": {
           "component_groups": [
             "yoni:variant_4"
-          ]
-        }
-      },
-      "yoni:reset_filter": {
-        "remove": {
-          "component_groups": [
-            "yoni:filter_entry"
-          ]
-        },
-        "add": {
-          "component_groups": [
-            "yoni:variant_0"
-          ]
-        }
-      },
-      "yoni:entry_filter": {
-        "add": {
-          "component_groups": [
-            "yoni:filter_entry"
           ]
         }
       }
