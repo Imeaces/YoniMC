@@ -1,4 +1,4 @@
-#yoni/init/status_alive
+#yoni/init/status_dead
 
 # create objectives
 scoreboard objectives add death_count dummy
