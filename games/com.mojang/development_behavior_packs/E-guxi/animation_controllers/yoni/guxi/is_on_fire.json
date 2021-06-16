@@ -1,7 +1,7 @@
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.yoni.is_on_fire": {
+    "controller.animation.yoni.filters.is_on_fire": {
       "initial_state": "not_on_fire",
       "states": {
         "not_on_fire": {

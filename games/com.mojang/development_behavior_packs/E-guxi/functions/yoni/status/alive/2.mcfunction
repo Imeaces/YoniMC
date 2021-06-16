@@ -1,8 +1,9 @@
 #yoni/status/alive/2
 
 #init
-function yoni/init/status_alive
+function yoni/init/status_dead
 
-#set score tag
-scoreboard players set @s alive 2
 scoreboard players add @s death_count 1
+
+#set tag
+execute @s[tag=status:alive] ~ ~ ~ tag @s remove status:alive

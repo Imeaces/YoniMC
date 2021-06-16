@@ -1,3 +1,3 @@
 #yoni/filters/in_lava/true
 
-tag @s add filters:in_lava
+execute @s[tag=!filters:in_lava] ~ ~ ~ tag @s add filters:in_lava

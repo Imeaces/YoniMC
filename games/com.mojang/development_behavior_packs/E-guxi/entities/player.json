@@ -10,12 +10,14 @@
       "animations": {
         "guxi": "controller.animation.yoni.guxi",
         "filters": "controller.animation.yoni.guxi.filters",
-        "status_alive": "controller.animation.yoni.status_alive"
+        "status_alive": "controller.animation.yoni.status_alive",
+        "filters_is_on_fire": "controller.animation.yoni.filters.is_on_fire"
       },
       "scripts": {
         "animate": [
           "guxi",
           "filters",
+          "filters_is_on_fire",
           "status_alive"
         ]
       }
