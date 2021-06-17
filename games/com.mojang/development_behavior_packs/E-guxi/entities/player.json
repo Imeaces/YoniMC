@@ -1,4 +1,4 @@
-//bridge-file-version: #3
+//bridge-file-version: #4
 {
   "format_version": "1.16.0",
   "minecraft:entity": {
@@ -131,7 +131,12 @@
         "minecraft:experience_reward": {
           "on_death": "query.scoreboard('guxi-energyl')"
         }
-      }
+      },
+      "guxi:protect0": {},
+      "guxi:protect1": {},
+      "guxi:protect3": {},
+      "guxi:protect2": {},
+      "guxi:elytra": {}
     },
     "components": {
       "minecraft:health": {
@@ -317,6 +322,34 @@
         "add": {
           "component_groups": [
             "yoni:variant_4"
+          ]
+        }
+      },
+      "yoni:guxi_protect0": {
+        "add": {
+          "component_groups": [
+            "guxi:protect0"
+          ]
+        }
+      },
+      "yoni:guxi_protect1": {
+        "add": {
+          "component_groups": [
+            "guxi:protect1"
+          ]
+        }
+      },
+      "yoni:guxi_protect2": {
+        "add": {
+          "component_groups": [
+            "guxi:protect2"
+          ]
+        }
+      },
+      "yoni:guxi_protect3": {
+        "add": {
+          "component_groups": [
+            "guxi:protect3"
           ]
         }
       }
