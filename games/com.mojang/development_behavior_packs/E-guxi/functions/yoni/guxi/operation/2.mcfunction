@@ -16,7 +16,7 @@ execute @s[scores={guxi-opt=1..},rx=-85] ~ ~ ~ scoreboard players set @s guxi-op
 
 # 根据角度显示面板
 
-execute @s[scores={guxi-ryo=-50..-31}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n$$~~~~~~~~"}]}
+execute @s[scores={guxi-ryo=-50..-31}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§~~~~~~~~"}]}
 
 execute @s[scores={guxi-ryo=-30..-11}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§        ~~~~~~~~"}]}
 
@@ -33,3 +33,4 @@ execute @s[scores={guxi-ryo=-50..-31,guxi-op=20}] ~ ~ ~  scoreboard players set 
 execute @s[scores={guxi-ryo=-30..-11,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 22
 execute @s[scores={guxi-ryo=11..30,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 23
 execute @s[scores={guxi-ryo=31..50,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 24
+execute @s[scores={guxi-op=20}] ~ ~ ~ scoreboard players set @s guxi-op 2
