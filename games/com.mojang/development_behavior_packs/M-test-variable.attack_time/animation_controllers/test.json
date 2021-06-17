@@ -1,0 +1,65 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.test": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "/say 开始测试"
+          ],
+          "transitions": [
+            {
+              "loop0": "variable.attack_time < 0"
+            },
+            {
+              "loop1": "variable.attack_time = 0"
+            },
+            {
+              "loop2": "variable.attack_time > 0"
+            }
+          ]
+        },
+        "loop0": {
+          "on_entry": [
+            "/say 小于0"
+          ],
+          "transitions": [
+            {
+              "loop1": "variable.attack_time = 0"
+            },
+            {
+              "loop2": "variable.attack_time > 0"
+            }
+          ]
+        },
+        "loop0": {
+          "on_entry": [
+            "/say 等于0"
+          ],
+          "transitions": [
+            {
+              "loop0": "variable.attack_time < 0"
+            },
+            {
+              "loop2": "variable.attack_time > 0"
+            }
+          ]
+        },
+        "loop2": {
+          "on_entry": [
+            "/say 大于0"
+          ],
+          "transitions": [
+            {
+              "loop0": "variable.attack_time < 0"
+            },
+            {
+              "loop1": "variable.attack_time = 0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
