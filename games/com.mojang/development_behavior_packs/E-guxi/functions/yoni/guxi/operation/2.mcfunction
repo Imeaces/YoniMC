@@ -22,14 +22,14 @@ execute @s[scores={guxi-ryo=-30..-11}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{
 
 execute @s[scores={guxi-ryo=-10..10}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§                ~~~~~~~~"}]}
 
-execute @s[scores={guxi-ryo=11..10}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§                        ~~~~~~~~"}]}
+execute @s[scores={guxi-ryo=11..30}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§                        ~~~~~~~~"}]}
 
-execute @s[scores={guxi-ryo=-10..10}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§                                ~~~~~~~~"}]}
+execute @s[scores={guxi-ryo=31..50}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§                                ~~~~~~~~"}]}
 
 # 根据角度转到下一面板
 
 execute @s[rxm=-60] ~ ~ ~ scoreboard players set @s guxi-op 20
-execute @s[scores={guxi-ryo=11..10,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 21
-execute @s[scores={guxi-ryo=11..10,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 21
-execute @s[scores={guxi-ryo=11..10,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 21
-execute @s[scores={guxi-ryo=11..10,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 21
+execute @s[scores={guxi-ryo=-50..-31,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 21
+execute @s[scores={guxi-ryo=-30..-11,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 22
+execute @s[scores={guxi-ryo=11..30,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 23
+execute @s[scores={guxi-ryo=31..50,guxi-op=20}] ~ ~ ~  scoreboard players set @s guxi-op 24
