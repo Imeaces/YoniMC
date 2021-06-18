@@ -7,7 +7,7 @@ EOM
 cd -P .
 wd="${PWD}"
 main() {
-  find -type f -name "*.mcfunction" | while read -r; do
+  find "${wd}" -type f -name "*.mcfunction" | while read -r; do
     replace &
   done
   wait
@@ -31,7 +31,7 @@ replace() {
   if [ "$pathHead" != "$fileHead" ]; then
     tmp=$(mktemp)
     cat "$REPLY" > "$tmp"
-    sed -i "1s@^#.*@#${pathHead}@;1s@^[^#].*@#${pathHead}\n&@" "$tmp"
+    sed -i "1s@^#.*@#${pathHead}@;1s@^[^#].*@#${pathHead}\n&@;1s@^\$@#${pathHead}@" "$tmp"
     nmtime=$(stat -c %Y "$REPLY")
     if [ "$mtime" = "$nmtime" ]; then
       cat "$tmp" > "$REPLY"
