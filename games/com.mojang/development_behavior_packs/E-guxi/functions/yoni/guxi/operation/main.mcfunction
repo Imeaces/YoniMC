@@ -1,16 +1,16 @@
 #yoni/guxi/operation/main
 
-# 注意：由于可能需要操控大量变量，所以部分记分板不会在初始化文件中添加，而是运行时添加
+# some objcetives will be added in running
 
-# 初始化
+# initial
 scoreboard players add @s guxi-opt 0
 scoreboard players add @s guxi-op 0
 
-# 主面板
-## 当guxi:display为1时显示面板
+# main
+## status bar
 execute @s[scores={guxi-display=1,guxi-opt=0,guxi-op=0}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"能量：%%s, %%s","with":{"rawtext":[{"score":{"objective":"guxi-energy","name":"*"}},{"score":{"objective":"guxi-energyl","name":"*"}}]}}]}
 
-## 抬头计时
+## timer when 抬头
 execute @s[scores={guxi-op=0},rx=-85] ~ ~ ~ scoreboard players add @s guxi-opt 1
 
 ## 文字提示
