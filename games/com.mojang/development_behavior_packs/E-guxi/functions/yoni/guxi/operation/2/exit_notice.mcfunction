@@ -1,4 +1,4 @@
-#yoni/guxi/operation/5
+#yoni/guxi/operation/2/exit_notice
 
 tellraw @s {"rawtext":[{"translate":"已退出面板"}]}
 scoreboard players add @s guxi-opt 1

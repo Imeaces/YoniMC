@@ -1,4 +1,4 @@
-#yoni/guxi/operation/2
+#yoni/guxi/operation/2/base
 
 # 进入时应该是抬头状态
 # 在检测到低头时才开始计时
