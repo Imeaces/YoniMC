@@ -35,6 +35,8 @@ replace() {
     nmtime=$(stat -c %Y "$REPLY")
     if [ "$mtime" = "$nmtime" ]; then
       cat "$tmp" > "$REPLY"
+    else
+      printf "文件“$REPLY”被修改，跳过\n"
     fi
     rm -f "$tmp"
     return
