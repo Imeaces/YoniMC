@@ -7,9 +7,7 @@ execute @s[scores={guxi-opt=10}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"trans
 execute @s[scores={guxi-opt=20}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"将会在%%s秒后打开操作中心","with":["1.0"]}]}
 execute @s[scores={guxi-opt=30}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"将会在%%s秒后打开操作中心","with":["0.5"]}]}
 
-
-execute @s[scores={guxi-opt=1..},rxm=-84] ~ ~ ~ tellraw @s {"rawtext":[{"translate":"中止"}]}
-execute @s[scores={guxi-opt=1..},rxm=-84] ~ ~ ~ scoreboard players set @s guxi-opt 0
+execute @s[rxm=-84] ~ ~ ~ scoreboard players set @s guxi-op 11
 
 ## 两秒后打开
-execute @s[scores={guxi-opt=40..}] ~ ~ ~ scoreboard players set @s guxi-op 11
+execute @s[scores={guxi-opt=40..}] ~ ~ ~ scoreboard players set @s guxi-op 12

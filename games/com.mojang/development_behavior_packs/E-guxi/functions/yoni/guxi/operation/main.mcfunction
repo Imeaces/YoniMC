@@ -9,8 +9,5 @@ scoreboard players add @s guxi-op 0
 #main
 ##exec
 
-execute @s[scores={guxi-op=1}] ~ ~ ~ function yoni/guxi/operation/1
-execute @s[scores={guxi-op=2}] ~ ~ ~ function yoni/guxi/operation/2
-execute @s[scores={guxi-op=3}] ~ ~ ~ function yoni/guxi/operation/3
-execute @s[scores={guxi-op=4}] ~ ~ ~ function yoni/guxi/operation/4
-execute @s[scores={guxi-op=21}] ~ ~ ~ function yoni/guxi/operation/2/1
+execute @s[scores={guxi-op=0}] ~ ~ ~ function yoni/guxi/operation/0/base
+execute @s[scores={guxi-op=1}] ~ ~ ~ function yoni/guxi/operation/1/base

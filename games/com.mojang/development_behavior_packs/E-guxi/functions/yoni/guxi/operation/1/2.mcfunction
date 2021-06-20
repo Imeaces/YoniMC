@@ -13,5 +13,5 @@ function yoni/status/rotate_y
 scoreboard players operation @s guxi:ryx = @s rotate_y
 
 # 设置
-scoreboard objectives add guxi-display dummy
-scoreboard players add @s guxi-display 0
+scoreboard objectives add guxi-opdp dummy
+scoreboard players add @s guxi-opdp 0
