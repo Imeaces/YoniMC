@@ -36,14 +36,16 @@ replace() {
     if [ "$mtime" = "$nmtime" ]; then
       cat "$tmp" > "$REPLY"
     else
-      printf "文件“$REPLY”被修改，跳过\n"
+      printf "文件“$REPLY”被修改，跳过\n" >&2
     fi
     rm -f "$tmp"
+    printf "文件“$REPLY”已修复\n"
     return
   fi
 }
 
 if [ "$1" ]; then
+  main
   while sleep "$1"; do
     main
   done
