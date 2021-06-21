@@ -14,4 +14,4 @@ function yoni/guxi/operation/2/d0
 
 # 根据角度转到下一面板
 
-execute @s[rxm=-60] ~ ~ ~ function yoni/guxi/operation/2/j1
+execute @s[rxm=-60] ~ ~ ~ scoreboard players set @s guxi-op -20

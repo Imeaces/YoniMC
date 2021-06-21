@@ -1,4 +1,4 @@
-#yoni/guxi/operation/1/set_display
+#yoni/guxi/operation/set/set_display
 
 execute @s[scores={guxi-display=0}] ~ ~ ~ scoreboard players set @s guxi-display -1
 
