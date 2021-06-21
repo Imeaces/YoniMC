@@ -1,4 +1,5 @@
-#yoni/guxi/operation/1/base
+#yoni/guxi/operation/0/1
+#op=1
 
 scoreboard players add @s guxi-opt 1
 

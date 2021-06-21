@@ -1,4 +1,4 @@
-#yoni/guxi/operation/2/exit0
+#yoni/guxi/operation/1/exit0
 
 title @s clear
 scoreboard players set @s guxi-opt 0

@@ -1,4 +1,5 @@
-#yoni/guxi/operation/2/base
+#yoni/guxi/operation/1/base
+#op=10
 
 # 进入时应该是抬头状态
 # 在检测到低头时开始显示

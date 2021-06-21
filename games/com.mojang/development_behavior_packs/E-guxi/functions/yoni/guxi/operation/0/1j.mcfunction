@@ -1,4 +1,5 @@
-#yoni/guxi/operation/1/2
+#yoni/guxi/operation/0/1j
+#op=-11
 
 # 清空计时器
 scoreboard players set @s guxi-opt 0

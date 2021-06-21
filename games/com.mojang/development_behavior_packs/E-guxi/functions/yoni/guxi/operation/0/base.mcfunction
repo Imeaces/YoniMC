@@ -1,4 +1,5 @@
 #yoni/guxi/operation/0/base
+#op=0
 
 # status bar
 execute @s[scores={guxi-opdp=!0,guxi-opt=0}] ~ ~ ~ function yoni/guxi/operation/0/actiobar

@@ -1,4 +1,4 @@
-#yoni/guxi/operation/2/0d
+#yoni/guxi/operation/1/d0
 
 # 计算与原始角度的差距
 function yoni/guxi/operation/ryo
