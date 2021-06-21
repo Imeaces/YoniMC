@@ -1,5 +1,17 @@
-#yoni/guxi/operation/1/1
+#yoni/guxi/operation/2/1
 
-tellraw @s {"rawtext":[{"translate":"中止"}]}
-scoreboard players set @s guxi-opt 0
-scoreboard players set @s guxi-op 0
+execute @s[scores={guxi-ryo=-50..-31}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§§                [ guxi ]\n§§[skill ][attack][      ][action][status]\n§§~~~~~~~~"}]}
+                [ guxi ]
+[skill ][attack][      ][action][status]
+~~~~~~~~
+    [resistance][      ][  attack  ]
+    ~~~~~~~~~~~~
+                [ guxi ]
+[skill ][attack][      ][action][status]
+~~~~~~~~
+    [resistance][      ][  attack  ]
+~~~~~~~~~~
+                [ guxi ]
+[skill ][attack][      ][action][status]
+~~~~~~~~
+    [resistance][      ][  attack  ]

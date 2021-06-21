@@ -4,7 +4,7 @@
 scoreboard players set @s guxi-opt 0
 
 # 打开2号面板
-scoreboard players set @s guxi-op 2
+scoreboard players set @s guxi-op 10
 
 # 获取当前ry旋转角并赋值
 scoreboard objectives add guxi-ryo dummy
