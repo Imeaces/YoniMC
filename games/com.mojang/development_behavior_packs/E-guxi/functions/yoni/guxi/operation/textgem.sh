@@ -1,8 +1,6 @@
 while read -r
 do
-if [ -z "$REPLY" ];then
-printf 
-break
-fi
-text+="$REPLY"
+text+="§§${REPLY}\\n"
 done
+echo -n '{"rawtext":[{"translate":"'
+echo "${text}"|sed -n 's/\n$'
