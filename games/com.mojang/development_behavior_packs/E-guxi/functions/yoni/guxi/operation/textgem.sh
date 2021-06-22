@@ -3,4 +3,4 @@ do
 text+="${REPLY}"$'\n'
 done
 text=$(echo -n "$text" | sed 's/.*/§§&/g' |sed ':label;N;s/\n/\\n/;t label')
-echo -n '{"rawtext":[{"translate":"'"$text"'"}]}'
+echo '{"rawtext":[{"translate":"'"$text"'"}]}'
