@@ -1,6 +1,6 @@
 while read -r
 do
-text+="§§${REPLY}\\n"
+text+="${REPLY}"$'\n'
 done
-echo -n '{"rawtext":[{"translate":"'
-echo "${text}"|sed -n 's/\n$'
+text=$(echo -n "$text" | sed 's/.*/§§&/g' |sed ':label;N;s/\n/\\n/;t label')
+echo -n '{"rawtext":[{"translate":"'"$text"'"}]}'
