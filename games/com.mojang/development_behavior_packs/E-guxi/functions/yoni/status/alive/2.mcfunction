@@ -1,4 +1,4 @@
-#
+#yoni/status/alive/2
 
 #init
 function yoni/init/status_dead

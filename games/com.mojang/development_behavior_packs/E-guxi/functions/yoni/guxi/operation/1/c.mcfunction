@@ -1,4 +1,4 @@
-#yoni/guxi/operation/1/1c
+#yoni/guxi/operation/1/c
 #op=-11
 
 titleraw @s actionbar {"rawtext":[{"translate":"已退出面板"}]}

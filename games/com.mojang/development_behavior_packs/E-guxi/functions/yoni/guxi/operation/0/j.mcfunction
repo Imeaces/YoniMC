@@ -1,4 +1,4 @@
-#yoni/guxi/operation/0/0j
+#yoni/guxi/operation/0/j
 #op=-2
 
 scoreboard players set @s guxi-op 0

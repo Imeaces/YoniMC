@@ -10,7 +10,7 @@ scoreboard players add @s guxi-opt 1
 execute @s[rx=-85] ~ ~ ~ scoreboard players set @s guxi-op -11
 
 # 显示面板
-function yoni/guxi/operation/2/d0
+function yoni/guxi/operation/2/d
 
 # 根据角度转到下一面板
 

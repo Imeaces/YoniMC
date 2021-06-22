@@ -1,4 +1,4 @@
-#yoni/guxi/operation/0/0c
+#
 #op=-1
 
 titleraw @s actionbar {"rawtext":[{"translate":"已取消"}]}
