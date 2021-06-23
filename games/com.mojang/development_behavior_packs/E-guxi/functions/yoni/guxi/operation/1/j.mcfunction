@@ -1,5 +1,5 @@
 #yoni/guxi/operation/1/j
-#op=-20
+#op=-12
 
 execute @s[scores={guxi-ryo=-180..-31}] ~ ~ ~  scoreboard players set @s guxi-op 21
 execute @s[scores={guxi-ryo=-30..-11}] ~ ~ ~  scoreboard players set @s guxi-op 22
