@@ -12,4 +12,4 @@ execute @s[scores={guxi-opt=30}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"trans
 execute @s[rxm=-84] ~ ~ ~ scoreboard players set @s guxi-op -1
 
 # 两秒后打开
-execute @s[scores={guxi-opt=40..}] ~ ~ ~ scoreboard players set @s guxi-op -3
+execute @s[scores={guxi-opt=40..}] ~ ~ ~ function yoni/guxi/operation/0/j1
