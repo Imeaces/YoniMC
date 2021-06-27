@@ -8,11 +8,8 @@ scoreboard players set @s guxi-opt 0
 scoreboard players set @s guxi-op 10
 
 # 获取当前ry旋转角并赋值
-scoreboard objectives add guxi-ryo dummy
-scoreboard objectives add guxi-ryx dummy
-function yoni/status/rotate_y
-scoreboard players operation @s guxi:ryx = @s rotate_y
+function yoni/guxi/operation/ryx
 
 # 设置
-scoreboard objectives add guxi-opdp dummy
-scoreboard players add @s guxi-opdp 0
+scoreboard objectives add guxi-opr dummy
+scoreboard players add @s guxi-opr 0

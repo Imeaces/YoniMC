@@ -5,8 +5,8 @@
 execute @s[rx=-85] ~ ~ ~ scoreboard players set @s guxi-op -11
 
 # 显示面板
-function yoni/guxi/operation/2/d
+function yoni/guxi/operation/1/d
 
 # 根据角度转到下一面板
 
-execute @s[rxm=-60] ~ ~ ~ scoreboard players set @s guxi-op -12
+execute @s[rxm=-60] ~ ~ ~ function yoni/guxi/operation/1/j1
