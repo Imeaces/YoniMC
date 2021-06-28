@@ -1,14 +1,18 @@
-#yoni/guxi/operation/0/j1
+#yoni/guxi/operation/s/3
 
-# 清空计时器
+# time.reset
 scoreboard players set @s guxi-opt 0
 
-# 打开2号面板
+# state(10)
 scoreboard players set @s guxi-op 10
 
-# 获取当前ry旋转角并赋值
+# ryx()
 function yoni/guxi/operation/ryx
 
-# 设置
+
+
+
+# 暂未使用，可忽略
+# objective.add(guxi-opr); objective.init(guxi-opr)
 scoreboard objectives add guxi-opr dummy
 scoreboard players add @s guxi-opr 0

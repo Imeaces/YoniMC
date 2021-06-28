@@ -1,6 +1,6 @@
 #yoni/guxi/operation/ryo
 
-# 计算与原始角度{guxi-ryx}的差距并赋值到{guxi-ryx}
+# 计算与原始角度{guxi-ryx}的差距并赋值到{guxi-ryo}
 
 function yoni/status/rotate_y
 scoreboard players operation @s guxi-ryo = @s rotate_y
