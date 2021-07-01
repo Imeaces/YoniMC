@@ -1,4 +1,1 @@
-pack.name=额外的附加内容-test1
-pack.description=测试内容：env中ability对flying的响应
-
-modules.extra_addon=data:额外的附加内容
+menu.yoni.guxi.open.0=将会在%%s秒后打开操作中心
