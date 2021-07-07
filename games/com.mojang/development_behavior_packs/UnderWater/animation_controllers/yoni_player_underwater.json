@@ -1,0 +1,27 @@
+//bridge-file-version: #0
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.yoni_player_underwater": {
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"player_underwater": "query.skin_id == 1"
+						}
+					]
+				},
+				"player_underwater": {
+					"transitions": [
+						{
+							"default": "query.skin_id == 1"
+						}
+					],
+					"on_entry": [
+						"/effect @s conduit_power 13 4 true"
+					]
+				}
+			}
+		}
+	}
+}
