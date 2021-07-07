@@ -1,0 +1,25 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "E-molang_query.target",
+    "description": "nil",
+    "uuid": "8d49f8e2-38f6-4d4f-8762-a5b067bfbe64",
+    "version": [0, 0, 1],
+    "min_engine_version": [1, 16, 100]
+  },
+  "modules": [
+    {
+      "description": "data:test",
+      "type": "data",
+      "uuid": "6e6841f9-7e42-4ec8-93d0-f4676c59e4ce",
+      "version": [0, 0, 1]
+    }
+  ],
+  "metadata": {
+    "authors": [
+      "Silvigarabis"
+    ],
+    "license": "MIT License",
+    "url": "https://github.com/Silvigarabis/Extra-Addon"
+  }
+}
