@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.test": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "/say 开始测试,等待n变成1"
+          ],
+          "transitions": [
+            {
+              "loop0": "query.scoreboard('n') == 1"
+            }
+          ]
+        },
+        "loop0": {
+          "animations": [
+            "controller.animation.test1"
+          ],
+          "on_entry": [
+            "/tellraw @s {\"rawtext\":[{\"text\":\"分数m，来源test。\"},{\"score\":{\"objective\":\"m\",\"name\":\"*\"}}]}"
+          ],
+          "transitions": [
+            {
+              "default": "query.scoreboard('n') != 1"
+            }
+          ]
+        }  
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+//bridge-file-version: #0
+{
+  "format_version": "1.16.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "yoni:guxi",
+      "is_summonable": true,
+      "is_spawnable": true,
+      "animations": {
+        "guxi": "controller.animation.yoni.guxi_loop"
+      },
+      "scripts": {
+        "animate": [
+          "guxi"
+        ]
+      }
+    },
+    "component_groups": {},
+    "components": {
+      "minecraft:behavior.move_to_lava": {
+        "priority": 5
+      }
+    },
+    "events": {}
+  }
+}

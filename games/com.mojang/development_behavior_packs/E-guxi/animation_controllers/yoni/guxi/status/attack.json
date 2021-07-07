@@ -1,0 +1,27 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.guxi.status.attack": {
+      "initial_state": "silent",
+      "states": {
+        "silent": {
+          "on_entry": [
+            "/function yoni/guxi/status/attack"
+          ],
+          "transitions": [
+            {
+              "attack": "variable.attack_time > 0"
+            }
+          ]
+        },
+        "attack": {
+          "transitions": [
+            {
+              "silent": "variable.attack_time <= 0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

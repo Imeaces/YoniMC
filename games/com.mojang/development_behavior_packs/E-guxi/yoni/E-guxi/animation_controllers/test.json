@@ -1,0 +1,52 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.test": {
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "high": "query.actor_property('yoni:lighting') == 'high'"
+            },
+            {
+              "middle": "query.actor_property('yoni:lighting') == 'middle'"
+            },
+            {
+              "low": "query.actor_property('yoni:lighting') == 'low'"
+            }
+          ]
+        },
+        "high": {
+          "on_entry": [
+            "/say high"
+          ],
+          "transitions": [
+            {
+              "default": "query.actor_property('yoni:lighting') != 'high'"
+            }
+          ]
+        },
+        "middle": {
+          "on_entry": [
+            "/say middle"
+          ],
+          "transitions": [
+            {
+              "default": "query.actor_property('yoni:lighting') != 'middle'"
+            }
+          ]
+        },
+        "low": {
+          "on_entry": [
+            "/say low"
+          ],
+          "transitions": [
+            {
+              "default": "query.actor_property('yoni:lighting') != 'low'"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

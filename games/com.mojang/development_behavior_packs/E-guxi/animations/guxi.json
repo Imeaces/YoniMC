@@ -1,13 +1,13 @@
 {
   "format_version": "1.8.0",
   "animations": {
-    "animation.guxi_effects": {
+    "animation.yoni.guxi.effects": {
       "loop": true,
       "animation_length": 2,
       "timeline": {
         "0.0": [
-	        "/effect @s saturation 18 0 true"
-	      ]
+          "/function yoni/guxi/effects"
+        ]
       }
     },
     "animation.guxi_aboveground": {
@@ -15,10 +15,10 @@
       "animation_length": 2,
       "timeline": {
         "0.0": [
-	        "/effect @s strength 18 1 true",
-	        "/effect @s night_vision 18 0 true",
-	        "/effect @s regeneration 18 1 true"
-	      ]
+          "/effect @s strength 18 1 true",
+          "/effect @s night_vision 18 0 true",
+          "/effect @s regeneration 18 1 true"
+        ]
       }
     },
     "animation.guxi_aboveground_light": {
@@ -26,10 +26,10 @@
       "animation_length": 2,
       "timeline": {
         "0.0": [
-	        "/effect @s strength 18 3 true",
-	        "/effect @s haste 18 0 true",
-	        "/effect @s night_vision 18 0 true"
-	      ]
+          "/effect @s strength 18 3 true",
+          "/effect @s haste 18 0 true",
+          "/effect @s night_vision 18 0 true"
+        ]
       }
     },
     "animation.guxi_underground": {
@@ -37,10 +37,10 @@
       "animation_length": 2,
       "timeline": {
         "0.0": [
-	        "/effect @s blindness 3 0 true",
-	        "/effect @s slowness 18 1 true",
-	        "/effect @s weakness 18 2 true"
-	      ]
+          "/effect @s blindness 3 0 true",
+          "/effect @s slowness 18 1 true",
+          "/effect @s weakness 18 2 true"
+        ]
       }
     },
     "animation.guxi_underground_power": {
@@ -48,11 +48,11 @@
       "animation_length": 2,
       "timeline": {
         "0.0": [
-	        "/effect @s haste 18 0 true",
-	        "/effect @s night_vision 18 0 true",
-	        "/effect @s slowness 18 0 true",
-	        "/effect @s regeneration 18 0 true"
-	      ]
+          "/effect @s haste 18 0 true",
+          "/effect @s night_vision 18 0 true",
+          "/effect @s slowness 18 0 true",
+          "/effect @s regeneration 18 0 true"
+        ]
       }
     },
     "animation.guxi_lowing": {
@@ -60,10 +60,10 @@
       "animation_length": 2,
       "timeline": {
         "0.0": [
-	        "/effect @s slowness 18 5 true",
-	        "/effect @s blindness 3 0 true",
-	        "/effect @s mining_fatigue 18 0 true",
-	        "/title @s actionbar 高度过低"
+          "/effect @s slowness 18 5 true",
+          "/effect @s blindness 3 0 true",
+          "/effect @s mining_fatigue 18 0 true",
+          "/title @s actionbar 高度过低"
         ]
       }
     }

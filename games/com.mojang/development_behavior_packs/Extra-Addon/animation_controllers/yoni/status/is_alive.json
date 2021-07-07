@@ -18,7 +18,7 @@
         "dead": {
           "on_entry": [
             "/function yoni/status/alive/2",
-            "v.is_alive = 0;"
+            "v.is_alive = 2;"
           ],
           "transitions": [
             {
