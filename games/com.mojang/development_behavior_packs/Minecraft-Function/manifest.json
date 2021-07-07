@@ -1,0 +1,18 @@
+{
+    "format_version": 1,
+    "header": {
+        "name": "Minecraft Functions",
+        "description": "这是一个无聊时写的mcfunction",
+        "uuid": "f1dd600c-b1b3-4632-90dd-6a6a2c2882da",
+        "version": [0, 0, 1],
+        "min_engine_version": [1, 9, 0]
+    },
+    "modules": [
+        {
+            "description": "A Behaviour Pack",
+            "type": "data",
+            "uuid": "f80b92e1-184e-4c90-a0c2-c27dea182106",
+            "version": [0, 0, 1]
+        }
+    ]
+}

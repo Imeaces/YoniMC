@@ -1,3 +1,3 @@
-# Minecraft Dream
+# Minecraft Addon
 
-如梦般美好
+是一场美好的梦吗？
