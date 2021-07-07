@@ -1,0 +1,44 @@
+operation:
+  functions:
+    resistance:
+      level:
+        - low
+        - middle
+        - high
+      mode:
+        - auto
+        - always
+        - none
+    status bar:
+      - true
+      - false
+    attack:
+      - auto
+      - none
+  attack:
+    - explosion
+    - hot
+  action:
+    - kill
+    -
+      energy:
+        mode:
+          - save
+          - normal
+          - power
+
+[操作中心]
+技能                         %攻击   %行为               %状态
+护盾                 /攻击   %爆炸 热 %自杀 能量          %能量显示
+等级    |模式        /自动 无%        %    /模式         %开 关
+低 中 高|打开 自动 无/       %        %    /节能 普通 高效
+
+        [ guxi ]
+[skill ][attack][action]
+~~~~~~~~
+        [ guxi ]
+[skill ][attack][action]
+        ~~~~~~~~
+        [ guxi ]
+[skill ][attack][action]
+                ~~~~~~~~
