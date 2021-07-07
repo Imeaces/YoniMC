@@ -1,0 +1,25 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "M-test-variable.attack_time",
+    "description": "nil",
+    "uuid": "46f1f6bf-45ba-4e25-9db7-9a2227e8382c",
+    "version": [0, 0, 1],
+    "min_engine_version": [1, 16, 100]
+  },
+  "modules": [
+    {
+      "description": "data:test",
+      "type": "data",
+      "uuid": "ad272a0a-fca2-4421-af9a-25833330acca",
+      "version": [0, 0, 1]
+    }
+  ],
+  "metadata": {
+    "authors": [
+      "Silvigarabis"
+    ],
+    "license": "MIT License",
+    "url": "https://github.com/Silvigarabis/Extra-Addon"
+  }
+}
