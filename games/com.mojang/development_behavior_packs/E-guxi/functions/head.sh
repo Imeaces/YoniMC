@@ -1,45 +1,46 @@
 path_to_head(){
   sed -E 's@^'"${wd}"'/(.*)\.mcfunction$@\1@' <<EOM
-$*
+$1
 EOM
 }
 
 cd -P .
 wd="${PWD}"
 main() {
-  find "${wd}" -type f -name "*.mcfunction" | while read -r; do
+  find "${wd}" -type f -name "*.mcfunction" | while read -r file; do
     replace &
   done
   wait
 }
 
 replace() {
-  if [ ! -s "$REPLY" ]; then
+  # 如果文件为空
+  if [ ! -s "$file" ]; then
     {
       printf "#"
-      path_to_head "$REPLY"
-    } > "$REPLY"
+      path_to_head "$file"
+    } > "$file"
     return
   fi
 
-  mtime=$(stat -c %Y "$REPLY")
+  mtime=$(stat -c %Y "$file")
   
-  pathHead=$(path_to_head "$REPLY")
+  pathHead=$(path_to_head "$file")
   
-  fileHead=$(sed -nE '1s/^#(.*)/\1/p' "$REPLY")
+  fileHead=$(sed -nE '1s/^#(.*)/\1/p' "$file")
 
   if [ "$pathHead" != "$fileHead" ]; then
     tmp=$(mktemp)
-    cat "$REPLY" > "$tmp"
+    cat "$file" > "$tmp"
     sed -i "1s@^#.*@#${pathHead}@;1s@^[^#].*@#${pathHead}\n&@;1s@^\$@#${pathHead}@" "$tmp"
-    nmtime=$(stat -c %Y "$REPLY")
+    nmtime=$(stat -c %Y "$file")
     if [ "$mtime" = "$nmtime" ]; then
-      cat "$tmp" > "$REPLY"
+      cat "$tmp" > "$file"
     else
-      printf "文件“$REPLY”被修改，跳过\n" >&2
+      printf "文件“$file”被修改，跳过\n" >&2
     fi
     rm -f "$tmp"
-    printf "文件“$REPLY”已修复\n"
+    printf "文件“$file”已修复\n"
     return
   fi
 }

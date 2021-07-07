@@ -2,60 +2,55 @@
 #start guxi.loop
 #var guxi; init guxi;
 scoreboard objectives add guxi dummy
-scoreboard players add @s guxi -1
-execute @s[scores={guxi=..-1}] ~ ~ ~ scoreboard players set @s guxi 1
+scoreboard players add @s guxi 0
 
-#guxi.operation()
-function yoni/guxi/op/main
+#player.guxi.operation()
+execute @s[type=player,scores={guxi=1}] ~ ~ ~ function yoni/guxi/op/main
+#yoni.guxi.operation()
+execute @s[scores={guxi=1}] ~ ~ ~ function yoni/guxi/op/guxi
 
 #var guxi.energy.status; 
 scoreboard objectives add guxi-energys dummy
-# 0: >90%
-# 1: 60%~90%
-# 2: 20%~60%
-# 3: 3%~20%
-# 4: <3%
-# 5: 0%
-# -1: init
 
 #var guxi.energy; var guxi.energy.pool;
 scoreboard objectives add guxi-energy dummy
 scoreboard objectives add guxi-energyl dummy
 
 #init guxi.energy
-scoreboard players add @s guxi-energyl -1
-execute @s[scores={guxi-energyl=..-1}] ~ ~ ~ scoreboard players set @s guxi-energys -1
-##set default
-execute @s[scores={guxi-energys=-1}] ~ ~ ~ scoreboard players set @s guxi-energyl 100000
-execute @s[scores={guxi-energys=-1}] ~ ~ ~ scoreboard players set @s guxi-energy 360000
+##fill energy_pool
+execute @s[scores={guxi=0}] ~ ~ ~ scoreboard players set @s guxi-energyl 100000
+execute @s[scores={guxi=0}] ~ ~ ~ scoreboard players set @s guxi-energy 360000
 
 #guxi.alive
-##energy
-scoreboard players add @s guxi-energy -2
+##energy.drop(random(0,16))
+scoreboard players random @s guxi-energys 0 16
+scoreboard players operation @s guxi-energy -= @s guxi-energys
 
-#init guxi.energy.operation
+#var guxi.energy.operation
 scoreboard objectives add guxi-energyp dummy
-#init var
+#var var
 scoreboard objectives add var dummy
 
 #guxi.energy.pool
-execute @s[scores={guxi-energy=..0}] ~ ~ ~ scoreboard players set @s guxi-energys 1
-execute @s[scores={guxi-energy=360001..}] ~ ~ ~ scoreboard players set @s guxi-energys 2
-scoreboard players set num360000 var 360000
-##remove
-execute @s[scores={guxi-energys=1}] ~ ~ ~ scoreboard operation @s guxi-energyp = @s guxi-energy
-execute @s[scores={guxi-energys=1}] ~ ~ ~ scoreboard players operation @s guxi-energy %= num360000 var
-execute @s[scores={guxi-energys=1}] ~ ~ ~ scoreboard players operation @s guxi-energyp /= num360000 var
-execute @s[scores={guxi-energys=1}] ~ ~ ~ scoreboard players operation @s guxi-energyl += @s guxi-energyp
-execute @s[scores={guxi-energys=1}] ~ ~ ~ scoreboard players add @s guxi-energy 360000
-execute @s[scores={guxi-energys=1}] ~ ~ ~ scoreboard players add @s guxi-energyl -1
-##add
-execute @s[scores={guxi-energys=2}] ~ ~ ~ scoreboard players add @s guxi-energy -360000
-execute @s[scores={guxi-energys=2}] ~ ~ ~ scoreboard players add @s guxi-energyl 1
-execute @s[scores={guxi-energys=2}] ~ ~ ~ scoreboard operation @s guxi-energyp = @s guxi-energy
-execute @s[scores={guxi-energys=2}] ~ ~ ~ scoreboard players operation @s guxi-energy %= num360000 var
-execute @s[scores={guxi-energys=2}] ~ ~ ~ scoreboard players operation @s guxi-energyp /= num360000 var
-execute @s[scores={guxi-energys=2}] ~ ~ ~ scoreboard players operation @s guxi-energyl += @s guxi-energyp
+execute @s[scores={guxi-energy=..0}] ~ ~ ~ function yoni/guxi/energy/drop
+execute @s[scores={guxi-energy=360001..}] ~ ~ ~ function yoni/guxi/energy/raise
+
+#query guxi.energy
+execute @s[scores={guxi-energyl=..0}] ~ ~ ~ scoreboard players set @s guxi -2
+execute @s[scores={guxi-energyl=1..3000}] ~ ~ ~ scoreboard players set @s guxi 4
+execute @s[scores={guxi-energyl=3001..20000}] ~ ~ ~ scoreboard players set @s guxi 3
+execute @s[scores={guxi-energyl=20001..60000}] ~ ~ ~ scoreboard players set @s guxi 2
+execute @s[scores={guxi-energyl=60001..90000}] ~ ~ ~ scoreboard players set @s guxi 1
+execute @s[scores={guxi-energyl=90001..}] ~ ~ ~ scoreboard players set @s guxi 0
+execute @s[scores={guxi-energyl=100000..,guxi-energy=360000}] ~ ~ ~ scoreboard players set @s guxi -1
+
+# -1: full
+# 0: >90%
+# 1: 60%~90%
+# 2: 20%~60%
+# 3: 3%~20%
+# 4: <3%
+# -2: 0%
 
 #end guxi.loop
-execute @s[scores={guxi=0}] ~ ~ ~ scoreboard players set @s guxi 1
+scoreboard players set @s guxi 1

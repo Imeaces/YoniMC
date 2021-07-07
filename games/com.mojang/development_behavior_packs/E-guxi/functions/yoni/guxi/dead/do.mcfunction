@@ -1,2 +1,0 @@
-#yoni/guxi/dead/do
-
