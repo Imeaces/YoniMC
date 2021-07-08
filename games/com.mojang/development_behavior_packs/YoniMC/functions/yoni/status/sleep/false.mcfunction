@@ -1,1 +1,0 @@
-tag @s[tag=status.is_sleeping] remove status.is_sleeping
