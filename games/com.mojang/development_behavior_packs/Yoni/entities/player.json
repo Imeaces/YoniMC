@@ -5,19 +5,40 @@
       "identifier": "minecraft:player",
       "is_spawnable": false, "is_summonable": false, "is_experimental": false,
       "animations": {
-        "guxi": "controller.animation.yoni.guxi"
+        "guxi": "controller.animation.yoni.guxi",
+        
+        //获取生命值的控制器（0-40的值可以在一刻之内获取）
+        "health": "controller.animation.yoni.health",
+        "health1": "controller.animation.yoni.health1",
+        "health2": "controller.animation.yoni.health2",
+        "health3": "controller.animation.yoni.health3",
+        "health4": "controller.animation.yoni.health4"
+        
       },
       "scripts": {
         "animate": [
-          "guxi"
+          "guxi",
+
+          //运行获取生命值的控制器
+          "health",
+          "health1",
+          "health2",
+          "health3",
+          "health4"
         ]
       }
     },
 
-    "events": {},
+    "events": {
+      /*guxi*/
+      "minecraft:entity_spawned": { "add": { "component_groups": [ "yoni:health_guxi" ] } },
+      "yoni:health_0_8": { "add": { "component_groups": [ "yoni:health_0_8" ] } },
+      "yoni:health_guxi": { "add": { "component_groups": [ "yoni:health_guxi" ] } }
+    },
 
     "component_groups": {
-      "yoni:guxi_health_default": { "minecraft:health": { "max": 8, "min": 0, "value": 8 } }
+      "yoni:health_0_8": { "minecraft:health": { "max": 8, "min": 0, "value": 8 } },
+      "yoni:health_guxi": { "minecraft:health": { "max": 40, "min": 1, "value": 40 } }
     },
 
     "components": {
@@ -28,6 +49,10 @@
 
       "minecraft:damage_sensor": {
         "triggers": [
+          {
+            "cause": "all",
+            "damage_modifier": -19
+          }
         ]
       },
 
@@ -39,8 +64,9 @@
       ///////////////////////////////////////////
       //如果没有必要的话，下边的这些是不会修改的
       ///////////////////////////////////////////
-
-      "minecraft:health": { "max": 8, "min": 0, "value": 8 },
+/* 已经修改到实体生成事件
+      "minecraft:health": { "max": 40, "min": 1, "value": 40 },
+*/
       "minecraft:type_family": {
         "family": [ "guxi" ]
       },
@@ -54,9 +80,10 @@
       "minecraft:physics": {},
       "minecraft:pushable": { "is_pushable": true, "is_pushable_by_piston": true },
       "minecraft:breathable": {
-        "total_supply": 15,
-        "suffocate_time": -1,
-        "inhale_time": 3.75,
+        "breathes_air": true,
+        "breathes_lava": true,
+        "breathes_solids": true,
+        "breathes_water": true,
         "generates_bubbles": false
       },
       "minecraft:is_hidden_when_invisible": {},

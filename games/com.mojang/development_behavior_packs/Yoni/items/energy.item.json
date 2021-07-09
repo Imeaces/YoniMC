@@ -20,10 +20,6 @@
           "target": "self"
         }
       },
-      "minecraft:block_placer": {
-        "block": "yoni:energy_block",
-        "use_block_description": false
-      },
       "tag:yoni:energy": {}
     },
     "events": {

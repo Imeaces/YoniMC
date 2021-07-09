@@ -1,17 +1,10 @@
-//bridge-file-version: #1
 {
   "format_version": "1.16.100",
   "minecraft:block": {
     "description": {
       "identifier": "yoni:energy_block",
       "is_experimental": false,
-      "register_to_creative_menu": false,
-      "properties": {
-        "yoni:block_friction": [
-          "smooth",
-          "normal"
-        ]
-      }
+      "register_to_creative_menu": false
     },
     "components": {
       "minecraft:display_name": "yoni:energy_block",
@@ -22,37 +15,17 @@
       "minecraft:map_color": "#FFFFFF",
       "minecraft:block_light_emission": 1,
       "minecraft:flammable": {
-        "flame_odds": 0.1,
+        "flame_odds": 0,
         "burn_odds": 100
       },
       "minecraft:friction": 30,
-      "minecraft:on_placed": {
-        "event": "set_default",
-        "target": "self"
-      },
       "minecraft:entity_collision": {
-        "origin": [
-          -2,
-          0,
-          -2
-        ],
-        "size": [
-          4,
-          8,
-          4
-        ]
+        "origin": [ -2, 0, -2 ],
+        "size": [ 4, 8, 4 ]
       },
       "minecraft:pick_collision": {
-        "origin": [
-          -2,
-          0,
-          -2
-        ],
-        "size": [
-          4,
-          8,
-          4
-        ]
+        "origin": [ -2, 0, -2 ],
+        "size": [ 4, 8, 4 ]
       },
       "minecraft:material_instances": {
         "*": {
@@ -61,13 +34,6 @@
         }
       },
       "minecraft:geometry": "geometry.energy_block"
-    },
-    "events": {
-      "set_default": {
-        "set_block_property": {
-          "yoni:block_friction": "smooth"
-        }
-      }
     }
   }
 }
