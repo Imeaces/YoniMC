@@ -1,0 +1,24 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "yoni:guxi",
+            "is_experimental": false,
+            "is_spawnable": true,
+            "is_summonable": true
+        },
+        "components": {
+            "minecraft:physics": {},
+            "minecraft:collision_box": {
+                "height": 1.8,
+                "width": 0.6
+            },
+            "minecraft:scale": {
+                "value": 0.76
+            },
+            "minecraft:variant": {
+                "value": 0
+            }
+        }
+    }
+}
