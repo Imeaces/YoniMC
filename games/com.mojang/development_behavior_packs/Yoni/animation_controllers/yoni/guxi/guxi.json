@@ -5,25 +5,30 @@
       "initial_state": "loop1",
       "states": {
         "loop1": {
-          "on_entry": [
-            "/function yoni/guxi/loop"
-          ],
-          "transitions": [
-            {
-              "loop2": "(1.0)"
-            }
-          ]
+          "on_entry": [ "/function yoni/guxi/loop" ],
+          "transitions": [ { "loop2": "(1.0)" } ]
         },
         "loop2": {
-          "on_entry": [
-            "/function yoni/guxi/loop"
+          "on_entry": [ "/function yoni/guxi/loop" ],
+          "transitions": [ { "loop1": "(1.0)" } ]
+        }
+      }
+    },
+    "controller.animation.yoni.guxi.mark_variant": {
+      "initial_state": "mv0",
+      "states": {
+        "mv0": { //default
+          "transitions": [
+            { "mv1": "query.mark_variant == 1" } //damage
           ],
-         "transitions": [
-            {
-              "loop1": "(1.0)"
-            }
+          "on_exit": [ "@s yoni:reset_mark_variant" ]
+        },
+        "mv1": { //damage
+          "on_entry": [ "/tag @s add guxi:damage" ]
+          "transitions": [
+            { "mv0": "(1.0)" } //default
           ]
-        }   
+        }
       }
     }
   }

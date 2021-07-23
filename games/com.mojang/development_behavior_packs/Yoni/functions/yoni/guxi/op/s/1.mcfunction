@@ -1,8 +1,5 @@
 #yoni/guxi/op/s/1
 
-##ry
-function yoni/guxi/op/var/offset_ry
-
 #into
 execute @s[scores={guxi-op=1,guxi-v-ry=!0,guxi-v-rx=1}] ~ ~ ~ function yoni/guxi/op/var/base_ry
 execute @s[scores={guxi-op=1,guxi-v-ry=-2,guxi-v-rx=1}] ~ ~ ~ scoreboard players set @s guxi-op 10100

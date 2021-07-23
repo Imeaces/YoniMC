@@ -6,6 +6,7 @@
       "is_spawnable": false, "is_summonable": false, "is_experimental": false,
       "animations": {
         "guxi": "controller.animation.yoni.guxi",
+        "guxi_mark_variant": "controller.animation.yoni.guxi.mark_variant"
         
         //获取生命值的控制器（0-40的值可以在一刻之内获取）
         "health": "controller.animation.yoni.health",
@@ -18,6 +19,7 @@
       "scripts": {
         "animate": [
           "guxi",
+          "guxi_mark_variant",
 
           //运行获取生命值的控制器
           "health",
@@ -33,12 +35,16 @@
       /*guxi*/
       "minecraft:entity_spawned": { "add": { "component_groups": [ "yoni:health_guxi" ] } },
       "yoni:health_0_8": { "add": { "component_groups": [ "yoni:health_0_8" ] } },
-      "yoni:health_guxi": { "add": { "component_groups": [ "yoni:health_guxi" ] } }
+      "yoni:health_guxi": { "add": { "component_groups": [ "yoni:health_guxi" ] } },
+      "yoni:reset_mark_variant": { "add": { "component_groups": [ "yoni:reset_mark_variant" ] } },
+      "yoni:guxi_damage": { "add": { "component_groups": [ "guxi:damage" ] } }
     },
 
     "component_groups": {
       "yoni:health_0_8": { "minecraft:health": { "max": 8, "min": 0, "value": 8 } },
-      "yoni:health_guxi": { "minecraft:health": { "max": 40, "min": 1, "value": 40 } }
+      "yoni:health_guxi": { "minecraft:health": { "max": 40, "min": 1, "value": 40 } },
+      "yoni:reset_mark_variant": { "minecraft:mark_variant": { "value": 0 } }
+      "guxi:damage": { "minecraft:mark_variant": { "value": 1 } }
     },
 
     "components": {
@@ -51,7 +57,10 @@
         "triggers": [
           {
             "cause": "all",
-            "damage_modifier": -19
+            "damage_modifier": -19,
+            "on_damage": {
+              "event": "yoni:guxi_damage"
+            }
           }
         ]
       },
@@ -75,7 +84,7 @@
       "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
       "minecraft:scale": { "value": 0.76 },
       "minecraft:movement": { "value": 0.1 },
-      "minecraft:attack": { "damage": 1 },
+      "minecraft:attack": { "damage": 0 },
       "minecraft:nameable": { "always_show": false, "allow_name_tag_renaming": false },
       "minecraft:physics": {},
       "minecraft:pushable": { "is_pushable": true, "is_pushable_by_piston": true },
