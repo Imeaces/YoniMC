@@ -7,7 +7,42 @@
             "is_spawnable": true,
             "is_summonable": true
         },
+        "events": {
+            "push_energy_shield": {
+                "add": {
+                    "component_groups": [
+                        "energy_shield"
+                    ]
+                }
+            },
+            "pop_energy_shield": {
+                "remove": {
+                    "component_groups": [
+                        "energy_shield"
+                    ]
+                }
+            }
+        },
+        "component_groups": {
+            "energy_shield": {
+                "minecraft:damage_sensor": {
+                    "triggers": [
+                        {
+                            "cause": "fault",
+                            "damage_modifier": -20
+                        }
+                    ]
+                }
+            }
+        },
         "components": {
+            "minecraft:type_family": {
+                "family": [
+                    "guxi",
+                    "yoni",
+                    "mob"
+                ]
+            },
             "minecraft:physics": {},
             "minecraft:collision_box": {
                 "height": 1.8,
