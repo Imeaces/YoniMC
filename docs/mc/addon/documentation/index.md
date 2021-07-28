@@ -1,4 +1,4 @@
-# Index of /mc/addon/documentation/
+# Index of /mc/addon/documentation
 
 [../](./../)  
 [1.14.0.9/](./1.14.0.9/)  
@@ -11,4 +11,3 @@
 [1.16.220.2/](./1.16.220.2/)  
 [1.17.0.2/](./1.17.0.2/)  
 [beta/](./beta/)  
-[index.md](./index.md/)  

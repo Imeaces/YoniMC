@@ -1,2 +1,3 @@
-# 命令教程
+# Index of /tutorial/command
 
+[../](./../)  
