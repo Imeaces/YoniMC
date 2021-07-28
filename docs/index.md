@@ -1,4 +1,4 @@
-# Index of 
+# Index of /
 
 [examples/](./examples/)  
 [mc/](./mc/)  
