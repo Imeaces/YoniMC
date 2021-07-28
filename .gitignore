@@ -1,3 +1,4 @@
 *.mcworld
 *.mcaddon
-*.mcpack
+*.mctemplate
+/.txt
