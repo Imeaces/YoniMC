@@ -3,4 +3,4 @@
 [../](./../)  
 [documentation/](./documentation/)  
 [download/](./download/)  
-[note](./note)  
+[**note**](./note)  

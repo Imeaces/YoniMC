@@ -1,4 +1,4 @@
 # Index of /mc/history
 
 [../](./../)  
-[NeteaseMC](./NeteaseMC)  
+[**NeteaseMC**](./NeteaseMC)  
