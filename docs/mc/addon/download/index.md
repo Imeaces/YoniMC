@@ -1,4 +1,4 @@
-# Index of /mc/addon/download
+# Index of /Additional-Minecraft/mc/addon/download
 
 [../](./../)  
 [mcpedl/](./mcpedl/)  

@@ -1,3 +1,3 @@
-# Index of /mc/how-use-command
+# Index of /Additional-Minecraft/mc/how-use-command
 
 [../](./../)  

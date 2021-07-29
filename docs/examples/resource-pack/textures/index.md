@@ -1,4 +1,4 @@
-# Index of /examples/resource-pack/textures
+# Index of /Additional-Minecraft/examples/resource-pack/textures
 
 [../](./../)  
 [flipbook_textures.json](./flipbook_textures.json)  

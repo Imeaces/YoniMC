@@ -1,4 +1,4 @@
-# Index of /examples
+# Index of /Additional-Minecraft/examples
 
 [../](./../)  
 [empty-animations/](./empty-animations/)  

@@ -1,4 +1,4 @@
-# Index of /examples/resource-pack
+# Index of /Additional-Minecraft/examples/resource-pack
 
 [../](./../)  
 [sounds/](./sounds/)  
