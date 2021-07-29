@@ -1,38 +1,42 @@
-all	-19
-contact	
-drowning	
-suffocation	
+anvil *15
+stalagmite *10
+fly_into_wall *6
+falling_block *5
+fall *5
+stalactite *5
+block_explosion *0.5
+entity_explosion *0.5
+suffocation 0
+drowning 0
+contact 0
+starve 0
+freezing -2
+entity_attack -100
+projectile -100
+fireworks +1
+magma +5
+fire_tick +5
+fire +10
+lava +100
+lightning +1000
 
-fire	*0
-fire_tick	*0
-lightning	
-temperature	
-
-fireworks	
-block_explosion 	
-entity_explosion	
-
-anvil	*10
-falling_block	*10
-fall	*10
-fly_into_wall	
-
-charging	
-entity_attack	
-freezing	
-lava	
-magma	
-none	
-override	
-piston	
-projectile	
-stalactite	
-stalagmite	
-starve	
-
-thorns	
+========================================================================
+## 未知
+all
+fault
+none
+## 魔法
+magic
+piston
+thorns 荆棘
+void 虚空
 wither
-magic	
 
-suicide	
-void	
+
+## 温度
+temperature
+
+## 未知
+charging
+override
+suicide

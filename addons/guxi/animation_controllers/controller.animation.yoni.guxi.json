@@ -39,7 +39,7 @@
           "on_exit": [ "@s yoni:reset_skin_id" ]
         },
         "has_damage": { //damage
-          "on_entry": [ "/tag @s add guxi:has_damage" ],
+          "on_entry": [ "/tag @s add guxi:has_damage", "/say got" ],
           "transitions": [ { "default": "(1.0)" } ] //default
         }
       }

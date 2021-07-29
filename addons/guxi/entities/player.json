@@ -53,10 +53,64 @@
       "minecraft:damage_sensor": {
         "triggers": [
           {
-            "cause": "all",
-            "damage_modifier": -19,
-            "on_damage": { "event": "guxi:has_damage" }
+            "cause": "anvil",
+            "damage_multiplier": 15
+          },
+          {
+            "cause": "stalagmite",
+            "damage_multiplier": 10
+          },
+          {
+            "cause": "stalactite",
+            "damage_multiplier": 6
+          },
+          {
+            "cause": "fly_into_wall",
+            "damage_multiplier": 5
+          },
+          {
+            "cause": "falling_block",
+            "damage_multiplier": 5
+          },
+          {
+            "cause": "fall",
+            "damage_multiplier": 4
+          },
+          {
+            "cause": "block_explosion",
+            "damage_multiplier": 0.5
+          },
+          {
+            "cause": "entity_explosion",
+            "damage_multiplier": 10
+          },
+          {
+            "cause": "suffocation",
+            "deals_damage": false
+          },
+          {
+            "cause": "drowning",
+            "deals_damage": false
+          },
+          {
+            "cause": "contact",
+            "deals_damage": false
+          },
+          {
+            "cause": "starve",
+            "deals_damage": false
           }
+          /*
+          freezing -2
+          entity_attack -100
+          projectile -100
+          fireworks +1
+          magma +5
+          fire_tick +5
+          fire +10
+          lava +100
+          lightning +1000
+          */
         ]
       },
 
@@ -70,7 +124,8 @@
       ///////////////////////////////////////////
 
       "minecraft:type_family": {
-        "family": [ "guxi", "yoni", "mob" ]
+        // "family": [ "guxi", "yoni", "mob" ]
+        "family": [ "player" ]
       },
       "minecraft:loot": { "table": "loot_tables/empty.json" },
       "minecraft:insomnia": { "days_until_insomnia": 3 },
