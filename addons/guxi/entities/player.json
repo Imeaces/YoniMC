@@ -6,6 +6,7 @@
       "is_spawnable": false, "is_summonable": false, "is_experimental": false,
       "animations": {
         "guxi": "controller.animation.yoni.guxi",
+        "guxi_skin_id": "controller.animation.yoni.guxi.skin_id",
 
         //获取生命值的控制器（0-40的值可以在一刻之内获取）
         "health": "controller.animation.yoni.health",
@@ -18,7 +19,8 @@
       "scripts": {
         "animate": [
           // "guxi",
-
+          "guxi_skin_id",
+          
           //运行获取生命值的控制器
           "health",
           "health1",
@@ -30,13 +32,17 @@
     },
     
     "events": {
+      "yoni:reset_skin_id": { "add": { "component_groups": [ "yoni:skin_id_0" ] } },
       "guxi:non_health": { "add": { "component_groups": [ "guxi:non_health" ] } },
-      "guxi:in_health": { "add": { "component_groups": [ "guxi:in_health" ] } }
+      "guxi:in_health": { "add": { "component_groups": [ "guxi:in_health" ] } },
+      "guxi:has_damage": { "add": { "component_groups": [ "guxi:has_damage" ] } }
     },
 
     "component_groups": {
+      "yoni:skin_id_0": { "minecraft:skin_id": { "value": 0 } },
       "guxi:non_health": { "minecraft:health": { "max": 40, "value": 40, "min": 1 } },
-      "guxi:in_health": { "minecraft:health": { "max": 40, "value": 40, "min": 0 } }
+      "guxi:in_health": { "minecraft:health": { "max": 40, "value": 40, "min": 0 } },
+      "guxi:has_damage": { "minecraft:skin_id": { "value": 101 } }
     },
 
     "components": {
@@ -49,15 +55,14 @@
           {
             "cause": "all",
             "damage_modifier": -19,
-            "on_damage": {
-              "event": "guxi:has_damage"
-            }
+            "on_damage": { "event": "guxi:has_damage" }
           }
         ]
       },
 
       "minecraft:environment_sensor": {
-        "triggers": []
+        "triggers": [
+        ]
       },
 
       ///////////////////////////////////////////

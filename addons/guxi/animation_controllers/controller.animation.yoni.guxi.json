@@ -28,6 +28,21 @@
           "transitions": [ { "mv0": "(1.0)" } ] //default
         }
       }
+    },
+    "controller.animation.yoni.guxi.skin_id": {
+      "initial_state": "default",
+      "states": {
+        "default": { //default
+          "transitions": [
+            { "has_damage": "query.skin_id == 101" } //damage
+          ],
+          "on_exit": [ "@s yoni:reset_skin_id" ]
+        },
+        "has_damage": { //damage
+          "on_entry": [ "/tag @s add guxi:has_damage" ],
+          "transitions": [ { "default": "(1.0)" } ] //default
+        }
+      }
     }
   }
 }

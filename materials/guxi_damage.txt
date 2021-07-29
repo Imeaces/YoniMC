@@ -1,0 +1,38 @@
+all	-19
+contact	
+drowning	
+suffocation	
+
+fire	*0
+fire_tick	*0
+lightning	
+temperature	
+
+fireworks	
+block_explosion 	
+entity_explosion	
+
+anvil	*10
+falling_block	*10
+fall	*10
+fly_into_wall	
+
+charging	
+entity_attack	
+freezing	
+lava	
+magma	
+none	
+override	
+piston	
+projectile	
+stalactite	
+stalagmite	
+starve	
+
+thorns	
+wither
+magic	
+
+suicide	
+void	
