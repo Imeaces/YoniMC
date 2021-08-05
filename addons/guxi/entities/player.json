@@ -9,11 +9,13 @@
         "guxi_skin_id": "controller.animation.yoni.guxi.skin_id",
 
         //获取生命值的控制器（0-40的值可以在一刻之内获取）
-        "health": "controller.animation.yoni.health",
-        "health1": "controller.animation.yoni.health1",
-        "health2": "controller.animation.yoni.health2",
-        "health3": "controller.animation.yoni.health3",
-        "health4": "controller.animation.yoni.health4"
+        "health0": "controller.animation.yoni.health.0",
+        "health1": "controller.animation.yoni.health.1",
+        "health2": "controller.animation.yoni.health.2",
+        "health3": "controller.animation.yoni.health.3",
+        "health4": "controller.animation.yoni.health.4",
+        "health5": "controller.animation.yoni.health.5",
+        "health6": "controller.animation.yoni.health.6"
         
       },
       "scripts": {
@@ -22,11 +24,13 @@
           "guxi_skin_id",
           
           //运行获取生命值的控制器
-          "health",
+          "health0",
           "health1",
           "health2",
           "health3",
-          "health4"
+          "health4",
+          "health5",
+          "health6"
         ]
       }
     },
@@ -40,8 +44,8 @@
 
     "component_groups": {
       "yoni:skin_id_0": { "minecraft:skin_id": { "value": 0 } },
-      "guxi:non_health": { "minecraft:health": { "max": 40, "value": 40, "min": 1 } },
-      "guxi:in_health": { "minecraft:health": { "max": 40, "value": 40, "min": 0 } },
+      "guxi:non_health": { "minecraft:health": { "max": 100, "value": 100, "min": 1 } },
+      "guxi:in_health": { "minecraft:health": { "max": 100, "value": 100, "min": 0 } },
       "guxi:has_damage": { "minecraft:skin_id": { "value": 101 } }
     },
 
@@ -52,21 +56,23 @@
 
       "minecraft:damage_sensor": {
         "triggers": [
+
+          //重力势能类（可以致死）
           {
             "cause": "anvil",
             "damage_multiplier": 15
           },
           {
-            "cause": "stalagmite",
+            "cause": "stalactite", //钟乳石 stalactite
             "damage_multiplier": 10
           },
           {
-            "cause": "stalactite",
-            "damage_multiplier": 6
+            "cause": "stalagmite", //石笋 stalagmite
+            "damage_modifier": 8
           },
           {
             "cause": "fly_into_wall",
-            "damage_multiplier": 5
+            "damage_modifier": 6
           },
           {
             "cause": "falling_block",
@@ -74,16 +80,10 @@
           },
           {
             "cause": "fall",
-            "damage_multiplier": 4
+            "damage_modifier": 4
           },
-          {
-            "cause": "block_explosion",
-            "damage_multiplier": 0.5
-          },
-          {
-            "cause": "entity_explosion",
-            "damage_multiplier": 10
-          },
+          
+          //自身特性
           {
             "cause": "suffocation",
             "deals_damage": false
@@ -99,17 +99,53 @@
           {
             "cause": "starve",
             "deals_damage": false
+          },          
+          {
+            "cause": "fire_tick",
+            "deals_damage": false
+          },
+          {
+            "cause": "magma",
+            "deals_damage": false
+          },
+          {
+            "cause": "freezing",
+            "deals_damage": false
+          },
+          {
+            "cause": "lightning",
+            "deals_damage": false
+          },
+          {
+            "cause": "freezing",
+            "deals_damage": false
+          },
+          {
+            "cause": "fire",
+            "deals_damage": false
+          },
+          {
+            "cause": "lava",
+            "deals_damage": false
+          },
+          {
+            "cause": "magma",
+            "deals_damage": false
+          },
+          
+          {
+            "cause": "fault",
+            "deals_damage": true,
+            "on_damage": {
+              "event": "guxi:has_damage"
+            }
           }
           /*
-          freezing -2
           entity_attack -100
           projectile -100
-          fireworks +1
-          magma +5
-          fire_tick +5
-          fire +10
-          lava +100
-          lightning +1000
+          fireworks +1 //可以直接execute检测
+          block_explosion
+          entity_explosion
           */
         ]
       },
