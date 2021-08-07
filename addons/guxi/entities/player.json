@@ -20,7 +20,7 @@
       },
       "scripts": {
         "animate": [
-          // "guxi",
+          "guxi",
           "guxi_skin_id",
           
           //运行获取生命值的控制器
