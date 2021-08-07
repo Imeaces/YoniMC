@@ -42,6 +42,39 @@
           "transitions": [ { "default": "(1.0)" } ]
         }
       }
+    },
+    "controller.animation.yoni.guxi.alive": {
+      "initial_state": "alive",
+      "states": {
+        "alive": {
+          "on_entry": [ "/scoreboard objectives add alive dummy", "/scoreboard players set @s alive 1" ],
+          "transitions": [
+            { "die": "!query.is_alive" },
+            { "alive1": "query.scoreboard('alive') != 1" }
+          ]
+        },
+        "alive1": {
+          "on_entry": [ "/scoreboard objectives add alive dummy", "/scoreboard players set @s alive 1" ],
+          "transitions": [
+            { "die": "!query.is_alive" },
+            { "alive": "query.scoreboard('alive') != 1" }
+          ]
+        },
+        "die": {
+          "on_entry": [ "/scoreboard objectives add alive dummy", "/scoreboard players set @s alive -1" ],
+          "transitions": [
+            { "alive": "query.is_alive" },
+            { "die1": "query.scoreboard('alive') != -1" }
+          ]
+        },
+        "die1": {
+          "on_entry": [ "/scoreboard objectives add alive dummy", "/scoreboard players set @s alive -1" ],
+          "transitions": [
+            { "alive": "query.is_alive" },
+            { "die": "query.scoreboard('alive') != -1" }
+          ]
+        }
+      }
     }
   }
 }

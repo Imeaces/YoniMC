@@ -16,11 +16,18 @@ head(){
     if [ "${REPLY:1:${#REPLY}}" != "${file%.*}" ]; then
       content="#${file%.*}"$'\n'"$(cat <&3)"
       echo "${content}" > "${file}"
+      echo "fix ${file}"
     fi
   else
     content="#${file%.*}"$'\n'"$(cat "${file}")"
     echo "${content}" > "${file}"
+    echo "gem ${file}"
   fi
 }
 
 main
+if [ $# != 0 ]; then
+  while sleep "$@"; do
+    main
+  done
+fi

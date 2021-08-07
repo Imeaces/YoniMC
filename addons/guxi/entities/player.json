@@ -7,8 +7,9 @@
       "animations": {
         "guxi": "controller.animation.yoni.guxi",
         "guxi_skin_id": "controller.animation.yoni.guxi.skin_id",
-
-        //获取生命值的控制器（0-40的值可以在一刻之内获取）
+        "guxi_alive": "controller.animation.yoni.guxi.alive",
+        
+        //获取生命值的控制器
         "health0": "controller.animation.yoni.health.0",
         "health1": "controller.animation.yoni.health.1",
         "health2": "controller.animation.yoni.health.2",
@@ -22,7 +23,7 @@
         "animate": [
           "guxi",
           "guxi_skin_id",
-          
+          "guxi_alive",
           //运行获取生命值的控制器
           "health0",
           "health1",
