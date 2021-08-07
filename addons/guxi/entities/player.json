@@ -45,9 +45,9 @@
 
     "component_groups": {
       "yoni:skin_id_0": { "minecraft:skin_id": { "value": 0 } },
-      "guxi:alive": { "minecraft:health": { "max": 60, "value": 60, "min": 1 } },
-      "guxi:paralysis": { "minecraft:health": { "max": 21, "value": 21, "min": 1 } },
-      "guxi:dying": { "minecraft:health": { "max": 1, "value": 1, "min": 0 }, "minecraft:skin_id": { "value": 101 } }
+      "guxi:alive": { "minecraft:health": { "max": 60, "value": 60, "min": 1 }, "minecraft:skin_id": { "value": 102 } },
+      "guxi:paralysis": { "minecraft:health": { "max": 21, "value": 21, "min": 1 }, "minecraft:skin_id": { "value": 101 } },
+      "guxi:dying": { "minecraft:health": { "max": 1, "value": 1, "min": 0 }, "minecraft:skin_id": { "value": 100 } }
     },
 
     "components": {
@@ -56,7 +56,7 @@
           {
             "filters": {
               "test": "is_skin_id",
-              "value": 101
+              "value": 100
             },
             "cause": "none",
             "damage_per_tick": 1

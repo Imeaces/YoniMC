@@ -5,11 +5,11 @@
       "initial_state": "loop1",
       "states": {
         "loop1": {
-          "on_entry": [ "/function yoni/guxi/loop" ],
+          "on_entry": [ "/function yoni/guxi/survive" ],
           "transitions": [ { "loop2": "(1.0)" } ]
         },
         "loop2": {
-          "on_entry": [ "/function yoni/guxi/loop" ],
+          "on_entry": [ "/function yoni/guxi/survive" ],
           "transitions": [ { "loop1": "(1.0)" } ]
         }
       }
@@ -34,11 +34,21 @@
       "states": {
         "default": {
           "transitions": [
-            { "die": "query.skin_id == 101" }
+            { "dying": "query.skin_id == 100" },
+            { "paralysis": "query.skin_id != 101 && query.scoreboard('energys') == 1" },
+            { "stable": "query.skin_id != 102 && query.scoreboard('energys') > 1" }
           ],
           "on_exit": [ "@s yoni:reset_skin_id" ]
         },
-        "die": {
+        "dying": {
+          "transitions": [ { "default": "(1.0)" } ]
+        },
+        "paralysis": {
+          "on_entry": [ "@s guxi:paralysis" ],
+          "transitions": [ { "default": "(1.0)" } ]
+        },
+        "stable": {
+          "on_entry": [ "@s guxi:alive" ],
           "transitions": [ { "default": "(1.0)" } ]
         }
       }
