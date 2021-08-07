@@ -37,34 +37,40 @@
     
     "events": {
       "yoni:reset_skin_id": { "add": { "component_groups": [ "yoni:skin_id_0" ] } },
-      "guxi:non_health": { "add": { "component_groups": [ "guxi:non_health" ] } },
-      "guxi:in_health": { "add": { "component_groups": [ "guxi:in_health" ] } },
-      "guxi:has_damage": { "add": { "component_groups": [ "guxi:has_damage" ] } }
+      "guxi:alive": { "add": { "component_groups": [ "guxi:alive" ] } },
+      "guxi:paralysis": { "add": { "component_groups": [ "guxi:paralysis" ] } },
+      "guxi:dying": { "add": { "component_groups": [ "guxi:dying" ] } }
     },
 
     "component_groups": {
       "yoni:skin_id_0": { "minecraft:skin_id": { "value": 0 } },
-      "guxi:non_health": { "minecraft:health": { "max": 100, "value": 100, "min": 1 } },
-      "guxi:in_health": { "minecraft:health": { "max": 100, "value": 100, "min": 0 } },
-      "guxi:has_damage": { "minecraft:skin_id": { "value": 101 } }
+      "guxi:alive": { "minecraft:health": { "max": 60, "value": 60, "min": 1 } },
+      "guxi:paralysis": { "minecraft:health": { "max": 21, "value": 21, "min": 1 } },
+      "guxi:dying": { "minecraft:health": { "max": 1, "value": 1, "min": 0 }, "minecraft:skin_id": { "value": 101 } }
     },
 
     "components": {
       "minecraft:hurt_on_condition": {
-        "damage_conditions": []
+        "damage_conditions": [
+          {
+            "filters": {
+              "test": "is_skin_id",
+              "value": 101
+            },
+            "cause": "none",
+            "damage_per_tick": 1
+          }
+        ]
       },
-
       "minecraft:damage_sensor": {
         "triggers": [
-
-          //重力势能类（可以致死）
           {
-            "cause": "anvil",
-            "damage_multiplier": 15
+            "cause": "anvil", //铁砧
+            "damage_multiplier": 100
           },
           {
             "cause": "stalactite", //钟乳石 stalactite
-            "damage_multiplier": 10
+            "damage_multiplier": 50
           },
           {
             "cause": "stalagmite", //石笋 stalagmite
@@ -82,8 +88,6 @@
             "cause": "fall",
             "damage_modifier": 4
           },
-          
-          //自身特性
           {
             "cause": "suffocation",
             "deals_damage": false
@@ -132,21 +136,14 @@
             "cause": "magma",
             "deals_damage": false
           },
-          
           {
-            "cause": "fault",
-            "deals_damage": true,
-            "on_damage": {
-              "event": "guxi:has_damage"
-            }
+            "cause": "block_explosion",
+            "damage_modifier": -4
+          },
+          {
+            "cause": "entity_explosion",
+            "damage_modifier": -4
           }
-          /*
-          entity_attack -100
-          projectile -100
-          fireworks +1 //可以直接execute检测
-          block_explosion
-          entity_explosion
-          */
         ]
       },
 

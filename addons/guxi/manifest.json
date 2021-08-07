@@ -13,7 +13,8 @@
       "type": "data",
       "uuid": "ee32db6b-e317-47ad-b6fc-d15f8d44269d",
       "version": [0, 0, 1]
-    },
+    }
+    /*
     {
       "description": "Gametest Module",
       "type": "javascript",
@@ -21,7 +22,9 @@
       "version": [0, 0, 1],
       "entry": "scripts/main.js"
     }
+    */
   ],
+  /*
   "dependencies": [
     {
       "uuid": "b26a4d4c-afdf-4690-88f8-931846312678",
@@ -32,6 +35,7 @@
       "version": [0, 1, 0]
     }
   ],
+  */
   "metadata": {
     "authors": [
       "Silvigarabis"

@@ -32,15 +32,14 @@
     "controller.animation.yoni.guxi.skin_id": {
       "initial_state": "default",
       "states": {
-        "default": { //default
+        "default": {
           "transitions": [
-            { "has_damage": "query.skin_id == 101" } //damage
+            { "die": "query.skin_id == 101" }
           ],
           "on_exit": [ "@s yoni:reset_skin_id" ]
         },
-        "has_damage": { //damage
-          "on_entry": [ "/tag @s add guxi:has_damage", "/say got" ],
-          "transitions": [ { "default": "(1.0)" } ] //default
+        "die": {
+          "transitions": [ { "default": "(1.0)" } ]
         }
       }
     }
