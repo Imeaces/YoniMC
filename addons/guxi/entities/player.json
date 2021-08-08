@@ -17,7 +17,6 @@
         "health4": "controller.animation.yoni.health.4",
         "health5": "controller.animation.yoni.health.5",
         "health6": "controller.animation.yoni.health.6"
-        
       },
       "scripts": {
         "animate": [
