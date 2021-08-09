@@ -14,21 +14,6 @@
         }
       }
     },
-    "controller.animation.yoni.guxi.mark_variant": {
-      "initial_state": "mv0",
-      "states": {
-        "mv0": { //default
-          "transitions": [
-            { "mv1": "query.mark_variant == 1" } //damage
-          ],
-          "on_exit": [ "@s yoni:reset_mark_variant" ]
-        },
-        "mv1": { //damage
-          "on_entry": [ "/tag @s add guxi:damage" ],
-          "transitions": [ { "mv0": "(1.0)" } ] //default
-        }
-      }
-    },
     "controller.animation.yoni.guxi.skin_id": {
       "initial_state": "default",
       "states": {
