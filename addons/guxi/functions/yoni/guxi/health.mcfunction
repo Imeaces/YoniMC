@@ -1,3 +1,4 @@
+#yoni/guxi/health
 scoreboard objectives add guxi:health dummy
 
 execute @s[scores={guxi:health=!0}] ~ ~ ~ scoreboard players operation @s guxi:health -= @s health

@@ -1,4 +1,4 @@
-#yoni/guxi/recover
+#yoni/guxi/regenerate
 scoreboard players add @s energies -100000
 
 # guxi regenerate

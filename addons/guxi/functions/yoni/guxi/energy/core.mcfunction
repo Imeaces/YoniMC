@@ -1,3 +1,4 @@
+#yoni/guxi/energy/core
 execute @s[scores={energys=1..}] ~ ~ ~ function yoni/guxi/energy/transfer
 execute @s[scores={energys=-1}] ~ ~ ~ function yoni/guxi/energy/spawn
 
