@@ -66,11 +66,11 @@
         "triggers": [
           {
             "cause": "anvil", //铁砧
-            "damage_multiplier": 100
+            "damage_multiplier": 10
           },
           {
             "cause": "stalactite", //钟乳石 stalactite
-            "damage_multiplier": 50
+            "damage_multiplier": 5
           },
           {
             "cause": "stalagmite", //石笋 stalagmite

@@ -29,7 +29,7 @@
           "transitions": [ { "default": "(1.0)" } ]
         },
         "paralysis": {
-          "on_entry": [ "@s guxi:paralysis" ],
+          "on_entry": [ "@s guxi:paralysis", "/scoreboard players set @s guxi:health 20" ],
           "transitions": [ { "default": "(1.0)" } ]
         },
         "stable": {

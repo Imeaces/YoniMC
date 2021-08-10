@@ -10,7 +10,7 @@ scoreboard players operation @s yoni:var *= @s guxi:health
 scoreboard players operation @s yoni:var *= @s guxi:health
 scoreboard players operation @s guxi:health = @s yoni:var
 
-# execute energy pool drop transfer function, then drop energy * 45
+# execute energy pool drop transfer function, then drop energy * 39
 function yoni/guxi/energy/drop
 scoreboard players operation @s energy -= @s guxi:health
 function yoni/guxi/energy/drop
@@ -82,19 +82,6 @@ function yoni/guxi/energy/drop
 scoreboard players operation @s energy -= @s guxi:health
 function yoni/guxi/energy/drop
 scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-
 function yoni/guxi/energy/drop
 scoreboard players operation @s energy -= @s guxi:health
 function yoni/guxi/energy/drop
