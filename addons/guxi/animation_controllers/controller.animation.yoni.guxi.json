@@ -14,30 +14,12 @@
         }
       }
     },
+    /*
     "controller.animation.yoni.guxi.skin_id": {
       "initial_state": "default",
-      "states": {
-        "default": {
-          "transitions": [
-            { "dying": "query.skin_id == 100" },
-            { "paralysis": "query.skin_id != 101 && query.scoreboard('energys') == 1" },
-            { "stable": "query.skin_id != 102 && query.scoreboard('energys') > 1" }
-          ],
-          "on_exit": [ "@s yoni:reset_skin_id" ]
-        },
-        "dying": {
-          "transitions": [ { "default": "(1.0)" } ]
-        },
-        "paralysis": {
-          "on_entry": [ "@s guxi:paralysis", "/scoreboard players set @s guxi:health 20" ],
-          "transitions": [ { "default": "(1.0)" } ]
-        },
-        "stable": {
-          "on_entry": [ "@s guxi:alive" ],
-          "transitions": [ { "default": "(1.0)" } ]
-        }
-      }
+      "states": {}
     },
+    */
     "controller.animation.yoni.guxi.alive": {
       "initial_state": "alive",
       "states": {

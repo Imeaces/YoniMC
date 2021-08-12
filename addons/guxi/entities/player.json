@@ -21,7 +21,7 @@
       "scripts": {
         "animate": [
           "guxi",
-          "guxi_skin_id",
+          // "guxi_skin_id",
           "guxi_alive",
           //运行获取生命值的控制器
           "health0",
@@ -44,23 +44,14 @@
 
     "component_groups": {
       "yoni:skin_id_0": { "minecraft:skin_id": { "value": 0 } },
-      "guxi:alive": { "minecraft:health": { "max": 60, "value": 60, "min": 1 }, "minecraft:skin_id": { "value": 102 } },
-      "guxi:paralysis": { "minecraft:health": { "max": 21, "value": 21, "min": 1 }, "minecraft:skin_id": { "value": 101 } },
-      "guxi:dying": { "minecraft:health": { "max": 60, "value": 60, "min": 0 }, "minecraft:skin_id": { "value": 100 } }
+      "guxi:alive": { "minecraft:health": { "max": 60, "value": 60, "min": 1 } },
+      "guxi:paralysis": { "minecraft:health": { "max": 20, "value": 20, "min": 1 } },
+      "guxi:dying": { "minecraft:health": { "max": 60, "value": 60, "min": 0 } }
     },
 
     "components": {
       "minecraft:hurt_on_condition": {
-        "damage_conditions": [
-          {
-            "filters": {
-              "test": "is_skin_id",
-              "value": 100
-            },
-            "cause": "none",
-            "damage_per_tick": 60
-          }
-        ]
+        "damage_conditions": []
       },
       "minecraft:damage_sensor": {
         "triggers": [
@@ -148,8 +139,7 @@
       },
 
       "minecraft:environment_sensor": {
-        "triggers": [
-        ]
+        "triggers": []
       },
 
       ///////////////////////////////////////////
@@ -157,8 +147,8 @@
       ///////////////////////////////////////////
 
       "minecraft:type_family": {
-        // "family": [ "guxi", "yoni", "mob" ]
-        "family": [ "player" ]
+        "family": [ "guxi", "yoni", "mob" ]
+        // "family": [ "player" ]
       },
       "minecraft:loot": { "table": "loot_tables/empty.json" },
       "minecraft:insomnia": { "days_until_insomnia": 3 },

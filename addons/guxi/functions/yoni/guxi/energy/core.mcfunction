@@ -1,6 +1,5 @@
 #yoni/guxi/energy/core
 execute @s[scores={energys=1..}] ~ ~ ~ function yoni/guxi/energy/transfer
-execute @s[scores={energys=-1}] ~ ~ ~ function yoni/guxi/energy/spawn
 
 execute @s[scores={energies=..0}] ~ ~ ~ scoreboard players set @s energys 0
 execute @s[scores={energies=1..3000}] ~ ~ ~ scoreboard players set @s energys 1

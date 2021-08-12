@@ -8,87 +8,180 @@ scoreboard players operation @s yoni:var *= @s guxi:health
 scoreboard players operation @s yoni:var *= @s guxi:health
 scoreboard players operation @s yoni:var *= @s guxi:health
 scoreboard players operation @s yoni:var *= @s guxi:health
-scoreboard players operation @s guxi:health = @s yoni:var
 
 # execute energy pool drop transfer function, then drop energy * 39
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
 
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
 
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
 
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
-function yoni/guxi/energy/drop
-scoreboard players operation @s energy -= @s guxi:health
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+
+# cause by damage in destroy
+scoreboard players operation @s yoni:var2 = @s health
+scoreboard players operation @s yoni:var2 += @s guxi:health
+scoreboard players operation @s yoni:var = num60 const
+scoreboard players operation @s yoni:var -= @s yoni:var2
+scoreboard players operation @s yoni:var /= num3 const
+scoreboard players operation @s yoni:var2 = @s yoni:var
+scoreboard players operation @s yoni:var *= @s yoni:var2
+scoreboard players operation @s yoni:var *= @s yoni:var2
+scoreboard players operation @s yoni:var *= @s yoni:var2
+scoreboard players operation @s yoni:var *= @s yoni:var2
+
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
+function yoni/guxi/energy/core
+scoreboard players operation @s energy -= @s yoni:var
