@@ -1,4 +1,4 @@
 *.mcworld
 *.mcaddon
 *.mctemplate
-/.txt
+.txt
