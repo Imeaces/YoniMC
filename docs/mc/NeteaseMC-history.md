@@ -21,3 +21,5 @@
 <https://g79.gdl.netease.com/mcpe-release_20210420_1.23-1.23.10.130587-Publish-20210630074759_netease_59_x19-jiagu_sign.apk>
 
 <https://g79.gdl.netease.com/mcpe-release_20210420_1.23-1.23.20.131123-Publish-20210706002549_netease_59_x19_840131123_20210706_003748.apk>
+
+<https://g79.gdl.netease.com/mcpe-release1.23.20.136334-1627636330_sign.apk>
