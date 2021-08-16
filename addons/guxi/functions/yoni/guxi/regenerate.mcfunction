@@ -1,5 +1,5 @@
 #yoni/guxi/regenerate
-scoreboard players add @s energies -100000
+scoreboard players add @s energy -100000
 
 # guxi regenerate
 # count time

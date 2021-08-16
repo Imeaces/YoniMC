@@ -1,5 +1,8 @@
 #yoni/guxi/damage
 
+# x = 受到的伤害 guxi:health
+# y = 受到伤害前的血量 guxi:health + health
+# 减少的能量 = 39x^5+39*[(60-y)/3]^5
 # warning, it may cause overflow
 # 可能会溢出
 # 74^5=2219006624 > 2^31-1
