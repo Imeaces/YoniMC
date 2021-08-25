@@ -1,4 +1,4 @@
-#yoni/guxi/damage
+#yoni/guxi_old/damage
 
 # x = 受到的伤害 guxi:health
 # y = 受到伤害前的血量 guxi:health + health
