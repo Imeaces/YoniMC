@@ -1,1 +1,1 @@
-execute @s[scores=
+scoreboard players set @s guxi 0
