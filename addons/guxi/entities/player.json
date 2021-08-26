@@ -111,7 +111,7 @@
             { "cause": "stalactite", "damage_multiplier": 3 },  //钟乳石 stalactite
             { "cause": "stalagmite", "damage_modifier": 4 }, //石笋 stalagmite
             { "cause": "fly_into_wall", "damage_modifier": 5 },
-            { "cause": "falling_block", "damage_multiplier": 4 },
+            { "cause": "falling_block", "damage_multiplier": 3 },
             { "cause": "fall", "damage_modifier": 3 },
             { "cause": "suffocation", "deals_damage": false },
             { "cause": "drowning", "deals_damage": false },
@@ -119,12 +119,11 @@
             { "cause": "starve", "deals_damage": false },
             { "cause": "fire_tick", "deals_damage": false },
             { "cause": "magma", "deals_damage": false },
-            { "cause": "freezing", "deals_damage": false },
             { "cause": "lightning", "deals_damage": false },
             { "cause": "freezing", "deals_damage": false },
             { "cause": "fire", "deals_damage": false },
             { "cause": "lava", "deals_damage": false },
-            { "cause": "magic", "deals_damage": false },
+            // { "cause": "potion", "deals_damage": false },
             { "cause": "block_explosion", "damage_modifier": -4 },
             { "cause": "entity_explosion", "damage_modifier": -4 }
           ]

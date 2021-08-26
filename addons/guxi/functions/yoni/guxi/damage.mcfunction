@@ -1,8 +1,7 @@
 #yoni/guxi/damage
 
 # x = 受到的伤害
-# y = 生命值
-# 减少的能量 = (51x^5)/y
+# 减少的能量 = 51x^5
 
 effect @s instant_health 15 0 true
 
@@ -14,7 +13,6 @@ scoreboard players operation @s yoni:var3689 *= @s guxi:health
 scoreboard players operation @s yoni:var3689 *= @s guxi:health
 scoreboard players operation @s yoni:var3689 *= @s guxi:health
 scoreboard players operation @s yoni:var3689 *= @s guxi:health
-scoreboard players operation @s yoni:var3689 /= @s health
 
 # energy-51a
 scoreboard players operation @s guxi:energy -= @s yoni:var3689
