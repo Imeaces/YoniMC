@@ -33,6 +33,39 @@
           ]
         }
       }
+    },
+    "controller.animation.entity.status.on_fire": {
+      "initial_state": "is_not_on_fire",
+      "states": {
+        "is_not_on_fire": {
+          "on_entry": [ "/scoreboard objectives add on_fire dummy", "/scoreboard players set @s on_fire -1" ],
+          "transitions": [
+            { "is_on_fire": "query.is_on_fire" },
+            { "is_not_on_fire1": "query.scoreboard('on_fire') != -1" }
+          ]
+        },
+        "is_not_on_fire1": {
+          "on_entry": [ "/scoreboard objectives add on_fire dummy", "/scoreboard players set @s on_fire -1" ],
+          "transitions": [
+            { "is_on_fire": "query.is_on_fire" },
+            { "is_not_on_fire": "query.scoreboard('on_fire') != -1" }
+          ]
+        },
+        "is_on_fire": {
+          "on_entry": [ "/scoreboard objectives add on_fire dummy", "/scoreboard players set @s on_fire 1" ],
+          "transitions": [
+            { "is_not_on_fire": "!query.is_on_fire" },
+            { "is_on_fire1": "query.scoreboard('on_fire') != 1" }
+          ]
+        },
+        "is_on_fire1": {
+          "on_entry": [ "/scoreboard objectives add on_fire dummy", "/scoreboard players set @s on_fire 1" ],
+          "transitions": [
+            { "is_not_on_fire": "!query.is_on_fire" },
+            { "is_on_fire": "query.scoreboard('on_fire') != 1" }
+          ]
+        }
+      }
     }
   }
 }
