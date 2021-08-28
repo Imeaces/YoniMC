@@ -1,0 +1,25 @@
+{
+  "format_version": "1.16.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "yoni:small_fireball",
+      "category": "items"
+    },
+    "components": {
+      "minecraft:icon": {
+        "texture": "clock_item" // Texture referenced in 'item_texture.json'
+      },
+      "minecraft:on_use": {
+        "on_use": { "event": "on_use" }
+      }
+    },
+    "events": {
+      "on_use": {
+        "shoot": {
+          "projectile": "yoni:small_fireball",
+          "launch_power": 30
+        }
+      }
+    }
+  }
+}
