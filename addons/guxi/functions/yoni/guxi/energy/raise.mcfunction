@@ -1,5 +1,4 @@
 #yoni/guxi/energy/raise
-function yoni/guxi/energy/init
 
 scoreboard players operation @s guxi:energy -= num100000000 const
 scoreboard players add @s guxi:energies 1

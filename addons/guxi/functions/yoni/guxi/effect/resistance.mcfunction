@@ -1,3 +1,4 @@
+#yoni/guxi/effect/resistance
 
 #execute @s[scores={guxi:resistance=0}] ~ ~ ~ scoreboard players add @s guxi:energy 0
 execute @s[scores={guxi:resistance=1}] ~ ~ ~ scoreboard players add @s guxi:energy -1024

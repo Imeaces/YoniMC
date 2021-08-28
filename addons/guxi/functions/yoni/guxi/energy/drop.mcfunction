@@ -1,5 +1,4 @@
 #yoni/guxi/energy/drop
-function yoni/guxi/energy/init
 
 scoreboard players operation @s yoni:var7551 = @s guxi:energy
 scoreboard players operation @s guxi:energy %= num100000000 const

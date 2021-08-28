@@ -1,3 +1,4 @@
+#yoni/guxi/effect/core
 function yoni/guxi/effect/effective
 function yoni/guxi/effect/strength
 function yoni/guxi/effect/mining
