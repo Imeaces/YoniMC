@@ -1,0 +1,43 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "guxi:energy_explode",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false,
+      "animations": { "particle_minecraft_endrod": "controller.animation.particle.minecraft_endrod" },
+      "scripts": {
+        "animate": [ "particle_minecraft_endrod" ]
+      }
+    },
+    "component_groups": {
+      "energy_explode": {
+        "minecraft:explode": {
+          "breaks_blocks": false,
+          "causes_fire": false,
+          "fuse_length": -1,
+          "fuse_lit": true,
+          "power": 4,
+          "max_resistance": 0
+        }
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": [ "energy_explode" ]
+        }
+      }
+    },
+    "components": {
+      "minecraft:conditional_bandwidth_optimization": {
+        "default_values": {
+          "max_optimized_distance": 80.0,
+          "max_dropped_ticks": 10,
+          "use_motion_prediction_hints": true
+        }
+      }
+    }
+  }
+}
