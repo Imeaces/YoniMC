@@ -9,9 +9,9 @@
       "animations": {
         //Yoni Guxi
         "guxi": "controller.animation.yoni.guxi",
-        //获取实体死亡状态
+        //状态
         "status_alive": "controller.animation.entity.status.alive",
-        "status_on_fire": "controller.animation.entity.status.on_fire",
+        "status_is_attack": "controller.animation.entity.status.is_attack",
         //获取生命值的控制器
         "health0": "controller.animation.yoni.health.0",
         "health1": "controller.animation.yoni.health.1",
@@ -25,7 +25,7 @@
         "animate": [
           "guxi",
           "status_alive",
-          "status_on_fire",
+          "status_is_attack",
           "health0",
           "health1",
           "health2",

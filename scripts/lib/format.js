@@ -26,5 +26,7 @@ export const FORMATTINGS = {
     RandomText: "§k",
     Garbled: "§k",
     Bold: "§l",
+    Strikethrough: ["§m", "JavaOnly"],
+    Underline: ["§n", "JavaOnly"],
     Italic: "§o",
 };
