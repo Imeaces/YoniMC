@@ -103,6 +103,7 @@
         "minecraft:breathable": { /* 全局可呼吸 */ "breathes_air": true, "breathes_water": true, "breathes_lava": true, "breathes_solids": true, "generates_bubbles": false },
         "minecraft:nameable": { "always_show": false, "allow_name_tag_renaming": false },
         "minecraft:attack": { "damage": 0 },
+        "minecraft:health": { "max": 60, "value": 60, "min": 0 },
         "minecraft:damage_sensor": {
           "triggers": [
             { "cause": "anvil", "damage_multiplier": 5 },
@@ -127,8 +128,6 @@
           ]
         }
       },
-      "guxi:alive": { "minecraft:health": { "max": 60, "value": 60, "min": 1 } },
-      "guxi:dying": { "minecraft:health": { "max": 60, "value": 60, "min": 0 } }
       /*
       "guxi:paralysis": { "minecraft:health": { "max": 20, "value": 20, "min": 1 } }
       */
