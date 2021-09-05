@@ -1,0 +1,15 @@
+{
+  "format_version": "1.16.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "yoni:empty_slot",
+      "category": "items"
+    },
+    "components": {
+      "minecraft:icon": {
+        "texture": "item_frame"
+      },
+      "minecraft:allow_off_hand": true
+    }
+  }
+}

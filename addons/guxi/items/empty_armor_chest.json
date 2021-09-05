@@ -1,0 +1,17 @@
+{
+  "format_version": "1.16.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "yoni:empty_armor_chest",
+      "category": "items"
+    },
+    "components": {
+      "minecraft:icon": {
+        "texture": "item_frame"
+      },
+      "minecraft:wearable": {
+        "slot": "slot.armor.chest"
+      }
+    }
+  }
+}

@@ -127,10 +127,7 @@
             { "cause": "entity_explosion", "damage_modifier": -4 }
           ]
         }
-      },
-      /*
-      "guxi:paralysis": { "minecraft:health": { "max": 20, "value": 20, "min": 1 } }
-      */
+      }
     },
 
     "components": {
