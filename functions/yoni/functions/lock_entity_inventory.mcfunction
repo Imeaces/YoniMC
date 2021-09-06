@@ -1,3 +1,4 @@
+#yoni/functions/lock_entity_inventory
 replaceitem entity @s slot.inventory 0 keep yoni:empty_slot 1 0 {"minecraft:item_lock":{"mode":"lock_in_slot"}}
 replaceitem entity @s slot.inventory 1 keep yoni:empty_slot 1 0 {"minecraft:item_lock":{"mode":"lock_in_slot"}}
 replaceitem entity @s slot.inventory 2 keep yoni:empty_slot 1 0 {"minecraft:item_lock":{"mode":"lock_in_slot"}}

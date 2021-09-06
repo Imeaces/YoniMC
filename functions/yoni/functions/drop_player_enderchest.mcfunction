@@ -1,3 +1,4 @@
+#yoni/functions/drop_player_enderchest
 replaceitem entity @s slot.enderchest 0 air 1 0
 replaceitem entity @s slot.enderchest 1 air 1 0
 replaceitem entity @s slot.enderchest 2 air 1 0

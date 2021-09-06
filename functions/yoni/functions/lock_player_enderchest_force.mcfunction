@@ -1,3 +1,4 @@
+#yoni/functions/lock_player_enderchest_force
 replaceitem entity @s slot.enderchest 0 destroy yoni:empty_slot 1 0 {"minecraft:item_lock":{"mode":"lock_in_slot"}}
 replaceitem entity @s slot.enderchest 1 destroy yoni:empty_slot 1 0 {"minecraft:item_lock":{"mode":"lock_in_slot"}}
 replaceitem entity @s slot.enderchest 2 destroy yoni:empty_slot 1 0 {"minecraft:item_lock":{"mode":"lock_in_slot"}}

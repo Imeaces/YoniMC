@@ -1,3 +1,4 @@
+#yoni/functions/drop_player_hotbar
 replaceitem entity @s slot.hotbar 0 air 1 0
 replaceitem entity @s slot.hotbar 1 air 1 0
 replaceitem entity @s slot.hotbar 2 air 1 0

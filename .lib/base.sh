@@ -4,5 +4,5 @@
 set -x -e
 
 cd "$(dirname "$0")"
-cd "$(git rev-parse --show-toplevel)"
-
+__git_toplevel="$(git rev-parse --show-toplevel)"
+cd "${__git_toplevel}"

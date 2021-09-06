@@ -1,3 +1,4 @@
+#yoni/functions/drop_entity_inventory
 replaceitem entity @s slot.inventory 0 air 1 0
 replaceitem entity @s slot.inventory 1 air 1 0
 replaceitem entity @s slot.inventory 2 air 1 0
