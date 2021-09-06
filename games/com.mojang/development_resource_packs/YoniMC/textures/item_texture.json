@@ -1,11 +1,16 @@
 {
-	"resource_pack_name": "yoni",
-	"texture_name": "atlas.items",
-	"texture_data": {
-		"energy": {
-			"textures": [
-				"textures/items/yoni/energy"
-			]
-		}
-	}
+  "resource_pack_name": "YoniMC",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "energy": {
+      "textures": [
+        "textures/items/yoni/energy"
+      ]
+    },
+    "pack_icon": {
+      "textures": [
+        "pack_icon"
+      ]
+    }
+  }
 }
