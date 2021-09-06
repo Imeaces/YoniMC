@@ -1,7 +1,7 @@
 public class SumHealthx
 {
   public static void main(String[] shx){
-    String text;
+    String text = "";
     java.util.Scanner ci = new java.util.Scanner(System.in);
     System.out.print("输入最大生命值");
     long maxHealth = ci.nextLong();
@@ -24,16 +24,16 @@ public class SumHealthx
       if(countAc != 0){
         text = text + ",";
       }
-      text = text + "\"controller.animation.yoni.health.${countAc}\":{\"initial_state\":\"default\",\"states\":{" + "\"default\": {\"transitions\": ["
-      text = text + sumDefaultState(numPower);
-      text = text + sumOtherStates();
+      text = text + "\"controller.animation.yoni.health.${countAc}\":{\"initial_state\":\"default\",\"states\":{" + "\"default\": {\"transitions\": [";
+      text = text + sumDefaultState(numPower, numLow);
+      text = text + sumOtherStates(numPower, numLow);
       text = text + "}}";
     }
     text = text + "}}";
     System.out.println(text);
   }
-  public static String sumDefaultState(long numPower){
-    String dText;
+  public static String sumDefaultState(long numPower, long numLow){
+    String dText = "";
     for(;numLow >= 1;numLow--){
       dText = dText + "{\"raise" + numPower + "\":\"query.scoreboard('health') - query.health <= -" + numPower + "\"},{\"drop" + numPower + "\":\"query.scoreboard('health') - query.health >= " + numPower + "\"}";
       if(numLow != 1){
@@ -43,14 +43,12 @@ public class SumHealthx
     }
     return dText + "],\"on_exit\":[\"/scoreboard objectives add health dummy\"]}";
   }
-  public static String sumOtherStates(long numPower){
-    text=""
-    for((;numLow >= 1;numLow--))
-    do
-      text+=",\"raise${numPower}\": {\"on_entry\": [\"/scoreboard players add @s health ${numPower}\"],\"transitions\": [{\"default\": \"(1.0)\"}]},\"drop${numPower}\": {\"on_entry\": [\"/scoreboard players add @s health -${numPower}\"],\"transitions\": [{\"default\": \"(1.0)\"}]}"
-      let numPower/=2
-    done
-    echo "${text}"
-  
+  public static String sumOtherStates(long numPower, long numLow){
+    String text = "";
+    for(;numLow >= 1;numLow--){
+      text = text + ",\"raise" + numPower + "\": {\"on_entry\": [\"/scoreboard players add @s health " + numPower + "\"],\"transitions\": [{\"default\": \"(1.0)\"}]},\"drop" + numPower + "\": {\"on_entry\": [\"/scoreboard players add @s health -" + numPower + "\"],\"transitions\": [{\"default\": \"(1.0)\"}]}";
+      numPower /= 2;
+    }
+    return text;
   }
 }
