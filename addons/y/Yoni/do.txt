@@ -1,2 +1,0 @@
-set namespace yoni
-add entity guxi
