@@ -1,1 +1,0 @@
-../../../../../functions/yoni/thought/guxi_player.mcfunction
