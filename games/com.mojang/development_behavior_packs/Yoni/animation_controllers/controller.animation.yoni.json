@@ -17,6 +17,23 @@
           ]
         }
       }
+    },
+    "controller.animation.yoni.player.sneaking": {
+      "initial_state": "yes",
+      "states": {
+        "yes": {
+          "on_entry": [ "/execute @s[family=yoni] ~ ~ ~ event entity @s yoni:player_is_sneaking" ],
+          "transitions": [
+            { "no": "!query.is_sneaking" },
+          ]
+        },
+        "no": {
+          "on_entry": [ "/execute @s[family=yoni] ~ ~ ~ event entity @s yoni:player_not_sneaking" ],
+          "transitions": [
+            { "yes": "query.is_sneaking" }
+          ]
+        }
+      }
     }
   }
 }
