@@ -1,0 +1,82 @@
+{
+  "format_version": "1.16.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "yoni:guxi",
+      "is_experimental": false,
+      "is_spawnable": true,
+      "is_summonable": true
+    },
+    "events": {
+      "push_energy_shield": {
+        "add": {
+          "component_groups": [
+            "energy_shield"
+          ]
+        }
+      },
+      "pop_energy_shield": {
+        "remove": {
+          "component_groups": [
+            "energy_shield"
+          ]
+        }
+      }
+    },
+    "component_groups": {
+      "energy_shield": {
+        "minecraft:damage_sensor": {
+          "triggers": [
+            {
+              "cause": "fault",
+              "damage_modifier": -20
+            }
+          ]
+        }
+      }
+    },
+    "components": {
+      "minecraft:experience_reward": {
+        "on_bred": "Math.Random(1,7)",
+        "on_death": "Math.Random(1,3)"
+      },
+      "minecraft:navigation.walk": {
+        "can_path_over_water": true,
+        "avoid_damage_blocks": true
+      },
+      "minecraft:movement": {
+        "value": 0.5
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:behavior.random_look_around": {
+        "priority": 8
+      },
+      "minecraft:walk_animation_speed": {
+        "value": 1.32
+      },
+      "minecraft:is_hidden_when_invisible": {},
+      "minecraft:floats_in_liquid": {},
+      "minecraft:persistent": {},
+      "minecraft:physics": {},
+      "minecraft:pushable": {},
+      "minecraft:collision_box": {
+        "height": 1.8,
+        "width": 0.6
+      },
+      "minecraft:scale": {
+        "value": 0.76
+      },
+      "minecraft:type_family": {
+        "family": [
+          "guxi",
+          "yoni",
+          "mob"
+        ]
+      },
+      "minecraft:variant": {
+        "value": 0
+      }
+    }
+  }
+}

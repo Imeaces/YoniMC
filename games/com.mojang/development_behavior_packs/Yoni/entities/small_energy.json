@@ -1,0 +1,58 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "guxi:small_energy",
+      "is_spawnable": false,
+      "is_summonable": false,
+      "is_experimental": false,
+      "animations": { "particle_minecraft_endrod": "controller.animation.particle.minecraft_endrod" },
+      "scripts": {
+        "animate": [ "particle_minecraft_endrod" ]
+      }
+    },
+    "components": {
+      "minecraft:collision_box": {
+        "width": 0.1,
+        "height": 0.1
+      },
+      "minecraft:projectile": {
+        "on_hit": {
+          "impact_damage": {
+            "damage": 60,
+            "knockback": false,
+            "semi_random_diff_damage": true
+          },
+          "remove_on_hit": {}
+        /*
+          "definition_event": {
+            "affect_shooter": false,
+            "event_trigger": {
+              "target": "other",
+              "event": "guxi:hit_small_energy"
+            }
+          },
+        */
+        },
+        "power": 3,
+        "gravity": 0.00,
+        "inertia": 1,
+        "liquid_inertia": 2,
+        "anchor": 2,
+        "offset": [ 0, 0.5, 0 ]
+      },
+      "minecraft:physics": {},
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": false
+      },
+      "minecraft:conditional_bandwidth_optimization": {
+        "default_values": {
+          "max_optimized_distance": 80.0,
+          "max_dropped_ticks": 10,
+          "use_motion_prediction_hints": true
+        }
+      }
+    }
+  }
+}

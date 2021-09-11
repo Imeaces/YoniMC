@@ -1,0 +1,19 @@
+text=auto
+
+*.apk binary
+*.mcpack binary
+*.png binary
+*.zip binary
+
+*.bbmodel text
+*.html text
+*.js text
+*.json text
+*.lang text
+*.mcfunction text
+*.txt text
+
+*.md eof=lf
+*.py eof=lf
+*.sh eof=lf
+*.yml eof=lf
