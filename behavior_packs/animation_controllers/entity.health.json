@@ -1,7 +1,16 @@
+/*
+controller.animation.entity.health_0
+controller.animation.entity.health_1
+controller.animation.entity.health_2
+controller.animation.entity.health_3
+controller.animation.entity.health_4
+controller.animation.entity.health_5
+controller.animation.entity.health_6
+*/
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.yoni.health.0": {
+    "controller.animation.entity.health_0": {
       "initial_state": "default",
       "states": {
         "default": {
@@ -195,7 +204,7 @@
         }
       }
     },
-    "controller.animation.yoni.health.1": {
+    "controller.animation.entity.health_1": {
       "initial_state": "default",
       "states": {
         "default": {
@@ -389,7 +398,7 @@
         }
       }
     },
-    "controller.animation.yoni.health.2": {
+    "controller.animation.entity.health_2": {
       "initial_state": "default",
       "states": {
         "default": {
@@ -583,7 +592,7 @@
         }
       }
     },
-    "controller.animation.yoni.health.3": {
+    "controller.animation.entity.health_3": {
       "initial_state": "default",
       "states": {
         "default": {
@@ -777,7 +786,7 @@
         }
       }
     },
-    "controller.animation.yoni.health.4": {
+    "controller.animation.entity.health_4": {
       "initial_state": "default",
       "states": {
         "default": {
@@ -971,7 +980,7 @@
         }
       }
     },
-    "controller.animation.yoni.health.5": {
+    "controller.animation.entity.health_5": {
       "initial_state": "default",
       "states": {
         "default": {
@@ -1165,7 +1174,7 @@
         }
       }
     },
-    "controller.animation.yoni.health.6": {
+    "controller.animation.entity.health_6": {
       "initial_state": "default",
       "states": {
         "default": {
