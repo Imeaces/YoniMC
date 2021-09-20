@@ -1,0 +1,16 @@
+{
+  "resource_pack_name": "YoniMC",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "core": {
+      "textures": [
+        "textures/core"
+      ]
+    },
+    "pack_icon": {
+      "textures": [
+        "pack_icon"
+      ]
+    }
+  }
+}
