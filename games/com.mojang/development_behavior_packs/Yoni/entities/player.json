@@ -7,25 +7,24 @@
       "is_summonable": false,
       "is_experimental": false,
       "animations": {
-        //Yoni Guxi
-        "guxi": "controller.animation.yoni.guxi",
-        //Yoni Player
-        "player_sneaking": "controller.animation.yoni.player.sneaking",
+        //Yoni
+        "yoni": "controller.animation.yoni.being",
         //状态
+        "status_player_sneaking": "controller.animation.player.sneaking",
         "status_alive": "controller.animation.entity.status.alive",
         //获取生命值的控制器
-        "health0": "controller.animation.yoni.health.0",
-        "health1": "controller.animation.yoni.health.1",
-        "health2": "controller.animation.yoni.health.2",
-        "health3": "controller.animation.yoni.health.3",
-        "health4": "controller.animation.yoni.health.4",
-        "health5": "controller.animation.yoni.health.5",
-        "health6": "controller.animation.yoni.health.6"
+        "health0": "controller.animation.entity.health_0",
+        "health1": "controller.animation.entity.health_1",
+        "health2": "controller.animation.entity.health_2",
+        "health3": "controller.animation.entity.health_3",
+        "health4": "controller.animation.entity.health_4",
+        "health5": "controller.animation.entity.health_5",
+        "health6": "controller.animation.entity.health_6"
       },
       "scripts": {
         "animate": [
-          "guxi",
-          "player_sneaking",
+          "yoni",
+          "status_player_sneaking",
           "status_alive",
           "health0",
           "health1",
@@ -39,18 +38,21 @@
     },
     
     "events": {
-      /* Vanilla Raid */
+      // Vanilla Raid
       "minecraft:gain_bad_omen": { "add": { "component_groups": [ "minecraft:add_bad_omen" ] } },
       "minecraft:clear_add_bad_omen": { "remove": { "component_groups": [ "minecraft:add_bad_omen" ] }, "add": { "component_groups": [ "minecraft:clear_bad_omen_spell_effect" ] } },
       "minecraft:trigger_raid": { "add": { "component_groups": [ "minecraft:raid_trigger" ] } },
       "minecraft:remove_raid_trigger": { "remove": { "component_groups": [ "minecraft:raid_trigger" ] } },
+      
+      // Spawn 
+      /*
       "minecraft:entity_spawned": {
         "add": {
           "component_groups": [ "yoni:default_player" ]
         }
       },
-      
-      /* Yoni Entity */
+      */
+      // Yoni Entity
       "yoni:default_player": {
         "sequence": [
           {
@@ -86,32 +88,18 @@
         ]
       },
       
-      /* Yoni Player */
-      "yoni:player_is_sneaking": {
-        "sequence": [
-          {
-            "filters": { "test": "is_family", "value": "player" },
-            "add": { "component_groups": [ "yoni:player_is_sneaking" ] }
-          }
-        ]
-      },
-      "yoni:player_not_sneaking": {
-        "sequence": [
-          {
-            "filters": { "test": "is_family", "value": "player" },
-            "add": { "component_groups": [ "yoni:player_not_sneaking" ] }
-          }
-        ]
-      }
+      /* yoni.player */
+      "yoni:player_is_sneaking": { "add": { "component_groups": [ "yoni:player_is_sneaking" ] } },
+      "yoni:player_not_sneaking": { "add": { "component_groups": [ "yoni:player_not_sneaking" ] } }
     },
 
     "component_groups": {
-      /*袭击的触发与取消*/
+      /* raid */
       "minecraft:add_bad_omen": { "minecraft:spell_effects": { "add_effects": [ { "effect": "bad_omen", "duration": 6000, "display_on_screen_animation": true } ] }, "minecraft:timer": { "time": [ 0.0, 0.0 ], "looping": false, "time_down_event": { "event": "minecraft:clear_add_bad_omen", "target": "self" } } },
       "minecraft:clear_bad_omen_spell_effect": { "minecraft:spell_effects": {} },
       "minecraft:raid_trigger": { "minecraft:raid_trigger": { "triggered_event": { "event": "minecraft:remove_raid_trigger", "target": "self" } }, "minecraft:spell_effects": { "remove_effects": "bad_omen" } },
       
-      /*玩家*/
+      /* player */
       "yoni:player": {
         "minecraft:type_family": { "family": [ "player", "yoni" ] },
         "minecraft:pushable": { "is_pushable": true, "is_pushable_by_piston": true },
@@ -141,7 +129,7 @@
         }
       },
       
-      /*咕西*/
+      /* guxi */
       "yoni:guxi": {
         "minecraft:type_family": { "family": [ "guxi", "mob", "yoni" ] },
         "minecraft:scale": { "value": 0.76 },
@@ -179,9 +167,10 @@
     "components": {
       "minecraft:environment_sensor": {
         "triggers": [
-          { /* 袭击 raid */ "filters": { "all_of": [ { "test": "has_mob_effect", "subject": "self", "value": "bad_omen" }, { "test": "is_in_village", "subject": "self", "value": true } ] }, "event": "minecraft:trigger_raid" }
+          { /* raid */ "filters": { "all_of": [ { "test": "has_mob_effect", "subject": "self", "value": "bad_omen" }, { "test": "is_in_village", "subject": "self", "value": true } ] }, "event": "minecraft:trigger_raid" }
         ]
       },
+      
       // the basic components of player entity
       "minecraft:is_hidden_when_invisible": {},
       "minecraft:loot": { "table": "loot_tables/empty.json" },
