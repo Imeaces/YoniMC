@@ -1,27 +1,30 @@
 {
   "format_version": 2,
   "header": {
-    "name": "Yoni",
-    "description": "Minecraft",
-    "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
+    "name": "Guxi",
+    "description": "Yoni Minecraft",
+    "uuid": "b7f2fb7f-3a95-4ad0-8d80-c2393ff7f2a7",
     "version": [0, 0, 1],
     "min_engine_version": [1, 17, 10]
   },
   "modules": [
     {
-      "description": "data:yoni",
+      "description": "data:yoni.guxi",
       "type": "data",
-      "uuid": "6e360e97-62a7-4515-a052-3813e306488e",
+      "uuid": "ee32db6b-e317-47ad-b6fc-d15f8d44269d",
       "version": [0, 0, 1]
-    },
+    }
+    /*
     {
-      "description": "近距离聊天",
+      "description": "Gametest Module",
       "type": "javascript",
       "uuid": "18c94402-a509-4029-87bb-2a63ea61e798",
       "version": [0, 0, 1],
-      "entry": "scripts/chat.js"
+      "entry": "scripts/main.js"
     }
+    */
   ],
+  /*
   "dependencies": [
     {
       "uuid": "b26a4d4c-afdf-4690-88f8-931846312678",
@@ -32,11 +35,12 @@
       "version": [0, 1, 0]
     }
   ],
+  */
   "metadata": {
     "authors": [
       "Silvigarabis"
     ],
-    "license": "UNLICENSE",
-    "url": "https://github.com/Imeaces/Additional-Minecraft"
+    "license": "MIT License",
+    "url": "https://github.com/Silvigarabis/YoniMC"
   }
 }
