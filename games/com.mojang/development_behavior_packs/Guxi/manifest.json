@@ -4,7 +4,7 @@
     "name": "Guxi",
     "description": "Yoni Minecraft",
     "uuid": "b7f2fb7f-3a95-4ad0-8d80-c2393ff7f2a7",
-    "version": [0, 0, 1],
+    "version": [0, 0, 2],
     "min_engine_version": [1, 17, 10]
   },
   "modules": [
@@ -12,7 +12,7 @@
       "description": "data:yoni.guxi",
       "type": "data",
       "uuid": "ee32db6b-e317-47ad-b6fc-d15f8d44269d",
-      "version": [0, 0, 1]
+      "version": [0, 0, 2]
     }
     /*
     {

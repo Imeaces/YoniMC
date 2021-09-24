@@ -7,4 +7,3 @@ scoreboard players set @s guxi 0
 
 function yoni/specties/guxi/light
 function yoni/specties/guxi/lively
-
