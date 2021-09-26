@@ -5,6 +5,7 @@
 [guxi/](./guxi/)  
 [mc/](./mc/)  
 [tutorial/](./tutorial/)  
+[vanilla/](./vanilla/)  
 [**Container**](./Container)  
 [_config.yml](./_config.yml)  
 [_index.txt](./_index.txt)  
@@ -21,4 +22,8 @@
 
 ## 说明
 
-文档将会在近期整理完毕
+文档不知道什么时候整理
+
+## 旧版
+
+[前往](https://silvigarabis.github.io/Additional-Minecraft)
