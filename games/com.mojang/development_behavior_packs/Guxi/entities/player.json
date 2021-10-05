@@ -34,7 +34,7 @@
                     "component_groups": [ "yoni:guxi" ]
                 }
             },
-            "yoni:being_player": { //unsupport
+            "yoni:being_player": { //developing
                 "remove": {
                     "component_groups": [ "yoni:guxi" ]
                 }

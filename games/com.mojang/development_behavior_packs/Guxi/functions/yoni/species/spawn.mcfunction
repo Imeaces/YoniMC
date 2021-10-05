@@ -1,7 +1,12 @@
 #yoni/species/spawn
+# will specify a kind of species randomly
+
+# initial scoreboard
 scoreboard objectives add yoni:species dummy
 
+# random number
 scoreboard objectives add yoni:var00001 dummy
-scoreboard players set @s yoni:var00001 0
+scoreboard players random @s yoni:var00001 1 10
 
-execute @s[scores={yoni:var00001=0}] ~ ~ ~ function yoni/species/guxi/spawn
+# case in
+execute @s[scores={yoni:var00001=1..10}] ~ ~ ~ function yoni/species/guxi/spawn
