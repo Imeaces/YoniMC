@@ -47,4 +47,4 @@ execute @s[scores={guxi:resistance=4..,guxi:effective=4..}] ~ ~ ~ effect @s resi
 # undefined
 # absorption
 
-function yoni/species/guxi/effect/core
+function effect/core

@@ -1,5 +1,5 @@
-#yoni/species/guxi/damage
 effect @s instant_health 1 255 true
+# 47x^5
 execute @s[scores={health=59}] ~ ~ ~ scoreboard players remove @s guxi:energy 47
 execute @s[scores={health=58}] ~ ~ ~ scoreboard players remove @s guxi:energy 1504
 execute @s[scores={health=57}] ~ ~ ~ scoreboard players remove @s guxi:energy 11421

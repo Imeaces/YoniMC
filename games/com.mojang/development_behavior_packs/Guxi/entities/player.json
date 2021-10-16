@@ -7,7 +7,7 @@
             "is_summonable": false,
             "is_experimental": false,
             "animations": {
-                "yoni": "controller.animation.yoni.being",
+                "guxi_being": "controller.animation.guxi.being",
                 //状态
                 "status_alive": "controller.animation.entity.status.alive",
                 //获取生命值的控制器
@@ -31,11 +31,6 @@
         "events": {
             "yoni:being_guxi": {
                 "add": {
-                    "component_groups": [ "yoni:guxi" ]
-                }
-            },
-            "yoni:being_player": { //developing
-                "remove": {
                     "component_groups": [ "yoni:guxi" ]
                 }
             }
