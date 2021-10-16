@@ -1,1 +1,2 @@
+#dying
 kill @s

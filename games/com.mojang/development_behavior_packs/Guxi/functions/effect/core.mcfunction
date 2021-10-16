@@ -1,4 +1,4 @@
-#yoni/species/guxi/effect/core
+#effect/core
 function effect/effective
 function effect/strength
 function effect/mining

@@ -1,3 +1,4 @@
+#spawn
 function value
 
 scoreboard players set @s guxi 1

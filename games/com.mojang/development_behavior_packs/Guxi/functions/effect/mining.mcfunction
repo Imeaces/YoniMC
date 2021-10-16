@@ -1,4 +1,4 @@
-#yoni/species/guxi/effect/mining
+#effect/mining
 
 #execute @s[scores={guxi:mining=0}] ~ ~ ~ scoreboard players add @s guxi:energy 0
 execute @s[scores={guxi:mining=1}] ~ ~ ~ scoreboard players add @s guxi:energy -50

@@ -1,3 +1,4 @@
+#energy/drop
 scoreboard objectives add guxi:var001 dummy
 
 scoreboard players operation @s guxi:var001 = @s guxi:energy

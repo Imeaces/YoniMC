@@ -1,4 +1,4 @@
-#yoni/species/guxi/alive
+#alive
 
 scoreboard players operation @s guxi:health -= @s health
 execute @s[scores={guxi:health=1..}] ~ ~ ~ function damage

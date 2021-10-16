@@ -1,4 +1,4 @@
-#yoni/species/guxi/effects
+#effects
 
 # something by effective (-2..4)
 execute @s[scores={guxi:effective=..-1}] ~ ~ ~ effect @s hunger 4 255 true
