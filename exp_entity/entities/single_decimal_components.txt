@@ -1,0 +1,3 @@
+minecraft:flying_speed
+minecraft:friction_modifier
+minecraft:ground_offset

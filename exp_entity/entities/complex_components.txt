@@ -1,0 +1,6 @@
+minecraft:equipment
+minecraft:item_controllable
+minecraft:loot
+minecraft:is_dyeable
+minecraft:type_family
+minecraft:walk_animation_speed
