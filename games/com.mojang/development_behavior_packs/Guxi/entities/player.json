@@ -7,7 +7,7 @@
             "is_summonable": false,
             "is_experimental": false,
             "animations": {
-                "guxi_being": "controller.animation.guxi.being",
+                "guxi": "controller.animation.yoni.guxi",
                 //状态
                 "status_alive": "controller.animation.entity.status.alive",
                 //获取生命值的控制器
@@ -21,7 +21,7 @@
             },
             "scripts": {
                 "animate": [
-                    "guxi_being",
+                    "guxi",
                     "status_alive",
                     "health0", "health1", "health2", "health3", "health4", "health5", "health6"
                 ]

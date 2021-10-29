@@ -1,4 +1,4 @@
-#damage
+#yoni/guxi/alive/damage
 effect @s instant_health 1 255 true
 # 47x^5
 execute @s[scores={health=59}] ~ ~ ~ scoreboard players remove @s guxi:energy 47

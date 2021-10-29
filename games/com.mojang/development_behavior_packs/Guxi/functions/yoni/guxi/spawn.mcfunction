@@ -1,5 +1,5 @@
-#spawn
-function value
+#yoni/guxi/spawn
+function yoni/values/default/guxi
 
 scoreboard players set @s guxi 1
 

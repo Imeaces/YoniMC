@@ -1,2 +1,0 @@
-#dying
-kill @s

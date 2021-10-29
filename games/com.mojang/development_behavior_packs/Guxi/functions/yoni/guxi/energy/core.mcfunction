@@ -1,4 +1,4 @@
-#energy/core
+#yoni/guxi/energy/core
 execute @s[scores={guxi:energy=..0}] ~ ~ ~ function energy/drop
 execute @s[scores={guxi:energy=100000001..}] ~ ~ ~ function energy/raise
 
