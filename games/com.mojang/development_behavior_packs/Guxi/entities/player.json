@@ -21,7 +21,7 @@
             },
             "scripts": {
                 "animate": [
-                    "yoni",
+                    "guxi_being",
                     "status_alive",
                     "health0", "health1", "health2", "health3", "health4", "health5", "health6"
                 ]
