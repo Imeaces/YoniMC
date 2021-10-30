@@ -43,6 +43,8 @@
                 "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
                 "minecraft:breathable": { /* 全局可呼吸 */ "breathes_air": true, "breathes_water": true, "breathes_lava": true, "breathes_solids": true, "generates_bubbles": false },
                 "minecraft:nameable": { "always_show": false, "allow_name_tag_renaming": false },
+                "minecraft:block_climber": true,
+                "minecraft:can_climb": true,
                 "minecraft:attack": { "damage": 0 },
                 "minecraft:health": { "max": 60, "value": 60, "min": 0 },
                 "minecraft:damage_sensor": {
