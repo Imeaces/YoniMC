@@ -1,4 +1,5 @@
-# Index of /Additional-Minecraft/mc/history
+# Index of /Additional-Minecraft/history
 
 [../](./../)  
+[**NeteaseMC-history**](./NeteaseMC-history)  
 [**NeteaseMC**](./NeteaseMC)  

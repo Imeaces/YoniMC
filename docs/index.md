@@ -1,10 +1,11 @@
 # Index of /Additional-Minecraft
 
 [../](./../)  
+[documentation/](./documentation/)  
 [examples/](./examples/)  
-[guxi/](./guxi/)  
-[mc/](./mc/)  
-[tutorial/](./tutorial/)  
+[history/](./history/)  
+[texts/](./texts/)  
+[tutorials/](./tutorials/)  
 [vanilla/](./vanilla/)  
 [**Container**](./Container)  
 [_config.yml](./_config.yml)  
@@ -15,6 +16,7 @@
 [**entities**](./entities)  
 [**items**](./items)  
 [**molang**](./molang)  
+[**note**](./note)  
 [sumIndex.sh](./sumIndex.sh)  
 [**实体组件特性**](./实体组件特性)  
 
@@ -22,8 +24,4 @@
 
 ## 说明
 
-文档不知道什么时候整理
-
-## 旧版
-
-[前往](https://silvigarabis.github.io/Additional-Minecraft)
+部分文档为自行编写，部分文档为网络搜集，精力有限，暂未整理。

@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/mc/addon/documentation/beta
+# Index of /Additional-Minecraft/documentation/beta
 
 [../](./../)  
 [1.15.0.51/](./1.15.0.51/)  

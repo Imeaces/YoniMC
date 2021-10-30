@@ -1,3 +1,3 @@
-# Index of /Additional-Minecraft/tutorial/command
+# Index of /Additional-Minecraft/tutorials/command
 
 [../](./../)  

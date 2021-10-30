@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/mc/addon/documentation/beta/1.16.220.51
+# Index of /Additional-Minecraft/documentation/beta/1.16.220.51
 
 [../](./../)  
 [**Addons**](./Addons)  

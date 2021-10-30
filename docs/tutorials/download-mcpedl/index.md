@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/mc/addon/download/mcpedl
+# Index of /Additional-Minecraft/tutorials/download-mcpedl
 
 [../](./../)  
 [**more-armors-addon**](./more-armors-addon)  

@@ -1,4 +1,6 @@
-# Index of /Additional-Minecraft/mc/addon/download
+# Index of /Additional-Minecraft/tutorials
 
 [../](./../)  
-[mcpedl/](./mcpedl/)  
+[command/](./command/)  
+[download-mcpedl/](./download-mcpedl/)  
+[how-use-command/](./how-use-command/)  
