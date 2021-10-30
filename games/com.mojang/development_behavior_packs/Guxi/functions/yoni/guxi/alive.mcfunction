@@ -10,3 +10,5 @@ function yoni/guxi/energy
 function yoni/guxi/status
 
 function yoni/guxi/effect
+
+function yoni/guxi/resistance

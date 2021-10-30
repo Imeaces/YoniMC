@@ -20,3 +20,5 @@ scoreboard players operation @s guxi:energy = energy guxi:value
 scoreboard objectives add guxi:health dummy
 
 scoreboard players operation @s guxi:health = @s health
+
+scoreboard objectives add guxi:resi2 dummy

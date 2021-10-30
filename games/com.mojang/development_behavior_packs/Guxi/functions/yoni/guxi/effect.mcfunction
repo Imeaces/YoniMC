@@ -25,12 +25,6 @@ execute @s[scores={guxi:mining=1}] ~ ~ ~ effect @s mining_fatigue 4 2 true
 execute @s[scores={guxi:mining=2}] ~ ~ ~ effect @s haste 4 0 true
 
 
-# resistance ~` resistance[0,4] -++ [2,4]
-execute @s[scores={guxi:resistance=1}] ~ ~ ~ effect @s resistance 4 0 true
-execute @s[scores={guxi:resistance=2}] ~ ~ ~ effect @s resistance 4 1 true
-execute @s[scores={guxi:resistance=3}] ~ ~ ~ effect @s resistance 4 2 true
-execute @s[scores={guxi:resistance=4}] ~ ~ ~ effect @s resistance 4 3 true
-
 
 # undefined
 # absorption
