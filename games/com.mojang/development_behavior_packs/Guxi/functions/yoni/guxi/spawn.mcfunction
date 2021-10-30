@@ -17,12 +17,6 @@ scoreboard objectives add guxi:resistance dummy
 scoreboard players operation @s guxi:energies = energies guxi:value
 scoreboard players operation @s guxi:energy = energy guxi:value
 
-scoreboard players operation @s guxi:effective = effective guxi:value
-scoreboard players operation @s guxi:vision = vision guxi:value
-scoreboard players operation @s guxi:strength = strength guxi:value
-scoreboard players operation @s guxi:mining = mining guxi:value
-scoreboard players operation @s guxi:resistance = resistance guxi:value
-
 scoreboard objectives add guxi:health dummy
 
 scoreboard players operation @s guxi:health = @s health
