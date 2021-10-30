@@ -1,0 +1,37 @@
+{
+  "format_version": "1.16.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "yoni:energy",
+      "category": "items"
+    },
+    "components": {
+      "minecraft:allow_off_hand": true,
+      "minecraft:fuel": {
+        "duration": 256
+      },
+      "minecraft:icon": {
+        "texture": "energy"
+      },
+      "minecraft:max_stack_size": 16,
+      "minecraft:on_use": {
+        "on_use": {
+          "event": "yoni:use_energy",
+          "target": "self"
+        }
+      },
+      "tag:yoni:energy": {}
+    },
+    "events": {
+      "yoni:use_energy": {
+        "add_mob_effect": {
+          "effect": "poison",
+          "target": "holder",
+          "duration": 10,
+          "amplifier": 16
+        },
+        "decrement_stack":{}
+      }
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "format_version": "1.16.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "minecraft:player",
+      "is_spawnable": false, "is_summonable": false, "is_experimental": false,
+      "animations": {
+        "guxi": "controller.animation.yoni.guxi",
+        
+        //获取生命值的控制器（0-40的值可以在一刻之内获取）
+        "health": "controller.animation.yoni.health",
+        "health1": "controller.animation.yoni.health1",
+        "health2": "controller.animation.yoni.health2",
+        "health3": "controller.animation.yoni.health3",
+        "health4": "controller.animation.yoni.health4"
+        
+      },
+      "scripts": {
+        "animate": [
+          "guxi",
+
+          //运行获取生命值的控制器
+          "health",
+          "health1",
+          "health2",
+          "health3",
+          "health4"
+        ]
+      }
+    },
+
+    "events": {
+      /*guxi*/
+      "minecraft:entity_spawned": { "add": { "component_groups": [ "yoni:health_guxi" ] } },
+      "yoni:health_0_8": { "add": { "component_groups": [ "yoni:health_0_8" ] } },
+      "yoni:health_guxi": { "add": { "component_groups": [ "yoni:health_guxi" ] } }
+    },
+
+    "component_groups": {
+      "yoni:health_0_8": { "minecraft:health": { "max": 8, "min": 0, "value": 8 } },
+      "yoni:health_guxi": { "minecraft:health": { "max": 40, "min": 1, "value": 40 } }
+    },
+
+    "components": {
+      "minecraft:hurt_on_condition": {
+        "damage_conditions": [
+        ]
+      },
+
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "all",
+            "damage_modifier": -19
+          }
+        ]
+      },
+
+      "minecraft:environment_sensor": {
+        "triggers": [
+        ]
+      },
+
+      ///////////////////////////////////////////
+      //如果没有必要的话，下边的这些是不会修改的
+      ///////////////////////////////////////////
+/* 已经修改到实体生成事件
+      "minecraft:health": { "max": 40, "min": 1, "value": 40 },
+*/
+      "minecraft:type_family": {
+        "family": [ "guxi" ]
+      },
+      "minecraft:loot": { "table": "loot_tables/empty.json" },
+      "minecraft:insomnia": { "days_until_insomnia": 3 },
+      "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
+      "minecraft:scale": { "value": 0.76 },
+      "minecraft:movement": { "value": 0.1 },
+      "minecraft:attack": { "damage": 1 },
+      "minecraft:nameable": { "always_show": false, "allow_name_tag_renaming": false },
+      "minecraft:physics": {},
+      "minecraft:pushable": { "is_pushable": true, "is_pushable_by_piston": true },
+      "minecraft:breathable": {
+        "breathes_air": true,
+        "breathes_lava": true,
+        "breathes_solids": true,
+        "breathes_water": true,
+        "generates_bubbles": false
+      },
+      "minecraft:is_hidden_when_invisible": {},
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:rideable":{"seat_count":2,"family_types":["parrot_tame"],"pull_in_entities":true,"seats":[{"position":[0.4,-0.2,-0.1],"min_rider_count":0,"max_rider_count":0,"lock_rider_rotation":0},{"position":[-0.4,-0.2,-0.1],"min_rider_count":1,"max_rider_count":2,"lock_rider_rotation":0}]},
+      "minecraft:player.saturation": { "value": 20 },
+      "minecraft:player.exhaustion": { "value": 0, "max": 4 },
+      "minecraft:player.level": { "value": 0, "max": 24791 },
+      "minecraft:player.experience": { "value": 0, "max": 1 }
+    }
+    
+  }
+}
