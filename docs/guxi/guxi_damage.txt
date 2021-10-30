@@ -1,0 +1,42 @@
+anvil *15
+stalagmite *10
+fly_into_wall *6
+falling_block *5
+fall *5
+stalactite *5
+block_explosion *0.5
+entity_explosion *0.5
+suffocation 0
+drowning 0
+contact 0
+starve 0
+freezing -2
+entity_attack -100
+projectile -100
+fireworks +1
+magma +5
+fire_tick +5
+fire +10
+lava +100
+lightning +1000
+
+========================================================================
+## 未知
+all
+fault
+none
+## 魔法
+magic
+piston
+thorns 荆棘
+void 虚空
+wither
+
+
+## 温度
+temperature
+
+## 未知
+charging
+override
+suicide

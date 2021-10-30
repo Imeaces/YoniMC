@@ -1,0 +1,2 @@
+警告 note.bell
+切换 note.bass 0.73
