@@ -5,7 +5,7 @@
     "description": "Yoni Minecraft",
     "uuid": "b7f2fb7f-3a95-4ad0-8d80-c2393ff7f2a7",
     "version": [0, 0, 2],
-    "min_engine_version": [1, 17, 10]
+    "min_engine_version": [1, 17, 40]
   },
   "modules": [
     {

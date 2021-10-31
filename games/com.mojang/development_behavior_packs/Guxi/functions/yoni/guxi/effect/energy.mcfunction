@@ -8,12 +8,6 @@ execute @s[scores={guxi:effective=4}] ~ ~ ~ scoreboard players add @s guxi:energ
 execute @s[scores={guxi:mining=2}] ~ ~ ~ scoreboard players add @s guxi:energy -50
 
 
-#execute @s[scores={guxi:resistance=0}] ~ ~ ~ scoreboard players add @s guxi:energy 0
-execute @s[scores={guxi:resistance=1}] ~ ~ ~ scoreboard players add @s guxi:energy -49
-execute @s[scores={guxi:resistance=2}] ~ ~ ~ scoreboard players add @s guxi:energy -290
-execute @s[scores={guxi:resistance=3}] ~ ~ ~ scoreboard players add @s guxi:energy -918
-execute @s[scores={guxi:resistance=4}] ~ ~ ~ scoreboard players add @s guxi:energy -2819
-
 
 #execute @s[scores={guxi:strength=0..1}] ~ ~ ~ scoreboard players add @s guxi:energy 0
 execute @s[scores={guxi:strength=2}] ~ ~ ~ scoreboard players add @s guxi:energy -93

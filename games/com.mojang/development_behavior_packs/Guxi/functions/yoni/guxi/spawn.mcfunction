@@ -9,7 +9,6 @@ scoreboard objectives add guxi:energies dummy
 scoreboard objectives add guxi:energy dummy
 
 scoreboard objectives add guxi:effective dummy
-scoreboard objectives add guxi:vision dummy
 scoreboard objectives add guxi:strength dummy
 scoreboard objectives add guxi:mining dummy
 scoreboard objectives add guxi:resistance dummy
@@ -22,3 +21,6 @@ scoreboard objectives add guxi:health dummy
 scoreboard players operation @s guxi:health = @s health
 
 scoreboard objectives add guxi:resi2 dummy
+
+scoreboard objectives add guxi:status dummy
+scoreboard players set @s guxi:status -1

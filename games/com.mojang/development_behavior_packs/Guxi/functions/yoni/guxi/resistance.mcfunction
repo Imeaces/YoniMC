@@ -12,3 +12,9 @@ scoreboard players operation @s guxi:resi2 = @s guxi:resistance
 #execute @s[scores={guxi:resistance=3}] ~ ~ ~ effect @s resistance 4 2 true
 #execute @s[scores={guxi:resistance=4}] ~ ~ ~ effect @s resistance 4 3 true
 
+
+#execute @s[scores={guxi:resistance=0}] ~ ~ ~ scoreboard players add @s guxi:energy 0
+execute @s[scores={guxi:resistance=1}] ~ ~ ~ scoreboard players add @s guxi:energy -49
+execute @s[scores={guxi:resistance=2}] ~ ~ ~ scoreboard players add @s guxi:energy -290
+execute @s[scores={guxi:resistance=3}] ~ ~ ~ scoreboard players add @s guxi:energy -918
+execute @s[scores={guxi:resistance=4}] ~ ~ ~ scoreboard players add @s guxi:energy -2819
