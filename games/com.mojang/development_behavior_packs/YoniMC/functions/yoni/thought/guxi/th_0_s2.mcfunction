@@ -1,3 +1,4 @@
+#yoni/thought/guxi/th_0_s2
 
 
 titleraw @s actionbar {"rawtext":[{"translate":"§o§7%%2§r§l§f%%1","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}

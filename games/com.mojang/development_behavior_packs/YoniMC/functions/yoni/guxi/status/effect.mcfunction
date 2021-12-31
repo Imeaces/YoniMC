@@ -1,4 +1,4 @@
-#mcfunction
+#yoni/guxi/status/effect
 # 能量瘫痪
 execute @s [scores={guxi:effective=!0,guxi:status=4}] ~ ~ ~ scoreboard players set @s guxi:effective 0
 ## 无法调动能量附加序列

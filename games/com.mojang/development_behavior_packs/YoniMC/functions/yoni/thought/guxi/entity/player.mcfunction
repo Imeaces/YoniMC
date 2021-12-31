@@ -1,4 +1,4 @@
-#yoni/thought/guxi/core
+#yoni/thought/guxi/entity/player
 
 # 设置第九槽位用于发出指令
 replaceitem entity @s slot.hotbar 8 keep yoni:th_enter 1 0 {"minecraft:item_lock":{"mode":"lock_in_slot"},"minecraft:keep_on_death":{}}

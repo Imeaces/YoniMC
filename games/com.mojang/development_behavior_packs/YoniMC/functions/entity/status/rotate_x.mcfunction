@@ -1,4 +1,4 @@
-#yoni/status/rotate_x
+#entity/status/rotate_x
 
 scoreboard objectives add rotate_x dummy
 

@@ -1,3 +1,4 @@
+#yoni/guxi/effect/energy
 execute @s[scores={guxi:effective=0..1}] ~ ~ ~ scoreboard players add @s guxi:energy -16
 execute @s[scores={guxi:effective=2}] ~ ~ ~ scoreboard players add @s guxi:energy -31
 execute @s[scores={guxi:effective=3}] ~ ~ ~ scoreboard players add @s guxi:energy -60

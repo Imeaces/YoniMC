@@ -1,3 +1,4 @@
+#yoni/guxi/status
 
 # 能量导致的状态
 function yoni/guxi/status/energy

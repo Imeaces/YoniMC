@@ -1,4 +1,4 @@
-#yoni/guxi/energy
+#yoni/guxi/energy/core
 # 根据能量消耗及补充对能量进行管理
 ## 消耗过大
 execute @s[scores={guxi:energy=..0}] ~ ~ ~ function yoni/guxi/energy/drop

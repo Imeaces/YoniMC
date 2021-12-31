@@ -1,4 +1,4 @@
-#yoni/thought/guxi/th2695
+#yoni/thought/guxi/th_1_10
 
 # 计时 tmp_194689138604
 

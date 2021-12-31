@@ -1,4 +1,4 @@
-#mcfunction
+#yoni/guxi/effect
 ################
 # 附加
 ################

@@ -1,4 +1,4 @@
-#function
+#yoni/guxi/status/energy
 # 能量 高于 90%
 # 无任何攻击欲望
 execute @s[scores={guxi:energies=325..,guxi:status=!0}] ~ ~ ~ function yoni/guxi/status/being_sluggish
@@ -24,4 +24,3 @@ execute @s[scores={guxi:energies=1..10,guxi:status=!4}] ~ ~ ~ function yoni/guxi
 # 能量 耗尽
 # 死亡
 execute @s[scores={guxi:energies=0,guxi:status=!5}] ~ ~ ~ function yoni/guxi/status/being_dead
-

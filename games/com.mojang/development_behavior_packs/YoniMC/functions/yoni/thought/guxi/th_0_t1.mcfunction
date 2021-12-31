@@ -1,3 +1,4 @@
+#yoni/thought/guxi/th_0_t1
 scoreboard players set @s thought 10
 
 # 计时

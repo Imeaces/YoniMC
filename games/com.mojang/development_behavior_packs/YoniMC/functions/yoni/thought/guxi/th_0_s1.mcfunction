@@ -1,3 +1,4 @@
+#yoni/thought/guxi/th_0_s1
 
 ## 计时
 scoreboard objectives add tmp_194689138604 dummy
