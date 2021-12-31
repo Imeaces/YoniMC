@@ -1,0 +1,15 @@
+#yoni/thought/guxi/core/form_1
+
+execute @s [scores={tmp_194689138604=1..2}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>§r§7========§r§l§f<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+execute @s [scores={tmp_194689138604=3..4}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>>§r§7======§r§l§f<<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+execute @s [scores={tmp_194689138604=5..6}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>>>§r§7====§r§l§f<<<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+execute @s [scores={tmp_194689138604=7..8}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>>>>§r§7==§r§l§f<<<<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+execute @s [scores={tmp_194689138604=9..10}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>>>>><<<<<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+
+execute @s [scores={tmp_194689138604=11..12}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>>>>><<<<<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+execute @s [scores={tmp_194689138604=13..14}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>>>>§r§7==§r§l§f<<<<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+execute @s [scores={tmp_194689138604=15..16}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>>>§r§7====§r§l§f<<<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+execute @s [scores={tmp_194689138604=17..18}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>>§r§7======§r§l§f<<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+execute @s [scores={tmp_194689138604=19..20}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f>>§r§7========§r§l§f<<§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+
+execute @s [scores={tmp_194689138604=21..}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§r§o§7%%2§r§l§f%%1§r\n§r§l§f------------§r","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}

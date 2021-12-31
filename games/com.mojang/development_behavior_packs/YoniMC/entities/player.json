@@ -5,7 +5,213 @@
       "identifier": "minecraft:player",
       "is_spawnable": false,
       "is_summonable": false,
-      "is_experimental": false
+      "is_experimental": false,
+      "animations": {
+        "guxi": "controller.animation.yoni.guxi",
+        //状态
+        "status_alive": "controller.animation.entity.status.alive",
+        //获取生命值的控制器
+        "health0": "controller.animation.entity.health_0",
+        "health1": "controller.animation.entity.health_1",
+        "health2": "controller.animation.entity.health_2",
+        "health3": "controller.animation.entity.health_3",
+        "health4": "controller.animation.entity.health_4",
+        "health5": "controller.animation.entity.health_5",
+        "health6": "controller.animation.entity.health_6"
+      },
+      "scripts": {
+        "animate": [
+          "guxi",
+          "status_alive",
+          "health0", "health1", "health2", "health3", "health4", "health5", "health6"
+        ]
+      }
+    },
+    
+    "events": {
+      "yoni:being_guxi": {
+        "sequence": [
+          { "add": { "component_groups": [ "yoni:guxi" ] } },
+          { "add": { "component_groups": [ "yoni:guxi_resistance_0" ] } }
+        ]
+      }
+    },
+
+    "component_groups": {
+      "yoni:guxi_resistance_0": { //能量盾：未塑造
+        "minecraft:damage_sensor": {
+          "triggers": [
+            { "cause": "anvil",             "damage_multiplier": 4 },
+            { "cause": "fly_into_wall",     "damage_multiplier": 3 },
+            { "cause": "block_explosion",   "damage_multiplier": 2 },
+            { "cause": "entity_explosion",  "damage_multiplier": 2 },
+            { "cause": "stalactite",        "damage_multiplier": 2 },  //钟乳石 stalactite
+            { "cause": "entity_attack",     "damage_multiplier": 1.5 },
+            { "cause": "stalagmite",        "damage_multiplier": 1.5 }, //石笋 stalagmite
+            { "cause": "falling_block",     "damage_multiplier": 1.5 },
+            { "cause": "projectile",        "damage_multiplier": 1.5 },
+            { "cause": "fall",              "damage_multiplier": 1 },
+            { "cause": "contact",           "damage_multiplier": 1 },
+            { "cause": "fireworks",         "damage_multiplier": 1 },
+
+            { "cause": "suffocation",  "deals_damage": false },
+            { "cause": "drowning",     "deals_damage": false },
+            { "cause": "starve",       "deals_damage": false },
+            { "cause": "fire_tick",    "deals_damage": false },
+            { "cause": "magma",        "deals_damage": false },
+            { "cause": "piston",       "deals_damage": false },
+            { "cause": "lightning",    "deals_damage": false },
+            { "cause": "freezing",     "deals_damage": false },
+            { "cause": "fire",         "deals_damage": false },
+            { "cause": "lava",         "deals_damage": false }
+          ]
+        }
+      },
+      "yoni:guxi_resistance_1": { //能量盾：1
+        "minecraft:damage_sensor": {
+          "triggers": [
+            { "cause": "anvil",             "damage_multiplier": 3.04 },
+            { "cause": "fly_into_wall",     "damage_multiplier": 2.28 },
+            { "cause": "block_explosion",   "damage_multiplier": 1.52 },
+            { "cause": "entity_explosion",  "damage_multiplier": 1.52 },
+            { "cause": "stalactite",        "damage_multiplier": 1.52 },  //钟乳石 stalactite
+            { "cause": "entity_attack",     "damage_multiplier": 1.14 },
+            { "cause": "stalagmite",        "damage_multiplier": 1.14 }, //石笋 stalagmite
+            { "cause": "falling_block",     "damage_multiplier": 1.14 },
+            { "cause": "projectile",        "damage_multiplier": 1.14 },
+            { "cause": "fall",              "damage_multiplier": 0.76 },
+            { "cause": "fireworks",         "damage_multiplier": 0.76 },
+
+            { "cause": "contact",      "deals_damage": false },
+            { "cause": "suffocation",  "deals_damage": false },
+            { "cause": "drowning",     "deals_damage": false },
+            { "cause": "starve",       "deals_damage": false },
+            { "cause": "fire_tick",    "deals_damage": false },
+            { "cause": "magma",        "deals_damage": false },
+            { "cause": "piston",       "deals_damage": false },
+            { "cause": "lightning",    "deals_damage": false },
+            { "cause": "freezing",     "deals_damage": false },
+            { "cause": "fire",         "deals_damage": false },
+            { "cause": "lava",         "deals_damage": false }
+          ]
+        }
+      },
+      "yoni:guxi_resistance_2": { //能量盾：2
+        "minecraft:damage_sensor": {
+          "triggers": [
+            { "cause": "anvil",             "damage_multiplier": 2.28 },
+            { "cause": "fly_into_wall",     "damage_multiplier": 1.71 },
+            { "cause": "block_explosion",   "damage_multiplier": 1.14 },
+            { "cause": "entity_explosion",  "damage_multiplier": 1.14 },
+            { "cause": "stalactite",        "damage_multiplier": 1.14 },  //钟乳石 stalactite
+            { "cause": "entity_attack",     "damage_multiplier": 0.85 },
+            { "cause": "stalagmite",        "damage_multiplier": 0.85 }, //石笋 stalagmite
+            { "cause": "falling_block",     "damage_multiplier": 0.85 },
+            { "cause": "projectile",        "damage_multiplier": 0.85 },
+            { "cause": "fall",              "damage_multiplier": 0.57 },
+
+            { "cause": "contact",      "deals_damage": false },
+            { "cause": "fireworks",    "deals_damage": false },
+            { "cause": "suffocation",  "deals_damage": false },
+            { "cause": "drowning",     "deals_damage": false },
+            { "cause": "starve",       "deals_damage": false },
+            { "cause": "fire_tick",    "deals_damage": false },
+            { "cause": "magma",        "deals_damage": false },
+            { "cause": "piston",       "deals_damage": false },
+            { "cause": "lightning",    "deals_damage": false },
+            { "cause": "freezing",     "deals_damage": false },
+            { "cause": "fire",         "deals_damage": false },
+            { "cause": "lava",         "deals_damage": false }
+          ]
+        }
+      },
+      "yoni:guxi_resistance_3": { //能量盾：3
+        "minecraft:damage_sensor": {
+          "triggers": [
+            { "cause": "anvil",             "damage_multiplier": 1.72 },
+            { "cause": "fly_into_wall",     "damage_multiplier": 1.29 },
+            { "cause": "block_explosion",   "damage_multiplier": 0.86 },
+            { "cause": "entity_explosion",  "damage_multiplier": 0.86 },
+            { "cause": "stalactite",        "damage_multiplier": 0.86 },  //钟乳石 stalactite
+            { "cause": "entity_attack",     "damage_multiplier": 0.64 },
+            { "cause": "stalagmite",        "damage_multiplier": 0.64 }, //石笋 stalagmite
+            { "cause": "falling_block",     "damage_multiplier": 0.64 },
+            { "cause": "projectile",        "damage_multiplier": 0.64 },
+            { "cause": "fall",              "damage_multiplier": 0.43 },
+
+            { "cause": "contact",      "deals_damage": false },
+            { "cause": "fireworks",    "deals_damage": false },
+            { "cause": "suffocation",  "deals_damage": false },
+            { "cause": "drowning",     "deals_damage": false },
+            { "cause": "starve",       "deals_damage": false },
+            { "cause": "fire_tick",    "deals_damage": false },
+            { "cause": "magma",        "deals_damage": false },
+            { "cause": "piston",       "deals_damage": false },
+            { "cause": "lightning",    "deals_damage": false },
+            { "cause": "freezing",     "deals_damage": false },
+            { "cause": "fire",         "deals_damage": false },
+            { "cause": "lava",         "deals_damage": false }
+          ]
+        }
+      },
+      "yoni:guxi_resistance_4": { //能量盾：4
+        "minecraft:damage_sensor": {
+          "triggers": [
+            { "cause": "anvil",             "damage_multiplier": 1.32 },
+            { "cause": "fly_into_wall",     "damage_multiplier": 0.99 },
+            { "cause": "block_explosion",   "damage_multiplier": 0.66 },
+            { "cause": "entity_explosion",  "damage_multiplier": 0.66 },
+            { "cause": "stalactite",        "damage_multiplier": 0.66 },  //钟乳石 stalactite
+            { "cause": "entity_attack",     "damage_multiplier": 0.49 },
+            { "cause": "stalagmite",        "damage_multiplier": 0.49 }, //石笋 stalagmite
+            { "cause": "falling_block",     "damage_multiplier": 0.49 },
+            { "cause": "projectile",        "damage_multiplier": 0.49 },
+            { "cause": "fall",              "damage_multiplier": 0.33 },
+
+            { "cause": "contact",      "deals_damage": false },
+            { "cause": "fireworks",    "deals_damage": false },
+            { "cause": "suffocation",  "deals_damage": false },
+            { "cause": "drowning",     "deals_damage": false },
+            { "cause": "starve",       "deals_damage": false },
+            { "cause": "fire_tick",    "deals_damage": false },
+            { "cause": "magma",        "deals_damage": false },
+            { "cause": "piston",       "deals_damage": false },
+            { "cause": "lightning",    "deals_damage": false },
+            { "cause": "freezing",     "deals_damage": false },
+            { "cause": "fire",         "deals_damage": false },
+            { "cause": "lava",         "deals_damage": false }
+          ]
+        }
+      },
+      "yoni:guxi": {
+        "minecraft:type_family": { "family": [ "guxi", "mob", "yoni" ] },
+        "minecraft:scale": { "value": 0.76 },
+        "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
+        "minecraft:breathable": { "breathes_air": true, "breathes_water": true, "breathes_lava": true, "breathes_solids": true, "generates_bubbles": false },
+        "minecraft:nameable": { "always_show": false, "allow_name_tag_renaming": false },
+        "minecraft:block_climber": true,
+        "minecraft:can_climb": true,
+        "minecraft:attack": { "damage": 0 },
+        "minecraft:health": { "max": 60, "value": 60, "min": 0 },
+        "minecraft:damage_sensor": {},
+        "minecraft:environment_sensor": {}
+      }
+    },
+
+    "components": {
+      // the basic components of player entity
+      "minecraft:type_family": { "family": [ "player" ] },
+      "minecraft:nameable": { "always_show": true, "allow_name_tag_renaming": false },
+      "minecraft:is_hidden_when_invisible": {},
+      "minecraft:loot": { "table": "loot_tables/empty.json" },
+      "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
+      "minecraft:movement": { "value": 0.1 },
+      "minecraft:physics": {},
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:player.saturation": { "value": 20 },
+      "minecraft:player.exhaustion": { "value": 0, "max": 4 },
+      "minecraft:player.level": { "value": 0, "max": 24791 },
+      "minecraft:player.experience": { "value": 0, "max": 1 }
     }
   }
 }
