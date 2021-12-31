@@ -1,0 +1,94 @@
+{
+  "format_version": "1.17.10",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "guxi:explode",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "is_experimental": false
+    },
+    "component_groups": {
+      "drop_entity": {
+        "minecraft:health": { "value": 0 }
+      },
+      "explode_true_small": {
+        "minecraft:explode": {
+          "breaks_blocks": false,
+          "causes_fire": false,
+          "fuse_length": -1,
+          "fuse_lit": true,
+          "power": 4,
+          "max_resistance": 0
+        }
+      },
+      "explode_true_big": {
+        "minecraft:explode": {
+          "breaks_blocks": false,
+          "causes_fire": false,
+          "fuse_length": -1,
+          "fuse_lit": true,
+          "power": 16,
+          "max_resistance": 0
+        }
+      },
+      "explode_false_small": {
+        "minecraft:explode": {
+          "breaks_blocks": true,
+          "causes_fire": true,
+          "destroy_affected_by_griefing": true,
+          "fire_affected_by_griefing": true,
+          "fuse_length": -1,
+          "fuse_lit": true,
+          "power": 2
+        }
+      },
+      "explode_false_big": {
+        "minecraft:explode": {
+          "breaks_blocks": true,
+          "causes_fire": true,
+          "destroy_affected_by_griefing": true,
+          "fire_affected_by_griefing": true,
+          "fuse_length": -1,
+          "fuse_lit": true,
+          "power": 8
+        }
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": [ "drop_entity" ]
+        }
+      },
+      "explode_true_small": {
+        "add": {
+          "component_groups": [ "explode_true_small" ]
+        }
+      },
+      "explode_true_big": {
+        "add": {
+          "component_groups": [ "explode_true_big" ]
+        }
+      },
+      "explode_false_big": {
+        "add": {
+          "component_groups": [ "explode_false_big" ]
+        }
+      },
+      "explode_false_small": {
+        "add": {
+          "component_groups": [ "explode_false_small" ]
+        }
+      }
+    },
+    "components": {
+      "minecraft:conditional_bandwidth_optimization": {
+        "default_values": {
+          "max_optimized_distance": 80.0,
+          "max_dropped_ticks": 10,
+          "use_motion_prediction_hints": true
+        }
+      }
+    }
+  }
+}

@@ -4,4 +4,4 @@ scoreboard objectives add thought dummy
 scoreboard players add @s thought 0
 
 # exec
-function yoni/thought/guxi/core
+function yoni/thought/guxi/entity/player

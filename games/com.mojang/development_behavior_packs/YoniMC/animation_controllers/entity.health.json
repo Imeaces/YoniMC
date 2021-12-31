@@ -1,0 +1,1372 @@
+/*
+controller.animation.entity.health_0
+controller.animation.entity.health_1
+controller.animation.entity.health_2
+controller.animation.entity.health_3
+controller.animation.entity.health_4
+controller.animation.entity.health_5
+controller.animation.entity.health_6
+*/
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.entity.health_0": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "raise64": "query.scoreboard('health') - query.health <= -64"
+            },
+            {
+              "drop64": "query.scoreboard('health') - query.health >= 64"
+            },
+            {
+              "raise32": "query.scoreboard('health') - query.health <= -32"
+            },
+            {
+              "drop32": "query.scoreboard('health') - query.health >= 32"
+            },
+            {
+              "raise16": "query.scoreboard('health') - query.health <= -16"
+            },
+            {
+              "drop16": "query.scoreboard('health') - query.health >= 16"
+            },
+            {
+              "raise8": "query.scoreboard('health') - query.health <= -8"
+            },
+            {
+              "drop8": "query.scoreboard('health') - query.health >= 8"
+            },
+            {
+              "raise4": "query.scoreboard('health') - query.health <= -4"
+            },
+            {
+              "drop4": "query.scoreboard('health') - query.health >= 4"
+            },
+            {
+              "raise2": "query.scoreboard('health') - query.health <= -2"
+            },
+            {
+              "drop2": "query.scoreboard('health') - query.health >= 2"
+            },
+            {
+              "raise1": "query.scoreboard('health') - query.health <= -1"
+            },
+            {
+              "drop1": "query.scoreboard('health') - query.health >= 1"
+            }
+          ],
+          "on_exit": [
+            "/scoreboard objectives add health dummy"
+          ]
+        },
+        "raise64": {
+          "on_entry": [
+            "/scoreboard players add @s health 64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop64": {
+          "on_entry": [
+            "/scoreboard players add @s health -64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise32": {
+          "on_entry": [
+            "/scoreboard players add @s health 32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop32": {
+          "on_entry": [
+            "/scoreboard players add @s health -32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise16": {
+          "on_entry": [
+            "/scoreboard players add @s health 16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop16": {
+          "on_entry": [
+            "/scoreboard players add @s health -16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise8": {
+          "on_entry": [
+            "/scoreboard players add @s health 8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop8": {
+          "on_entry": [
+            "/scoreboard players add @s health -8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise4": {
+          "on_entry": [
+            "/scoreboard players add @s health 4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop4": {
+          "on_entry": [
+            "/scoreboard players add @s health -4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise2": {
+          "on_entry": [
+            "/scoreboard players add @s health 2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop2": {
+          "on_entry": [
+            "/scoreboard players add @s health -2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise1": {
+          "on_entry": [
+            "/scoreboard players add @s health 1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop1": {
+          "on_entry": [
+            "/scoreboard players add @s health -1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        }
+      }
+    },
+    "controller.animation.entity.health_1": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "raise64": "query.scoreboard('health') - query.health <= -64"
+            },
+            {
+              "drop64": "query.scoreboard('health') - query.health >= 64"
+            },
+            {
+              "raise32": "query.scoreboard('health') - query.health <= -32"
+            },
+            {
+              "drop32": "query.scoreboard('health') - query.health >= 32"
+            },
+            {
+              "raise16": "query.scoreboard('health') - query.health <= -16"
+            },
+            {
+              "drop16": "query.scoreboard('health') - query.health >= 16"
+            },
+            {
+              "raise8": "query.scoreboard('health') - query.health <= -8"
+            },
+            {
+              "drop8": "query.scoreboard('health') - query.health >= 8"
+            },
+            {
+              "raise4": "query.scoreboard('health') - query.health <= -4"
+            },
+            {
+              "drop4": "query.scoreboard('health') - query.health >= 4"
+            },
+            {
+              "raise2": "query.scoreboard('health') - query.health <= -2"
+            },
+            {
+              "drop2": "query.scoreboard('health') - query.health >= 2"
+            },
+            {
+              "raise1": "query.scoreboard('health') - query.health <= -1"
+            },
+            {
+              "drop1": "query.scoreboard('health') - query.health >= 1"
+            }
+          ],
+          "on_exit": [
+            "/scoreboard objectives add health dummy"
+          ]
+        },
+        "raise64": {
+          "on_entry": [
+            "/scoreboard players add @s health 64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop64": {
+          "on_entry": [
+            "/scoreboard players add @s health -64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise32": {
+          "on_entry": [
+            "/scoreboard players add @s health 32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop32": {
+          "on_entry": [
+            "/scoreboard players add @s health -32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise16": {
+          "on_entry": [
+            "/scoreboard players add @s health 16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop16": {
+          "on_entry": [
+            "/scoreboard players add @s health -16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise8": {
+          "on_entry": [
+            "/scoreboard players add @s health 8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop8": {
+          "on_entry": [
+            "/scoreboard players add @s health -8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise4": {
+          "on_entry": [
+            "/scoreboard players add @s health 4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop4": {
+          "on_entry": [
+            "/scoreboard players add @s health -4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise2": {
+          "on_entry": [
+            "/scoreboard players add @s health 2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop2": {
+          "on_entry": [
+            "/scoreboard players add @s health -2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise1": {
+          "on_entry": [
+            "/scoreboard players add @s health 1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop1": {
+          "on_entry": [
+            "/scoreboard players add @s health -1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        }
+      }
+    },
+    "controller.animation.entity.health_2": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "raise64": "query.scoreboard('health') - query.health <= -64"
+            },
+            {
+              "drop64": "query.scoreboard('health') - query.health >= 64"
+            },
+            {
+              "raise32": "query.scoreboard('health') - query.health <= -32"
+            },
+            {
+              "drop32": "query.scoreboard('health') - query.health >= 32"
+            },
+            {
+              "raise16": "query.scoreboard('health') - query.health <= -16"
+            },
+            {
+              "drop16": "query.scoreboard('health') - query.health >= 16"
+            },
+            {
+              "raise8": "query.scoreboard('health') - query.health <= -8"
+            },
+            {
+              "drop8": "query.scoreboard('health') - query.health >= 8"
+            },
+            {
+              "raise4": "query.scoreboard('health') - query.health <= -4"
+            },
+            {
+              "drop4": "query.scoreboard('health') - query.health >= 4"
+            },
+            {
+              "raise2": "query.scoreboard('health') - query.health <= -2"
+            },
+            {
+              "drop2": "query.scoreboard('health') - query.health >= 2"
+            },
+            {
+              "raise1": "query.scoreboard('health') - query.health <= -1"
+            },
+            {
+              "drop1": "query.scoreboard('health') - query.health >= 1"
+            }
+          ],
+          "on_exit": [
+            "/scoreboard objectives add health dummy"
+          ]
+        },
+        "raise64": {
+          "on_entry": [
+            "/scoreboard players add @s health 64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop64": {
+          "on_entry": [
+            "/scoreboard players add @s health -64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise32": {
+          "on_entry": [
+            "/scoreboard players add @s health 32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop32": {
+          "on_entry": [
+            "/scoreboard players add @s health -32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise16": {
+          "on_entry": [
+            "/scoreboard players add @s health 16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop16": {
+          "on_entry": [
+            "/scoreboard players add @s health -16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise8": {
+          "on_entry": [
+            "/scoreboard players add @s health 8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop8": {
+          "on_entry": [
+            "/scoreboard players add @s health -8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise4": {
+          "on_entry": [
+            "/scoreboard players add @s health 4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop4": {
+          "on_entry": [
+            "/scoreboard players add @s health -4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise2": {
+          "on_entry": [
+            "/scoreboard players add @s health 2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop2": {
+          "on_entry": [
+            "/scoreboard players add @s health -2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise1": {
+          "on_entry": [
+            "/scoreboard players add @s health 1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop1": {
+          "on_entry": [
+            "/scoreboard players add @s health -1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        }
+      }
+    },
+    "controller.animation.entity.health_3": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "raise64": "query.scoreboard('health') - query.health <= -64"
+            },
+            {
+              "drop64": "query.scoreboard('health') - query.health >= 64"
+            },
+            {
+              "raise32": "query.scoreboard('health') - query.health <= -32"
+            },
+            {
+              "drop32": "query.scoreboard('health') - query.health >= 32"
+            },
+            {
+              "raise16": "query.scoreboard('health') - query.health <= -16"
+            },
+            {
+              "drop16": "query.scoreboard('health') - query.health >= 16"
+            },
+            {
+              "raise8": "query.scoreboard('health') - query.health <= -8"
+            },
+            {
+              "drop8": "query.scoreboard('health') - query.health >= 8"
+            },
+            {
+              "raise4": "query.scoreboard('health') - query.health <= -4"
+            },
+            {
+              "drop4": "query.scoreboard('health') - query.health >= 4"
+            },
+            {
+              "raise2": "query.scoreboard('health') - query.health <= -2"
+            },
+            {
+              "drop2": "query.scoreboard('health') - query.health >= 2"
+            },
+            {
+              "raise1": "query.scoreboard('health') - query.health <= -1"
+            },
+            {
+              "drop1": "query.scoreboard('health') - query.health >= 1"
+            }
+          ],
+          "on_exit": [
+            "/scoreboard objectives add health dummy"
+          ]
+        },
+        "raise64": {
+          "on_entry": [
+            "/scoreboard players add @s health 64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop64": {
+          "on_entry": [
+            "/scoreboard players add @s health -64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise32": {
+          "on_entry": [
+            "/scoreboard players add @s health 32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop32": {
+          "on_entry": [
+            "/scoreboard players add @s health -32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise16": {
+          "on_entry": [
+            "/scoreboard players add @s health 16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop16": {
+          "on_entry": [
+            "/scoreboard players add @s health -16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise8": {
+          "on_entry": [
+            "/scoreboard players add @s health 8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop8": {
+          "on_entry": [
+            "/scoreboard players add @s health -8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise4": {
+          "on_entry": [
+            "/scoreboard players add @s health 4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop4": {
+          "on_entry": [
+            "/scoreboard players add @s health -4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise2": {
+          "on_entry": [
+            "/scoreboard players add @s health 2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop2": {
+          "on_entry": [
+            "/scoreboard players add @s health -2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise1": {
+          "on_entry": [
+            "/scoreboard players add @s health 1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop1": {
+          "on_entry": [
+            "/scoreboard players add @s health -1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        }
+      }
+    },
+    "controller.animation.entity.health_4": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "raise64": "query.scoreboard('health') - query.health <= -64"
+            },
+            {
+              "drop64": "query.scoreboard('health') - query.health >= 64"
+            },
+            {
+              "raise32": "query.scoreboard('health') - query.health <= -32"
+            },
+            {
+              "drop32": "query.scoreboard('health') - query.health >= 32"
+            },
+            {
+              "raise16": "query.scoreboard('health') - query.health <= -16"
+            },
+            {
+              "drop16": "query.scoreboard('health') - query.health >= 16"
+            },
+            {
+              "raise8": "query.scoreboard('health') - query.health <= -8"
+            },
+            {
+              "drop8": "query.scoreboard('health') - query.health >= 8"
+            },
+            {
+              "raise4": "query.scoreboard('health') - query.health <= -4"
+            },
+            {
+              "drop4": "query.scoreboard('health') - query.health >= 4"
+            },
+            {
+              "raise2": "query.scoreboard('health') - query.health <= -2"
+            },
+            {
+              "drop2": "query.scoreboard('health') - query.health >= 2"
+            },
+            {
+              "raise1": "query.scoreboard('health') - query.health <= -1"
+            },
+            {
+              "drop1": "query.scoreboard('health') - query.health >= 1"
+            }
+          ],
+          "on_exit": [
+            "/scoreboard objectives add health dummy"
+          ]
+        },
+        "raise64": {
+          "on_entry": [
+            "/scoreboard players add @s health 64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop64": {
+          "on_entry": [
+            "/scoreboard players add @s health -64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise32": {
+          "on_entry": [
+            "/scoreboard players add @s health 32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop32": {
+          "on_entry": [
+            "/scoreboard players add @s health -32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise16": {
+          "on_entry": [
+            "/scoreboard players add @s health 16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop16": {
+          "on_entry": [
+            "/scoreboard players add @s health -16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise8": {
+          "on_entry": [
+            "/scoreboard players add @s health 8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop8": {
+          "on_entry": [
+            "/scoreboard players add @s health -8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise4": {
+          "on_entry": [
+            "/scoreboard players add @s health 4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop4": {
+          "on_entry": [
+            "/scoreboard players add @s health -4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise2": {
+          "on_entry": [
+            "/scoreboard players add @s health 2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop2": {
+          "on_entry": [
+            "/scoreboard players add @s health -2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise1": {
+          "on_entry": [
+            "/scoreboard players add @s health 1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop1": {
+          "on_entry": [
+            "/scoreboard players add @s health -1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        }
+      }
+    },
+    "controller.animation.entity.health_5": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "raise64": "query.scoreboard('health') - query.health <= -64"
+            },
+            {
+              "drop64": "query.scoreboard('health') - query.health >= 64"
+            },
+            {
+              "raise32": "query.scoreboard('health') - query.health <= -32"
+            },
+            {
+              "drop32": "query.scoreboard('health') - query.health >= 32"
+            },
+            {
+              "raise16": "query.scoreboard('health') - query.health <= -16"
+            },
+            {
+              "drop16": "query.scoreboard('health') - query.health >= 16"
+            },
+            {
+              "raise8": "query.scoreboard('health') - query.health <= -8"
+            },
+            {
+              "drop8": "query.scoreboard('health') - query.health >= 8"
+            },
+            {
+              "raise4": "query.scoreboard('health') - query.health <= -4"
+            },
+            {
+              "drop4": "query.scoreboard('health') - query.health >= 4"
+            },
+            {
+              "raise2": "query.scoreboard('health') - query.health <= -2"
+            },
+            {
+              "drop2": "query.scoreboard('health') - query.health >= 2"
+            },
+            {
+              "raise1": "query.scoreboard('health') - query.health <= -1"
+            },
+            {
+              "drop1": "query.scoreboard('health') - query.health >= 1"
+            }
+          ],
+          "on_exit": [
+            "/scoreboard objectives add health dummy"
+          ]
+        },
+        "raise64": {
+          "on_entry": [
+            "/scoreboard players add @s health 64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop64": {
+          "on_entry": [
+            "/scoreboard players add @s health -64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise32": {
+          "on_entry": [
+            "/scoreboard players add @s health 32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop32": {
+          "on_entry": [
+            "/scoreboard players add @s health -32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise16": {
+          "on_entry": [
+            "/scoreboard players add @s health 16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop16": {
+          "on_entry": [
+            "/scoreboard players add @s health -16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise8": {
+          "on_entry": [
+            "/scoreboard players add @s health 8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop8": {
+          "on_entry": [
+            "/scoreboard players add @s health -8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise4": {
+          "on_entry": [
+            "/scoreboard players add @s health 4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop4": {
+          "on_entry": [
+            "/scoreboard players add @s health -4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise2": {
+          "on_entry": [
+            "/scoreboard players add @s health 2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop2": {
+          "on_entry": [
+            "/scoreboard players add @s health -2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise1": {
+          "on_entry": [
+            "/scoreboard players add @s health 1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop1": {
+          "on_entry": [
+            "/scoreboard players add @s health -1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        }
+      }
+    },
+    "controller.animation.entity.health_6": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            {
+              "raise64": "query.scoreboard('health') - query.health <= -64"
+            },
+            {
+              "drop64": "query.scoreboard('health') - query.health >= 64"
+            },
+            {
+              "raise32": "query.scoreboard('health') - query.health <= -32"
+            },
+            {
+              "drop32": "query.scoreboard('health') - query.health >= 32"
+            },
+            {
+              "raise16": "query.scoreboard('health') - query.health <= -16"
+            },
+            {
+              "drop16": "query.scoreboard('health') - query.health >= 16"
+            },
+            {
+              "raise8": "query.scoreboard('health') - query.health <= -8"
+            },
+            {
+              "drop8": "query.scoreboard('health') - query.health >= 8"
+            },
+            {
+              "raise4": "query.scoreboard('health') - query.health <= -4"
+            },
+            {
+              "drop4": "query.scoreboard('health') - query.health >= 4"
+            },
+            {
+              "raise2": "query.scoreboard('health') - query.health <= -2"
+            },
+            {
+              "drop2": "query.scoreboard('health') - query.health >= 2"
+            },
+            {
+              "raise1": "query.scoreboard('health') - query.health <= -1"
+            },
+            {
+              "drop1": "query.scoreboard('health') - query.health >= 1"
+            }
+          ],
+          "on_exit": [
+            "/scoreboard objectives add health dummy"
+          ]
+        },
+        "raise64": {
+          "on_entry": [
+            "/scoreboard players add @s health 64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop64": {
+          "on_entry": [
+            "/scoreboard players add @s health -64"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise32": {
+          "on_entry": [
+            "/scoreboard players add @s health 32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop32": {
+          "on_entry": [
+            "/scoreboard players add @s health -32"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise16": {
+          "on_entry": [
+            "/scoreboard players add @s health 16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop16": {
+          "on_entry": [
+            "/scoreboard players add @s health -16"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise8": {
+          "on_entry": [
+            "/scoreboard players add @s health 8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop8": {
+          "on_entry": [
+            "/scoreboard players add @s health -8"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise4": {
+          "on_entry": [
+            "/scoreboard players add @s health 4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop4": {
+          "on_entry": [
+            "/scoreboard players add @s health -4"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise2": {
+          "on_entry": [
+            "/scoreboard players add @s health 2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop2": {
+          "on_entry": [
+            "/scoreboard players add @s health -2"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "raise1": {
+          "on_entry": [
+            "/scoreboard players add @s health 1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        },
+        "drop1": {
+          "on_entry": [
+            "/scoreboard players add @s health -1"
+          ],
+          "transitions": [
+            {
+              "default": "(1.0)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

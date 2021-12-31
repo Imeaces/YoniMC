@@ -1,0 +1,6 @@
+#yoni/functions/drop_player_container
+yoni/functions/drop_entity_armors
+yoni/functions/drop_entity_inventory
+yoni/functions/drop_entity_offhand
+yoni/functions/drop_player_enderchest
+yoni/functions/drop_player_hotbar

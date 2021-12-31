@@ -1,0 +1,2 @@
+#yoni/dying
+kill @s
