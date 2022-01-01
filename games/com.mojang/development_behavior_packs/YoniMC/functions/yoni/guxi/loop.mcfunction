@@ -5,8 +5,8 @@ scoreboard objectives add guxi dummy GUXI
 scoreboard players add @s guxi 0
 
 # 执行思考
-function yoni/thought/guxi
-#
+#function yoni/thought/guxi
+
 # 未初始化{guxi为0}且活着，执行spawn{活了}
 execute @s[scores={guxi=0,alive=1}] ~ ~ ~ function yoni/guxi/spawn
 # 初始化了{guxi为1}且活着，执行alive{活着}

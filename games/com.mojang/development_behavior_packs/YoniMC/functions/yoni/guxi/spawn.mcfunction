@@ -24,5 +24,9 @@ scoreboard players operation @s guxi:health = @s health
 scoreboard objectives add guxi:resi2 dummy
 # 生命状态记录
 scoreboard objectives add guxi:status dummy
-## 设为初始化值
+# 初始化值/重置值
+scoreboard players set @s guxi:effective -1
+scoreboard players set @s guxi:strength -1
+scoreboard players set @s guxi:mining -1
+scoreboard players set @s guxi:resistance -1
 scoreboard players set @s guxi:status -1
