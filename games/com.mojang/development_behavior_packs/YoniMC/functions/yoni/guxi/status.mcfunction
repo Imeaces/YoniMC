@@ -27,15 +27,15 @@ execute @s [scores={guxi:effective=..0,guxi:status=!4}] ~ ~ ~ scoreboard players
 ## 能量瘫痪
 execute @s [scores={guxi:effective=!0,guxi:status=4}] ~ ~ ~ scoreboard players set @s guxi:effective 0
 ### 无法调动能量附加序列
-execute @s [scores={guxi:effective=0,guxi:strength=!0}] ~ ~ ~ scoreboard players set @s guxi:strength 0
-execute @s [scores={guxi:effective=0,guxi:mining=!0}] ~ ~ ~ scoreboard players set @s guxi:mining 0
-execute @s [scores={guxi:effective=0,guxi:resistance=!0}] ~ ~ ~ scoreboard players set @s guxi:resistance 0
+execute @s [scores={guxi:effective=..0,guxi:strength=!0}] ~ ~ ~ scoreboard players set @s guxi:strength 0
+execute @s [scores={guxi:effective=..0,guxi:mining=!0}] ~ ~ ~ scoreboard players set @s guxi:mining 0
+execute @s [scores={guxi:effective=..0,guxi:resistance=!0}] ~ ~ ~ scoreboard players set @s guxi:resistance 0
 ## 主动能量附加
 ### 力量
 ### strength ~` strength[0,4]
 ### ? effective !~ "l +& -++ [2,4]
 #### 能量恢复活跃
-execute @s[scores={guxi:strength=0,guxi:effective=1..}] ~ ~ ~ scoreboard players set @s guxi:strength 1
+execute @s[scores={guxi:strength=..0,guxi:effective=1..}] ~ ~ ~ scoreboard players set @s guxi:strength 1
 #### 能量活跃提高
 execute @s[scores={guxi:strength=2,guxi:effective=..1}] ~ ~ ~ scoreboard players set @s guxi:effective 2
 execute @s[scores={guxi:strength=3,guxi:effective=..2}] ~ ~ ~ scoreboard players set @s guxi:effective 3
@@ -46,7 +46,7 @@ execute @s[scores={guxi:strength=4,guxi:effective=..3}] ~ ~ ~ scoreboard players
 #### 能量发散
 execute @s[scores={guxi:mining=2..,guxi:resistance=..0}] ~ ~ ~ scoreboard players set @s guxi:resistance 1
 #### 能量恢复活跃
-execute @s[scores={guxi:mining=0,guxi:effective=1..}] ~ ~ ~ scoreboard players set @s guxi:mining 1
+execute @s[scores={guxi:mining=..0,guxi:effective=1..}] ~ ~ ~ scoreboard players set @s guxi:mining 1
 #### 能量活跃提高
 execute @s[scores={guxi:mining=2,guxi:effective=..2}] ~ ~ ~ scoreboard players set @s guxi:effective 3
 ### 附加系统维持
