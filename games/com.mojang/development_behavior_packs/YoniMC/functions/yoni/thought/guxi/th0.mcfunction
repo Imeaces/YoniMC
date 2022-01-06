@@ -1,12 +1,15 @@
-#yoni/thought/guxi/th0
+#
 
-# 显示能量
-execute @s[scores={thought=0}] ~ ~ ~ titleraw @s actionbar {"rawtext":[{"translate":"§o§7%%2§r§l§f%%1","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+scoreboard objectives add th:timer0 dummy
+scoreboard players add @s th:timer0 0
 
-# 低头后，开始计时，1秒内抬头则进入菜单
-## 提示时间
-execute @s[scores={thought=-21..0},rxm=85] ~ ~ ~ function yoni/guxi/thought/core/form_1
-## 计时
-execute @s[scores={thought=-20..0},rxm=85] ~ ~ ~ scoreboard players add @s thought -1
-execute @s[scores={thought=-21},rx=84] ~ ~ ~ scoreboard players set @s thought 0
-execute @s[scores={thought=-20..-1},rx=84] ~ ~ ~ scoreboard players set @s thought 2695
+execute @s[rxm=85,scores={th:timer0=0}] ~ ~ ~ scoreboard players operationt @s th:timer0 = @s th:enter
+execute @s[rxm=85] ~ ~ ~ scoreboard players remove @s th:timer0 1
+execute @s[rxm=85,scores={th:timer0=0}] ~ ~ ~ scoreboard players set @s th:timer0 -1
+
+execute @s[rx=84,scores={th:timer0=0..}] ~ ~ ~ function yoni/thought/guxi/th0t1
+execute @s[rx=84,scores={th:timer0=!0}] ~ ~ ~ scoreboard players set @s th:timer0 0
+
+execute @s[scores={th:timer0=1..}] ~ ~ ~ {"rawtext":[{"translate":"§r§o§7%%s|%%s","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}},{"translate":"\n§r[%%s]","with":{"rawtext":[{"score":{"objective":"tmp_928482019494","name":"@s"}}]}}]}
+execute @s[scores={th:timer0=..0}] ~ ~ ~ {"rawtext":[{"translate":"§r§o§7%%s|%%s","with":{"rawtext":[{"score":{"objective":"guxi:energies","name":"*"}},{"score":{"objective":"guxi:energy","name":"*"}}]}}]}
+
