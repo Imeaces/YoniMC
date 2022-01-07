@@ -1,6 +1,0 @@
-#yoni/guxi/energy
-execute @s[scores={guxi:energy=..0}] ~ ~ ~ function yoni/guxi/energy/drop
-execute @s[scores={guxi:energy=100000001..}] ~ ~ ~ function yoni/guxi/energy/raise
-
-execute @s[scores={guxi:energies=361..}] ~ ~ ~ function yoni/guxi/energy/full
-execute @s[scores={guxi:energies=..-1}] ~ ~ ~ function yoni/guxi/energy/empty

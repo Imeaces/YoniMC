@@ -1,3 +1,4 @@
+#yoni/thought/guxi/as_player
 scoreboard objectives add ths:enter_item dummy
 scoreboard players add @s ths:enter_item 0
 execute @s[scores={ths:enter_item=!-1,ths:enter_item=!1}] ~ ~ ~ scoreboard players set @s ths:enter_item -1
@@ -12,6 +13,6 @@ execute @s[scores={ths:enter=!5..60}] ~ ~ ~ scoreboard players set @s ths:enter 
 
 
 execute @s[scores={thought=0}] ~ ~ ~ function yoni/thought/guxi/th0
-execute @s[scores={thought=1.10}] ~ ~ ~ function yoni/thought/guxi/th1_10
+execute @s[scores={thought=1..10}] ~ ~ ~ function yoni/thought/guxi/th1_10
 
 tag @s remove th:enter

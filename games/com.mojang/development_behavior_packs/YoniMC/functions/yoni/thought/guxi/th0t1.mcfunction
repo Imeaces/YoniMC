@@ -1,4 +1,4 @@
-#yoni/thought/guxi/th_0_t1
+#yoni/thought/guxi/th0t1
 
 #goto 10
 scoreboard players set @s thought 10
@@ -9,4 +9,3 @@ scoreboard players set @s thought:timer0 0
 
 # 初始化相对角度
 function operation/rotate_y_offset_init
-

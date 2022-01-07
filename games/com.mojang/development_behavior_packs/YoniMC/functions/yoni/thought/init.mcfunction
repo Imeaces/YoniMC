@@ -1,3 +1,4 @@
+#yoni/thought/init
 
 # 增加用于思考的记分项
 scoreboard objectives add thought dummy
