@@ -1,6 +1,6 @@
 #yoni/guxi/spawn
 # 赋值
-function yoni/values/default/guxi
+function yoni/guxi/values/default
 # 标记为已初始化
 scoreboard players set @s guxi 1
 # 实体初始化
