@@ -1,5 +1,7 @@
 #operation/rotate_y_offset
 
+function entity/status/rotate_y
+
 scoreboard players operation @s op:ry_offset = @s rotate_y
 scoreboard players operation @s op:ry_offset -= @s op:ry_origin
 
