@@ -1,3 +1,4 @@
+#yoni/guxi/mind/goto/t1
 scoreboard players set @s mind 1
 
 scoreboard objectives add th:flag0 dummy

@@ -1,4 +1,4 @@
-#yoni/values/default/guxi
+#yoni/guxi/values/default
 scoreboard objectives add guxi:value dummy
 
 scoreboard players set energy guxi:value 100000000

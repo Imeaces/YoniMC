@@ -1,3 +1,4 @@
+#yoni/guxi/mind/goto/t2
 scoreboard players set @s mind 2
 
 function operation/rotate_y_offset_init

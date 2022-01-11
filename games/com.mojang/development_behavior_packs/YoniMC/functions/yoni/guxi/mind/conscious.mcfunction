@@ -1,3 +1,4 @@
+#yoni/guxi/mind/conscious
 scoreboard objectives add mind dummy
 scoreboard players add @s mind 0
 

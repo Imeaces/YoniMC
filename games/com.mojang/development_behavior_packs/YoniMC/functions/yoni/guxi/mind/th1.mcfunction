@@ -1,3 +1,5 @@
+#yoni/guxi/mind/th1
+
 # 当低头时，将标志切换到1
 execute @s[rxm=85,scores={th:flag0=0}] ~ ~ ~ scoreboard players set @s th:flag0 1
 

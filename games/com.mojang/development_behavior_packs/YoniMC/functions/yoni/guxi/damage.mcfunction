@@ -1,4 +1,4 @@
-#yoni/guxi/alive/damage
+#yoni/guxi/damage
 # 恢复血量
 effect @s instant_health 1 255 true
 # 47x^5
