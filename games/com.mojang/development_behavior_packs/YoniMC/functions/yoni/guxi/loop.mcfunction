@@ -14,4 +14,4 @@ execute @s[scores={guxi=1,guxi:status=5}] ~ ~ ~ damage @s 60 none
 execute @s[scores={guxi=1,alive=-1}] ~ ~ ~ function yoni/guxi/dead
 
 # 执行思考
-execute @s[tag="yoni:test"] ~ ~ ~ function yoni/guxi/thought/play
+function yoni/guxi/thought/play

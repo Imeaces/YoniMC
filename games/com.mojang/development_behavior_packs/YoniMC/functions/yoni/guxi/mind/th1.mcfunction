@@ -6,7 +6,8 @@ execute @s[rxm=85,scores={th:flag0=0}] ~ ~ ~ scoreboard players set @s th:flag0 
 execute @s[scores={th:flag0=1,th:timer0=0}] ~ ~ ~ scoreboard players operation @s th:timer0 = @s ths:enter
 ## 倒计时
 execute @s[scores={th:flag0=1,th:timer0=1..}] ~ ~ ~ scoreboard players add @s th:timer0 -1
-## 计时结束后，设置标志为-1execute @s[scores={th:flag0=1,th:timer0=..0}] ~ ~ ~ scoreboard players set @s th:flag0 -1
+## 计时结束后，设置标志为-1
+execute @s[scores={th:flag0=1,th:timer0=..0}] ~ ~ ~ scoreboard players set @s th:flag0 -1
 
 # 当抬头时
 ## 如果正在计时，重置计时器
