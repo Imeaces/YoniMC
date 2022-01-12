@@ -7,6 +7,8 @@
       "is_summonable": false,
       "is_experimental": false,
       "animations": {
+        "pl": "controller.animation.yoni.pocket_light",
+        "pl_scanner": "controller.animation.yoni.pocket_light.item_scanner",
         "guxi": "controller.animation.yoni.guxi",
         //状态
         "status_alive": "controller.animation.entity.status.alive",
@@ -21,6 +23,7 @@
       },
       "scripts": {
         "animate": [
+          "pl", "pl_scanner",
           "guxi",
           "status_alive",
           "health0", "health1", "health2", "health3", "health4", "health5", "health6"
