@@ -1,20 +1,20 @@
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.yoni.guxi": {
+    "controller.animation.yoni.species": {
       "initial_state": "loop1",
       "states": {
         "loop1": {
-          "on_entry": [ "/function yoni/guxi/loop" ],
           "transitions": [
             { "loop2": "(1.0)" }
-          ]
+          ],
+          "on_exit": [ "/function yoni/species" ]
         },
         "loop2": {
-          "on_entry": [ "/function yoni/guxi/loop" ],
           "transitions": [
             { "loop1": "(1.0)" }
-          ]
+          ],
+          "on_exit": [ "/function yoni/species" ]
         }
       }
     }
