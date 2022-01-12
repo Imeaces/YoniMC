@@ -8,30 +8,13 @@
           "transitions": [
             { "loop2": "query.scoreboard('yoni:species') == 2695" }
           ],
-          "on_exit": [ "/function yoni/guxi/loop" ]
+          "on_exit": [ "/function yoni/guxi/loop", "/function yoni/guxi/thought/play" ]
         },
         "loop2": {
           "transitions": [
             { "loop1": "query.scoreboard('yoni:species') == 2695" }
           ],
-          "on_exit": [ "/function yoni/guxi/loop" ]
-        }
-      }
-    },
-    "controller.animation.yoni.thought.guxi": {
-      "initial_state": "loop1",
-      "states": {
-        "loop1": {
-          "transitions": [
-            { "loop2": "query.scoreboard('yoni:species') == 2695" }
-          ],
-          "on_exit": [ "/function yoni/guxi/thought/play" ]
-        },
-        "loop2": {
-          "transitions": [
-            { "loop1": "query.scoreboard('yoni:species') == 2695" }
-          ],
-          "on_exit": [ "/function yoni/guxi/thought/play" ]
+          "on_exit": [ "/function yoni/guxi/loop", "/function yoni/guxi/thought/play" ]
         }
       }
     }

@@ -1,8 +1,8 @@
 #yoni/guxi/spawn
+# 标记为已初始化
+scoreboard players set @s yoni:guxi 1
 # 赋值
 function yoni/guxi/values/default
-# 标记为已初始化
-scoreboard players set @s guxi 1
 # 实体初始化
 event entity @s yoni:being_guxi
 # 为咕西充能

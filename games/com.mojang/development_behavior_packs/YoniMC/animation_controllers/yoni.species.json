@@ -8,13 +8,13 @@
           "transitions": [
             { "loop2": "(1.0)" }
           ],
-          "on_exit": [ "/function yoni/species" ]
+          "on_exit": [ "/function yoni/species/play" ]
         },
         "loop2": {
           "transitions": [
             { "loop1": "(1.0)" }
           ],
-          "on_exit": [ "/function yoni/species" ]
+          "on_exit": [ "/function yoni/species/play" ]
         }
       }
     }
