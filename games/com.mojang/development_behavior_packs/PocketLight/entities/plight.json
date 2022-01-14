@@ -1,0 +1,43 @@
+{
+  "format_version": "1.16.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "yoni:pocket_light",
+      "is_summonable": false,
+      "is_spawnable": true,
+      "is_experimental": false,
+      "animations": {
+        "pl": "controller.animation.yoni.pocket_light.point",
+      },
+      "scripts": {
+        "animate": [
+          "pl"
+        ]
+      }
+    },
+    "components": {
+      "minecraft:custom_hit_test": {
+        "hitboxes": [
+          {
+            "pivot": [0, 100, 0],
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      "minecraft:damage_sensor": {
+        "triggers": {
+          "deals_damage": false
+        }
+      },
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": false
+      },
+      "minecraft:collision_box": {
+        "width": 0.0001,
+        "height": 0.0001
+      }
+    }
+  }
+}

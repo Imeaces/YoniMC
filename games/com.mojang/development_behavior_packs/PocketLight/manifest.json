@@ -1,0 +1,25 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "PocketLight",
+    "description": "手上的光源",
+    "uuid": "c4f369e6-755c-11ec-ab4d-1f5bc29f21d7",
+    "version": [0, 0, 1],
+    "min_engine_version": [1, 18, 10]
+  },
+  "modules": [
+    {
+      "description": "data:yoni",
+      "type": "data",
+      "uuid": "c4f366da-755c-11ec-ab4c-6b1bf04ab40a",
+      "version": [0, 0, 1]
+    }
+  ],
+  "metadata": {
+    "authors": [
+      "Silvigarabis"
+    ],
+    "license": "MIT License",
+    "url": "https://github.com/Silvigarabis/YoniMC"
+  }
+}

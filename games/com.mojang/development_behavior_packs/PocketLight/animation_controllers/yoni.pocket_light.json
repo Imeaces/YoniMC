@@ -1,0 +1,180 @@
+/*
+  14 end_rod 208
+  14 torch 1
+  15 glowstone 89
+  15 beacon 138
+  15 lit_pumpkin 91
+  3 magma 213
+  5 amethyst_cluster -329 amethyst_shard 771
+  7 enchanting_table 116
+  15 lantern -208
+  10 soul_lantern -269
+  15 shroomlight -230
+  15 conduit -157
+  15 sealantern 169
+  15 flowing_lava 10 lava 11 lava_bucket 325
+  7 redstone_torch 76
+  10 crying_obsidian -289
+*/
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.pocket_light.item_scanner": {
+      "initial_state": "scanner",
+      "states": {
+        "scanner": {
+          "transitions": [
+            { "end_rod": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:end_rod')" },
+            { "torch": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:torch')" },
+            { "glowstone": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:glowstone')" },
+            { "beacon": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:beacon')" },
+            { "lit_pumpkin": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:lit_pumpkin')" },
+            { "magma": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:magma')" },
+            { "amethyst_shard": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:amethyst_shard')" },
+            { "enchanting_table": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:enchanting_table')" },
+            { "lantern": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:lantern')" },
+            { "soul_lantern": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:soul_lantern')" },
+            { "shroomlight": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:shroomlight')" },
+            { "conduit": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:conduit')" },
+            { "sealantern": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:sealantern')" },
+            { "lava_bucket": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:lava_bucket')" },
+            { "redstone_torch": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:redstone_torch')" },
+            { "crying_obsidian": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:crying_obsidian')" }
+          ],
+          "on_entry": [ "/scoreboard players set plight:type 0" ],
+          "on_exit": [ "/scoreboard objectives add plight:type dummy" ]
+        },
+        "end_rod": {
+          "on_entry": [ "/scoreboard players set plight:type 208" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:end_rod')" }
+          ]
+        },
+        "torch": {
+          "on_entry": [ "/scoreboard players set plight:type 1" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:torch')" }
+          ]
+        },
+        "glowstone": {
+          "on_entry": [ "/scoreboard players set plight:type 89" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:glowstone')" }
+          ]
+        },
+        "beacon": {
+          "on_entry": [ "/scoreboard players set plight:type 138" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:beacon')" }
+          ]
+        },
+        "lit_pumpkin": {
+          "on_entry": [ "/scoreboard players set plight:type 91" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:lit_pumpkin')" }
+          ]
+        },
+        "magma": {
+          "on_entry": [ "/scoreboard players set plight:type 213" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:magma')" }
+          ]
+        },
+        "amethyst_shard": {
+          "on_entry": [ "/scoreboard players set plight:type 771" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:amethyst_shard')" }
+          ]
+        },
+        "enchanting_table": {
+          "on_entry": [ "/scoreboard players set plight:type 116" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:enchanting_table')" }
+          ]
+        },
+        "lantern": {
+          "on_entry": [ "/scoreboard players set plight:type -208" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:lantern')" }
+          ]
+        },
+        "soul_lantern": {
+          "on_entry": [ "/scoreboard players set plight:type -269" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:soul_lantern')" }
+          ]
+        },
+        "shroomlight": {
+          "on_entry": [ "/scoreboard players set plight:type -230" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:shroomlight')" }
+          ]
+        },
+        "conduit": {
+          "on_entry": [ "/scoreboard players set plight:type -157" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:conduit')" }
+          ]
+        },
+        "sealantern": {
+          "on_entry": [ "/scoreboard players set plight:type 169" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:sealantern')" }
+          ]
+        },
+        "lava_bucket": {
+          "on_entry": [ "/scoreboard players set plight:type 325" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:lava_bucket')" }
+          ]
+        },
+        "redstone_torch": {
+          "on_entry": [ "/scoreboard players set plight:type 76" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:redstone_torch')" }
+          ]
+        },
+        "crying_obsidian": {
+          "on_entry": [ "/scoreboard players set plight:type -289" ],
+          "transitions": [
+            { "scanner": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:crying_obsidian')" }
+          ]
+        }
+      }
+    },
+    "controller.animation.yoni.pocket_light": {
+      "initial_state": "loop1",
+      "states": {
+        "loop1": {
+          "on_entry": [ "/function yoni/pocket_light/loop" ],
+          "transitions": [
+            { "loop2": "(1.0)" }
+          ]
+        },
+        "loop2": {
+          "on_entry": [ "/function yoni/pocket_light/loop" ],
+          "transitions": [
+            { "loop1": "(1.0)" }
+          ]
+        }
+      }
+    },
+    "controller.animation.yoni.pocket_light.point": {
+      "initial_state": "loop1",
+      "states": {
+        "loop1": {
+          "on_entry": [ "/function yoni/pocket_light/point" ],
+          "transitions": [
+            { "loop2": "(1.0)" }
+          ]
+        },
+        "loop2": {
+          "on_entry": [ "/function yoni/pocket_light/point" ],
+          "transitions": [
+            { "loop1": "(1.0)" }
+          ]
+        }
+      }
+    }
+  }
+}
