@@ -2,9 +2,9 @@
   "format_version": 2,
   "header": {
     "name": "PocketLight",
-    "description": "手上的光源",
+    "description": "手上的光源\n\n在beta1.18.10.26进行测试，某些物品仍然不可用\n\n已有功能：\n  1.主手手持特定物品时根据物品类型以及情景设置光块\n  2.自动移除光块\n  3.不覆盖已有的光块",
     "uuid": "c4f369e6-755c-11ec-ab4d-1f5bc29f21d7",
-    "version": [0, 0, 1],
+    "version": [0, 1, 2],
     "min_engine_version": [1, 18, 10]
   },
   "modules": [
