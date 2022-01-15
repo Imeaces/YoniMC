@@ -5,7 +5,7 @@
 ### 设置 flag0 = -1
 ## 否则
 ### 设置 flag0 = 1
-execute @s[scores={plight:flag0=0}] ~ ~-10000 ~ function yoni/pocket_light/check_location
+execute @s[scores={plight:flag0=0}] ~ ~ ~ function yoni/pocket_light/check_location
 
 ## 如果 flag0 = 1
 execute @s[scores={plight:flag0=1}] ~ ~-10000 ~ execute @e[r=1,c=1,scores={plight=1..}] ~ ~10000 ~ scoreboard players set @e[r=1,c=1,type=yoni:pocket_light,scores={plight:flag0=1}] plight:flag0 2
