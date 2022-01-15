@@ -9,9 +9,10 @@ execute @s[scores={plight:type=116}] ~ ~ ~ scoreboard players set @s plight 7
 execute @s[scores={plight:type=-208}] ~ ~ ~ scoreboard players set @s plight 15
 execute @s[scores={plight:type=-269}] ~ ~ ~ scoreboard players set @s plight 10
 execute @s[scores={plight:type=-230}] ~ ~ ~ scoreboard players set @s plight 15
-execute @s[scores={plight:type=-157}] ~ ~ ~ scoreboard players set @s plight 15
+execute @s[scores={plight:type=-157}] ~ ~ ~ scoreboard players set @s plight 8
 execute @s[scores={plight:type=169}] ~ ~ ~ scoreboard players set @s plight 15
 execute @s[scores={plight:type=325}] ~ ~ ~ scoreboard players set @s plight 15
 execute @s[scores={plight:type=76}] ~ ~ ~ scoreboard players set @s plight 7
 execute @s[scores={plight:type=-289}] ~ ~ ~ scoreboard players set @s plight 10
+
 
