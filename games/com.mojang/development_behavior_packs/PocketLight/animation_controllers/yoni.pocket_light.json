@@ -168,13 +168,13 @@
         "loop1": {
           "on_entry": [ "/function yoni/pocket_light/point" ],
           "transitions": [
-            { "loop2": "(1.0)" }
+            { "loop2": "query.is_alive" }
           ]
         },
         "loop2": {
           "on_entry": [ "/function yoni/pocket_light/point" ],
           "transitions": [
-            { "loop1": "(1.0)" }
+            { "loop1": "query.is_alive" }
           ]
         }
       }
