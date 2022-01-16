@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.entity.scene.in_water": {
+      "initial_state": "false",
+      "states": {
+        "false": {
+          "on_entry": [ "/scoreboard objectives add in_water_or_rain dummy", "/scoreboard players set @s in_water_or_rain -1" ],
+          "transitions": [
+            { "true": "query.is_in_water_or_rain" },
+            { "false1": "query.scoreboard('in_water_or_rain') != -1" }
+          ]
+        },
+        "false1": {
+          "on_entry": [ "/scoreboard objectives add in_water_or_rain dummy", "/scoreboard players set @s query.is_in_water_or_rain -1" ],
+          "transitions": [
+            { "true": "query.is_in_water_or_rain" },
+            { "false": "query.scoreboard('in_water_or_rain') != -1" }
+          ]
+        },
+        "true": {
+          "on_entry": [ "/scoreboard objectives add in_water_or_rain dummy", "/scoreboard players set @s in_water_or_rain 1" ],
+          "transitions": [
+            { "false": "!query.is_in_water_or_rain" },
+            { "true1": "query.scoreboard('in_water_or_rain') != 1" }
+          ]
+        },
+        "true1": {
+          "on_entry": [ "/scoreboard objectives add in_water_or_rain dummy", "/scoreboard players set @s query.is_in_water_or_rain 1" ],
+          "transitions": [
+            { "false": "!query.is_in_water_or_rain" },
+            { "true": "query.scoreboard('in_water_or_rain') != 1" }
+          ]
+        }
+      }
+    }
+  }
+}

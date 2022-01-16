@@ -8,11 +8,13 @@
       "is_experimental": false,
       "animations": {
         "pl": "controller.animation.yoni.pocket_light",
-        "pl_scanner": "controller.animation.yoni.pocket_light.item_scanner"
+        "pl_scanner": "controller.animation.yoni.pocket_light.item_scanner",
+        "scene_in_water_or_rain": "controller.animation.entity.scene.in_water"
       },
       "scripts": {
         "animate": [
-          "pl", "pl_scanner"
+          "pl", "pl_scanner",
+          "scene_in_water_or_rain"
         ]
       }
     },

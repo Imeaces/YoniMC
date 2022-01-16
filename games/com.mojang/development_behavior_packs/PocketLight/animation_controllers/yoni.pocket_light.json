@@ -40,7 +40,7 @@
             { "soul_lantern": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:soul_lantern')" },
             { "shroomlight": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:shroomlight')" },
             { "conduit": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:conduit')" },
-            { "sea_lantern": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:sealamp')" },
+            { "sea_lantern": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:sea_lantern')" },
             { "lava_bucket": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:lava_bucket')" },
             { "redstone_torch": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:redstone_torch')" },
             { "crying_obsidian": "query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:crying_obsidian')" }
@@ -122,7 +122,7 @@
         "sea_lantern": {
           "on_entry": [ "/scoreboard players set @s plight:type 169" ],
           "transitions": [
-            { "back": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:sealamp')" }
+            { "back": "!query.is_item_name_any('slot.weapon.mainhand',0,'minecraft:sea_lantern')" }
           ]
         },
         "lava_bucket": {
