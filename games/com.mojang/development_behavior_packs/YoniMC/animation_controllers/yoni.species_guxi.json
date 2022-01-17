@@ -6,15 +6,15 @@
       "states": {
         "loop1": {
           "transitions": [
-            { "loop2": "query.scoreboard('yoni:species') == 2695" }
+            { "loop2": "query.scoreboard('species') == 2695" }
           ],
-          "on_exit": [ "/function yoni/guxi/loop", "/function yoni/guxi/thought/play" ]
+          "on_exit": [ "/function yoni/guxi/play", "/function yoni/guxi/thought/play" ]
         },
         "loop2": {
           "transitions": [
-            { "loop1": "query.scoreboard('yoni:species') == 2695" }
+            { "loop1": "query.scoreboard('species') == 2695" }
           ],
-          "on_exit": [ "/function yoni/guxi/loop", "/function yoni/guxi/thought/play" ]
+          "on_exit": [ "/function yoni/guxi/play", "/function yoni/guxi/thought/play" ]
         }
       }
     }
