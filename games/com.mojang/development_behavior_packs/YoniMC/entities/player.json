@@ -253,17 +253,19 @@
         }
       },
       "yoni:species_guxi": {
-        "minecraft:type_family": { "family": [ "guxi", "mob", "yoni" ] },
-        "minecraft:scale": { "value": 0.76 },
-        "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
+        "minecraft:type_family": { "family": [ "guxi", "mob", "yoni", "energy_entity" ] },
+        "minecraft:health": { "max": 60, "value": 60, "min": 0 },
+        "minecraft:attack": { "damage": 0 },
         "minecraft:breathable": { "breathes_air": true, "breathes_water": true, "breathes_lava": true, "breathes_solids": true, "generates_bubbles": false },
         "minecraft:nameable": { "always_show": false, "allow_name_tag_renaming": false },
+        "minecraft:is_hidden_when_invisible": {},
         "minecraft:block_climber": true,
         "minecraft:can_climb": true,
-        "minecraft:attack": { "damage": 0 },
-        "minecraft:health": { "max": 60, "value": 60, "min": 0 },
-        "minecraft:damage_sensor": {},
-        "minecraft:environment_sensor": {}
+        "minecraft:loot": { "table": "loot_tables/empty.json" },
+        "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
+        "minecraft:scale": { "value": 0.76 },
+        "minecraft:movement": { "value": 0.1 },
+        "minecraft:physics": {}
       },
       "minecraft:add_bad_omen": {
         "minecraft:spell_effects": {
@@ -392,14 +394,6 @@
     },
 
     "components": {
-      // the basic components of player entity
-      "minecraft:type_family": { "family": [ "player" ] },
-      "minecraft:nameable": { "always_show": true, "allow_name_tag_renaming": false },
-      "minecraft:is_hidden_when_invisible": {},
-      "minecraft:loot": { "table": "loot_tables/empty.json" },
-      "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
-      "minecraft:movement": { "value": 0.1 },
-      "minecraft:physics": {},
       "minecraft:conditional_bandwidth_optimization": {},
       "minecraft:player.saturation": { "value": 20 },
       "minecraft:player.exhaustion": { "value": 0, "max": 4 },

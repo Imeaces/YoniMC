@@ -1,35 +1,55 @@
 #yoni/guxi/loop
-# 开始，增加记分项
-scoreboard objectives add yoni:guxi dummy GUXI
-## 加零
-scoreboard players add @s yoni:guxi 0
-## 校正
-execute @s[scores={yoni:guxi=!-2..4}] ~ ~ ~ scoreboard players set @s yoni:guxi 0
 
-# 处理死亡重生
-execute @s[scores={yoni:guxi=4,alive=1}] ~ ~ ~ function yoni/guxi/respawn
+# init yoni:guxi = 1
+# loop {
+#   if (query.is_alive == false){
+#     if (yoni:guxi == 2){
+#       say 死于意外
+#       yoni:guxi == 100
+#     }
+#     elif (yoni:guxi == 10){
+#       say 思维随能量消散
+#       yoni:guxi = 101
+#     }
+#   }
+#   elif (query.is_alive == true) {
+#     if (yoni:guxi == 1){
+#       spawn @self as #guxi
+#       yoni:guxi = 2
+#     }
+#     elif (yoni:guxi <= {101,102}){
+#       say 重生了
+#       yoni:guxi == 1
+#     }
+#     elif (yoni:guxi == 2){
+#       #guxi.alive()
+#       if (#guxi.status == 5){
+#         yoni:guxi = 10
+#       }
+#     }
+#     elif (yoni:guxi == 10){
+#       damage @self #guxi.health.max
+#     }
+#   }
+# }
 
-# 未初始化{guxi为0}且活着，执行spawn{活了}
-execute @s[scores={yoni:guxi=0,alive=1}] ~ ~ ~ function yoni/guxi/spawn
+# 根据已有数据判断死亡方式
+## 意外死亡
+execute @s[scores={alive=-1,yoni:guxi=2,alive=-1}] ~ ~ ~ scoreboard players set @s yoni:guxi 100
+## 思维随能量消散
+execute @s[scores={alive=-1,yoni:guxi=10,alive=-1}] ~ ~ ~ scoreboard players set @s yoni:guxi 100
 
-# 初始化了{guxi为1}且活着，执行alive{活着}
-execute @s[scores={yoni:guxi=1,alive=1}] ~ ~ ~ scoreboard players set @s yoni:guxi 2
-execute @s[scores={yoni:guxi=2}] ~ ~ ~ function yoni/guxi/alive
+# 咕西的诞生
+execute @s[scores={alive=1,yoni:guxi=1}] ~ ~ ~ function yoni/guxi/spawn
+execute @s[scores={alive=1,yoni:guxi=1}] ~ ~ ~ scoreboard players set @s yoni:guxi 2
 
-# 能量状态为5（死）
-execute @s[scores={yoni:guxi=2,guxi:status=5}] ~ ~ ~ scoreboard players set @s yoni:guxi 3
+# 仅对于可以复活的人
+execute @s[scores={alive=1,yoni:guxi=101.102}] ~ ~ ~ function yoni/guxi/respawn
+execute @s[scores={alive=1,yoni:guxi=101.102}] ~ ~ ~ scoreboard players set @s yoni:guxi 1
 
-# 传递死亡方式
-## 物理死亡
-execute @s[scores={yoni:guxi=2,alive=-1}] ~ ~ ~ scoreboard players set @s yoni:guxi -1
-## 能量消散
-execute @s[scores={yoni:guxi=3,alive=-1}] ~ ~ ~ scoreboard players set @s yoni:guxi -2
+# 活着
+execute @s[scores={alive=1,yoni:guxi=2}] ~ ~ ~ function yoni/guxi/alive
 
-# 能量消散导致死亡
-execute @s[scores={yoni:guxi=3}] ~ ~ ~ damage @s 60 none
-
-# 死了，执行dead{死了}
-execute @s[scores={alive=-1}] ~ ~ ~ function yoni/guxi/dead
-
-# 执行思考
-function yoni/guxi/thought/play
+# 能量不足以维持秩序
+execute @s[scores={alive=1,yoni:guxi=2,guxi:status=5}] ~ ~ ~ function scoreboard players set @s yoni:guxi 10
+execute @s[scores={alive=1,yoni:guxi=10}] ~ ~ ~ damage @s 60 none

@@ -7,7 +7,8 @@
       "is_summonable": true,
       "is_experimental": false,
       "animations": {
-        "guxi": "controller.animation.yoni.species.guxi",
+        "species": "controller.animation.yoni.species",
+        "species_guxi": "controller.animation.yoni.species.guxi",
         //状态
         "status_alive": "controller.animation.entity.status.alive",
         //获取生命值的控制器
@@ -29,9 +30,9 @@
     },
     
     "events": {
-      "minecraft:entity_spawned": {
+      "yoni:being_guxi": {
         "sequence": [
-          { "add": { "component_groups": [ "yoni:guxi_resistance_0" ] } }
+          { "add": { "component_groups": [ "yoni:species_guxi" ] } }
         ]
       }
     },
@@ -192,23 +193,25 @@
             { "cause": "lava",         "deals_damage": false }
           ]
         }
+      },
+      "yoni:species_guxi": {
+        "minecraft:type_family": { "family": [ "guxi", "mob", "yoni", "energy_entity" ] },
+        "minecraft:health": { "max": 60, "value": 60, "min": 0 },
+        "minecraft:attack": { "damage": 0 },
+        "minecraft:breathable": { "breathes_air": true, "breathes_water": true, "breathes_lava": true, "breathes_solids": true, "generates_bubbles": false },
+        "minecraft:nameable": { "always_show": false, "allow_name_tag_renaming": false },
+        "minecraft:is_hidden_when_invisible": {},
+        "minecraft:block_climber": true,
+        "minecraft:can_climb": true,
+        "minecraft:loot": { "table": "loot_tables/empty.json" },
+        "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
+        "minecraft:scale": { "value": 0.76 },
+        "minecraft:movement": { "value": 0.1 },
+        "minecraft:physics": {}
       }
     },
 
     "components": {
-      "minecraft:type_family": { "family": [ "guxi", "mob", "yoni", "energy_entity" ] },
-      "minecraft:health": { "max": 60, "value": 60, "min": 0 },
-      "minecraft:attack": { "damage": 0 },
-      "minecraft:breathable": { "breathes_air": true, "breathes_water": true, "breathes_lava": true, "breathes_solids": true, "generates_bubbles": false },
-      "minecraft:nameable": { "always_show": false, "allow_name_tag_renaming": false },
-      "minecraft:is_hidden_when_invisible": {},
-      "minecraft:block_climber": true,
-      "minecraft:can_climb": true,
-      "minecraft:loot": { "table": "loot_tables/empty.json" },
-      "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
-      "minecraft:scale": { "value": 0.76 },
-      "minecraft:movement": { "value": 0.1 },
-      "minecraft:physics": {},
       "minecraft:conditional_bandwidth_optimization": {}
     }
   }

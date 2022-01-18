@@ -11,8 +11,10 @@ scoreboard players operation @s tmp_019394818495 = @s species
 scoreboard players operation @s tmp_019394818495 -= @s spec:old_spec
 ## 两数相减不为零，嗯，不一样
 ### 移除旧的种族
-scoreboard players operation @s spec:arg1 = @s spec:old_spec
-function yoni/species/pop
+execute @s[scores={tmp_019394818495=!0}] ~ ~ ~ scoreboard players operation @s spec:arg1 = @s spec:old_spec
+execute @s[scores={tmp_019394818495=!0}] ~ ~ ~ function yoni/species/pop
 ### 增加新的种族
-scoreboard players operation @s spec:arg1 = @s species
-function yoni/species/push
+execute @s[scores={tmp_019394818495=!0}] ~ ~ ~ scoreboard players operation @s spec:arg1 = @s species
+execute @s[scores={tmp_019394818495=!0}] ~ ~ ~ function yoni/species/push
+## 最后同步一下
+execute @s[scores={tmp_019394818495=!0}] ~ ~ ~ scoreboard players operation @s spec:old_spec = @s species
