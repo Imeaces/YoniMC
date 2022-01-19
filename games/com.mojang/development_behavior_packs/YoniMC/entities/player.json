@@ -92,7 +92,7 @@
           { "remove": { "component_groups": [ "yoni:guxi_resistance_3" ] } },
           { "remove": { "component_groups": [ "yoni:guxi_resistance_4" ] } }
         ]
-      }
+      },
       "guxi:resistance_0": {
         "add": { "component_groups": [ "guxi:resistance_0" ] }
       },
