@@ -23,5 +23,3 @@ scoreboard objectives add guxi:health dummy
 scoreboard objectives add guxi:resi2 dummy
 # 生命状态记录
 scoreboard objectives add guxi:status dummy
-# 标记为已初始化
-scoreboard players set @s yoni:guxi 2

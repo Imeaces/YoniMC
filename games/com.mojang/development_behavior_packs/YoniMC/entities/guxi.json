@@ -1,5 +1,5 @@
 {
-  "format_version": "1.17.10",
+  "format_version": "1.18.10",
   "minecraft:entity": {
     "description": {
       "identifier": "yoni:guxi",
@@ -34,11 +34,26 @@
         "sequence": [
           { "add": { "component_groups": [ "yoni:species_guxi" ] } }
         ]
+      },
+      "guxi:resistance_0": {
+        "add": { "component_groups": [ "guxi:resistance_0" ] }
+      },
+      "guxi:resistance_1": {
+        "add": { "component_groups": [ "guxi:resistance_1" ] }
+      },
+      "guxi:resistance_2": {
+        "add": { "component_groups": [ "guxi:resistance_2" ] }
+      },
+      "guxi:resistance_3": {
+        "add": { "component_groups": [ "guxi:resistance_3" ] }
+      },
+      "guxi:resistance_4": {
+        "add": { "component_groups": [ "guxi:resistance_4" ] }
       }
     },
 
     "component_groups": {
-      "yoni:guxi_resistance_0": {
+      "guxi:resistance_0": {
       //未使用能量附加的盾时的防御
         "minecraft:damage_sensor": {
           "triggers": [
@@ -73,7 +88,7 @@
           ]
         }
       },
-      "yoni:guxi_resistance_1": { 
+      "guxi:resistance_1": { 
         //能量盾：1
         //此时，伤害会不同程度地降低
         "minecraft:damage_sensor": {
@@ -104,7 +119,7 @@
           ]
         }
       },
-      "yoni:guxi_resistance_2": { 
+      "guxi:resistance_2": { 
         //能量盾：2
         "minecraft:damage_sensor": {
           "triggers": [
@@ -134,7 +149,7 @@
           ]
         }
       },
-      "yoni:guxi_resistance_3": {
+      "guxi:resistance_3": {
         //能量盾：3
         "minecraft:damage_sensor": {
           "triggers": [
@@ -164,7 +179,7 @@
           ]
         }
       },
-      "yoni:guxi_resistance_4": { 
+      "guxi:resistance_4": { 
         //能量盾：4
         "minecraft:damage_sensor": {
           "triggers": [

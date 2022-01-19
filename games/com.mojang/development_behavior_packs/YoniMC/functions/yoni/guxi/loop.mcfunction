@@ -5,11 +5,12 @@
 #   if (query.is_alive == false){
 #     if (yoni:guxi == 2){
 #       say 死于意外
-#       yoni:guxi == 100
+#       sum 爆炸
+#       yoni:guxi == 101
 #     }
 #     elif (yoni:guxi == 10){
 #       say 思维随能量消散
-#       yoni:guxi = 101
+#       yoni:guxi = 102
 #     }
 #   }
 #   elif (query.is_alive == true) {
@@ -34,16 +35,13 @@
 # }
 
 # 根据已有数据判断死亡方式
-## 意外死亡
-execute @s[scores={alive=-1,yoni:guxi=2,alive=-1}] ~ ~ ~ scoreboard players set @s yoni:guxi 100
-## 思维随能量消散
-execute @s[scores={alive=-1,yoni:guxi=10,alive=-1}] ~ ~ ~ scoreboard players set @s yoni:guxi 100
+execute @s[scores={alive=-1,yoni:guxi=2..10,yoni:guxi=!3..9}] ~ ~ ~ function yoni/guxi/dead
 
 # 咕西的诞生
 execute @s[scores={alive=1,yoni:guxi=1}] ~ ~ ~ function yoni/guxi/spawn
 execute @s[scores={alive=1,yoni:guxi=1}] ~ ~ ~ scoreboard players set @s yoni:guxi 2
 
-# 仅对于可以复活的人
+# 复活时候执行一些操作（仅对于可以复活的人：玩家）
 execute @s[scores={alive=1,yoni:guxi=101.102}] ~ ~ ~ function yoni/guxi/respawn
 execute @s[scores={alive=1,yoni:guxi=101.102}] ~ ~ ~ scoreboard players set @s yoni:guxi 1
 

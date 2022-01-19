@@ -1,6 +1,4 @@
 #yoni/guxi/spawn
-# 标记为已初始化
-scoreboard players set @s yoni:guxi 2
 
 # 为咕西充能
 scoreboard players operation @s guxi:energies = spawn_energies guxi:value
