@@ -11,8 +11,10 @@ scoreboard players operation @s spec:diff = @s species
 scoreboard players operation @s spec:diff -= @s spec:old_spec
 ## 两数相减不为零，嗯，不一样
 ### 移除旧的种族
+execute @s[scores={spec:diff=!0}] ~ ~ ~ scoreboard players operation @s spec:arg1 = @s spec:old_spec
 execute @s[scores={spec:diff=!0}] ~ ~ ~ function yoni/species/pop
 ### 增加新的种族
+execute @s[scores={spec:diff=!0}] ~ ~ ~ scoreboard players operation @s spec:arg1 = @s species
 execute @s[scores={spec:diff=!0}] ~ ~ ~ function yoni/species/push
-## 同步一下
+## 最后同步一下
 execute @s[scores={spec:diff=!0}] ~ ~ ~ scoreboard players operation @s spec:old_spec = @s species
