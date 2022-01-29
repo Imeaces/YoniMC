@@ -9,5 +9,6 @@ scoreboard players operation @s guxi:energy = spawn_energy guxi:value
 scoreboard players set @s guxi:effective -1
 scoreboard players set @s guxi:strength -1
 scoreboard players set @s guxi:mining -1
-scoreboard players set @s guxi:resistance -1
+scoreboard players set @s guxi:resistance 0
+scoreboard players set @s guxi:resi2 -1
 scoreboard players set @s guxi:status -1

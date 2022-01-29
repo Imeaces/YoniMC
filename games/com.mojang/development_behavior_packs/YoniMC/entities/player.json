@@ -79,8 +79,7 @@
       },
       "yoni:being_guxi": {
         "sequence": [
-          { "add": { "component_groups": [ "yoni:guxi" ] } },
-          { "add": { "component_groups": [ "yoni:guxi_resistance_0" ] } }
+          { "add": { "component_groups": [ "yoni:species_guxi" ] } }
         ]
       },
       "yoni:perish_guxi": {
