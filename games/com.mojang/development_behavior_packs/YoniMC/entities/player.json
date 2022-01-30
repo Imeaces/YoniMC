@@ -316,6 +316,7 @@
         }
       },
       "minecraft:species_player":{
+        "minecraft:health": { "max": 20, "value": 20, "min": 0 },
         "minecraft:experience_reward": {
           "on_death": "Math.Min(query.player_level * 7, 100)"
         },

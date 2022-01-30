@@ -4,7 +4,7 @@
     "name": "YoniMC",
     "description": "Minecraft",
     "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-    "version": [0, 0, 1],
+    "version": [0, 1, 1],
     "min_engine_version": [1, 18, 20]
   },
   "modules": [
