@@ -1,17 +1,17 @@
 {
   "format_version": 2,
   "header": {
-    "name": "YoniMC",
-    "description": "Minecraft",
-    "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-    "version": [0, 2, 0],
+    "name": "PointM",
+    "description": "A Point named 'yoni:pointm'",
+    "uuid": "2cd86298-f82e-4fbb-85f6-b3665041cead",
+    "version": [0, 0, 1],
     "min_engine_version": [1, 18, 20]
   },
   "modules": [
     {
       "description": "data:yoni",
       "type": "data",
-      "uuid": "6e360e97-62a7-4515-a052-3813e306488e",
+      "uuid": "3de391b5-f3cc-4c6c-933f-44bd8cd51d6a",
       "version": [0, 0, 1]
     }
   ],
