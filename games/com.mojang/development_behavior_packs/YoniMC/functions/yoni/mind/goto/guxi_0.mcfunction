@@ -1,6 +1,9 @@
 #yoni/guxi/mind/goto/t1
-scoreboard players set @s mind 1
 
+# 将思想跳转到26950
+scoreboard players set @s mind 26950
+
+# 初始化一些需要使用的变量，可能用于存储一些东西
 scoreboard objectives add th:flag0 dummy
 scoreboard players set @s th:flag0 0
 
