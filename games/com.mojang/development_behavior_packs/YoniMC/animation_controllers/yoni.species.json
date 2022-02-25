@@ -2,13 +2,14 @@
   "format_version": "1.10.0",
   "animation_controllers": {
     "controller.animation.yoni.species": {
+      //利用两个动画状态不断循环以执行指令
       "initial_state": "loop1",
       "states": {
         "loop1": {
           "transitions": [
             { "loop2": "(1.0)" }
           ],
-          "on_entry": [ "/function yoni/species/play" ]
+          "on_entry": [ "/function yoni/species/play" ] //play物种系统
         },
         "loop2": {
           "transitions": [

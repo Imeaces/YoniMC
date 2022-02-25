@@ -1,5 +1,5 @@
 #yoni/guxi/loop
-
+# 逻辑如下
 # init yoni:guxi = 1
 # loop {
 #   if (query.is_alive == false){

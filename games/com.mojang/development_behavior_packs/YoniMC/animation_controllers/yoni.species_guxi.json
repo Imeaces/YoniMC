@@ -2,6 +2,7 @@
   "format_version": "1.10.0",
   "animation_controllers": {
     "controller.animation.yoni.species.guxi": {
+      // 检测species是否等于2695，如果是，循环执行`guxi play`与`guxi thought`
       "initial_state": "loop1",
       "states": {
         "loop1": {
