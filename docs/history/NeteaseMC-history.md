@@ -23,3 +23,5 @@
 <https://g79.gdl.netease.com/mcpe-release_20210420_1.23-1.23.20.131123-Publish-20210706002549_netease_59_x19_840131123_20210706_003748.apk>
 
 <https://g79.gdl.netease.com/mcpe-release1.23.20.136334-1627636330_sign.apk>
+
+<https://g79.gdl.netease.com/mcpe-release-2.0.5.154465-Publish-20220121190825-compatible_1_encrypted_netease_62_x19.apk>
