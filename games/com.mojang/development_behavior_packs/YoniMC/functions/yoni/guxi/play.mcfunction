@@ -1,3 +1,4 @@
+#yoni/guxi/play
 
 # 增加标识记分项
 scoreboard objectives add yoni:guxi dummy

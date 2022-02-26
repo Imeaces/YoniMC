@@ -1,3 +1,4 @@
+#yoni/guxi/species/pop
 
 # 咕西物种 pop
 # 清空特定的记分项

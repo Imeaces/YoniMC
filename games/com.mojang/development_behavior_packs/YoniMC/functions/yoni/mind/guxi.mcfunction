@@ -1,3 +1,4 @@
+#yoni/mind/guxi
 
 # 初始化
 scoreboard objectives add mind dummy

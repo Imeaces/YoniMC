@@ -1,3 +1,4 @@
+#yoni/guxi/species/push
 
 # 咕西物种 push
 # 增加记分项

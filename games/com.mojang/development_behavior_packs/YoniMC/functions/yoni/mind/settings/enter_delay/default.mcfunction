@@ -1,3 +1,4 @@
+#yoni/mind/settings/enter_delay/default
 
 # 添加设置项ths:enter，用于指定低头打开面板的超时时间，默认为20（1秒）
 scoreboard objectives add ths:enter dummy

@@ -1,3 +1,4 @@
+#yoni/mind/goto/guxi_0
 
 
 # 将思想跳转到26950

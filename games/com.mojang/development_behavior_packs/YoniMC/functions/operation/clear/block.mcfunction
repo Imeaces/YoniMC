@@ -1,3 +1,4 @@
+#operation/clear/block
 replaceitem block ~ ~ ~ slot.container 0 destroy air 1 0
 replaceitem block ~ ~ ~ slot.container 1 destroy air 1 0
 replaceitem block ~ ~ ~ slot.container 2 destroy air 1 0

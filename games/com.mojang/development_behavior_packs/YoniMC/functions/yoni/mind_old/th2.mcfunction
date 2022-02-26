@@ -1,4 +1,4 @@
-#yoni/guxi/mind/th2
+#yoni/mind_old/th2
 function operation/rotate_y_offset
 
 execute @s[rx=-31,scores={op:ry_offset=..-31,th:flag0=!1}] ~ ~ ~ function yoni/guxi/mind/th2_s0

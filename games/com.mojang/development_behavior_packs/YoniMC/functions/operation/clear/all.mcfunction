@@ -1,3 +1,4 @@
+#operation/clear/all
 
 # for non-player entity
 execute @s[type=!minecraft:player] ~ ~ ~ function operation/entity

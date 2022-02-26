@@ -1,3 +1,4 @@
+#operation/clear/entity_chest
 replaceitem entity @s slot.chest 0 destroy air 1 0
 replaceitem entity @s slot.chest 1 destroy air 1 0
 replaceitem entity @s slot.chest 2 destroy air 1 0

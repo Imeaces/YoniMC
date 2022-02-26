@@ -1,3 +1,4 @@
+#yoni/species/spawn_random
 
 # 建个记分项，然后赋值
 scoreboard objectives add spec:random dummy

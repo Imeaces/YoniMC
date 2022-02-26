@@ -1,3 +1,4 @@
+#yoni/species/play
 
 # 为物种系统创建需要的记分项
 scoreboard objectives add species dummy "物种"

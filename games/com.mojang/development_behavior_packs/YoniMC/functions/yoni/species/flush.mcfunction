@@ -1,3 +1,4 @@
+#yoni/species/flush
 
 # 用于记录旧的种族ID
 scoreboard objectives add spec:old_spec dummy

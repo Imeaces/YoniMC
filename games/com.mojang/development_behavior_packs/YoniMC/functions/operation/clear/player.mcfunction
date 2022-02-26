@@ -1,3 +1,4 @@
+#operation/clear/player
 function operation/clear/inventory
 replaceitem entity @s slot.enderchest 0 destroy air 1 0
 replaceitem entity @s slot.enderchest 1 destroy air 1 0

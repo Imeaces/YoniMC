@@ -1,3 +1,4 @@
+#operation/clear/inventory
 replaceitem entity @s slot.inventory 0 destroy air 1 0
 replaceitem entity @s slot.inventory 1 destroy air 1 0
 replaceitem entity @s slot.inventory 2 destroy air 1 0
