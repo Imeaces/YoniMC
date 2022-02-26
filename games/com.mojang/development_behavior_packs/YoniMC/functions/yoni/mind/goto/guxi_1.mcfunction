@@ -1,5 +1,5 @@
 #yoni/mind_old/goto/t2
-scoreboard players set @s mind 2
+scoreboard players set @s mind 26951
 
 function operation/rotate_y_offset_init
 

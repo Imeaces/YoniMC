@@ -1,0 +1,83 @@
+{"rawtext":[{"translate":"%%s\n\n%%s",
+  "with":{"rawtext":[
+    {"text":"面板"},
+    {"translate":"%%s%%s%%s\n%%s%%s%%s\n%%s%%s%%s",
+      "with":{"rawtext":[
+      {"translate":"§r%%2§r",
+        "with":{"rawtext":[
+          {"selector":"@s[scores={th:flag0=1}]"},
+          {"text":"§7#(§l空§r§7)"}
+        ]}
+      },
+      {"translate":"§r%%2§r",
+        "with":{"rawtext":[
+          {"selector":"@s[scores={th:flag0=2}]"},
+          {"text":"§7#(§l空§r§7)"}
+        ]}
+      },
+      {"translate":"§r%%2§r",
+        "with":{"rawtext":[
+          {"selector":"@s[scores={th:flag0=3}]"},
+          {"text":"§7#(§l空§r§7)"}
+        ]}
+      },
+      {"translate":"§r%%2§r",
+        "with":{"rawtext":[
+          {"selector":"@s[scores={th:flag0=4}]"},
+          {"text":"§7#(§l空§r§7)"}
+        ]}
+      },
+      {"translate":"§r%%s调节%%s§r",
+        "with": {"rawtext":[
+          {"translate":"§f%%2",
+            "with": {"rawtext":[
+              {"selector":"@s[scores={th:flag0=5}]"},
+              {"text":"#[§l"}
+            ]}
+          },
+          {"translate":"%%2",
+            "with": {"rawtext":[
+              {"selector":"@s[scores={th:flag0=5}]"},
+              {"text":"§r§f]"}
+            ]}
+          }
+        ]}
+      },
+      {"translate":"§r%%2§r",
+        "with":{"rawtext":[
+          {"selector":"@s[scores={th:flag0=6}]"},
+          {"text":"§7#(§l空§r§7)"}
+        ]}
+      },
+      {"translate":"§r%%2§r",
+        "with":{"rawtext":[
+          {"selector":"@s[scores={th:flag0=7}]"},
+          {"text":"§7#(§l空§r§7)"}
+        ]}
+      },
+      {"translate":"§r%%s关闭%%s§r",
+        "with": {"rawtext":[
+          {"translate":"§f%%2",
+            "with": {"rawtext":[
+              {"selector":"@s[scores={th:flag0=8}]"},
+              {"text":"#[§l"}
+            ]}
+          },
+          {"translate":"%%2",
+            "with": {"rawtext":[
+              {"selector":"@s[scores={th:flag0=8}]"},
+              {"text":"§r§f]"}
+            ]}
+          }
+        ]}
+      },
+      {"translate":"§r%%2§r",
+        "with":{"rawtext":[
+          {"selector":"@s[scores={th:flag0=9}]"},
+          {"text":"§7#(§l空§r§7)"}
+        ]}
+      }
+    ]}
+  }]}
+}]}
+
