@@ -68,29 +68,23 @@
         }
       },
       "minecraft:being_player": {
-        "sequence": [
-          { "add": { "component_groups": [ "minecraft:species_player" ] } }
-        ]
+        "add": { "component_groups": [ "minecraft:species_player" ] }
       },
       "minecraft:perish_player": {
-        "sequence": [
-          { "remove": { "component_groups": [ "minecraft:species_player" ] } }
-        ]
+        "remove": { "component_groups": [ "minecraft:species_player" ] }
       },
       "yoni:being_guxi": {
-        "sequence": [
-          { "add": { "component_groups": [ "yoni:species_guxi" ] } }
-        ]
+        "add": { "component_groups": [ "yoni:species_guxi" ] }
       },
       "yoni:perish_guxi": {
-        "sequence": [
-          { "remove": { "component_groups": [ "yoni:species_guxi" ] } },
-          { "remove": { "component_groups": [ "yoni:guxi_resistance_0" ] } },
-          { "remove": { "component_groups": [ "yoni:guxi_resistance_1" ] } },
-          { "remove": { "component_groups": [ "yoni:guxi_resistance_2" ] } },
-          { "remove": { "component_groups": [ "yoni:guxi_resistance_3" ] } },
-          { "remove": { "component_groups": [ "yoni:guxi_resistance_4" ] } }
-        ]
+        "remove": { "component_groups": [
+          "yoni:guxi_resistance_0",
+          "yoni:guxi_resistance_1",
+          "yoni:guxi_resistance_2",
+          "yoni:guxi_resistance_3",
+          "yoni:guxi_resistance_4",
+          "yoni:species_guxi"
+        ]}
       },
       "guxi:resistance_0": {
         "add": { "component_groups": [ "guxi:resistance_0" ] }
