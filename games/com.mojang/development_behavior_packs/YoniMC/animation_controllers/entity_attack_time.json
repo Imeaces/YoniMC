@@ -5,6 +5,221 @@
       "initial_state": "not_attack",
       "states": {
         "attack10": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 10" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "attack9": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 9" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "attack8": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 8" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "attack7": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 7" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "attack6": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 6" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "attack5": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 5" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "attack4": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 4" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "attack3": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 3" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "attack2": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 2" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "attack1": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 1" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "not_attack": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 0" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        },
+        "above10": {
+          "on_entry": [ "/scoreboard objectives add attack_time dummy", "/say 11" ],
+          "transitions": [
+            { "attack10": "variable.attack_time >= 1" },
+            { "attack9": "variable.attack_time >= 0.9" },
+            { "attack8": "variable.attack_time >= 0.8" },
+            { "attack7": "variable.attack_time >= 0.7" },
+            { "attack6": "variable.attack_time >= 0.6" },
+            { "attack5": "variable.attack_time >= 0.5" },
+            { "attack4": "variable.attack_time >= 0.4" },
+            { "attack3": "variable.attack_time >= 0.3" },
+            { "attack2": "variable.attack_time >= 0.2" },
+            { "attack1": "variable.attack_time >= 0.1" },
+            { "not_attack": "variable.attack_time <= 0" },
+            { "above10": "(1.0)" }
+          ]
+        }
+      }
+    }
+  }
+}
+/*
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.entity.status.attack_time": {
+      "initial_state": "not_attack",
+      "states": {
+        "attack10": {
           "on_entry": [ "/scoreboard objectives add attack_time dummy", "/scoreboard players set @s attack_time 10" ],
           "transitions": [
             { "attack10": "variable.attack_time >= 1" },
@@ -17,7 +232,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -34,7 +249,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -51,7 +266,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -68,7 +283,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -85,7 +300,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -102,7 +317,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -119,7 +334,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -136,7 +351,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -153,7 +368,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -170,11 +385,11 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
-        "no_attack": {
+        "not_attack": {
           "on_entry": [ "/scoreboard objectives add attack_time dummy", "/scoreboard players set @s attack_time 0" ],
           "transitions": [
             { "attack10": "variable.attack_time >= 1" },
@@ -187,7 +402,7 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
         },
@@ -204,11 +419,12 @@
             { "attack3": "variable.attack_time >= 0.3" },
             { "attack2": "variable.attack_time >= 0.2" },
             { "attack1": "variable.attack_time >= 0.1" },
-            { "not_attack": "variable.attack_time <= 0" }
+            { "not_attack": "variable.attack_time <= 0" },
             { "above10": "(1.0)" }
           ]
-        },
+        }
       }
     }
   }
 }
+*/
