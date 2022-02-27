@@ -28,8 +28,8 @@ execute @s[scores={th:flag1=0,th:timer0=..-1}] ~ ~ ~ scoreboard players operatio
 ## 如果改变则清空计时
 execute @s[scores={th:flag1=!0}] ~ ~ ~ scoreboard players reset @s th:timer0
 ###如果计时结束，执行槽位对应操作
-execute @s[scores={th:timer0=0,th:flag0=8}] ~ ~ ~ say y
 execute @s[scores={th:timer0=0,th:flag0=8}] ~ ~ ~ function yoni/mind/goto/guxi_0
+execute @s[scores={th:timer0=0,th:flag0=5}] ~ ~ ~ function yoni/mind/goto/guxi_15
 ##同步
 scoreboard players operation @s th:flag1 = @s th:flag0
 
