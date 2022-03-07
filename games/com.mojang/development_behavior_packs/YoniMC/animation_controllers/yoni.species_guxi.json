@@ -3,8 +3,14 @@
   "animation_controllers": {
     "controller.animation.yoni.species.guxi": {
       // 检测species是否等于2695，如果是，循环执行`guxi play`与`guxi thought`
-      "initial_state": "loop1",
+      "initial_state": "reset",
       "states": {
+        "reset": {
+          "transitions": [
+            { "loop1": "query.scoreboard('species') == 2695" }
+          ],
+          "on_exit": [ "/function yoni/guxi/play", "/scoreboard players reset @s mind" ]
+        },
         "loop1": {
           "transitions": [
             { "loop2": "query.scoreboard('species') == 2695" }
