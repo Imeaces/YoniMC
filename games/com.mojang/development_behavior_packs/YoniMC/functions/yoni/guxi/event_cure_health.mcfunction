@@ -1,5 +1,5 @@
 #damage
-effect @s instant_health 1 1 false
+effect @s instant_health 1 0 false
 execute @s[scores={guxi:disHealth=1}] ~ ~ ~ scoreboard players remove @s guxi:energy 1
 execute @s[scores={guxi:disHealth=2}] ~ ~ ~ scoreboard players remove @s guxi:energy 32
 execute @s[scores={guxi:disHealth=3}] ~ ~ ~ scoreboard players remove @s guxi:energy 243
