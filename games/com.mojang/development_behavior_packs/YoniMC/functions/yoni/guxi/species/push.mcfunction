@@ -24,9 +24,6 @@ scoreboard objectives add guxi:strength dummy
 scoreboard objectives add guxi:mining dummy
 scoreboard objectives add guxi:resistance dummy
 
-# 用于记录血量的记分项
-scoreboard objectives add guxi:health dummy
-
 # 存储上一个能量盾状态的记分项
 scoreboard objectives add guxi:resi2 dummy
 # 能量状态记录

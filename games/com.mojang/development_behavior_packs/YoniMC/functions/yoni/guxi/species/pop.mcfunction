@@ -12,8 +12,6 @@ scoreboard players reset @s guxi:strength
 scoreboard players reset @s guxi:mining
 scoreboard players reset @s guxi:resistance
 
-scoreboard players reset @s guxi:health
-
 scoreboard players reset @s guxi:resi2
 scoreboard players reset @s guxi:status
 
