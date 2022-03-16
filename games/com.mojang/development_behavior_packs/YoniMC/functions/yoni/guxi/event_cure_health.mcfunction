@@ -1,4 +1,7 @@
-#damage
+#cureenergyfunc
+#回复耗能:cureEnergy=disHealth^5
+#每次回复量: 2
+
 effect @s instant_health 1 0 false
 execute @s[scores={guxi:disHealth=1}] ~ ~ ~ scoreboard players remove @s guxi:energy 1
 execute @s[scores={guxi:disHealth=2}] ~ ~ ~ scoreboard players remove @s guxi:energy 32
@@ -79,6 +82,3 @@ execute @s[scores={guxi:disHealth=58}] ~ ~ ~ scoreboard players remove @s guxi:e
 execute @s[scores={guxi:disHealth=58}] ~ ~ ~ scoreboard players remove @s guxi:energy 56356768
 execute @s[scores={guxi:disHealth=59}] ~ ~ ~ scoreboard players remove @s guxi:energies 7
 execute @s[scores={guxi:disHealth=59}] ~ ~ ~ scoreboard players remove @s guxi:energy 14924299
-execute @s[scores={guxi:disHealth=60}] ~ ~ ~ scoreboard players remove @s guxi:energies 7
-execute @s[scores={guxi:disHealth=60}] ~ ~ ~ scoreboard players remove @s guxi:energy 77600000
-
