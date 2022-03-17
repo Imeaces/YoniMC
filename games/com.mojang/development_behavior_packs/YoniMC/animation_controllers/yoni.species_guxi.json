@@ -9,7 +9,7 @@
           "transitions": [
             { "loop1": "query.scoreboard('species') == 2695" }
           ],
-          "on_exit": [ "/function yoni/guxi/play", "/scoreboard players reset @s mind" ]
+          "on_exit": [ "/function yoni/guxi/play", "/function yoni/mind/reload" ]
         },
         "loop1": {
           "transitions": [
