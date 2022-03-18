@@ -2,7 +2,7 @@
   "format_version": "1.10.0",
   "animation_controllers": {
     "controller.animation.entity.status.attack_time": {
-      "initial_state": "disAttack",
+      "initial_state": "dis_attack",
       "states": {
         "attack10": {
           "on_entry": [ "/scoreboard objectives add attack_time dummy", "/scoreboard players set @s attack_time 11" ],
@@ -18,7 +18,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack9": {
@@ -35,7 +35,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack8": {
@@ -52,7 +52,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack7": {
@@ -69,7 +69,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack6": {
@@ -86,7 +86,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack5": {
@@ -103,7 +103,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack4": {
@@ -120,7 +120,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack3": {
@@ -137,7 +137,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack2": {
@@ -154,7 +154,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack1": {
@@ -171,7 +171,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
         "attack0": {
@@ -188,10 +188,10 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         },
-        "disAttack": {
+        "dis_attack": {
           "on_entry": [ "/scoreboard objectives add attack_time dummy", "/scoreboard players set @s attack_time 0" ],
           "transitions": [
             { "attack10": "variable.attack_time > 1" },
@@ -205,7 +205,7 @@
             { "attack2": "variable.attack_time > 0.2" },
             { "attack1": "variable.attack_time > 0.1" },
             { "attack0": "variable.attack_time > 0" },
-            { "disAttack": "(1.0)" }
+            { "dis_attack": "(1.0)" }
           ]
         }
       }

@@ -20,7 +20,7 @@ scoreboard players operation @s guxi:disHealth -= @s health
 ## 当检测到血量损失，根据损失失去能量
 execute @s[scores={guxi:lostHealth=1..}] ~ ~ ~ function yoni/guxi/event_lost_health
 ## 满足一定条件时，恢复血量
-execute @s[scores={guxi:disHealth=1..,guxi:status=..3}] ~ ~ ~ function yoni/guxi/action_cure_health
+execute @s[scores={guxi:disHealth=1..,guxi:sEnergy=..3}] ~ ~ ~ function yoni/guxi/action_cure_health
 execute @s[scores={guxi:disHealth=..0,guxi:cureTimer=-2147483648..}] ~ ~ ~ scoreboard players reset @s guxi:cureTimer
 
 ## 保存数据用于下次执行计算
@@ -29,7 +29,5 @@ scoreboard players operation @s guxi:lstDisHea = @s guxi:disHealth
 
 # 能量循环
 function yoni/guxi/energy/cycle
-# 生命状态
-function yoni/guxi/alive_status
 # 能量附加
 function yoni/guxi/effect

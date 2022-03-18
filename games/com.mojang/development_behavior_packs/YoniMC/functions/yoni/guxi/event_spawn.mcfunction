@@ -14,4 +14,4 @@ scoreboard players set @s guxi:strength -1
 scoreboard players set @s guxi:mining -1
 scoreboard players set @s guxi:resistance 0
 scoreboard players set @s guxi:resi2 -1
-scoreboard players set @s guxi:status -1
+scoreboard players set @s guxi:sEnergy -1

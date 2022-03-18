@@ -5,7 +5,7 @@ scoreboard players set full_energy guxi:value 100000000
 scoreboard players set full_energies guxi:value 360
 
 scoreboard players set base_health guxi:value 60
-
+scoreboard players set order_energy guxi:value 60
 
 scoreboard players operation spawn_energy guxi:value = full_energy guxi:value
 

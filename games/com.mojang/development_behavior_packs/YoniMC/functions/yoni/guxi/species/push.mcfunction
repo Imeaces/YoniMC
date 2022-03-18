@@ -27,4 +27,4 @@ scoreboard objectives add guxi:resistance dummy
 # 存储上一个能量盾状态的记分项
 scoreboard objectives add guxi:resi2 dummy
 # 能量状态记录
-scoreboard objectives add guxi:status dummy
+scoreboard objectives add guxi:sEnergy dummy

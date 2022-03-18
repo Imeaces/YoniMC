@@ -41,7 +41,7 @@ execute @s[scores={alive=1,yoni:guxi=1}] ~ ~ ~ function yoni/guxi/event_spawn
 # 初始化完毕后，持续获取能量状态并保存
 execute @s[scores={alive=1,yoni:guxi=2}] ~ ~ ~ function yoni/guxi/check_energy_status
 ## 当能量已不足以维持秩序，标记为3
-execute @s[scores={alive=1,yoni:guxi=2,guxi:status=5}] ~ ~ ~ scoreboard players set @s yoni:guxi 3
+execute @s[scores={alive=1,yoni:guxi=2,guxi:sEnergy=5}] ~ ~ ~ scoreboard players set @s yoni:guxi 3
 
 # 根据已有数据判断死亡方式
 execute @s[scores={alive=-1,yoni:guxi=2..3}] ~ ~ ~ function yoni/guxi/event_dead
