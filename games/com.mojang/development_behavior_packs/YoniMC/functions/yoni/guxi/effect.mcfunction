@@ -14,6 +14,7 @@ execute @s[scores={guxi:order=0}] ~ ~ ~ effect @s slowness 4 4 true
 execute @s[scores={guxi:order=0}] ~ ~ ~ effect @s night_vision 9 0 true
 execute @s[scores={guxi:order=0}] ~ ~ ~ effect @s weakness 4 255 true
 
+execute @s[scores={guxi:order=1..}] ~ ~ ~ effect @s saturation 4 255 true
 execute @s[scores={guxi:order=1..}] ~ ~ ~ effect @s night_vision 14 0 true
 
 #execute @s[scores={guxi:mining=1..}] ~ ~ ~ effect @s haste 1 4 true
