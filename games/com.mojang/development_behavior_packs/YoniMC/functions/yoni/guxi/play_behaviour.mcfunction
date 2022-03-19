@@ -52,8 +52,8 @@ execute @s[scores={alive=-1,yoni:guxi=2..3}] ~ ~ ~ function yoni/guxi/event_dead
 execute @s[scores={alive=1,yoni:guxi=101..102}] ~ ~ ~ function yoni/guxi/event_respawn
 
 # 当标记为3，造成大量伤害，使实体死亡
-execute @s[scores={alive=1,yoni:guxi=3}] ~ ~ ~ damage @s 1000 none
+execute @s[scores={alive=1,yoni:guxi=3}] ~ ~ ~ function yoni/guxi/event_orderless
 
 # 当初始化完毕，并且实体存活也应当存活时（即能量维持着秩序）
 # 对实体应用活着时候的行为
-execute @s[scores={alive=1,yoni:guxi=2}] ~ ~ ~ function yoni/guxi/behaviour_alive
+execute @s[scores={alive=1,yoni:guxi=2}] ~ ~ ~ function yoni/guxi/play_alive

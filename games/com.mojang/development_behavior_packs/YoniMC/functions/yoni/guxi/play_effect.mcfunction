@@ -1,6 +1,6 @@
 #yoni/guxi/effect
 # 检测附加状态
-function yoni/guxi/effect_status
+function yoni/guxi/check_effect_status
 
 # 循环计时器
 scoreboard objectives add guxi:effectTimer dummy

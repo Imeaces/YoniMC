@@ -25,4 +25,4 @@ scoreboard players operation @s guxi:lstDisHea = @s guxi:disHealth
 # 能量循环
 function yoni/guxi/energy/cycle
 # 能量附加
-function yoni/guxi/effect
+function yoni/guxi/play_effect
