@@ -1,6 +1,3 @@
-scoreboard objectives add guxi:order dummy
-scoreboard objectives add guxi:resistance dummy
-scoreboard objectives add guxi:mining dummy
 
 scoreboard players set @s guxi:order 1
 scoreboard players add @s guxi:resistance 0

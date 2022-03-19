@@ -1,7 +1,6 @@
 
 # 根据剩余能量的高低，咕西会有不同的行为
 ## 以下代码用于识别能量状态
-scoreboard objectives add guxi:sEnergy dummy
 execute @s[scores={guxi:energies=325..,guxi:sEnergy=!0}] ~ ~ ~ scoreboard players set @s guxi:sEnergy 0
 execute @s[scores={guxi:energies=217..324,guxi:sEnergy=!1}] ~ ~ ~ scoreboard players set @s guxi:sEnergy 1
 execute @s[scores={guxi:energies=73..216,guxi:sEnergy=!2}] ~ ~ ~ scoreboard players set @s guxi:sEnergy 2

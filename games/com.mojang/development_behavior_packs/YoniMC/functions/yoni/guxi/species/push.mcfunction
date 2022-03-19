@@ -19,7 +19,6 @@ scoreboard objectives add guxi:energies dummy
 scoreboard objectives add guxi:energy dummy
 
 # 用于能量效果的记分项
-scoreboard objectives add guxi:effective dummy
 scoreboard objectives add guxi:strength dummy
 scoreboard objectives add guxi:mining dummy
 scoreboard objectives add guxi:resistance dummy
@@ -28,3 +27,13 @@ scoreboard objectives add guxi:resistance dummy
 scoreboard objectives add guxi:resi2 dummy
 # 能量状态记录
 scoreboard objectives add guxi:sEnergy dummy
+# 能量状态记录
+scoreboard objectives add guxi:order dummy
+
+scoreboard objectives add guxi:cureTimer dummy
+
+## 增加存储用的记分项
+scoreboard objectives add guxi:lastHealth dummy
+scoreboard objectives add guxi:lostHealth dummy
+scoreboard objectives add guxi:disHealth dummy
+scoreboard objectives add guxi:lstDisHea dummy

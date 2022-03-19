@@ -5,11 +5,6 @@
 ## lostHealth 与上次执行时相比，损失的生命值
 ## disHealth 与基础生命值的差距
 ## lastDisHealth 上次执行时，与基础生命值的差距
-## 增加存储用的记分项
-scoreboard objectives add guxi:lastHealth dummy
-scoreboard objectives add guxi:lostHealth dummy
-scoreboard objectives add guxi:disHealth dummy
-scoreboard objectives add guxi:lstDisHea dummy
 
 ## 根据上次执行留下的数据，以及固定的value，计算损失血量与血量差距
 scoreboard players operation @s guxi:lostHealth = @s guxi:lastHealth

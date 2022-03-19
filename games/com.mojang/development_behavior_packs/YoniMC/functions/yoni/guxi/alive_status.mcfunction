@@ -1,5 +1,3 @@
-scoreboard objectives add guxi:order dummy
-scoreboard objectives add guxi:resistance dummy
 
 # 能量附加的状态
 ## 能量恢复活跃
