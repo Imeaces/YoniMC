@@ -1,4 +1,4 @@
-#yoni/guxi/dying
+#yoni/guxi/event_orderless
 # 死亡{能量消散}
 damage @s 60 none
 

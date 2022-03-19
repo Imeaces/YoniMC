@@ -1,4 +1,4 @@
-#yoni/guxi/alive
+#yoni/guxi/play_alive
 
 # 计算有关血量的值，并根据结果执行能量损失以及血量回复
 ## lastHealth 上次执行时的生命值

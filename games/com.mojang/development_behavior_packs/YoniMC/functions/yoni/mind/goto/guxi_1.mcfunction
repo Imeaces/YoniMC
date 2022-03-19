@@ -1,4 +1,4 @@
-#yoni/mind_old/goto/t2
+#yoni/mind/goto/guxi_1
 scoreboard players set @s mind 26951
 
 function operation/rotate_y_offset_init

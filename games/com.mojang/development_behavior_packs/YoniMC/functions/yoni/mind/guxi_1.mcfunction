@@ -1,4 +1,4 @@
-#yoni/mind_old/th2
+#yoni/mind/guxi_1
 
 #计算与进入视角的偏移值
 function operation/rotate_y_offset

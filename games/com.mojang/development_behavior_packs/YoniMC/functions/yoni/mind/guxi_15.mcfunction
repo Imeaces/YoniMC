@@ -1,3 +1,5 @@
+#yoni/mind/guxi_15
+
 #guxi:resistance
 #guxi:strength
 #guxi:mining

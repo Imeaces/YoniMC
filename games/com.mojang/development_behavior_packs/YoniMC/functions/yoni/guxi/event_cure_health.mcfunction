@@ -1,4 +1,4 @@
-#cureenergyfunc
+#yoni/guxi/event_cure_health
 #回复耗能:cureEnergy=disHealth^5
 #每次回复量: 2
 

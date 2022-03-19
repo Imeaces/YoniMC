@@ -1,4 +1,4 @@
-#lostenergyfunc
+#yoni/guxi/event_lost_health
 #损失血量时丢失的能量:lostEnergy=32*disHealth^5
 
 execute @s[scores={guxi:disHealth=1}] ~ ~ ~ scoreboard players remove @s guxi:energy 32
@@ -102,4 +102,3 @@ execute @s[scores={guxi:disHealth=59}] ~ ~ ~ scoreboard players remove @s guxi:e
 execute @s[scores={guxi:disHealth=59}] ~ ~ ~ scoreboard players remove @s guxi:energy 77577568
 execute @s[scores={guxi:disHealth=60}] ~ ~ ~ scoreboard players remove @s guxi:energies 248
 execute @s[scores={guxi:disHealth=60}] ~ ~ ~ scoreboard players remove @s guxi:energy 83200000
-

@@ -1,3 +1,4 @@
+#yoni/guxi/check_energy_status
 
 # 根据剩余能量的高低，咕西会有不同的行为
 ## 以下代码用于识别能量状态

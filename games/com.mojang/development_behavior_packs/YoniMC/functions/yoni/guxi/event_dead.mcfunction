@@ -1,4 +1,4 @@
-#yoni/guxi/dead
+#yoni/guxi/event_dead
 
 ## 如果此时能量状态未转变为10，则认为是意外死亡
 execute @s[scores={yoni:guxi=2}] ~ ~ ~ scoreboard players set @s yoni:guxi 101

@@ -1,4 +1,4 @@
-#yoni/guxi/loop
+#yoni/guxi/play_behaviour
 # 逻辑如下
 # init yoni:guxi = 1
 # loop {
