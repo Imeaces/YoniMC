@@ -8,7 +8,6 @@ scoreboard players reset @s guxi:energies
 scoreboard players reset @s guxi:energy
 
 scoreboard players reset @s guxi:effective
-scoreboard players reset @s guxi:strength
 scoreboard players reset @s guxi:mining
 scoreboard players reset @s guxi:resistance
 
