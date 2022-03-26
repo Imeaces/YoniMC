@@ -4,7 +4,7 @@
     "name": "YoniMC",
     "description": "Minecraft",
     "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-    "version": [0, 3, 5],
+    "version": [0, 3, 6],
     "min_engine_version": [1, 18, 10]
   },
   "modules": [
@@ -13,7 +13,26 @@
       "type": "data",
       "uuid": "6e360e97-62a7-4515-a052-3813e306488e",
       "version": [0, 4, 1]
+    },
+    {
+      "description": "GTcheck",
+      "type": "javascript",
+      "uuid": "186882fa-a509-4029-87bb-2a63e817e798",
+      "version": [0, 0, 1],
+      "entry": "scripts/test.js"
     }
+  ],
+  "dependencies": [
+    /* Gametest需要的依赖项 */
+    {
+      "uuid": "b26a4d4c-afdf-4690-88f8-931846312678",
+      "version": [0, 1, 0]
+    },
+    {
+      "uuid": "6f4b6893-1bb6-42fd-b458-7fa3d0c89616",
+      "version": [0, 1, 0]
+    }
+    /* Gametest需要的依赖项 */
   ],
   "metadata": {
     "authors": [
