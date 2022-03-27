@@ -19,6 +19,7 @@ scoreboard objectives add guxi:energies dummy
 scoreboard objectives add guxi:energy dummy
 
 # 用于能量效果的记分项
+scoreboard objectives add guxi:strength dummy
 scoreboard objectives add guxi:mining dummy
 scoreboard objectives add guxi:resistance dummy
 

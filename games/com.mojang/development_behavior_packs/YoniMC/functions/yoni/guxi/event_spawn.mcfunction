@@ -9,6 +9,7 @@ scoreboard players operation @s guxi:energy = spawn_energy guxi:value
 
 # 让咕西有生命
 ## 初始化值/重置值
+scoreboard players set @s guxi:strength 0
 scoreboard players set @s guxi:mining 0
 scoreboard players set @s guxi:resistance 0
 scoreboard players set @s guxi:resi2 -1
