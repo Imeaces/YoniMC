@@ -7,5 +7,5 @@ execute @s[tag=yoni:test] ~ ~ ~ scoreboard players set @s species 2695
 execute @s[type=yoni:guxi] ~ ~ ~ scoreboard players set @s species 2695
 
 # 玩家
-execute @s[type=minecraft:player] ~ ~ ~ scoreboard players set @s species 42
+execute @s[type=minecraft:player,scores={species=0}] ~ ~ ~ scoreboard players set @s species 42
 
