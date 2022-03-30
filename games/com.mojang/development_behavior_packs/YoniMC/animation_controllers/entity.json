@@ -34,6 +34,39 @@
         }
       }
     },
+    "controller.animation.entity.status.is_gliding": {
+      "initial_state": "f0",
+      "states": {
+        "f0": {
+          "on_entry": [ "/scoreboard objectives add is_gliding dummy", "/scoreboard players set @s is_gliding -1" ],
+          "transitions": [
+            { "t0": "query.is_gliding" },
+            { "f1": "query.scoreboard('is_gliding') != -1" }
+          ]
+        },
+        "f1": {
+          "on_entry": [ "/scoreboard objectives add is_gliding dummy", "/scoreboard players set @s is_gliding -1" ],
+          "transitions": [
+            { "t0": "query.is_gliding" },
+            { "f0": "query.scoreboard('is_gliding') != -1" }
+          ]
+        },
+        "t0": {
+          "on_entry": [ "/scoreboard objectives add is_gliding dummy", "/scoreboard players set @s is_gliding 1" ],
+          "transitions": [
+            { "f0": "!query.is_gliding" },
+            { "f1": "query.scoreboard('is_gliding') != 1" }
+          ]
+        },
+        "t1": {
+          "on_entry": [ "/scoreboard objectives add is_gliding dummy", "/scoreboard players set @s is_gliding 1" ],
+          "transitions": [
+            { "f0": "!query.is_gliding" },
+            { "t0": "query.scoreboard('alive') != 1" }
+          ]
+        }
+      }
+    },
     "controller.animation.entity.status.on_fire": {
       "initial_state": "is_not_on_fire",
       "states": {
