@@ -18,7 +18,7 @@
       "description": "GTcheck",
       "type": "javascript",
       "uuid": "186882fa-a509-4029-87bb-2a63e817e798",
-      "version": [0, 1, 0],
+      "version": [0, 1, 1],
       "entry": "scripts/check.js"
     }
   ],
