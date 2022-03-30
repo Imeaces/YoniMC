@@ -1,2 +1,2 @@
-effect @a[scores={is_gliding=1}] levitation 1 4 
-effect @a[scores={is_gliding=-1}] levitation 0
+effect @a[scores={is_gliding=1},rx=0] levitation 2 7
+effect @a[rxm=1] levitation 0
