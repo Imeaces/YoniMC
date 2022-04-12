@@ -12,7 +12,8 @@
         "species.yoni_guxi": "controller.animation.yoni.species.guxi",
         // 实体状态
         "entity.status_alive": "controller.animation.entity.status.alive",
-        "enrity.status_attack": "controller.animation.entity.status.attack_time",
+        "entity.status.is_gliding": "controller.animation.entity.status.is_gliding",
+        "entity.status_attack": "controller.animation.entity.status.attack_time",
         // 获取生命值
         "op.health0": "controller.animation.entity.health_0",
         "op.health1": "controller.animation.entity.health_1",
@@ -27,7 +28,8 @@
           "species",
           "species.yoni_guxi",
           "entity.status_alive",
-          "enrity.status_attack",
+          "entity.status.is_gliding",
+          "entity.status_attack",
           "op.health0",
           "op.health1",
           "op.health2",
