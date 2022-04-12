@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/examples/player-entities-with-animation-controller
+# Index of /YoniMC/examples/player-entities-with-animation-controller
 
 [../](./../)  
 [animation_controllers/](./animation_controllers/)  

@@ -1,3 +1,3 @@
-# Index of /Additional-Minecraft/tutorials/command
+# Index of /YoniMC/tutorials/command
 
 [../](./../)  

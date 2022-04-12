@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/documentation/beta
+# Index of /YoniMC/documentation/beta
 
 [../](./../)  
 [1.15.0.51/](./1.15.0.51/)  

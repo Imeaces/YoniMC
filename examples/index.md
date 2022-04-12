@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/examples
+# Index of /YoniMC/examples
 
 [../](./../)  
 [empty-animations/](./empty-animations/)  

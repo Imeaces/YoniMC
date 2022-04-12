@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/server
+# Index of /YoniMC/server
 
 [../](./../)  
 [img/](./img/)  

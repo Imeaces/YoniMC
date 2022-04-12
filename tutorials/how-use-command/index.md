@@ -1,3 +1,3 @@
-# Index of /Additional-Minecraft/tutorials/how-use-command
+# Index of /YoniMC/tutorials/how-use-command
 
 [../](./../)  

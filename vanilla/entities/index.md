@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/vanilla/entities
+# Index of /YoniMC/vanilla/entities
 
 [../](./../)  
 [player.json](./player.json)  

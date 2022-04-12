@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/documentation/1.17.10.4
+# Index of /YoniMC/documentation/1.17.10.4
 
 [../](./../)  
 [**Addons**](./Addons)  

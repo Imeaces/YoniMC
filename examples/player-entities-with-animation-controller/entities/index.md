@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/examples/player-entities-with-animation-controller/entities
+# Index of /YoniMC/examples/player-entities-with-animation-controller/entities
 
 [../](./../)  
 [player.json](./player.json)  

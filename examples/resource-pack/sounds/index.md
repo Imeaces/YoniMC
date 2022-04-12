@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/examples/resource-pack/sounds
+# Index of /YoniMC/examples/resource-pack/sounds
 
 [../](./../)  
 [music_definitions.json](./music_definitions.json)  

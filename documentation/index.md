@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/documentation
+# Index of /YoniMC/documentation
 
 [../](./../)  
 [1.14.0.9/](./1.14.0.9/)  

@@ -41,5 +41,5 @@ EOM
   } > index.md
 }
 find -type f -name index.md -delete
-prefix=/Additional-Minecraft
+prefix=/YoniMC
 sumIndex

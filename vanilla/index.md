@@ -1,4 +1,4 @@
-# Index of /Additional-Minecraft/vanilla
+# Index of /YoniMC/vanilla
 
 [../](./../)  
 [entities/](./entities/)  
