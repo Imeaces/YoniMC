@@ -1,5 +1,0 @@
-item.yoni:energy=能量晶体
-
-tile.yoni:energy_block.name=能量块
-entity.yoni:guxi.name=咕西
-item.spawn_egg.entity.yoni:guxi.name=创建咕西实体数据
