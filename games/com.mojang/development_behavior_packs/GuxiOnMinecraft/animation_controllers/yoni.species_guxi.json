@@ -1,27 +1,26 @@
 {
   "format_version": "1.10.0",
   "animation_controllers": {
-    "controller.animation.yoni.species.guxi": {
-      // 检测species是否等于2695，如果是，循环执行`guxi play`与`guxi thought`
-      "initial_state": "reset",
+    "controller.animation.guxi.func": {
+      "initial_state": "load",
       "states": {
-        "reset": {
+        "load": {
           "transitions": [
-            { "loop1": "query.scoreboard('species') == 2695" }
+            { "loop1": "(1.0)" }
           ],
-          "on_exit": [ "/function yoni/guxi/play", "/function yoni/guxi/mind/reload" ]
+          "on_exit": [ "/function guxi/load" ]
         },
         "loop1": {
           "transitions": [
-            { "loop2": "query.scoreboard('species') == 2695" }
+            { "loop2": "(1.0)" }
           ],
-          "on_exit": [ "/function yoni/guxi/play", "/function yoni/guxi/thought/play" ]
+          "on_exit": [ "/function guxi/play" ]
         },
         "loop2": {
           "transitions": [
-            { "loop1": "query.scoreboard('species') == 2695" }
+            { "loop1": "(1.0)" }
           ],
-          "on_exit": [ "/function yoni/guxi/play", "/function yoni/guxi/thought/play" ]
+          "on_exit": [ "/function guxi/play" ]
         }
       }
     }

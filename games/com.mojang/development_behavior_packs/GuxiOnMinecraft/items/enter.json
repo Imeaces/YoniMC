@@ -1,0 +1,28 @@
+{
+  "format_version": "1.16.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "guxi:enter",
+      "category": "items"
+    },
+    "components": {
+      "minecraft:icon": {
+        "texture": "ender_pearl"
+      },
+      "minecraft:on_use": {
+        "on_use": {
+          "event": "yoni:th_enter",
+          "target": "self"
+        }
+      }
+    },
+    "events": {
+      "yoni:th_enter": {
+        "run_command": {
+          "command": [ "tag @s add guxi:enter" ],
+          "target": "holder"
+        }
+      }
+    }
+  }
+}

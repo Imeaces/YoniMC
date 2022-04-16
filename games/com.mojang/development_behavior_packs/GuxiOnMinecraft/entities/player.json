@@ -9,7 +9,7 @@
       "animations": { // 定义可以运行的动画控制器
         // 用于yoni物种系统的动画控制器
         "species": "controller.animation.yoni.species",
-        "species.yoni_guxi": "controller.animation.yoni.species.guxi",
+        "species.yoni_guxi": "controller.animation.guxi.func",
         // 实体状态
         "entity.status_alive": "controller.animation.entity.status.alive",
         "entity.status.is_gliding": "controller.animation.entity.status.is_gliding",
@@ -25,7 +25,7 @@
       },
       "scripts": {
         "animate": [ //运行动画控制器
-          "species",
+        //  "species",
           "species.yoni_guxi",
           "entity.status_alive",
           "entity.status.is_gliding",
