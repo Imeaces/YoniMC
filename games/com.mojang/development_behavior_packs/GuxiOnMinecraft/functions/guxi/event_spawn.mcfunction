@@ -14,4 +14,3 @@ scoreboard players set @s guxi:resistance 0
 scoreboard players set @s guxi:resi2 -1
 scoreboard players set @s guxi:sEnergy -1
 
-say spawned

@@ -8,12 +8,12 @@
       "is_experimental": false,
       "animations": { // 定义可以运行的动画控制器
         // 用于yoni物种系统的动画控制器
-        "species": "controller.animation.yoni.species",
         "species.yoni_guxi": "controller.animation.guxi.func",
         // 实体状态
         "entity.status_alive": "controller.animation.entity.status.alive",
         "entity.status.is_gliding": "controller.animation.entity.status.is_gliding",
-        "entity.status_attack": "controller.animation.entity.status.attack_time",
+        "entity.status_attack": "controller.animation.entity.status.attack_time"
+        /*
         // 获取生命值
         "op.health0": "controller.animation.entity.health_0",
         "op.health1": "controller.animation.entity.health_1",
@@ -22,21 +22,22 @@
         "op.health4": "controller.animation.entity.health_4",
         "op.health5": "controller.animation.entity.health_5",
         "op.health6": "controller.animation.entity.health_6"
+        */
       },
       "scripts": {
         "animate": [ //运行动画控制器
-        //  "species",
           "species.yoni_guxi",
           "entity.status_alive",
           "entity.status.is_gliding",
-          "entity.status_attack",
+          "entity.status_attack"
+          /*
           "op.health0",
           "op.health1",
           "op.health2",
           "op.health3",
           "op.health4",
           "op.health5",
-          "op.health6"
+          "op.health6"*/
         ]
       }
     },
@@ -112,6 +113,17 @@
       //未使用能量附加的盾时的防御
         "minecraft:damage_sensor": {
           "triggers": [
+            { //针对flow_energy
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {  "test": "is_family",  "subject": "other", "value": "guxi"  },
+                    {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
+                  ]
+                }
+              },
+              "deals_damage": false
+            },
             //具有动能的物体，会对咕西造成巨大的伤害
             { "cause": "anvil",             "damage_multiplier": 4 },
             { "cause": "stalactite",        "damage_multiplier": 2 },  //钟乳石 stalactite
@@ -148,6 +160,17 @@
         //此时，伤害会不同程度地降低
         "minecraft:damage_sensor": {
           "triggers": [
+            { //针对flow_energy
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {  "test": "is_family",  "subject": "other", "value": "guxi"  },
+                    {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
+                  ]
+                }
+              },
+              "deals_damage": false
+            },
             { "cause": "anvil",             "damage_multiplier": 3.04 },
             { "cause": "fly_into_wall",     "damage_multiplier": 2.28 },
             { "cause": "block_explosion",   "damage_multiplier": 1.52 },
@@ -178,6 +201,17 @@
         //能量盾：2
         "minecraft:damage_sensor": {
           "triggers": [
+            { //针对flow_energy
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {  "test": "is_family",  "subject": "other", "value": "guxi"  },
+                    {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
+                  ]
+                }
+              },
+              "deals_damage": false
+            },
             { "cause": "anvil",             "damage_multiplier": 2.28 },
             { "cause": "fly_into_wall",     "damage_multiplier": 1.71 },
             { "cause": "block_explosion",   "damage_multiplier": 1.14 },
@@ -208,6 +242,17 @@
         //能量盾：3
         "minecraft:damage_sensor": {
           "triggers": [
+            { //针对flow_energy
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {  "test": "is_family",  "subject": "other", "value": "guxi"  },
+                    {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
+                  ]
+                }
+              },
+              "deals_damage": false
+            },
             { "cause": "anvil",             "damage_multiplier": 1.72 },
             { "cause": "fly_into_wall",     "damage_multiplier": 1.29 },
             { "cause": "block_explosion",   "damage_multiplier": 0.86 },
@@ -238,6 +283,17 @@
         //能量盾：4
         "minecraft:damage_sensor": {
           "triggers": [
+            { //针对flow_energy
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {  "test": "is_family",  "subject": "other", "value": "guxi"  },
+                    {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
+                  ]
+                }
+              },
+              "deals_damage": false
+            },
             { "cause": "anvil",             "damage_multiplier": 1.32 },
             { "cause": "fly_into_wall",     "damage_multiplier": 0.99 },
             { "cause": "block_explosion",   "damage_multiplier": 0.66 },

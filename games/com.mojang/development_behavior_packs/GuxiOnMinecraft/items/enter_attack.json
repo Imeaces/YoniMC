@@ -2,27 +2,31 @@
   "format_version": "1.16.100",
   "minecraft:item": {
     "description": {
-      "identifier": "guxi:enter",
+      "identifier": "guxi:enter_attack",
       "category": "items"
     },
     "components": {
       "minecraft:icon": {
-        "texture": "ender_pearl"
+        "texture": "arrow"
       },
       "minecraft:on_use": {
         "on_use": {
-          "event": "guxi:enter",
+          "event": "guxi:enter_attack",
           "target": "self"
         }
       }
     },
     "events": {
-      "guxi:enter": {
+      "guxi:enter_attack": {
         "run_command": {
           "command": [
-            "tag @s add guxi:enter"
+            "tag @s add guxi:enter_attack"
           ],
           "target": "holder"
+        },
+        "shoot": {
+          "projectile": "guxi:flow_energy",
+          "launch_power": 1
         }
       }
     }
