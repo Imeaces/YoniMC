@@ -18,6 +18,35 @@ function dim(dimid){
   }
 }
 
+function runCmd(cmd){
+  let status = true;
+  try {
+    dim(0).runCommand(cmd);
+  } catch {
+    status = false;
+  };
+  return status;
+}
+
+function scbObjAdd(obj,objName){
+  if (typeof obj === "undefined" || obj === ''|| obj === null){
+    throw "必须为新建记分项指定名称！\nYou must specify a name for new objectives";
+  }
+  obj = obj.toString();
+  try {
+    objName = obj.toString();
+  } catch (err) {/* do nothing */}
+  runCmd(`scoreboard objectives add "${obj}" dummy ${objName}`);
+}
+
+function scbObjRem(obj){
+  if (typeof obj === "undefined" || obj === ''|| obj === null){
+    throw "必须为移除记分项指定名称！\nYou must specify a objectives to remove";
+  }
+  obj = obj.toString();
+  runCmd(`scoreboard objectives add "${obj}" dummy ${objName}`);
+}
+
 events.beforeChat.subscribe(event => {
   if (event.message == "!suicide"){
     event.cancel = true; 
@@ -38,18 +67,21 @@ events.entityHurt.subscribe(event => {
   }
 });
 
-events.tick.subscribe(event => {
+events.tick.subscribe(eventToDoSomething => {
+  let entities = [];
+  let index = 0;
   for (let dimid of [0,-1,1]){
     for (let e of dim(dimid).getEntities()){
-      if (e.hasTag("test:health")){
-        try {
-          dim(0).runCommand("scoreboard objectives add health dummy");
-        } catch (err){
-          //do nothing
-        }
-        let health = Math.floor(e.getComponent("minecraft:health").current);
-        e.runCommand(`scoreboard players set @s health ${health}`);
-      }
+      entities[index] = e;
+      index ++;
+    }
+  }
+  
+  for (let e of entities){
+    if (e.hasTag("test:health")){
+      scbObjAdd("HEALTH");
+      let health = Math.floor(e.getComponent("minecraft:health").current);
+      e.runCommand(`scoreboard players set @s HEALTH ${health}`);
     }
   }
 });

@@ -3,25 +3,27 @@
 function guxi/check_effect_status
 
 # 循环计时器
-scoreboard objectives add guxi:effectTimer dummy
-scoreboard players add @s guxi:effectTimer 1
-execute @s[scores={guxi:effectTimer=40..}] ~ ~ ~ scoreboard players set @s guxi:effectTimer 0
+# 0时触发
+scoreboard objectives add guxi:ti1 dummy
+scoreboard players add @s guxi:ti1 1
+execute @s[scores={guxi:ti1=40..}] ~ ~ ~ scoreboard players set @s guxi:ti1 0
 
 # 固有状态
-execute @s[scores={guxi:effectTimer=0}] ~ ~ ~ effect @s slowness 4 1 true
-execute @s[scores={guxi:effectTimer=0}] ~ ~ ~ effect @s mining_fatigue 4 3 true
-# 维持能量秩序的消耗
+execute @s[scores={guxi:ti1=0}] ~ ~ ~ effect @s slowness 4 1 true
+execute @s[scores={guxi:ti1=0}] ~ ~ ~ effect @s mining_fatigue 4 3 true
+# 维持能量秩序的消耗 # 即将弃用
 scoreboard players remove @s guxi:energy 14
 
 # 当没有足够的能量时（order0）
-execute @s[scores={guxi:effectTimer=0}] ~ ~ ~ execute @s[scores={guxi:order=-1}] ~ ~ ~ effect @s hunger 4 255 true
-execute @s[scores={guxi:effectTimer=0}] ~ ~ ~ execute @s[scores={guxi:order=-1}] ~ ~ ~ effect @s slowness 4 4 true
-execute @s[scores={guxi:effectTimer=0}] ~ ~ ~ execute @s[scores={guxi:order=-1}] ~ ~ ~ effect @s night_vision 9 0 true
-execute @s[scores={guxi:effectTimer=0}] ~ ~ ~ execute @s[scores={guxi:order=-1}] ~ ~ ~ effect @s weakness 4 255 true
+execute @s[scores={guxi:ti1=0}] ~ ~ ~ execute @s[scores={guxi:order=-1}] ~ ~ ~ effect @s hunger 4 255 true
+execute @s[scores={guxi:ti1=0}] ~ ~ ~ execute @s[scores={guxi:order=-1}] ~ ~ ~ effect @s slowness 4 4 true
+## 此处9秒夜视造成闪烁效果
+execute @s[scores={guxi:ti1=0}] ~ ~ ~ execute @s[scores={guxi:order=-1}] ~ ~ ~ effect @s night_vision 9 0 true
+execute @s[scores={guxi:ti1=0}] ~ ~ ~ execute @s[scores={guxi:order=-1}] ~ ~ ~ effect @s weakness 4 255 true
 
 # 当能量足够时( order >= 0 )
-execute @s[scores={guxi:effectTimer=0}] ~ ~ ~ execute @s[scores={guxi:order=!-1}] ~ ~ ~ effect @s saturation 4 255 true
-execute @s[scores={guxi:effectTimer=0}] ~ ~ ~ execute @s[scores={guxi:order=!-1}] ~ ~ ~ effect @s night_vision 14 0 true
+execute @s[scores={guxi:ti1=0}] ~ ~ ~ execute @s[scores={guxi:order=!-1}] ~ ~ ~ effect @s saturation 4 255 true
+execute @s[scores={guxi:ti1=0}] ~ ~ ~ execute @s[scores={guxi:order=!-1}] ~ ~ ~ effect @s night_vision 14 0 true
 
 execute @s[scores={attack_time=4..},tag=!guxi:att,tag=!guxi:atta] ~ ~ ~ tag @s add guxi:att
 execute @s[tag=guxi:atta] ~ ~ ~ tag @s remove guxi:att
@@ -35,6 +37,7 @@ execute @s[scores={guxi:mining=1},tag=guxi:att] ~ ~ ~ scoreboard players remove 
 # debug
 execute @s[tag=yoni:debug,tag=guxi:att] ~ ~ ~ say 触发了手
 
+scoreboard objectives add guxi:orderEnergy dummy
 # 待机能量
 execute @s[scores={guxi:order=1..}] ~ ~ ~ scoreboard players operation @s guxi:orderEnergy = order_energy guxi:value
 execute @s[scores={guxi:order=1..}] ~ ~ ~ scoreboard players operation @s guxi:orderEnergy *= @s guxi:order

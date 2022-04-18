@@ -1,18 +1,16 @@
 #yoni/guxi/check_effect_status
 
 scoreboard players set @s guxi:order 0
-scoreboard players add @s guxi:resistance 0
-scoreboard players add @s guxi:mining 0
 
 # 计算需要的待用能量等级
 scoreboard players operation @s guxi:order += @s guxi:resistance
 scoreboard players operation @s guxi:order += @s guxi:mining
 
 # 能量秩序混乱
-execute @s[scores={guxi:sEnergy=4..}] ~ ~ ~ scoreboard players set @s guxi:order -1
+execute @s[scores={guxi:status=4..}] ~ ~ ~ scoreboard players set @s guxi:order -1
 # 无法调动能量附加序列
 execute @s [scores={guxi:order=-1,guxi:mining=!0}] ~ ~ ~ scoreboard players set @s guxi:mining 0
-execute @s [scores={guxi:order=-1,guxi:resistance=!0}] ~ ~ ~ say scoreboard players set @s guxi:resistance 0
+execute @s [scores={guxi:order=-1,guxi:force=!0}] ~ ~ ~ scoreboard players set @s guxi:force 0
 execute @s [scores={guxi:order=-1,guxi:resistance=!0}] ~ ~ ~ scoreboard players set @s guxi:resistance 0
 
 # 电器有待机电流，咕西有待用能量
