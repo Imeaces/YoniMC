@@ -34,7 +34,7 @@
         },
         // "offset": [0, 0, 0],
         "knockback": false,
-        "power": 2.8,
+        "power": 0.2,
         "anchor": 1,
         "gravity": 0,
         "inertia": 1, //速度保持率

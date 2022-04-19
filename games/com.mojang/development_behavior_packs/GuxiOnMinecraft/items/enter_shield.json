@@ -2,31 +2,27 @@
   "format_version": "1.16.100",
   "minecraft:item": {
     "description": {
-      "identifier": "guxi:enter_attack",
+      "identifier": "guxi:enter_shield",
       "category": "items"
     },
     "components": {
       "minecraft:icon": {
-        "texture": "arrow"
+        "texture": "sword"
       },
       "minecraft:on_use": {
         "on_use": {
-          "event": "guxi:enter_attack",
+          "event": "guxi:enter_shield",
           "target": "self"
         }
       }
     },
     "events": {
-      "guxi:enter_attack": {
+      "guxi:enter_shield": {
         "run_command": {
           "command": [
             "tag @s add guxi:enter"
           ],
           "target": "holder"
-        },
-        "shoot": {
-          "projectile": "guxi:flow_energy",
-          "launch_power": 10
         }
       }
     }

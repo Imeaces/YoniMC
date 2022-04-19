@@ -46,3 +46,4 @@ scoreboard players reset @s guxi:v103
 
 # 增加检测器
 tag @s add test:health
+

@@ -13,6 +13,8 @@ scoreboard players operation @s guxi:v102 -= @s HEALTH
 
 ## 当检测到血量损失，根据损失失去能量
 execute @s[scores={guxi:v101=1..}] ~ ~ ~ function guxi/action_lost_health
+## 添加护盾
+execute @s[scores={guxi:v100=..0,guxi:v101=1..}] ~ ~ ~ function guxi/event_first_lost_health
 ## 满足一定条件时，恢复血量
 execute @s[scores={guxi:status=..3}] ~ ~ ~ function guxi/play_cure_health
 
@@ -25,5 +27,3 @@ function guxi/play_effect
 
 scoreboard players add @s guxi:memory 1
 
-# 能量循环
-function guxi/play_energy

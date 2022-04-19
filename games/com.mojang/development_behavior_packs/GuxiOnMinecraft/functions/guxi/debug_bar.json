@@ -1,0 +1,66 @@
+{"rawtext": [{
+  "translate": "%%s\n%%s  %%s\n%%s  %%s\n\n%%s\n%%s\n%%s",
+  "with": {"rawtext": [
+    {
+      "translate": "%%s: %%s",
+      "with": {"rawtext": [
+        {"text": "ti0"},
+        {"score": {"objective": "guxi:ti0","name": "@s"}}
+      ]}
+    },
+    {
+      "translate": "%%s: %%s",
+      "with": {"rawtext": [
+        {"text": "lastDisHealth"},
+        {"score": {"objective": "guxi:v100","name": "@s"}}
+      ]}
+    },
+    {
+      "translate": "%%s: %%s",
+      "with": {"rawtext": [
+        {"text": "lostHealth"},
+        {"score": {"objective": "guxi:v101","name": "@s"}}
+      ]}
+    },
+    {
+      "translate": "%%s: %%s",
+      "with": {"rawtext": [
+        {"text": "disHealth"},
+        {"score": {"objective": "guxi:v102","name": "@s"}}
+      ]}
+    },
+    {
+      "translate": "%%s: %%s",
+      "with": {"rawtext": [
+        {"text": "lastHealth"},
+        {"score": {"objective": "guxi:v103","name": "@s"}}
+      ]}
+    },
+    {
+      "translate": "%%s: %%s",
+      "with": {"rawtext": [
+        {"text": "health"},
+        {"score": {"objective": "HEALTH","name": "@s"}}
+      ]}
+    },
+    {
+      "translate": "%%s: %%s",
+      "with": {"rawtext": [
+        {"text": "energies"},
+        {"score": {"objective": "guxi:energies","name": "@s"}}
+      ]}
+    },
+    {
+      "translate": "%%s: %%s",
+      "with": {"rawtext": [
+        {"text": "energy"},
+        {"score": {"objective": "guxi:energy","name": "@s"}}
+      ]}
+    }
+  ]}
+}]}
+
+## v100 上次执行时，与基础生命值的差距
+## v101 与上次执行时相比，损失的生命值
+## v102 与基础生命值的差距
+## v103 上次执行时的生命值

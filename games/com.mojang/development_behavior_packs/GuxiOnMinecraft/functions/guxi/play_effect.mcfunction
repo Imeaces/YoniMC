@@ -54,7 +54,7 @@ execute @s[scores={guxi:resi2=!0}] ~ ~ ~ function guxi/resistance/being
 scoreboard players operation @s guxi:resi2 = @s guxi:resistance
 ### 能量消耗
 #execute @s[scores={guxi:resistance=0}] ~ ~ ~ scoreboard players add @s guxi:energy 0
-execute @s[scores={guxi:resistance=1}] ~ ~ ~ scoreboard players add @s guxi:energy -49
-execute @s[scores={guxi:resistance=2}] ~ ~ ~ scoreboard players add @s guxi:energy -290
-execute @s[scores={guxi:resistance=3}] ~ ~ ~ scoreboard players add @s guxi:energy -918
-execute @s[scores={guxi:resistance=4}] ~ ~ ~ scoreboard players add @s guxi:energy -2819
+execute @s[scores={guxi:resistance=1}] ~ ~ ~ scoreboard players remove @s guxi:energy 49000
+execute @s[scores={guxi:resistance=2}] ~ ~ ~ scoreboard players remove @s guxi:energy 290000
+execute @s[scores={guxi:resistance=3}] ~ ~ ~ scoreboard players remove @s guxi:energy 918000
+execute @s[scores={guxi:resistance=4}] ~ ~ ~ scoreboard players remove @s guxi:energy 2819000
