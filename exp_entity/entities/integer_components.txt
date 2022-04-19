@@ -1,6 +1,0 @@
-minecraft:color
-minecraft:color2
-minecraft:mark_variant
-minecraft:skin_id
-minecraft:variant
-minecraft:strength
