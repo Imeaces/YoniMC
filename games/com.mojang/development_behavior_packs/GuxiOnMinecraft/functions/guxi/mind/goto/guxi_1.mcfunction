@@ -1,5 +1,5 @@
 #yoni/mind/goto/guxi_1
-scoreboard players set @s mind 26951
+scoreboard players set @s mind:v100 26951
 
 function operation/rotate_y_offset_init
 

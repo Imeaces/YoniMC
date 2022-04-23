@@ -2,7 +2,7 @@
 
 
 # 将思想跳转到26950
-scoreboard players set @s mind 26950
+scoreboard players set @s mind:v100 26950
 
 # 初始化一些需要使用的变量，可能用于存储一些东西
 scoreboard objectives add th:flag0 dummy
