@@ -29,7 +29,10 @@ function getLoadedEntities(){
   return entities;
 }
 function say(msg,obj){
-  let cmd = `say ${msg}`;
+  let cmd = "say §§";
+  if (typeof msg != "undefined"){
+    cmd += msg;
+  }
   runCmd(cmd,obj);
 }
 function runCmd(cmd,obj){
@@ -66,44 +69,43 @@ function scbObjRem(obj){
   obj = obj.toString();
   runCmd(`scoreboard objectives remove "${obj}" dummy ${objName}`);
 }
-
 function chatCommand(event,command){
   /* 处理命令和参数 begin */
   let cmd = "";
   let arg = "";
   let args = [];
-  let split = 0;
-  split = command.indexOf(" ");
-  if (split == -1){
-    cmd = command;
-  } else {
-    cmd = command.slice(0,split);
-    arg = command.slice(split+1);
-    split = 0;
-    while (true){
-      let context = "";
-      let index = arg.indexOf(" ",split+1);
-      if (index == -1){
-        context = arg.slice(split+1);
-      } else {
-        context = arg.slice(split+1,index);
-      }
-      if (context.length != 0){
-        args.push(context);
-      }
-      split = arg.indexOf(" ",split+1);
-      if (split == -1){
-        break;
+  if (typeof command != "undefined" && command != "" && command != null){
+    command = command.toString();
+    let split = 0;
+    split = command.indexOf(" ");
+    if (split == -1){
+      cmd = command;
+    } else {
+      cmd = command.slice(0,split);
+      arg = command.slice(split+1);
+      split = 0;
+      while (true){
+        let context = "";
+        let index = arg.indexOf(" ",split+1);
+        if (index == -1){
+          context = arg.slice(split+1);
+        } else {
+          context = arg.slice(split+1,index);
+        }
+        if (context.length != 0){
+          args.push(context);
+        }
+        split = arg.indexOf(" ",split+1);
+        if (split == -1){
+          break;
+        }
       }
     }
   }
   /* 处理命令和参数 end */
   
   //输出得到的命令参数
-  try {
-    say(`[!]${cmd} ${args}`);
-  } catch {/* do nothing */}
-  
+  say(`[!]${cmd} ${args}`);
   //执行命令
   switch (cmd){
     case "suicide":
@@ -130,6 +132,7 @@ function chatCommand(event,command){
       say("执行结束");
       break;
     case "eval":
+      say(`[eval][!]${arg}`);
       try {
         let result = eval(arg);
         say("[eval]执行成功");
@@ -144,8 +147,13 @@ function chatCommand(event,command){
       } catch(err){
         say(`[eval][err]${err}`);
       }
+      break;
     default:
-      say("[!]未知的命令:${command}");
+      if (cmd == ""){
+        say(`[!]没有可以执行的命令`);
+      } else {
+        say(`[!]未知的命令:${command}`);
+      }
   }
   return event;
 }
@@ -154,12 +162,20 @@ events.beforeChat.subscribe(event => {
   if (event.message.startsWith("!")){
     let command = event.message.substring(1);
     event.cancel = true;
+    mc.world.getDimension("overworld").runCommand("say @s");
     say("调用chatCommand()处理命令");
-    chatCommand(event,command);
+    try {
+      chatCommand(event,command);
+      say("调用chatCommand()正常结束");
+    } catch(err){
+      say(`[err]${err}`);
+      say("调用chatCommand()异常结束");
+    }
   }
   if (event.sender.hasTag("guxi")) {
     event.message = "咕西";
   }
+  say("beforeChat处理完毕");
   return event;
 });
 
