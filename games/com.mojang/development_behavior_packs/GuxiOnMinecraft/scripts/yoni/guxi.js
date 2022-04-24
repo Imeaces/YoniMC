@@ -68,7 +68,6 @@ function scbObjRem(obj){
 }
 
 function chatCommand(event,command){
-  say("chatCommand()被调用");
   /* 处理命令和参数 begin */
   let cmd = "";
   let arg = "";
@@ -82,26 +81,18 @@ function chatCommand(event,command){
     arg = command.slice(split+1);
     split = 0;
     while (true){
-      say("检查参数中");
       let context = "";
-      say("let context = \"\"");
       let index = arg.indexOf(" ",split+1);
-      say("get index");
       if (index == -1){
         context = arg.slice(split+1);
-        say(`end context = ${context}`);
       } else {
         context = arg.slice(split+1,index);
-        say(`set context = ${context}`);
       }
       if (context.length != 0){
-        say("push context");
         args.push(context);
       }
       split = arg.indexOf(" ",split+1);
-      say("get split");
       if (split == -1){
-        say("完成");
         break;
       }
     }

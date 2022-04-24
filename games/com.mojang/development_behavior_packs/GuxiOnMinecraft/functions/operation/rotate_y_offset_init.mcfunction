@@ -11,4 +11,4 @@ scoreboard objectives add op:ory1 dummy
 function entity/position/init
 function entity/position/getRotateY
 
-scoreboard players operation @s op:ory0 = @s pos:rotate_y
+scoreboard players operation @s op:ory0 = @s pos:rotateY

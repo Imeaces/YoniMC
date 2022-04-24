@@ -1,46 +1,18 @@
 {"rawtext": [{
-  "translate": "%%s\n%%s  %%s\n%%s  %%s\n\n%%s\n%%s\n%%s",
+  "translate": "%%s %%s\n%%s\n%%s",
   "with": {"rawtext": [
     {
       "translate": "%%s: %%s",
       "with": {"rawtext": [
-        {"text": "ti0"},
-        {"score": {"objective": "guxi:ti0","name": "@s"}}
+        {"text": "sence"},
+        {"score": {"objective": "mind:sence","name": "@s"}}
       ]}
     },
     {
       "translate": "%%s: %%s",
       "with": {"rawtext": [
-        {"text": "lastDisHealth"},
-        {"score": {"objective": "guxi:v100","name": "@s"}}
-      ]}
-    },
-    {
-      "translate": "%%s: %%s",
-      "with": {"rawtext": [
-        {"text": "lostHealth"},
-        {"score": {"objective": "guxi:v101","name": "@s"}}
-      ]}
-    },
-    {
-      "translate": "%%s: %%s",
-      "with": {"rawtext": [
-        {"text": "disHealth"},
-        {"score": {"objective": "guxi:v102","name": "@s"}}
-      ]}
-    },
-    {
-      "translate": "%%s: %%s",
-      "with": {"rawtext": [
-        {"text": "lastHealth"},
-        {"score": {"objective": "guxi:v103","name": "@s"}}
-      ]}
-    },
-    {
-      "translate": "%%s: %%s",
-      "with": {"rawtext": [
-        {"text": "health"},
-        {"score": {"objective": "HEALTH","name": "@s"}}
+        {"text": "mind:v0"},
+        {"score": {"objective": "mind:v0","name": "@s"}}
       ]}
     },
     {

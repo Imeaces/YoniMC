@@ -3,20 +3,24 @@
 scoreboard objectives add mind dummy
 scoreboard players add @s mind 0
 execute @s[scores={mind=..-1},tag=yoni:debug] ~ ~ ~ tellraw @s {"rawtext":[{"text":"出现错误，已重置mind为0"}]}
+execute @s[scores={mind=4..},tag=yoni:debug] ~ ~ ~ tellraw @s {"rawtext":[{"text":"出现错误，已重置mind为0"}]}
 execute @s[scores={mind=..-1}] ~ ~ ~ scoreboard players set @s mind 0
+execute @s[scores={mind=4..}] ~ ~ ~ scoreboard players set @s mind 0
 
 # 记录已经决定想法
 scoreboard objectives add mind:enter dummy
 scoreboard players set @s mind:enter 0
 # 记录当前slot物品
-scoreboard objectives add mind:v100 dummy
+#scoreboard objectives add mind:v100 dummy
 # 记录当前是否持握slot物品
 #scoreboard objectives add mind:v101 dummy
 
-scoreboard objectives add mind:op100 dummy
+#scoreboard objectives add mind:op100 dummy
 
 scoreboard objectives add mind:lock dummy
 scoreboard players add @s mind:lock 0
+
+scoreboard objectives add mind:sence dummy
 
 # 设置slot
 # 默认模式0
@@ -29,11 +33,14 @@ execute @s[scores={mind=2}] ~ ~ ~ replaceitem entity @s slot.hotbar 8 destroy gu
 execute @s[scores={mind=3}] ~ ~ ~ replaceitem entity @s slot.hotbar 8 destroy firework_rocket 2 0 {"keep_on_death":{},"item_lock":{"mode":"lock_in_slot"}}
 
 # 检测使用状态
+scoreboard players set @s[scores={mind:lock=0}] mind:sence -2
+
 execute @s[scores={mind:lock=0},hasitem=[{location=slot.hotbar,slot=8,item=guxi:enter},{location=slot.weapon.mainhand,slot=0,item=guxi:enter}]] ~ ~ ~ scoreboard players set @s mind:sence 0
 execute @s[scores={mind:lock=0},hasitem=[{location=slot.hotbar,slot=8,item=guxi:enter_attack},{location=slot.weapon.mainhand,slot=0,item=guxi:enter_attack}]] ~ ~ ~ scoreboard players set @s mind:sence 1
 execute @s[scores={mind:lock=0},hasitem=[{location=slot.hotbar,slot=8,item=guxi:enter_shield},{location=slot.weapon.mainhand,slot=0,item=guxi:enter_shield}]] ~ ~ ~ scoreboard players set @s mind:sence 2
 execute @s[scores={mind:lock=0},hasitem=[{location=slot.hotbar,slot=8,item=firework_rocket},{location=slot.weapon.mainhand,slot=0,item=firework_rocket}]] ~ ~ ~ scoreboard players set @s mind:sence 3
 ## 轮盘菜单
+execute @s[scores={mind:sence=0..,mind:lock=0},rx=-89,tag=yoni:debug] ~ ~ ~ say sey mind:sence -1
 execute @s[scores={mind:sence=0..,mind:lock=0},rx=-89] ~ ~ ~ scoreboard players set @s mind:sence -1
 
 # 检测是否已经决定
