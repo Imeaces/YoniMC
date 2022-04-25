@@ -3,6 +3,7 @@
 execute @s[scores={mind:slot=2}] ~ ~ ~ scoreboard players set @s mind:lock 1
 execute @s[scores={mind:slot=!2}] ~ ~ ~ scoreboard players set @s mind:lock 0
 execute @s[scores={mind:slot=!2}] ~ ~ ~ scoreboard players operation @s guxi:resistance = @s mind:v200
+execute @s[scores={mind:slot=!2}] ~ ~ ~ scoreboard players set @s mind 0
 
 
 scoreboard objectives add mind:v200 dummy
