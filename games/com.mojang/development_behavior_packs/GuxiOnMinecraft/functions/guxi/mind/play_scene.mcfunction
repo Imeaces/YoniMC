@@ -8,11 +8,11 @@ execute @s[scores={mind:v0=0}] ~ ~ ~ scoreboard players set @s mind:v0 1
 
 execute @s[scores={mind:v0=1}] ~ ~ ~ function operation/rotate_y_offset
 
-execute @s[scores={op:ory1=..-15}] ~ ~ ~ function operation/rotate_y_offset_init
-execute @s[scores={op:ory1=..-15}] ~ ~ ~ scoreboard players add @s mind -1
+execute @s[scores={op:ory1=..-30}] ~ ~ ~ function operation/rotate_y_offset_init
+execute @s[scores={op:ory1=..-30}] ~ ~ ~ scoreboard players add @s mind -1
 
-execute @s[scores={op:ory1=15..}] ~ ~ ~ function operation/rotate_y_offset_init
-execute @s[scores={op:ory1=15..}] ~ ~ ~ scoreboard players add @s mind 1
+execute @s[scores={op:ory1=30..}] ~ ~ ~ function operation/rotate_y_offset_init
+execute @s[scores={op:ory1=30..}] ~ ~ ~ scoreboard players add @s mind 1
 
 execute @s[rxm=-86] ~ ~ ~ scoreboard players set @s mind:lock 0
 execute @s[rxm=-86] ~ ~ ~ scoreboard players reset @s mind:v0
