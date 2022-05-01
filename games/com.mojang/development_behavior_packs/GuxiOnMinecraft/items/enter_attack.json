@@ -9,6 +9,7 @@
       "minecraft:icon": {
         "texture": "arrow"
       },
+      "minecraft:use_duration": 20,
       "minecraft:on_use": {
         "on_use": {
           "event": "guxi:enter_attack",
@@ -18,15 +19,9 @@
     },
     "events": {
       "guxi:enter_attack": {
-        "run_command": {
-          "command": [
-            "tag @s add guxi:enter"
-          ],
-          "target": "holder"
-        },
         "shoot": {
           "projectile": "guxi:flow_energy",
-          "launch_power": 10
+          "launch_power": 1
         }
       }
     }

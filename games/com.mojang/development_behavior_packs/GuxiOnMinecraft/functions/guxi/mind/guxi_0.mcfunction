@@ -1,4 +1,4 @@
-#yoni/mind/guxi_0
+#guxi/mind/guxi_0
 
 # 当低头时，将标志切换到1
 execute @s[rxm=85,scores={th:flag0=0}] ~ ~ ~ scoreboard players set @s th:flag0 1
@@ -15,7 +15,7 @@ execute @s[scores={th:flag0=1,th:timer0=..0}] ~ ~ ~ scoreboard players set @s th
 ## 如果正在计时，重置计时器
 execute @s[rx=84,scores={th:timer0=1..}] ~ ~ ~ scoreboard players set @s th:timer0 0
 ## 如果标志为1，跳转面板26951
-execute @s[rx=84,scores={th:flag0=1}] ~ ~ ~ function yoni/mind/goto/guxi_1
+execute @s[rx=84,scores={th:flag0=1}] ~ ~ ~ function guxi/mind/goto/guxi_1
 ## 重置标志
 execute @s[rx=84] ~ ~ ~ scoreboard players set @s th:flag0 0
 

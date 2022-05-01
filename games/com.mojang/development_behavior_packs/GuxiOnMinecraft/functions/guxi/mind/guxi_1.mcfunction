@@ -16,10 +16,10 @@ execute @s[scores={op:ory1=31..}] ~ ~ ~ scoreboard players add @s th:flag0 1
 execute @s[scores={th:flag2=0}] ~ ~ ~ scoreboard players operation @s th:flag2 = @s th:flag0
 scoreboard players operation @s th:flag1 = @s th:flag2
 scoreboard players operation @s th:flag1 -= @s th:flag0
-execute @s[scores={th:flag1=0,th:flag3=1}] ~ ~ ~ function yoni/mind/goto/guxi_0
+execute @s[scores={th:flag1=0,th:flag3=1}] ~ ~ ~ function guxi/mind/goto/guxi_0
 execute @s[scores={th:flag1=!0,th:flag3=0}] ~ ~ ~ scoreboard players set @s th:flag3 1
 
-execute @s[scores={th:flag0=9}] ~ ~ ~ function yoni/mind/goto/guxi_14
+execute @s[scores={th:flag0=9}] ~ ~ ~ function guxi/mind/goto/guxi_14
 
 # 此命令已压缩，请查看同一目录下的同名json文件
 title @s times 0 20 0

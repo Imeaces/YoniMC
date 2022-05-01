@@ -18,12 +18,7 @@
     },
     "events": {
       "guxi:enter_shield": {
-        "run_command": {
-          "command": [
-            "tag @s add guxi:enter"
-          ],
-          "target": "holder"
-        }
+        "swing": {}
       }
     }
   }

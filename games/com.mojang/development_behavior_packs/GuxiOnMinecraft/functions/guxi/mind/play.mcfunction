@@ -48,14 +48,11 @@ execute @s[scores={mind:scene=0..,mind:lock=0},rx=-89,tag=yoni:debug] ~ ~ ~ say 
 execute @s[scores={mind:scene=0..,mind:lock=0},rx=-89] ~ ~ ~ scoreboard players set @s mind:scene -1
 
 # 检测是否已经决定
-execute @s[tag=guxi:enter] ~ ~ ~ scoreboard players set @s mind:enter 1
-## 完成对标签的处理
-tag @s[tag=guxi:enter] remove guxi:enter
-##
-execute @s[scores={mind=3},hasitem=[{location=slot.hotbar,slot=8,item=firework_rocket,quantity=1},{location=slot.weapon.mainhand,slot=0,item=firework_rocket,quantity=1}]] ~ ~ ~ scoreboard players set @s mind:enter 1
+execute @s[tag=event:itemUse] ~ ~ ~ scoreboard players set @s mind:enter 1
 
 #执行想法
 execute @s[scores={mind:scene=-1}] ~ ~ ~ function guxi/mind/play_scene
 
 execute @s[scores={mind:scene=0}] ~ ~ ~ function guxi/mind/mind_default
+execute @s[scores={mind:scene=1}] ~ ~ ~ function guxi/mind/mind_attack
 execute @s[scores={mind:scene=2}] ~ ~ ~ function guxi/mind/mind_shield

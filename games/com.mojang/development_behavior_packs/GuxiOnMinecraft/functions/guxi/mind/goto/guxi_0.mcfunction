@@ -18,4 +18,4 @@ scoreboard players add @s ths:set26950 0
 execute @s[scores={ths:set26950=0}] ~ ~ ~ scoreboard players set @s ths:set26950 1
 
 # 添加设置项ths:enter
-function yoni/mind/settings/enter_delay/default
+function guxi/mind/settings/enter_delay/default
