@@ -1,0 +1,23 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.energy.light": {
+      "loop": true,
+      "bones": {
+        "body": {
+          "rotation": [ "query.camera_rotation(0)", "query.camera_rotation(1)", 0.0 ]
+        }
+      }
+    },
+    "animation.energy.particle": {
+      "loop": true,
+      "animation_length": 0.0,
+      "particle_effects": {
+        "0.0": {
+          "effect": "light",
+          "locator": "lighter"
+        }
+      }
+    }
+  }
+}

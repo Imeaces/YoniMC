@@ -4,8 +4,8 @@
         "name": "YoniMC",
         "description": "是的\n这是一个美丽的世界",
         "uuid": "86e4face-ed0c-4945-bd61-f648424cd056",
-        "version": [0, 1, 1],
-        "min_engine_version": [1, 17, 10]
+        "version": [0, 1, 2],
+        "min_engine_version": [1, 18, 30]
     },
     "modules": [
         {
