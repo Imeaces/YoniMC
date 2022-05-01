@@ -11,7 +11,7 @@
       },
       "scripts": {
         "animate": [
-          "pm"
+          // "pm"
         ]
       }
     },

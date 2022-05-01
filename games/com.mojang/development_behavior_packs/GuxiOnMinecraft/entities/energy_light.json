@@ -6,13 +6,9 @@
       "is_summonable": true,
       "is_spawnable": false,
       "is_experimental": false,
-      "animations": {
-        "pm": "controller.animation.particle.minecraft_endrod"
-      },
+      "animations": {},
       "scripts": {
-        "animate": [
-         //  "pm"
-        ]
+        "animate": []
       }
     },
     "components": {

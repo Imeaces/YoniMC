@@ -184,13 +184,12 @@ events.entityHurt.subscribe(event => {
     return
   }
   if (event.hurtEntity.id == "minecraft:player"){
-    runCmd(`tellraw @s  {"rawtext":[{"text":"受到${event.damage}点伤害"}]}`,event.hurtEntity);
+    runCmd(`tellraw @s {"rawtext":[{"text":"受到${event.damage}点伤害"}]}`,event.hurtEntity);
   }
 });
 
 events.itemUse.subscribe(event => {
   itemUsePlayers.push(event.source);
-  say("使用物品事件被触发",event.source);
 });
 
 events.tick.subscribe(eventToDoSomething => {
