@@ -1,17 +1,10 @@
 import * as mc from "mojang-minecraft";
-const debug = false;
 
-class Data {
-  static database = {};
-  static put(obj,val){
-    this.database[obj] = val;
-  }
-  static get(obj){
-    return this.database[obj];
-  }
-}
+const debug = true;
+
 const world = mc.world;
 const events = mc.world.events;
+
 function dim(dimid){
   switch (dimid) {
     case -1:
@@ -27,6 +20,25 @@ function dim(dimid){
       return world.getDimension("overworld");
   }
 }
+
+function runCmd(cmd = "",obj){
+  let status;
+  if (typeof obj == "undefined"){
+    try {
+      status = dim(0).runCommand(cmd);
+    } catch(err) {
+      status = err;
+    };
+  } else {
+    try {
+      obj.runCommand(cmd);
+    } catch(err) {
+      status = err;
+    };
+  }
+  return status;
+}
+
 function getLoadedEntities(){
   let entities = [];
   for (let dimid of [0,-1,1]){
@@ -36,6 +48,7 @@ function getLoadedEntities(){
   }
   return entities;
 }
+
 function say(msg = "",obj){
   let cmd = "say § " + msg;
   runCmd(cmd,obj);
@@ -55,25 +68,7 @@ function log(msg = "",obj){
   }
   return;
 }
-function runCmd(cmd = "",obj){
-  let status = true;
-  if (typeof obj == "undefined"){
-    try {
-      dim(0).runCommand(cmd);
-    } catch(err) {
-      log(JSON.stringify(err))
-      status = false;
-    };
-  } else {
-    try {
-      obj.runCommand(cmd);
-    } catch(err) {
-      log(JSON.stringify(err))
-      status = false;
-    };
-  }
-  return status;
-}
+
 function scbObjAdd(obj = "",objName = ""){
   if (obj === ''){
     throw "必须为新建记分项指定名称！\nYou must specify a name for new objectives";
@@ -87,4 +82,4 @@ function scbObjRem(obj = ""){
   runCmd(`scoreboard objectives remove "${obj}"`);
 }
 
-export { Data, world, events, dim, getLoadedEntities, log, say, runCmd, scbObjAdd, scbObjRem };
+export { world, events, dim, getLoadedEntities, log, say, runCmd, scbObjAdd, scbObjRem };

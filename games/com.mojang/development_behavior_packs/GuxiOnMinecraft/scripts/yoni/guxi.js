@@ -1,6 +1,45 @@
-import * as chatCommand from "./chatCommand.js";
-import { Data, world, events, dim, getLoadedEntities, say, runCmd, scbObjAdd, scbObjRem, log } from "./lib.js";
+import { Data } from "./Data.js";
+import { ChatCommand as chatCommand } from "./ChatCommand.js";
+import * as yoni from "./yoni-lib.js";
+import { events, world, dim, runCmd, log, say } from "./yoni-lib.js";
 import * as mc from "mojang-minecraft";
+
+chatCommand.registerCommand("suicide", (runner) => {
+  runner.kill();
+});
+
+chatCommand.registerCommand("test", (runner, ...args) => {
+  for (let obj in world){
+    say(mc[obj]);
+  }
+});
+
+chatCommand.registerCommand("run", (runner, params) => {
+  try {
+    runner.runCommand(params.arg);
+  }
+  catch (err){
+    say(err);
+  }
+});
+
+chatCommand.registerCommand("getEntitiesFromViewVector", (runner) => {
+  say("执行getEntitiesFromViewVector");
+  try {
+    say("正在获取");
+    let ents = runner.getEntitiesFromViewVector();
+    for (let e of ents){
+      say("正在转化");
+      let text = JSON.stringify(e);
+      say(`输出：${text}`);
+      say(`输出：${e.id}`);
+    }
+  } catch(err) {
+    say(`[err]${JSON.stringify(err)}`);
+    say("执行getEntitiesFromViewVector失败");
+  }
+  say("执行结束");
+});
 
 events.entityHurt.subscribe(event => {
   if (event.damage == 0){
@@ -25,9 +64,9 @@ events.itemUseOn.subscribe(event => {
 
 events.tick.subscribe(eventToDoSomething => {
   //如果实体tag=test:health，为它设置血量
-  for (let e of getLoadedEntities()){
+  for (let e of yoni.getLoadedEntities()){
     if (e.hasTag("test:health")){
-      scbObjAdd("HEALTH");
+      yoni.scbObjAdd("HEALTH");
       let health = Math.floor(e.getComponent("minecraft:health").current);
       runCmd(`scoreboard players set @s HEALTH ${health}`,e);
     }
