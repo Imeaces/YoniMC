@@ -49,6 +49,7 @@ execute @s[scores={mind:scene=0..,mind:lock=0},rx=-89] ~ ~ ~ scoreboard players 
 
 # 检测是否已经决定
 execute @s[tag=event:itemUse] ~ ~ ~ scoreboard players set @s mind:enter 1
+execute @s[tag=event:itemUseOn] ~ ~ ~ scoreboard players set @s mind:enter 1
 
 #执行想法
 execute @s[scores={mind:scene=-1}] ~ ~ ~ function guxi/mind/play_scene
@@ -56,3 +57,5 @@ execute @s[scores={mind:scene=-1}] ~ ~ ~ function guxi/mind/play_scene
 execute @s[scores={mind:scene=0}] ~ ~ ~ function guxi/mind/mind_default
 execute @s[scores={mind:scene=1}] ~ ~ ~ function guxi/mind/mind_attack
 execute @s[scores={mind:scene=2}] ~ ~ ~ function guxi/mind/mind_shield
+execute @s[scores={mind:scene=3}] ~ ~ ~ function guxi/mind/mind_gliding
+

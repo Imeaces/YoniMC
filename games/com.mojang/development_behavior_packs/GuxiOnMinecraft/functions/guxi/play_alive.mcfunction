@@ -24,6 +24,7 @@ scoreboard players operation @s guxi:v100 = @s guxi:v102
 
 # 能量附加
 function guxi/play_effect
+function guxi/play_profile
 
 scoreboard players add @s guxi:memory 1
 
