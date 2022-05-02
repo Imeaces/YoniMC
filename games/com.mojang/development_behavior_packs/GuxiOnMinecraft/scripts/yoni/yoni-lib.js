@@ -1,6 +1,6 @@
 import * as mc from "mojang-minecraft";
 
-const debug = true;
+const debug = false;
 
 const world = mc.world;
 const events = mc.world.events;

@@ -53,13 +53,17 @@ events.entityHurt.subscribe(event => {
 Data.put("playersUseItem",[]);
 events.itemUse.subscribe(event => {
   log("event.itemUse",event.source);
-  Data.put("playersUseItem",Data.get("playersUseItem").push(event.source));
+  let arr = Data.get("playersUseItem");
+  arr.push(event.source);
+  Data.put("playersUseItem",arr);
 });
 
 Data.put("playersUseItemOn",[]);
 events.itemUseOn.subscribe(event => {
   log("event.itemUseOn",event.source);
-  Data.put("playersUseItemOn",Data.get("playersUseItemOn").push(event.source));
+  let arr = Data.get("playersUseItemOn");
+  arr.push(event.source);
+  Data.put("playersUseItemOn",arr);
 });
 
 events.tick.subscribe(eventToDoSomething => {
