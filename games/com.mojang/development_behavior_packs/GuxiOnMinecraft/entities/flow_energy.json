@@ -16,6 +16,20 @@
       }
     },
     "events": {
+      "guxi:flow_energy_hitten": {
+        "add": {
+          "component_groups": [
+            "be_disappear"
+          ]
+        }
+      }
+    },
+    "component_groups": {
+      "be_disappear": {
+        "minecraft:health": {
+          "max": 0, "value": 0, "min": 0
+        }
+      }
     },
     "components": {
       "minecraft:collision_box": {
@@ -30,7 +44,16 @@
             "catch_fire": false,
             "semi_random_diff_damage": false
           },
-          "remove_on_hit": {}
+          "definition_event": {
+            "affect_projectile": false,
+            "affect_shooter": true,
+            "affect_target": false,
+            "affect_splash_area": false,
+            "event_trigger": {
+              "event": "guxi:flow_energy_hitten",
+              "target": "self"
+            }
+          }
         },
         // "offset": [0, 0, 0],
         "knockback": false,

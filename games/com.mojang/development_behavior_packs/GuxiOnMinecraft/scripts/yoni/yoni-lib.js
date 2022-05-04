@@ -1,6 +1,6 @@
 import * as mc from "mojang-minecraft";
 
-const debug = false;
+const debug = true;
 
 const world = mc.world;
 const events = mc.world.events;
@@ -50,13 +50,18 @@ function getLoadedEntities(){
 }
 
 function say(msg = "",obj){
+  if (typeof msg == "object")
+    msg = JSON.stringify(msg).replace(/\[|\]/g, "");
   let cmd = "say § " + msg;
   runCmd(cmd,obj);
 }
-function log(msg = "",obj){
+
+function log(msg,obj){
   if (!debug)
     return
-  let cmd = "say § [log]" + msg;
+  if (typeof msg == "object")
+    msg = JSON.stringify(msg).replace(/\[|\]/g, "");
+  let cmd = "say § [debug]" + msg;
   if (typeof obj == "undefined"){
     dim(0).runCommand(cmd);
   } else {
@@ -67,6 +72,20 @@ function log(msg = "",obj){
     };
   }
   return;
+}
+function getEntityLocaleName(entity){
+  let name = entity.nameTag;
+  let id = entity.id;
+  if (id == "minecraft:player"){
+    name = entity.name;
+  } else if (name == ""){
+    if (id.startsWith("minecraft:")){
+      name = "%entity."+ id.slice(10) +".name";
+    } else {
+      name = "%entity."+ id +".name";
+    }
+  }
+  return name;
 }
 
 function scbObjAdd(obj = "",objName = ""){
@@ -82,4 +101,4 @@ function scbObjRem(obj = ""){
   runCmd(`scoreboard objectives remove "${obj}"`);
 }
 
-export { world, events, dim, getLoadedEntities, log, say, runCmd, scbObjAdd, scbObjRem };
+export { getEntityLocaleName, world, events, dim, getLoadedEntities, log, say, runCmd, scbObjAdd, scbObjRem };

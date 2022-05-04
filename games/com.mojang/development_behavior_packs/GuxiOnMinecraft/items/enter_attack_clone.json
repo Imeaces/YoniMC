@@ -2,7 +2,7 @@
   "format_version": "1.16.100",
   "minecraft:item": {
     "description": {
-      "identifier": "guxi:enter_attack",
+      "identifier": "guxi:enter_attack_clone",
       "category": "items"
     },
     "components": {
@@ -20,7 +20,7 @@
     "events": {
       "guxi:enter_attack": {
         "shoot": {
-          "projectile": "guxi:flow_energy",
+          "projectile": "minecraft:arrow",
           "launch_power": 1000
         }
       }

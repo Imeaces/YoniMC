@@ -13,6 +13,8 @@ execute @s[scores={guxi:ti1=0}] ~ ~ ~ effect @s slowness 4 1 true
 execute @s[scores={guxi:ti1=0}] ~ ~ ~ effect @s mining_fatigue 4 3 true
 # 维持能量秩序的消耗 # 即将弃用
 scoreboard players remove @s guxi:energy 14
+# 固有免疫
+execute @s[scores={guxi:ti1=0}] ~ ~ ~ effect @s darkness 0
 
 # 当没有足够的能量时（order0）
 execute @s[scores={guxi:ti1=0}] ~ ~ ~ execute @s[scores={guxi:order=-1}] ~ ~ ~ effect @s hunger 4 255 true
