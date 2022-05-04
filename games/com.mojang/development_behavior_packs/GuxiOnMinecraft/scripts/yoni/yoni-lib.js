@@ -74,16 +74,26 @@ function log(msg,obj){
   return;
 }
 function getEntityLocaleName(entity){
-  let name = entity.nameTag;
-  let id = entity.id;
-  if (id == "minecraft:player"){
-    name = entity.name;
-  } else if (name == ""){
-    if (id.startsWith("minecraft:")){
-      name = "%entity."+ id.slice(10) +".name";
-    } else {
-      name = "%entity."+ id +".name";
+  let id = "";
+  let name = "";
+  try {
+    if (entity.nameTag){
+      name = entity.nameTag;
     }
+    if (entity.id){
+      id = entity.id;
+    }
+    if (id == "minecraft:player"){
+      name = entity.name;
+    } else if (name == ""){
+      if (id.startsWith("minecraft:")){
+        name = "entity."+ id.slice(10) +".name";
+      } else {
+        name = "entity."+ id +".name";
+      }
+    }
+  } catch {
+    return "未知生物";
   }
   return name;
 }

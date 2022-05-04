@@ -1,12 +1,27 @@
 import { world } from "mojang-minecraft";
-import { log as LOG } from "./yoni-lib.js";
+import { runCmd, log as LOG, say as SAY } from "./yoni-lib.js";
 
 class ChatCommand {
   static prefix = "!";
   static commands = {};
   static say(msg = "", obj){
-    let cmd = "say § [" + this.prefix + "]" + msg + " ";
-    world.getDimension("overworld").runCommand(cmd);
+    if (typeof msg == "object")
+      msg = JSON.stringify(msg).replace(/\[|\]/g, "");
+    world.getDimension("overworld").runCommand(
+      "tellraw @a " + JSON.stringify(
+        {
+          rawtext: [
+            {
+              translate: "[%%s] %%s",
+              with: [
+                this.prefix,
+                msg
+              ]
+            }
+          ]
+        }
+      )
+    );
   }
   static beforeChatEvent(eventData){
     const message = eventData.message;
@@ -41,7 +56,11 @@ class ChatCommand {
         this.say(err);
       }
     } else {
-      this.say("未知的命令:" + params.command);
+      try {
+        this.say(runner.runCommand(params.command));
+      } catch (err){
+        this.say(err);
+      }
     }
   }
   static getParameters(command){

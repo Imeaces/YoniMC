@@ -7,19 +7,25 @@
       "is_summonable": true,
       "is_experimental": false,
       "animations": {
-        "pm": "controller.animation.particle.minecraft_endrod"
+        "pm": "controller.animation.guxi.flow_energy"
       },
       "scripts": {
         "animate": [
-          // "pm"
         ]
       }
     },
     "events": {
-      "guxi:flow_energy_hitten": {
+      "guxi:flow_energy_disappear": {
         "add": {
           "component_groups": [
             "be_disappear"
+          ]
+        }
+      },
+      "guxi:flow_energy_hitten": {
+        "add": {
+          "component_groups": [
+            "hitten"
           ]
         }
       }
@@ -28,6 +34,11 @@
       "be_disappear": {
         "minecraft:health": {
           "max": 0, "value": 0, "min": 0
+        }
+      },
+      "hitten": {
+        "minecraft:skin_id": {
+          "value": 1
         }
       }
     },
@@ -44,20 +55,11 @@
             "catch_fire": false,
             "semi_random_diff_damage": false
           },
-          "definition_event": {
-            "affect_projectile": false,
-            "affect_shooter": true,
-            "affect_target": false,
-            "affect_splash_area": false,
-            "event_trigger": {
-              "event": "guxi:flow_energy_hitten",
-              "target": "self"
-            }
-          }
+          "remove_on_hit": {}
         },
         // "offset": [0, 0, 0],
         "knockback": false,
-        "power": 1.5,
+        "power": 1,
         "anchor": 1,
         "gravity": 0,
         "inertia": 1, //速度保持率

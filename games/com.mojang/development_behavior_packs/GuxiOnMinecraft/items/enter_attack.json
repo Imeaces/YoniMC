@@ -21,7 +21,7 @@
       "guxi:enter_attack": {
         "shoot": {
           "projectile": "guxi:flow_energy",
-          "launch_power": 1000
+          "launch_power": 2
         }
       }
     }

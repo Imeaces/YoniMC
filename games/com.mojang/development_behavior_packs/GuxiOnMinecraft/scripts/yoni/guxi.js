@@ -10,10 +10,41 @@ chatCommand.registerCommand("suicide", (runner) => {
 });
 
 chatCommand.registerCommand("test", (runner, ...args) => {
+Callback.addCallback("tick", () => {
+//检测实体是否消失
+  let loadedEntities = yoni.getLoadedEntities();
+  let disappearedEntities = [];
+  let lastTickLoadedEntities = Data.get("loadedEntities");
+  Data.put("loadedEntities", loadedEntities);
+  for (let lte of lastTickLoadedEntities){
+    let isDisappear = true;
+    for (let te of loadedEntities){
+      if (te === lte){
+        isDisappear = false;
+        break;
+      }
+    }
+    if (isDisappear){
+      runCmd("tellraw @a " + JSON.stringify({rawtext:[{translate:yoni.getEntityLocaleName(lte)},{text:"消失了"}]}));
+      runCmd("tellraw @a " + JSON.stringify({rawtext:[{text:"位置："+Math.floor(lte.location.x)+", "+Math.floor(lte.location.y)+", "+Math.floor(lte.location.z)}]}));
+    }
+  }
+});
+
   say(runner.getComponents());
+chatCommand.registerCommand("getThis", () => {
+  for (let c in this){
+    say(c)
+  }
+});
 });
 
 chatCommand.registerCommand("back", (runner, ...args) => {
+  let p = Data.get("deadPoint")
+  if (p[runner.name]){
+    let pos = p[runner.name];
+    runner.runCommand(`tp ${pos[0]} ${pos[1]} ${pos[2]}`);
+  }
 });
 
 chatCommand.registerCommand("clearScreen", (runner, ...args) => {
@@ -31,12 +62,7 @@ chatCommand.registerCommand("rmscb", (runner, ...args) => {
 chatCommand.unregisterCommand("rmscb");
 */
 chatCommand.registerCommand("run", (runner, params) => {
-  try {
-    say(runner.runCommand(params.arg));
-  }
-  catch (err){
-    say(err);
-  }
+  say(runCmd(params.arg));
 });
 /*
 chatCommand.registerCommand("getEntitiesFromViewVector", (runner) => {
@@ -57,6 +83,7 @@ chatCommand.registerCommand("getEntitiesFromViewVector", (runner) => {
   say("执行结束");
 });
 */
+/*
 Callback.addCallback("entityHurt", (event) => {
   try {
     if (event.damage == 0){
@@ -71,7 +98,7 @@ Callback.addCallback("entityHurt", (event) => {
   } catch {}
 });
 
-
+*/
 Callback.addCallback("entityHit", (event) => {
   try{
     if (!event.hitEntity)
@@ -85,8 +112,8 @@ Callback.addCallback("entityHit", (event) => {
     }
   } catch {}
 });
-chatCommand.unregisterCommand("test");
-chatCommand.registerCommand("test", () => {
+
+chatCommand.registerCommand("test2", () => {
   if (Data.get("testFuncID")){
     say("remove test");
     Callback.removeCallback(Data.get("testFuncID"));
@@ -153,6 +180,14 @@ Callback.addCallback("tick", () => {
       hasDead = false;
     
     if (dead == true && hasDead == false){ //如果死了却未标记
+      if (!Data.get("deadPoint")){
+        Data.put("deadPoint",{})
+      }
+      let a = Data.get("deadPoint");
+      a[pl.name] = [Math.floor(pl.location.x),Math.floor(pl.location.y),Math.floor(pl.location.z)];
+      Data.put("deadPoint",a);
+      say("使用!back返回死亡点:"+a[pl.name]);
+
       deadPlayers.push(pl.name);
       Data.put("playersDead",deadPlayers);
     } else if (dead == false && hasDead == true){ //标记为死了却活着
@@ -164,21 +199,9 @@ Callback.addCallback("tick", () => {
   }
 });
 
-Callback.addCallback("tick", () => {
-//检测实体
-
-  for (let e of yoni.getLoadedEntities()){
-    try {
-      if (e.getComponent("minecraft:health").current == 0)
-        say(yoni.getEntityLocaleName(e) + "死了")
-    } catch {
-      continue
-    }
-  }
-});
 
 Callback.addCallback("tick", () => {
-  //检测实体血量
+  //在记分板上实体血量
   try {
     for (let e of yoni.getLoadedEntities()){
       if (e.hasTag("test:health")){
@@ -224,3 +247,35 @@ getGuxis(){
     if (
   }
 }*/
+
+Callback.addCallback("projectileHit", (event) => {
+  try {
+  if (event.blockHit)
+    runCmd(
+      "tellraw @a " + JSON.stringify({
+        rawtext: [
+          {text: "["},
+          {translate:yoni.getEntityLocaleName(event.projectile)},
+          {text: "] 打中了方块"},
+          {text:event.blockHit.block.id},
+          {text:"("+event.blockHit.block.type.id+")"},
+          {text:"，位置："+Math.floor(event.location.x)+", "+Math.floor(event.location.y)+", "+Math.floor(event.location.z)}
+        ]
+      })
+    );
+  } catch {}
+  try{
+  if (event.entityHit)
+    runCmd(
+      "tellraw @a " + JSON.stringify({
+        rawtext: [
+          {text: "["},
+          {translate:yoni.getEntityLocaleName(event.projectile)},
+          {text: "] 打中了"},
+          {translate:yoni.getEntityLocaleName(event.entityHit.entity)},
+          {text:"，位置："+Math.floor(event.location.x)+", "+Math.floor(event.location.y)+", "+Math.floor(event.location.z)}
+        ]
+      })
+    );
+  } catch {}
+});
