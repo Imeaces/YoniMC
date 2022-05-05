@@ -1,3 +1,6 @@
 [submodule "lib/LokiJS"]
-	path = lib/LokiJS
+	path = scripts/lib/LokiJS
 	url = https://github.com/techfort/LokiJS.git
+[submodule "lib/scoreboardData"]
+	path = scripts/lib/scoreboardData
+	url = https://github.com/SuperFluffyGame/scoreboardData.git
