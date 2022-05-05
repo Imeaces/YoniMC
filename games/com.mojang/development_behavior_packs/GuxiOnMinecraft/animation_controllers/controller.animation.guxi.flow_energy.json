@@ -13,7 +13,6 @@
           "transitions": [
           ],
           "on_entry": [
-            "/say 打到东西了",
             "/tp @s ~ ~-1024 ~",
             "/kill @s"
           ]

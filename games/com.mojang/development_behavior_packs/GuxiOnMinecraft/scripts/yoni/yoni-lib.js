@@ -73,6 +73,7 @@ function log(msg,obj){
   }
   return;
 }
+
 function getEntityLocaleName(entity){
   let id = "";
   let name = "";

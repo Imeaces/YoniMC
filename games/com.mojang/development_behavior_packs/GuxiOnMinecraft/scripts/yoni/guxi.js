@@ -279,3 +279,12 @@ Callback.addCallback("projectileHit", (event) => {
     );
   } catch {}
 });
+
+Callback.addCallback("projectileHit", (event) => {
+  try{
+    if (event.entityHit){
+      let { dimension, location } = event;
+      dimension.spawnEntity("guxi:energy", location);
+    }
+  } catch {}
+});

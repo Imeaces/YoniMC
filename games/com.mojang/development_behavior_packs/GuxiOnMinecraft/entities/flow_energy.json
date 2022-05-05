@@ -11,6 +11,7 @@
       },
       "scripts": {
         "animate": [
+          "pm"
         ]
       }
     },
@@ -55,7 +56,18 @@
             "catch_fire": false,
             "semi_random_diff_damage": false
           },
-          "remove_on_hit": {}
+          "definition_event": {
+            "affect_projectile": true,
+            "affect_shooter": false,
+            "affect_target": false,
+            "affect_splash_area": false,
+            "event_trigger": 
+              {
+                "event": "guxi:flow_energy_hitten",
+                "target": "self"
+              }
+            
+          }
         },
         // "offset": [0, 0, 0],
         "knockback": false,
