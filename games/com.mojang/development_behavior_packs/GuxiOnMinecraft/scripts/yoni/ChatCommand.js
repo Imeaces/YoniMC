@@ -49,29 +49,42 @@ class ChatCommand {
     let arg = "";
     let args = [];
     if (typeof command != "undefined" && command != "" && command != null){
-      command = command.toString();
-      let split = 0;
-      split = command.indexOf(" ");
-      if (split == -1){
-        cmd = command;
-      } else {
-        cmd = command.slice(0,split);
-        arg = command.slice(split+1);
-        split = 0;
-        while (true){
-          let context = "";
-          let index = arg.indexOf(" ",split+1);
-          if (index == -1){
-            context = arg.slice(split+1);
+      command = "" + command;
+      let mFlag = 0;      // spilt count flag
+      let sFlag = false;   // spilt char flag
+      let lFlag = false;   // last char flag
+      let vFlag = 0;      // valid text count flag
+      let splitText = ""; // current spilt str
+      let lastSplitText = ""; // last spilt str
+      for (let idx = 0; idx < command.length; idx++){
+        let char = command[idx];
+        sFlag = false;
+        if (idx+1 == command.length){
+          lFlag = true;
+        }
+        if (char == " "){
+          mFlag ++;
+          sFlag = true;
+          lastSplitText = splitText;
+          if (lastSplitText != ""){
+            vFlag ++;
+          }
+          splitText = "";
+        } else {
+          splitText += char;
+        }
+        if (lFlag == true){
+          if (mFlag == 0){
+            cmd = splitText;
           } else {
-            context = arg.slice(split+1,index);
+            args.push(splitText);
           }
-          if (context.length != 0){
-            args.push(context);
-          }
-          split = arg.indexOf(" ",split+1);
-          if (split == -1){
-            break;
+        } else if (sFlag == true){
+          if (mFlag == 1){
+            cmd = lastSplitText;
+            arg = command.slice(idx+1);
+          } else if (lastSplitText != ""){
+            args.push(lastSplitText);
           }
         }
       }

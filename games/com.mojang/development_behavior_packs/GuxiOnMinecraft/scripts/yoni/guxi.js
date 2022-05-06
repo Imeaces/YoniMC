@@ -8,10 +8,20 @@ import { Callback } from "../lib/Callback-lib.js";
 chatCommand.registerCommand("suicide", (runner) => {
   runner.kill();
 });
-chatCommand.registerCommand("test7", (runner, ...args) => {
+chatCommand.registerCommand("boom", (runner, params) => {
+  let radius = 4;
+  let location = runner.location;
+  let opts = new mc.ExplosionOptions();
+  opts.breaksBlocks = true;
+  //opts.source = runner;
+  say(params)
+  say("范围"+params.args[0]);
+  radius = Number(params.args[0]);
+  runner.dimension.createExplosion(location, radius, opts);
+  say("boom!", runner);
+  return;
+});
 
-say("test");
-})
 chatCommand.registerCommand("test", (runner, ...args) => {
 Callback.addCallback("tick", () => {
 //检测实体是否消失

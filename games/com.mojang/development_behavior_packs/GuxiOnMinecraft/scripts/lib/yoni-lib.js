@@ -32,18 +32,22 @@ function log(msg, level = defaultLogLevel){
   if (currentLv < lv){
     return;
   }
-  
+  let objmsg = [];
   if (typeof msg == "object"){
-    msg = JSON.stringify(msg);
+    objmsg = [
+      { text: "\n" },
+      { text: JSON.stringify(msg) }
+    ];
   }
   let rawtext = [
     {
-      translate: "[%%s:%%s] %%s",
+      translate: "[%%s:%%s] %%s%%s",
       with: {
         rawtext: [
           { translate: "commands.origin.script" },
           { text: logLevels[lv] },
-          { text: msg }
+          { text: ""+msg },
+          { rawtext: objmsg }
         ]
       }
     }
@@ -51,7 +55,7 @@ function log(msg, level = defaultLogLevel){
   
   try {
     world.getDimension("overworld").runCommand("tellraw @a[tag=yoni:log] " + JSON.stringify({rawtext}));
-  } catch{}
+  } catch {}
   return;
 }
 
@@ -99,34 +103,42 @@ function getLoadedEntities(){
 }
 
 function say(msg = "",obj){
-  if (typeof msg == "object"){
-    msg = JSON.stringify(msg);
-  }
   let rawtext = [
     {
       translate: "chat.type.announcement",
       with: {
         rawtext: [
           { translate: "commands.origin.script" },
-          { text: msg }
+          { text: ""+msg }
         ]
       }
     }
   ]
 
+  let status;
   if (typeof obj == "object"){
     try {
-      obj.runCommand("tellraw @a " + JSON.stringify({rawtext}));
+      status = obj.runCommand("tellraw @a " + JSON.stringify({rawtext}));
     } catch(err){
       log(err, "ERROR");
       return err;
     }
+    try {
+      if (typeof msg == "object")
+        obj.runCommand("tellraw @a " + JSON.stringify({rawtext:[{text:JSON.stringify(msg)}]}));
+    } catch(err){
+      log(err, "WARN");
+    }
+    return status;
   } else if (!text.isNullString(obj)){
-    rawtext[0].with.rawtext[0] = { text: obj };
+    rawtext[0].with.rawtext[0] = { text: ""+obj };
   }
   try {
-    dim(0).runCommand("tellraw @a " + JSON.stringify({rawtext}));
+    status = dim(0).runCommand("tellraw @a " + JSON.stringify({rawtext}));
+    if (typeof msg == "object")
+      dim(0).runCommand("tellraw @a " + JSON.stringify({rawtext:[{text:JSON.stringify(msg)}]}));
   } catch {}
+  return status;
 }
 
 function getEntityLocaleName(entity){
