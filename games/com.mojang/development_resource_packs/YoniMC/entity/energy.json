@@ -1,0 +1,54 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "guxi:energy",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/guxi/view/gold"
+      },
+      "geometry": {
+        "default": "geometry.energy_light"
+      },
+      "particle_effects": {
+        "light": "minecraft:endrod"
+      },
+      "render_controllers": [ "controller.render.flow_energy" ],
+      "animations": {
+        "face_player": "animation.actor.billboard",
+        "particle": "animation.energy.particle"
+      },
+      "scripts": {
+        "scale": "v.show_scale",
+        "pre_animation": [
+          "v.show_scale = 0;",
+//          "v.show_scale = query.camera_rotation(0);",
+          "(for_each(v.pl, query.get_nearby_entities(15, 'minecraft:player'), { (v.pl->query.variant == 2695) ? { v.show_scale = (v.pl->query.target_x_rotation - query.camera_rotation(0) < 0.1) ? 0.6 : 0;};}));"
+          //"(for_each(v.pl, query.get_nearby_entities(15, 'minecraft:player'), { v.show_scale = (v.pl->query.skin_id == 2695) ? 3 : 1}));"
+        ],
+        "animate": [
+          "face_player",
+          "particle"
+        ]
+      }
+    }
+  }
+} 
+/* scale code
+(for_each(v.pl, query.get_nearby_entities(10, 'minecraft:player'), {
+  (v.pl->variable.player_x_rotation == query.camera_rotation(0);) ? {
+    (v.pl->variable.player_y_rotation == query.camera_rotation(1);) ? {
+      return 0.4;
+    } : {
+      continue;
+    };
+  }: {
+    continue;
+  };
+};); return 2;)
+*/
+/*
+          "(for_each(v.pl, query.get_nearby_entities(10, 'minecraft:player'), {(v.pl->query.target_x_rotation + query.camera_rotation(0) < 1;) ? {v.show_scale = 0.4; break;}: {continue;};}););"
+*/

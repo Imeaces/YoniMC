@@ -5,44 +5,10 @@
       "identifier": "guxi:flow_energy",
       "is_spawnable": false,
       "is_summonable": true,
-      "is_experimental": false,
-      "animations": {
-        "pm": "controller.animation.guxi.flow_energy"
-      },
-      "scripts": {
-        "animate": [
-          "pm"
-        ]
-      }
+      "is_experimental": false
     },
-    "events": {
-      "guxi:flow_energy_disappear": {
-        "add": {
-          "component_groups": [
-            "be_disappear"
-          ]
-        }
-      },
-      "guxi:flow_energy_hitten": {
-        "add": {
-          "component_groups": [
-            "hitten"
-          ]
-        }
-      }
-    },
-    "component_groups": {
-      "be_disappear": {
-        "minecraft:health": {
-          "max": 0, "value": 0, "min": 0
-        }
-      },
-      "hitten": {
-        "minecraft:skin_id": {
-          "value": 1
-        }
-      }
-    },
+    "events": {},
+    "component_groups": {},
     "components": {
       "minecraft:collision_box": {
         "width": 0.1,
@@ -55,18 +21,6 @@
             "knockback": false,
             "catch_fire": false,
             "semi_random_diff_damage": false
-          },
-          "definition_event": {
-            "affect_projectile": true,
-            "affect_shooter": false,
-            "affect_target": false,
-            "affect_splash_area": false,
-            "event_trigger": 
-              {
-                "event": "guxi:flow_energy_hitten",
-                "target": "self"
-              }
-            
           }
         },
         // "offset": [0, 0, 0],

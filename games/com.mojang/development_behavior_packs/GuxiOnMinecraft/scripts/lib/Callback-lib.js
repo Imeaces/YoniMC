@@ -1,8 +1,7 @@
 import {
   events,
-  log as LOG,
-  say
-} from "./yoni-lib.js";
+  log as LOG
+} from "../lib/yoni-lib.js";
 
 class Callback {
   static functions = {};
@@ -10,6 +9,7 @@ class Callback {
   
   static addCallback(caller, func, ...args) {
     if (!events[caller]){
+      LOG(new ReferenceError("不存在事件" + caller), "ERROR");
       throw new ReferenceError("不存在事件" + caller);
     }
     if (typeof func == "function"){
@@ -19,6 +19,7 @@ class Callback {
         return Callback.invokeCallback(id, eventData);
       }, ...args);
     } else {
+      LOG(new TypeError("回调需要是一个函数"), "ERROR");
       throw new TypeError("回调需要是一个函数");
     }
     LOG("为"+caller+"添加了回调，ID: "+this.id);
@@ -37,7 +38,7 @@ class Callback {
       try {
         return callFunction(eventData, ...args);
       } catch(err){
-        say(`[Callback:${id}][err]${err}`);
+        LOG(`[Callback:${id}]${err}`, "ERROR");
       }
     }
     return;

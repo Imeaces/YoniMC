@@ -5,7 +5,7 @@
     "description": "咕西",
     "uuid": "36dba2f9-9f68-439e-b290-080296aa5729",
     "version": [0, 1, 0],
-    "min_engine_version": [1, 18, 10]
+    "min_engine_version": [1, 19, 0]
   },
   "modules": [
     {
@@ -16,9 +16,10 @@
     },
     {
       "description": "guxi",
-      "type": "javascript",
+      "type": "script",
+      "language": "javascript",
       "uuid": "7537ab86-a509-4029-87bb-2a63e817e798",
-      "version": [0, 0, 1],
+      "version": [0, 1, 0],
       "entry": "scripts/yoni/guxi.js"
     }
   ],

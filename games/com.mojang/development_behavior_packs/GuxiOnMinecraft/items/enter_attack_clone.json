@@ -2,7 +2,7 @@
   "format_version": "1.16.100",
   "minecraft:item": {
     "description": {
-      "identifier": "guxi:enter_attack_clone",
+      "identifier": "guxi:enter_test",
       "category": "items"
     },
     "components": {

@@ -1,14 +1,17 @@
-import { Data } from "./Data.js";
+import { Data } from "../lib/Data.js";
 import { ChatCommand as chatCommand } from "./ChatCommand.js";
-import * as yoni from "./yoni-lib.js";
-import { events, world, dim, runCmd, log, say } from "./yoni-lib.js";
+import * as yoni from "../lib/yoni-lib.js";
+import { events, world, dim, runCmd, log, say } from "../lib/yoni-lib.js";
 import * as mc from "mojang-minecraft";
-import { Callback } from "./Callback-lib.js";
+import { Callback } from "../lib/Callback-lib.js";
 
 chatCommand.registerCommand("suicide", (runner) => {
   runner.kill();
 });
+chatCommand.registerCommand("test7", (runner, ...args) => {
 
+say("test");
+})
 chatCommand.registerCommand("test", (runner, ...args) => {
 Callback.addCallback("tick", () => {
 //检测实体是否消失
@@ -282,9 +285,12 @@ Callback.addCallback("projectileHit", (event) => {
 
 Callback.addCallback("projectileHit", (event) => {
   try{
-    if (event.entityHit){
-      let { dimension, location } = event;
-      dimension.spawnEntity("guxi:energy", location);
+    if (event.projectile.id == "guxi:flow_energy"){
+      let { dimension, location, projectile } = event;
+      if (event.entityHit)
+        dimension.spawnEntity("guxi:energy", location);
+      runCmd("tp ~ ~-32768 ~", projectile);
+      runCmd("kill", projectile);
     }
   } catch {}
 });

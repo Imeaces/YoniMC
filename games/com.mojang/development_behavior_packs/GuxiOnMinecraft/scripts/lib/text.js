@@ -83,6 +83,15 @@ encodeUtf8(str){
   }
 }
 */
+function isNullString(str){
+  if (typeof str == "undefined"){
+    return true;
+  } else if (str + "" === ""){
+    return true;
+  } else {
+    return false;
+  }
+}
 /*
 //byteLength代码来源 http://c.biancheng.net/view/5547.html
 //经过修改
@@ -100,4 +109,4 @@ String.prototype.byteLength = function() {  //获取字符串的字节数，扩�
     return byteLength;
 }
 */
-export { string2Byte, encodeUnicode };
+export { string2Byte, encodeUnicode, isNullString };

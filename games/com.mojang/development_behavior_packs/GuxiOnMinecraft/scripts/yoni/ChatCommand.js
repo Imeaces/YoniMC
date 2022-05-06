@@ -1,28 +1,9 @@
 import { world } from "mojang-minecraft";
-import { runCmd, log as LOG, say as SAY } from "./yoni-lib.js";
+import { runCmd, log as LOG } from "../lib/yoni-lib.js";
 
 class ChatCommand {
   static prefix = "!";
   static commands = {};
-  static say(msg = "", obj){
-    if (typeof msg == "object")
-      msg = JSON.stringify(msg).replace(/\[|\]/g, "");
-    world.getDimension("overworld").runCommand(
-      "tellraw @a " + JSON.stringify(
-        {
-          rawtext: [
-            {
-              translate: "[%%s] %%s",
-              with: [
-                this.prefix,
-                msg
-              ]
-            }
-          ]
-        }
-      )
-    );
-  }
   static beforeChatEvent(eventData){
     const message = eventData.message;
     if (!message.startsWith(this.prefix))
@@ -34,7 +15,7 @@ class ChatCommand {
       const params = this.getParameters(command);
       this.invokeCommand(eventData.sender, params);
     } catch(err){
-      this.say(`[err]${err}`);
+      LOG(`[${this.prefix}]${err}`, "ERROR");
     }
     LOG("处理完毕");
     eventData.cancel = true;
@@ -53,13 +34,13 @@ class ChatCommand {
       try {
         this.commands[params.cmd](runner, params);
       } catch(err){
-        this.say(err);
+        LOG(err,"WARN");
       }
     } else {
       try {
-        this.say(runner.runCommand(params.command));
+        LOG(runner.runCommand(params.command));
       } catch (err){
-        this.say(err);
+        LOG(err,"WARN");
       }
     }
   }
