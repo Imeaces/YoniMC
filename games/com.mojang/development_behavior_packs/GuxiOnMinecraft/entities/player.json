@@ -321,6 +321,7 @@
         }
       },
       "yoni:species_guxi": {
+        "minecraft:variant": { "value": 2695 },
         "minecraft:type_family": { "family": [ "guxi", "mob", "yoni", "energy_entity" ] },
         "minecraft:health": { "max": 60, "value": 60, "min": 0 },
         "minecraft:attack": { "damage": 0 },
@@ -370,6 +371,7 @@
         }
       },
       "minecraft:species_player":{
+        "minecraft:variant": { "value": 42 },
         "minecraft:health": { "max": 20, "value": 20, "min": 0 },
         "minecraft:experience_reward": {
           "on_death": "Math.Min(query.player_level * 7, 100)"

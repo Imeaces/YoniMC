@@ -25,3 +25,5 @@ spirit 精神影响
 
 意识控制条目
 （待编写）
+
+query.get_nearby_entities 获取到的实体没有顺序
