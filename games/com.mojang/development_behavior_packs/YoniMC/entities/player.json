@@ -8,35 +8,18 @@
       "is_experimental": false,
       "animations": { // 定义可以运行的动画控制器
         // 用于yoni物种系统的动画控制器
-        "species": "controller.animation.yoni.species",
-        "species.yoni_guxi": "controller.animation.yoni.species.guxi",
+        "species.yoni_guxi": "controller.animation.guxi.func",
         // 实体状态
         "entity.status_alive": "controller.animation.entity.status.alive",
         "entity.status.is_gliding": "controller.animation.entity.status.is_gliding",
-        "entity.status_attack": "controller.animation.entity.status.attack_time",
-        // 获取生命值
-        "op.health0": "controller.animation.entity.health_0",
-        "op.health1": "controller.animation.entity.health_1",
-        "op.health2": "controller.animation.entity.health_2",
-        "op.health3": "controller.animation.entity.health_3",
-        "op.health4": "controller.animation.entity.health_4",
-        "op.health5": "controller.animation.entity.health_5",
-        "op.health6": "controller.animation.entity.health_6"
+        "entity.status_attack": "controller.animation.entity.status.attack_time"
       },
       "scripts": {
         "animate": [ //运行动画控制器
-          "species",
           "species.yoni_guxi",
           "entity.status_alive",
           "entity.status.is_gliding",
-          "entity.status_attack",
-          "op.health0",
-          "op.health1",
-          "op.health2",
-          "op.health3",
-          "op.health4",
-          "op.health5",
-          "op.health6"
+          "entity.status_attack"
         ]
       }
     },
@@ -71,200 +54,236 @@
           "component_groups": [ "minecraft:raid_trigger" ]
         }
       },
-      "minecraft:being_player": {
-        "add": { "component_groups": [ "minecraft:species_player" ] }
+      "species:being_human": {
+        "add": { "component_groups": [ "species:minecraft_player" ] }
       },
-      "minecraft:perish_player": {
-        "remove": { "component_groups": [ "minecraft:species_player" ] }
+      "species:perish_human": {
+        "remove": { "component_groups": [ "species:minecraft_player" ] }
       },
-      "yoni:being_guxi": {
-        "add": { "component_groups": [ "yoni:species_guxi" ] }
+      "species:being_guxi": {
+        "add": { "component_groups": [ "species:yoni_guxi" ] }
       },
-      "yoni:perish_guxi": {
+      "species:perish_guxi": {
         "remove": { "component_groups": [
-          "yoni:guxi_resistance_0",
-          "yoni:guxi_resistance_1",
-          "yoni:guxi_resistance_2",
-          "yoni:guxi_resistance_3",
-          "yoni:guxi_resistance_4",
-          "yoni:species_guxi"
+          "guxi:resistance_0",
+          "guxi:resistance_1",
+          "guxi:resistance_2",
+          "guxi:resistance_3",
+          "guxi:resistance_4",
+          "species:yoni_guxi"
         ]}
       },
-      "guxi:resistance_0": {
-        "add": { "component_groups": [ "guxi:resistance_0" ] }
+      "guxi:attach_resistance": {
+        "add": { "component_groups": [ "guxi:attach_resistance" ] }
       },
-      "guxi:resistance_1": {
-        "add": { "component_groups": [ "guxi:resistance_1" ] }
+      "guxi:detach_resistance": {
+        "add": { "component_groups": [ "guxi:none_resistance" ] }
       },
-      "guxi:resistance_2": {
-        "add": { "component_groups": [ "guxi:resistance_2" ] }
+      "guxi:on_fetch_energy": {
+        //由gametest处理
       },
-      "guxi:resistance_3": {
-        "add": { "component_groups": [ "guxi:resistance_3" ] }
+      "guxi:lower_speed": {
+        //由gametest处理
       },
-      "guxi:resistance_4": {
-        "add": { "component_groups": [ "guxi:resistance_4" ] }
+      "guxi:adding_energy": {
+        //由gametest处理
+      },
+      "guxi:faster_dropping_energy": {
+        //由gametest处理
+      },
+      "guxi:energy_disorder": {
+        "add": {
+          "component_groups": "guxi:energy_disorder"
+        }
       }
     },
 
     "component_groups": {
-      "guxi:resistance_0": {
+      "guxi:energy_disorder": {
+        "minecraft:spell_effects": {
+          "add_effects": [
+            {
+              "effect": "nausea",
+              "duration": 14,
+              "visible": false
+            },
+            {
+              "effect": "weakness",
+              "duration": 1,
+              "amplifier": 5,
+              "visible": false
+            }
+          ]
+        }
+      },
+      "guxi:attach_resistance": {
+      //使用能量附加的盾时的防御
+        "minecraft:damage_sensor": {
+          "triggers": [
+            //由附着的能量提供的效果
+            { //高处掉落缓冲
+              "cause": "fall",
+              "on_damage": {
+                "event": "guxi:lower_speed"
+              },
+              "deals_damage": false
+            },
+            {
+              "cause": "fly_into_wall",
+              "on_damage": {
+                "event": "guxi:lower_speed"
+              },
+              "deals_damage": false
+            },
+            //爆炸带来剧烈的能量变化，会扰动咕西自身的能量
+            {
+              "cause": "block_explosion",
+              "on_damage": {
+                "event": "guxi:energy_disorder"
+              },
+              "damage_multiplier": 0.35
+            },
+            {
+              "cause": "entity_explosion",
+              "on_damage": {
+                "event": "guxi:energy_disorder"
+              },
+              "damage_multiplier": 0.35
+            },
+            { "cause": "contact",           "damage_multiplier": 0.1 },
+            { "cause": "entity_attack",     "damage_multiplier": 0.1 },
+            { //传输的能量对于普通的物体来说会引起爆炸，但对于咕西则并不会发生这种事情
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {  "test": "is_family",  "subject": "other", "value": "guxi"  },
+                    {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
+                  ]
+                },
+                "event": "guxi:on_fetch_energy"
+              },
+              "deals_damage": false
+            },
+            //动能的剧烈变化，会对咕西造成巨大的伤害
+            { "cause": "anvil",             "damage_multiplier": 1 },
+            { "cause": "stalactite",        "damage_multiplier": 1 },  //钟乳石 stalactite
+            { "cause": "falling_block",     "damage_multiplier": 1 },
+            { "cause": "projectile",        "damage_multiplier": 0.5 },
+            { "cause": "stalagmite",        "damage_multiplier": 1 }, //石笋 stalagmite
+            //爆炸带来剧烈的能量变化，会扰动咕西自身的能量
+            { "cause": "fireworks",         "damage_multiplier": 0.1 },
+            //咕西本身为能量生物，故不会受到下列伤害
+            { "cause": "suffocation",  "deals_damage": false },
+            { "cause": "drowning",     "deals_damage": false },
+            { "cause": "starve",       "deals_damage": false },
+            { "cause": "magma",        "deals_damage": false },
+            { "cause": "piston",       "deals_damage": false },
+            { "cause": "lightning",    "deals_damage": false },
+            //会被特殊情况影响能量
+            {
+              "cause": "fire_tick",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "guxi:adding_energy"
+              }
+            },
+            {
+              "cause": "freezing",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "guxi:faster_dropping_energy"
+              }
+            },
+            {
+              "cause": "fire",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "guxi:adding_energy"
+              }
+            },
+            {
+              "cause": "lava",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "guxi:adding_energy"
+              }
+            }
+          ]
+        }
+      },
+      "guxi:none_resistance": {
       //未使用能量附加的盾时的防御
         "minecraft:damage_sensor": {
           "triggers": [
-            //具有动能的物体，会对咕西造成巨大的伤害
-            { "cause": "anvil",             "damage_multiplier": 4 },
-            { "cause": "stalactite",        "damage_multiplier": 2 },  //钟乳石 stalactite
-            { "cause": "falling_block",     "damage_multiplier": 1.5 },
-            { "cause": "projectile",        "damage_multiplier": 1.5 },
-            //当撞上墙或者坠落在石笋上时，巨大的冲击力会对咕西造成较大的伤害
-            { "cause": "fly_into_wall",     "damage_multiplier": 3 },
-            { "cause": "stalagmite",        "damage_multiplier": 1.5 }, //石笋 stalagmite
-            { "cause": "fall",              "damage_multiplier": 1 },
+            { //传输的能量对于普通的物体来说会引起爆炸，但对于咕西则并不会发生这种事情
+              "on_damage": {
+                "filters": {
+                  "all_of": [
+                    {  "test": "is_family",  "subject": "other", "value": "guxi"  },
+                    {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
+                  ]
+                },
+                "event": "guxi:on_fetch_energy"
+              },
+              "deals_damage": false
+            },
+            //动能的剧烈变化，会对咕西造成巨大的伤害
+            { "cause": "anvil",             "damage_multiplier": 6 },
+            { "cause": "stalactite",        "damage_multiplier": 5 },  //钟乳石 stalactite
+            { "cause": "falling_block",     "damage_multiplier": 4 },
+            { "cause": "projectile",        "damage_multiplier": 2 },
+            { "cause": "fly_into_wall",     "damage_multiplier": 10 },
+            { "cause": "stalagmite",        "damage_multiplier": 3 }, //石笋 stalagmite
+            { "cause": "fall",              "damage_multiplier": 3 },
             //爆炸带来剧烈的能量变化，会扰动咕西自身的能量
-            { "cause": "block_explosion",   "damage_multiplier": 2 },
-            { "cause": "entity_explosion",  "damage_multiplier": 2 },
-            { "cause": "fireworks",         "damage_multiplier": 1 },
+            { "cause": "block_explosion",   "damage_multiplier": 3 },
+            { "cause": "entity_explosion",  "damage_multiplier": 3 },
+            { "cause": "fireworks",         "damage_multiplier": 1.5 },
             //咕西本身较为脆弱，普通的攻击也可能会带来较大的伤害
-            { "cause": "entity_attack",     "damage_multiplier": 1.5 },
+            { "cause": "entity_attack",     "damage_multiplier": 3 },
             //由于在刺穿时自身会进行修复，缓慢穿刺带来的伤害较小
             { "cause": "contact",           "damage_multiplier": 0.5 },
             //咕西本身为能量生物，故不会受到下列伤害
             { "cause": "suffocation",  "deals_damage": false },
             { "cause": "drowning",     "deals_damage": false },
             { "cause": "starve",       "deals_damage": false },
-            { "cause": "fire_tick",    "deals_damage": false },
             { "cause": "magma",        "deals_damage": false },
             { "cause": "piston",       "deals_damage": false },
             { "cause": "lightning",    "deals_damage": false },
-            { "cause": "freezing",     "deals_damage": false },
-            { "cause": "fire",         "deals_damage": false },
-            { "cause": "lava",         "deals_damage": false }
+            //会被特殊情况影响能量
+            {
+              "cause": "fire_tick",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "guxi:adding_energy"
+              }
+            },
+            {
+              "cause": "freezing",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "guxi:faster_dropping_energy"
+              }
+            },
+            {
+              "cause": "fire",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "guxi:adding_energy"
+              }
+            },
+            {
+              "cause": "lava",
+              "deals_damage": false,
+              "on_damage": {
+                "event": "guxi:adding_energy"
+              }
+            }
           ]
         }
       },
-      "guxi:resistance_1": { 
-        //能量盾：1
-        //此时，伤害会不同程度地降低
-        "minecraft:damage_sensor": {
-          "triggers": [
-            { "cause": "anvil",             "damage_multiplier": 3.04 },
-            { "cause": "fly_into_wall",     "damage_multiplier": 2.28 },
-            { "cause": "block_explosion",   "damage_multiplier": 1.52 },
-            { "cause": "entity_explosion",  "damage_multiplier": 1.52 },
-            { "cause": "stalactite",        "damage_multiplier": 1.52 },  //钟乳石 stalactite
-            { "cause": "entity_attack",     "damage_multiplier": 1.14 },
-            { "cause": "stalagmite",        "damage_multiplier": 1.14 }, //石笋 stalagmite
-            { "cause": "falling_block",     "damage_multiplier": 1.14 },
-            { "cause": "projectile",        "damage_multiplier": 1.14 },
-            { "cause": "fall",              "damage_multiplier": 0.76 },
-            { "cause": "fireworks",         "damage_multiplier": 0.76 },
-
-            { "cause": "contact",      "deals_damage": false },
-            { "cause": "suffocation",  "deals_damage": false },
-            { "cause": "drowning",     "deals_damage": false },
-            { "cause": "starve",       "deals_damage": false },
-            { "cause": "fire_tick",    "deals_damage": false },
-            { "cause": "magma",        "deals_damage": false },
-            { "cause": "piston",       "deals_damage": false },
-            { "cause": "lightning",    "deals_damage": false },
-            { "cause": "freezing",     "deals_damage": false },
-            { "cause": "fire",         "deals_damage": false },
-            { "cause": "lava",         "deals_damage": false }
-          ]
-        }
-      },
-      "guxi:resistance_2": { 
-        //能量盾：2
-        "minecraft:damage_sensor": {
-          "triggers": [
-            { "cause": "anvil",             "damage_multiplier": 2.28 },
-            { "cause": "fly_into_wall",     "damage_multiplier": 1.71 },
-            { "cause": "block_explosion",   "damage_multiplier": 1.14 },
-            { "cause": "entity_explosion",  "damage_multiplier": 1.14 },
-            { "cause": "stalactite",        "damage_multiplier": 1.14 },  //钟乳石 stalactite
-            { "cause": "entity_attack",     "damage_multiplier": 0.85 },
-            { "cause": "stalagmite",        "damage_multiplier": 0.85 }, //石笋 stalagmite
-            { "cause": "falling_block",     "damage_multiplier": 0.85 },
-            { "cause": "projectile",        "damage_multiplier": 0.85 },
-            { "cause": "fall",              "damage_multiplier": 0.57 },
-
-            { "cause": "contact",      "deals_damage": false },
-            { "cause": "fireworks",    "deals_damage": false },
-            { "cause": "suffocation",  "deals_damage": false },
-            { "cause": "drowning",     "deals_damage": false },
-            { "cause": "starve",       "deals_damage": false },
-            { "cause": "fire_tick",    "deals_damage": false },
-            { "cause": "magma",        "deals_damage": false },
-            { "cause": "piston",       "deals_damage": false },
-            { "cause": "lightning",    "deals_damage": false },
-            { "cause": "freezing",     "deals_damage": false },
-            { "cause": "fire",         "deals_damage": false },
-            { "cause": "lava",         "deals_damage": false }
-          ]
-        }
-      },
-      "guxi:resistance_3": {
-        //能量盾：3
-        "minecraft:damage_sensor": {
-          "triggers": [
-            { "cause": "anvil",             "damage_multiplier": 1.72 },
-            { "cause": "fly_into_wall",     "damage_multiplier": 1.29 },
-            { "cause": "block_explosion",   "damage_multiplier": 0.86 },
-            { "cause": "entity_explosion",  "damage_multiplier": 0.86 },
-            { "cause": "stalactite",        "damage_multiplier": 0.86 },  //钟乳石 stalactite
-            { "cause": "entity_attack",     "damage_multiplier": 0.64 },
-            { "cause": "stalagmite",        "damage_multiplier": 0.64 }, //石笋 stalagmite
-            { "cause": "falling_block",     "damage_multiplier": 0.64 },
-            { "cause": "projectile",        "damage_multiplier": 0.64 },
-            { "cause": "fall",              "damage_multiplier": 0.43 },
-
-            { "cause": "contact",      "deals_damage": false },
-            { "cause": "fireworks",    "deals_damage": false },
-            { "cause": "suffocation",  "deals_damage": false },
-            { "cause": "drowning",     "deals_damage": false },
-            { "cause": "starve",       "deals_damage": false },
-            { "cause": "fire_tick",    "deals_damage": false },
-            { "cause": "magma",        "deals_damage": false },
-            { "cause": "piston",       "deals_damage": false },
-            { "cause": "lightning",    "deals_damage": false },
-            { "cause": "freezing",     "deals_damage": false },
-            { "cause": "fire",         "deals_damage": false },
-            { "cause": "lava",         "deals_damage": false }
-          ]
-        }
-      },
-      "guxi:resistance_4": { 
-        //能量盾：4
-        "minecraft:damage_sensor": {
-          "triggers": [
-            { "cause": "anvil",             "damage_multiplier": 1.32 },
-            { "cause": "fly_into_wall",     "damage_multiplier": 0.99 },
-            { "cause": "block_explosion",   "damage_multiplier": 0.66 },
-            { "cause": "entity_explosion",  "damage_multiplier": 0.66 },
-            { "cause": "stalactite",        "damage_multiplier": 0.66 },  //钟乳石 stalactite
-            { "cause": "entity_attack",     "damage_multiplier": 0.49 },
-            { "cause": "stalagmite",        "damage_multiplier": 0.49 }, //石笋 stalagmite
-            { "cause": "falling_block",     "damage_multiplier": 0.49 },
-            { "cause": "projectile",        "damage_multiplier": 0.49 },
-            { "cause": "fall",              "damage_multiplier": 0.33 },
-
-            { "cause": "contact",      "deals_damage": false },
-            { "cause": "fireworks",    "deals_damage": false },
-            { "cause": "suffocation",  "deals_damage": false },
-            { "cause": "drowning",     "deals_damage": false },
-            { "cause": "starve",       "deals_damage": false },
-            { "cause": "fire_tick",    "deals_damage": false },
-            { "cause": "magma",        "deals_damage": false },
-            { "cause": "piston",       "deals_damage": false },
-            { "cause": "lightning",    "deals_damage": false },
-            { "cause": "freezing",     "deals_damage": false },
-            { "cause": "fire",         "deals_damage": false },
-            { "cause": "lava",         "deals_damage": false }
-          ]
-        }
-      },
-      "yoni:species_guxi": {
+      "species:yoni_guxi": {
+        "minecraft:variant": { "value": 2695 },
         "minecraft:type_family": { "family": [ "guxi", "mob", "yoni", "energy_entity" ] },
         "minecraft:health": { "max": 60, "value": 60, "min": 0 },
         "minecraft:attack": { "damage": 0 },
@@ -313,7 +332,8 @@
           "remove_effects": "bad_omen"
         }
       },
-      "minecraft:species_player":{
+      "species:minecraft_player":{
+        "minecraft:variant": { "value": 42 },
         "minecraft:health": { "max": 20, "value": 20, "min": 0 },
         "minecraft:experience_reward": {
           "on_death": "Math.Min(query.player_level * 7, 100)"

@@ -2,21 +2,13 @@
   "format_version": "1.17.10",
   "minecraft:entity": {
     "description": {
-      "identifier": "yoni:proj",
+      "identifier": "guxi:flow_energy",
       "is_spawnable": false,
       "is_summonable": true,
-      "is_experimental": false,
-      "animations": {
-        "pm": "controller.animation.particle.minecraft_endrod"
-      },
-      "scripts": {
-        "animate": [
-          "pm"
-        ]
-      }
+      "is_experimental": false
     },
-    "events": {
-    },
+    "events": {},
+    "component_groups": {},
     "components": {
       "minecraft:collision_box": {
         "width": 0.1,
@@ -24,31 +16,24 @@
       },
       "minecraft:projectile": {
         "on_hit": {
-          /*
           "impact_damage": {
-            "damage": 80,
+            "damage": 6,
             "knockback": false,
-            "catch_fire": true,
+            "catch_fire": false,
             "semi_random_diff_damage": false
-          },
-          "catch_fire": { "fire_affected_by_griefing": true },
-          */
-          "remove_on_hit": {}
+          }
         },
+        // "offset": [0, 0, 0],
         "knockback": false,
         "power": 1,
+        "anchor": 1,
         "gravity": 0,
-        "inertia": 20,
-        "liquid_inertia": 20
-        /*
-        "anchor": 2,
-        "offset": [0,0,0],
-        "semi_random_diff_damage": true,
-        "uncertainty_base": 10,
-        "reflect_on_hurt": true
-        */
+        "inertia": 1, //速度保持率
+        "liquid_inertia": 0.3,   //水下速度保持率
+        "crit_particle_on_hurt": false //暴击无粒子
       },
-      // "minecraft:physics": {},
+      "minecraft:type_family": { "family": [ "guxi", "projectile", "yoni", "energy_entity", "flow_energy" ] },
+      "minecraft:physics": {},
       "minecraft:pushable": {
         "is_pushable": false,
         "is_pushable_by_piston": false

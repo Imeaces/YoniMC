@@ -2,17 +2,13 @@
   "format_version": "1.16.0",
   "minecraft:entity": {
     "description": {
-      "identifier": "guxi:attack",
+      "identifier": "guxi:energy_light",
       "is_summonable": true,
       "is_spawnable": false,
       "is_experimental": false,
-      "animations": {
-        "pm": "controller.animation.particle.minecraft_endrod"
-      },
+      "animations": {},
       "scripts": {
-        "animate": [
-          "pm"
-        ]
+        "animate": []
       }
     },
     "components": {

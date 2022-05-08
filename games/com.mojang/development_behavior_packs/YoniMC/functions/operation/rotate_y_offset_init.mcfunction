@@ -8,6 +8,7 @@
 scoreboard objectives add op:ory0 dummy
 scoreboard objectives add op:ory1 dummy
 
-function entity/status/rotate_y
+function entity/position/init
+function entity/position/getRotateY
 
-scoreboard players operation @s op:ory0 = @s rotate_y
+scoreboard players operation @s op:ory0 = @s pos:rotateY

@@ -1,5 +1,84 @@
-#yoni/guxi/action_cure_health
+#yoni/guxi/event_cure_health
+#回复耗能:cureEnergy=disHealth^5
+#每次回复量: 2
 
-execute @s[scores={guxi:cureTimer=..0}] ~ ~ ~ function yoni/guxi/event_cure_health
-execute @s[scores={guxi:cureTimer=..0}] ~ ~ ~ scoreboard players operation @s guxi:cureTimer = @s guxi:disHealth
-scoreboard players add @s guxi:cureTimer -1
+effect @s instant_health 1 0 false
+execute @s[scores={guxi:v102=1}] ~ ~ ~ scoreboard players remove @s guxi:energy 1
+execute @s[scores={guxi:v102=2}] ~ ~ ~ scoreboard players remove @s guxi:energy 32
+execute @s[scores={guxi:v102=3}] ~ ~ ~ scoreboard players remove @s guxi:energy 243
+execute @s[scores={guxi:v102=4}] ~ ~ ~ scoreboard players remove @s guxi:energy 1024
+execute @s[scores={guxi:v102=5}] ~ ~ ~ scoreboard players remove @s guxi:energy 3125
+execute @s[scores={guxi:v102=6}] ~ ~ ~ scoreboard players remove @s guxi:energy 7776
+execute @s[scores={guxi:v102=7}] ~ ~ ~ scoreboard players remove @s guxi:energy 16807
+execute @s[scores={guxi:v102=8}] ~ ~ ~ scoreboard players remove @s guxi:energy 32768
+execute @s[scores={guxi:v102=9}] ~ ~ ~ scoreboard players remove @s guxi:energy 59049
+execute @s[scores={guxi:v102=10}] ~ ~ ~ scoreboard players remove @s guxi:energy 100000
+execute @s[scores={guxi:v102=11}] ~ ~ ~ scoreboard players remove @s guxi:energy 161051
+execute @s[scores={guxi:v102=12}] ~ ~ ~ scoreboard players remove @s guxi:energy 248832
+execute @s[scores={guxi:v102=13}] ~ ~ ~ scoreboard players remove @s guxi:energy 371293
+execute @s[scores={guxi:v102=14}] ~ ~ ~ scoreboard players remove @s guxi:energy 537824
+execute @s[scores={guxi:v102=15}] ~ ~ ~ scoreboard players remove @s guxi:energy 759375
+execute @s[scores={guxi:v102=16}] ~ ~ ~ scoreboard players remove @s guxi:energy 1048576
+execute @s[scores={guxi:v102=17}] ~ ~ ~ scoreboard players remove @s guxi:energy 1419857
+execute @s[scores={guxi:v102=18}] ~ ~ ~ scoreboard players remove @s guxi:energy 1889568
+execute @s[scores={guxi:v102=19}] ~ ~ ~ scoreboard players remove @s guxi:energy 2476099
+execute @s[scores={guxi:v102=20}] ~ ~ ~ scoreboard players remove @s guxi:energy 3200000
+execute @s[scores={guxi:v102=21}] ~ ~ ~ scoreboard players remove @s guxi:energy 4084101
+execute @s[scores={guxi:v102=22}] ~ ~ ~ scoreboard players remove @s guxi:energy 5153632
+execute @s[scores={guxi:v102=23}] ~ ~ ~ scoreboard players remove @s guxi:energy 6436343
+execute @s[scores={guxi:v102=24}] ~ ~ ~ scoreboard players remove @s guxi:energy 7962624
+execute @s[scores={guxi:v102=25}] ~ ~ ~ scoreboard players remove @s guxi:energy 9765625
+execute @s[scores={guxi:v102=26}] ~ ~ ~ scoreboard players remove @s guxi:energy 11881376
+execute @s[scores={guxi:v102=27}] ~ ~ ~ scoreboard players remove @s guxi:energy 14348907
+execute @s[scores={guxi:v102=28}] ~ ~ ~ scoreboard players remove @s guxi:energy 17210368
+execute @s[scores={guxi:v102=29}] ~ ~ ~ scoreboard players remove @s guxi:energy 20511149
+execute @s[scores={guxi:v102=30}] ~ ~ ~ scoreboard players remove @s guxi:energy 24300000
+execute @s[scores={guxi:v102=31}] ~ ~ ~ scoreboard players remove @s guxi:energy 28629151
+execute @s[scores={guxi:v102=32}] ~ ~ ~ scoreboard players remove @s guxi:energy 33554432
+execute @s[scores={guxi:v102=33}] ~ ~ ~ scoreboard players remove @s guxi:energy 39135393
+execute @s[scores={guxi:v102=34}] ~ ~ ~ scoreboard players remove @s guxi:energy 45435424
+execute @s[scores={guxi:v102=35}] ~ ~ ~ scoreboard players remove @s guxi:energy 52521875
+execute @s[scores={guxi:v102=36}] ~ ~ ~ scoreboard players remove @s guxi:energy 60466176
+execute @s[scores={guxi:v102=37}] ~ ~ ~ scoreboard players remove @s guxi:energy 69343957
+execute @s[scores={guxi:v102=38}] ~ ~ ~ scoreboard players remove @s guxi:energy 79235168
+execute @s[scores={guxi:v102=39}] ~ ~ ~ scoreboard players remove @s guxi:energy 90224199
+execute @s[scores={guxi:v102=40}] ~ ~ ~ scoreboard players remove @s guxi:energies 1
+execute @s[scores={guxi:v102=40}] ~ ~ ~ scoreboard players remove @s guxi:energy 2400000
+execute @s[scores={guxi:v102=41}] ~ ~ ~ scoreboard players remove @s guxi:energies 1
+execute @s[scores={guxi:v102=41}] ~ ~ ~ scoreboard players remove @s guxi:energy 15856201
+execute @s[scores={guxi:v102=42}] ~ ~ ~ scoreboard players remove @s guxi:energies 1
+execute @s[scores={guxi:v102=42}] ~ ~ ~ scoreboard players remove @s guxi:energy 30691232
+execute @s[scores={guxi:v102=43}] ~ ~ ~ scoreboard players remove @s guxi:energies 1
+execute @s[scores={guxi:v102=43}] ~ ~ ~ scoreboard players remove @s guxi:energy 47008443
+execute @s[scores={guxi:v102=44}] ~ ~ ~ scoreboard players remove @s guxi:energies 1
+execute @s[scores={guxi:v102=44}] ~ ~ ~ scoreboard players remove @s guxi:energy 64916224
+execute @s[scores={guxi:v102=45}] ~ ~ ~ scoreboard players remove @s guxi:energies 1
+execute @s[scores={guxi:v102=45}] ~ ~ ~ scoreboard players remove @s guxi:energy 84528125
+execute @s[scores={guxi:v102=46}] ~ ~ ~ scoreboard players remove @s guxi:energies 2
+execute @s[scores={guxi:v102=46}] ~ ~ ~ scoreboard players remove @s guxi:energy 5962976
+execute @s[scores={guxi:v102=47}] ~ ~ ~ scoreboard players remove @s guxi:energies 2
+execute @s[scores={guxi:v102=47}] ~ ~ ~ scoreboard players remove @s guxi:energy 29345007
+execute @s[scores={guxi:v102=48}] ~ ~ ~ scoreboard players remove @s guxi:energies 2
+execute @s[scores={guxi:v102=48}] ~ ~ ~ scoreboard players remove @s guxi:energy 54803968
+execute @s[scores={guxi:v102=49}] ~ ~ ~ scoreboard players remove @s guxi:energies 2
+execute @s[scores={guxi:v102=49}] ~ ~ ~ scoreboard players remove @s guxi:energy 82475249
+execute @s[scores={guxi:v102=50}] ~ ~ ~ scoreboard players remove @s guxi:energies 3
+execute @s[scores={guxi:v102=50}] ~ ~ ~ scoreboard players remove @s guxi:energy 12500000
+execute @s[scores={guxi:v102=51}] ~ ~ ~ scoreboard players remove @s guxi:energies 3
+execute @s[scores={guxi:v102=51}] ~ ~ ~ scoreboard players remove @s guxi:energy 45025251
+execute @s[scores={guxi:v102=52}] ~ ~ ~ scoreboard players remove @s guxi:energies 3
+execute @s[scores={guxi:v102=52}] ~ ~ ~ scoreboard players remove @s guxi:energy 80204032
+execute @s[scores={guxi:v102=53}] ~ ~ ~ scoreboard players remove @s guxi:energies 4
+execute @s[scores={guxi:v102=53}] ~ ~ ~ scoreboard players remove @s guxi:energy 18195493
+execute @s[scores={guxi:v102=54}] ~ ~ ~ scoreboard players remove @s guxi:energies 4
+execute @s[scores={guxi:v102=54}] ~ ~ ~ scoreboard players remove @s guxi:energy 59165024
+execute @s[scores={guxi:v102=55}] ~ ~ ~ scoreboard players remove @s guxi:energies 5
+execute @s[scores={guxi:v102=55}] ~ ~ ~ scoreboard players remove @s guxi:energy 3284375
+execute @s[scores={guxi:v102=56}] ~ ~ ~ scoreboard players remove @s guxi:energies 5
+execute @s[scores={guxi:v102=56}] ~ ~ ~ scoreboard players remove @s guxi:energy 50731776
+execute @s[scores={guxi:v102=57}] ~ ~ ~ scoreboard players remove @s guxi:energies 6
+execute @s[scores={guxi:v102=57}] ~ ~ ~ scoreboard players remove @s guxi:energy 1692057
+execute @s[scores={guxi:v102=58}] ~ ~ ~ scoreboard players remove @s guxi:energies 6
+execute @s[scores={guxi:v102=58}] ~ ~ ~ scoreboard players remove @s guxi:energy 56356768
+execute @s[scores={guxi:v102=59}] ~ ~ ~ scoreboard players remove @s guxi:energies 7
+execute @s[scores={guxi:v102=59}] ~ ~ ~ scoreboard players remove @s guxi:energy 14924299
