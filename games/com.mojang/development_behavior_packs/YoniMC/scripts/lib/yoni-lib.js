@@ -141,6 +141,40 @@ function say(msg = "",obj){
   return status;
 }
 
+
+function tell(obj, msg = ""){
+  let rawtext = [
+    {
+      translate: "chat.type.announcement",
+      with: {
+        rawtext: [
+          { translate: "commands.origin.script" },
+          { text: ""+msg }
+        ]
+      }
+    }
+  ]
+
+  let status;
+  if (typeof obj == "object"){
+    try {
+      status = obj.runCommand("tellraw @s " + JSON.stringify({rawtext}));
+    } catch(err){
+      log(err, "WARN");
+      return err;
+    }
+    try {
+      if (typeof msg == "object")
+        obj.runCommand("tellraw @s " + JSON.stringify({rawtext:[{text:JSON.stringify(msg)}]}));
+    } catch(err){
+      log(err, "WARN");
+    }
+  } else { //如果不是实体则返回-1
+    status = -1;
+  }
+  return -1;
+}
+
 function getEntityLocaleName(entity){
   let id = "";
   let name = "";
@@ -181,11 +215,43 @@ function scbObjRem(obj = ""){
   runCmd(`scoreboard objectives remove "${obj}"`);
 }
 
+function entitiesHasAnyFamily(entity, ...families){
+  let flag = false;
+  for (let family of families){
+    try {
+      entity.runCommand("testfor @s[family="+family+"]");
+    } catch {
+      continue;
+    }
+    flag = true;
+    break;
+  }
+  return flag;
+}
+
+function entitiesHasAllFamily(entity, ...families){
+  let flag = true;
+  for (let family of families){
+    try {
+      entity.runCommand("testfor @s[family="+family+"]");
+    } catch {
+      flag = false;
+      break;
+    }
+  }
+  return flag;
+}
+
+export {
+  entitiesHasAnyFamily,
+  entitiesHasAllFamily
+};
 export {
   getEntityLocaleName,
   getLoadedEntities,
   runCmd,
-  say
+  say,
+  tell
 };
 export {
   world,

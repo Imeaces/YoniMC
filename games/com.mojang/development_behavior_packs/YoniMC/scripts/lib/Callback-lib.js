@@ -15,8 +15,8 @@ class Callback {
     if (typeof func == "function"){
       let id = "func" + this.id;
       this.functions[id] = func;
-      events[caller].subscribe((eventData) => {
-        return Callback.invokeCallback(id, eventData);
+      events[caller].subscribe((eventData, ...args) => {
+        return Callback.invokeCallback(id, eventData, ...args);
       }, ...args);
     } else {
       LOG(new TypeError("回调需要是一个函数"), "ERROR");
