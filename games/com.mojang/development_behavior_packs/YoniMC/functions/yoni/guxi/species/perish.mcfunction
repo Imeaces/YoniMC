@@ -15,4 +15,4 @@ scoreboard players reset @s guxi:resi2
 scoreboard players reset @s guxi:sEnergy
 
 # 触发实体事件，移除组件
-event entity @s yoni:perish_guxi
+event entity @s species:perish_yoni_guxi

@@ -1,1 +1,1 @@
-execute @s[scores={alive=1}] ~ ~ ~ function yoni/guxi/mind/play
+execute @s[scores={yoni:guxi=1}] ~ ~ ~ function yoni/guxi/mind/play

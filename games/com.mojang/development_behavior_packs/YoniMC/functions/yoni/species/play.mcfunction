@@ -2,7 +2,6 @@
 
 # 为物种系统创建需要的记分项
 scoreboard objectives add species dummy "物种"
-scoreboard objectives add spec:arg1 dummy
 ## 为自己设置初始状态
 scoreboard players add @s species 0
 

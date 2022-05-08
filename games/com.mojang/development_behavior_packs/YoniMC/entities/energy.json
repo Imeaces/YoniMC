@@ -7,54 +7,24 @@
       "is_summonable": true,
       "is_experimental": false,
       "animations": {
-        "pm": "controller.animation.guxi.flow_energy"
+        "flow_energy": "controller.animation.guxi.flow_energy"
       },
       "scripts": {
-        "animate": ["pm"
-        ]
+        "animate": [ "flow_energy" ]
       }
     },
     "events": {
-      "guxi:flow_energy_disappear": {
-        "add": {
-          "component_groups": [
-            "be_disappear"
-          ]
-        }
-      },
-      "guxi:flow_energy_hitten": {
-        "add": {
-          "component_groups": [
-            "hitten"
-          ]
-        }
-      }
+      "guxi:energy_freezed": { "add": { "component_groups": [ "mark_freezed" ] } }
     },
     "component_groups": {
-      "be_disappear": {
-        "minecraft:health": {
-          "max": 0, "value": 0, "min": 0
-        }
-      },
-      "hitten": {
-        "minecraft:skin_id": {
-          "value": 1
-        }
-      }
+      "mark_freezed": { "minecraft:skin_id": { "value": 1 } }
     },
     "components": {
-/*
-[Json][error]-warden, guxi | actor_definitions | /sdcard/games/minecraft/b1.19.0.28/games/com.mojang/development_behavior_packs/GuxiOnMinecraft | guxi:energy | minecraft:entity | components | minecraft:timer | event | child 'event' not valid here.
-
-[Json][error]-warden, guxi | actor_definitions | /sdcard/games/minecraft/b1.19.0.28/games/com.mojang/development_behavior_packs/GuxiOnMinecraft | guxi:energy | minecraft:entity | components | minecraft:timer | time_down_event | time_down_event | unknown child schema option type.  Allowed types:  ''
-
-
-*/
       "minecraft:timer": {
-        "time": [ 30.0, 30.0 ],
+        "time": [ 20.0, 40.0 ],
         "looping": false,
         "time_down_event": {
-          "event": "guxi:flow_energy_hitten",
+          "event": "guxi:energy_freezed",
           "target": "self"
         }
       },

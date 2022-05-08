@@ -8,7 +8,9 @@
       "is_experimental": false,
       "animations": { // 定义可以运行的动画控制器
         // 用于yoni物种系统的动画控制器
-        "species.yoni_guxi": "controller.animation.guxi.func",
+        "species": "controller.animation.yoni.species",
+        "species.minecraft_player": "controller.animation.minecraft.species.player",
+        "species.yoni_guxi": "controller.animation.spexies.yoni_guxi",
         // 实体状态
         "entity.status_alive": "controller.animation.entity.status.alive",
         "entity.status.is_gliding": "controller.animation.entity.status.is_gliding",
@@ -16,7 +18,9 @@
       },
       "scripts": {
         "animate": [ //运行动画控制器
+          "species",
           "species.yoni_guxi",
+          "species.minecraft_player",
           "entity.status_alive",
           "entity.status.is_gliding",
           "entity.status_attack"
@@ -65,11 +69,8 @@
       },
       "species:perish_guxi": {
         "remove": { "component_groups": [
-          "guxi:resistance_0",
-          "guxi:resistance_1",
-          "guxi:resistance_2",
-          "guxi:resistance_3",
-          "guxi:resistance_4",
+          "guxi:attach_resistance",
+          "guxi:none_resistance",
           "species:yoni_guxi"
         ]}
       },

@@ -12,7 +12,3 @@ function yoni/species/spawn_fixed
 ### 第二部分：随机器
 # spawn randomly
 execute @s[scores={species=0}] ~ ~ ~ function yoni/species/spawn_random
-
-## 然后更新种族
-# species flush
-function yoni/species/flush

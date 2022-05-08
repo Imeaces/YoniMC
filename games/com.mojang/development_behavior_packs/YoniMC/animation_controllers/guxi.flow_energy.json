@@ -1,0 +1,23 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.guxi.flow_energy": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            { "hitten": "query.skin_id == 1" }
+          ]
+        },
+        "hitten": {
+          "transitions": [
+          ],
+          "on_entry": [
+            "/tp @s ~ ~-32768 ~",
+            "/kill @s"
+          ]
+        }
+      }
+    }
+  }
+}

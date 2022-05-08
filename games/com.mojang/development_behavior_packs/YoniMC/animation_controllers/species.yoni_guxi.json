@@ -1,0 +1,62 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.yoni.species.guxi": {
+      // 检测species是否等于2695，如果是，循环执行`guxi play`与`guxi thought`
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            { "stage_loop": "query.scoreboard('species') == 2695" },
+            { "stage_init": "(1.0)" }
+          ]
+        },
+        "stage_init": {
+          "transitions": [
+            { "init_being": "query.scoreboard('species') == 2695" }
+          ]
+        },
+        "stage_loop": {
+          "transitions": [
+            { "play_loop": "query.scoreboard('species') == 2695" }
+            { "play_perish": "(1.0)" }
+          ],
+          "on_entry": [ "/function yoni/guxi/event_reload" ]
+        },
+        "init_being": {
+          "transitions": [
+            { "play_being": "query.scoreboard('species') == 2695" }
+            { "stage_init": "(1.0)" }
+          ]
+        },
+        "play_being": {
+          "transitions": [
+            { "play_loop": "query.scoreboard('species') == 2695" }
+            { "play_perish": "(1.0)" }
+          ],
+          "on_entry": [ "/function yoni/guxi/species/being" ]
+        },
+        "play_perish": {
+          "transitions": [
+            { "stage_init": "(1.0)" }
+          ],
+          "on_entry": [ "/function yoni/guxi/species/perish" ]
+        },
+        "play_loop": {
+          "transitions": [
+            { "play_loop1": "query.scoreboard('species') == 2695" }
+            { "play_perish": "(1.0)" }
+          ],
+          "on_entry": [ "/function yoni/guxi/play" ]
+        },
+        "play_loop1": {
+          "transitions": [
+            { "play_loop": "query.scoreboard('species') == 2695" }
+            { "play_perish": "(1.0)" }
+          ],
+          "on_entry": [ "/function yoni/guxi/play" ]
+        }
+      }
+    }
+  }
+}

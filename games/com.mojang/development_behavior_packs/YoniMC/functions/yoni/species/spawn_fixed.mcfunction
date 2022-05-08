@@ -1,7 +1,7 @@
 #yoni/species/spawn_fixed
 
 # 测试用途
-execute @s[tag=yoni:test] ~ ~ ~ scoreboard players set @s species 2695
+execute @s[tag=test:species_yoni_guxi] ~ ~ ~ scoreboard players set @s species 2695
 
 # 咕西
 execute @s[type=yoni:guxi] ~ ~ ~ scoreboard players set @s species 2695
