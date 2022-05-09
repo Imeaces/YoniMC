@@ -10,3 +10,6 @@ execute @s[scores={guxi:op200=!0}] ~ ~ ~ scoreboard players operation @s guxi:en
 
 execute @s[scores={guxi:op201=..-1}] ~ ~ ~ scoreboard players remove @s guxi:energies 1
 execute @s[scores={guxi:op201=..-1}] ~ ~ ~ scoreboard players operation @s guxi:energy += energy_stack guxi:value
+
+execute @e[type=guxi:energy,r=7] ~ ~ ~ scoreboard players add @e[family=guxi,family=energy_entity,r=7,c=1] guxi:energy 5000000
+execute @e[type=guxi:energy,r=7] ~ ~ ~ function suicide

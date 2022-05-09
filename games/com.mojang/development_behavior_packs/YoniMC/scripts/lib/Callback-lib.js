@@ -38,7 +38,7 @@ class Callback {
       try {
         return callFunction(eventData, ...args);
       } catch(err){
-        LOG(`[Callback:${id}]${err}`, "ERROR");
+        LOG(`[Callback:${id}]${err}`, "WARN");
       }
     }
     return;

@@ -9,7 +9,7 @@ const events = mc.world.events;
 
 const logLevels = [ "FATEL", "ERROR", "WARN", "INFO", "DEBUG" ];
 //除了logLevels[]列出的值，你还可以设置一个任意值，使任何日志都不会输出
-const logLevel = logLevels[3];
+const logLevel = logLevels[1];
 
 const defaultLogLevel = logLevels[3];
 
@@ -86,7 +86,7 @@ function runCmd(cmd = "",obj){
     try {
       return obj.runCommand(cmd);
     } catch(err) {
-      log(err, "DEBUG");
+      log(err, "WARN");
       return err;
     };
   }

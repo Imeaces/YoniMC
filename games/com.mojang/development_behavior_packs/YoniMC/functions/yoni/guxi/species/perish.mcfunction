@@ -12,7 +12,7 @@ scoreboard players reset @s guxi:mining
 scoreboard players reset @s guxi:resistance
 
 scoreboard players reset @s guxi:resi2
-scoreboard players reset @s guxi:sEnergy
+scoreboard players reset @s guxi:status
 
 # 触发实体事件，移除组件
-event entity @s species:perish_yoni_guxi
+event entity @s species:perish_guxi

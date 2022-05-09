@@ -3,7 +3,7 @@
 function yoni/guxi/check_energy_status
 
 #能量不足以维持秩序 2
-execute @s[scores={alive=1,guxi:status=5}] ~ ~ ~ scoreboard players set @s yoni:guxi 2
+execute @s[scores={alive=1,guxi:status=5,yoni:guxi=1}] ~ ~ ~ scoreboard players set @s yoni:guxi 2
 
 # 当初始化完毕，并且实体存活也应当存活时（即能量维持着秩序）
 # 对实体应用活着时候的行为

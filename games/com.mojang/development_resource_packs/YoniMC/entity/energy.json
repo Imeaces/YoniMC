@@ -27,7 +27,7 @@
          // "v.show_scale = query.camera_rotation(0);"
           //"(for_each(v.pl, query.get_nearby_entities(15, 'minecraft:player'), { (v.pl->query.variant == 2695) ? { v.show_scale = (v.pl->query.target_x_rotation - query.camera_rotation(0) < 0.1) ? 0.6 : 0;};}));"
         //  "(for_each(v.pl, query.get_nearby_entities(15, 'minecraft:player'), { v.show_scale = v.pl->query.target_x_rotation; break; }));"
-          "(for_each(v.pl, query.get_nearby_entities(15, 'minecraft:player'), { (v.pl->query.variant != 2695) ? { continue;}; (v.pl->query.target_x_rotation - query.camera_rotation(0) > 0.1) ? { continue; }; v.show_scale = 0.6; break; }));"
+          "(for_each(v.pl, query.get_nearby_entities(32, 'minecraft:player'), { (v.pl->query.variant != 2695) ? { continue;}; (v.pl->query.target_x_rotation - query.camera_rotation(0) > 0.1) ? { continue; }; v.show_scale = 0.6; break; }));"
         ],
         "animate": [
           "face_player",

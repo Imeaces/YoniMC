@@ -21,18 +21,19 @@
             "knockback": false,
             "catch_fire": false,
             "semi_random_diff_damage": false
-          }
+          },
+          "remove_on_hit": {}
         },
         // "offset": [0, 0, 0],
         "knockback": false,
         "power": 1,
-        "anchor": 1,
+        "anchor": 0,
         "gravity": 0,
         "inertia": 1, //速度保持率
         "liquid_inertia": 0.3,   //水下速度保持率
         "crit_particle_on_hurt": false //暴击无粒子
       },
-      "minecraft:type_family": { "family": [ "guxi", "projectile", "yoni", "energy_entity", "flow_energy" ] },
+      "minecraft:type_family": { "family": [ "guxi", "projectile", "yoni", "flow_energy" ] },
       "minecraft:physics": {},
       "minecraft:pushable": {
         "is_pushable": false,

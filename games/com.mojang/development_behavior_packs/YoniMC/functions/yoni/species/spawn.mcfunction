@@ -1,5 +1,6 @@
 #yoni/species/spawn
 
+scoreboard players set @s species 0
 # 当实体没有设置物种时，会执行此函数
 # 此函数会根据一定的条件，为实体指定一个物种，并刷新实体物种
 
