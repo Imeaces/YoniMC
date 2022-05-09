@@ -1,7 +1,7 @@
 import { Data } from "./lib/Data.js";
 import { Callback } from "./lib/Callback-lib.js";
-import { ChatCommand } from "./yoni/ChatCommand.js";
-import { say } from "../lib/yoni-lib.js";
+import { ChatCommand } from "./lib/ChatCommand.js";
+import { say, world } from "./lib/yoni-lib.js";
 
 Callback.addCallback("tick", () => {
 //检测玩家死亡

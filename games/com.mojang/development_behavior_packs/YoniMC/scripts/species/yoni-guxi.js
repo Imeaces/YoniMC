@@ -1,12 +1,12 @@
 import { Data } from "../lib/Data.js";
 import { ChatCommand } from "../lib/ChatCommand.js";
 import * as yoni from "../lib/yoni-lib.js";
-import { events, world, dim, runCmd, log, say } from "../lib/yoni-lib.js";
+import { tell, events, world, dim, runCmd, log, say } from "../lib/yoni-lib.js";
 import { Callback } from "../lib/Callback-lib.js";
 import * as mc from "mojang-minecraft";
 
 ChatCommand.registerCommand("boom", (runner, params) => {
-  if (yoni.entitiesHasAnyFamily(runner, "guxi"){
+  if (yoni.entitiesHasAnyFamily(runner, "guxi")){
     let radius = Number(params.args[0]);
     if (isNaN(radius)){
       tell(runner, "范围多大？");
@@ -27,7 +27,7 @@ ChatCommand.registerCommand("boom", (runner, params) => {
 });
 
 Callback.addCallback("projectileHit", (event) => {
-  try{
+  try {
     if (event.projectile.id == "guxi:flow_energy"){
       let { dimension, location, projectile } = event;
       if (event.entityHit)

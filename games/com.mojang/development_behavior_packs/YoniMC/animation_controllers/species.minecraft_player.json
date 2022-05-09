@@ -17,20 +17,20 @@
         },
         "stage_loop": {
           "transitions": [
-            { "play_loop": "query.scoreboard('species') == 42" }
+            { "play_loop": "query.scoreboard('species') == 42" },
             { "play_perish": "(1.0)" }
           ],
           "on_entry": [ "/function yoni/guxi/event_reload" ]
         },
         "init_being": {
           "transitions": [
-            { "play_being": "query.scoreboard('species') == 42" }
+            { "play_being": "query.scoreboard('species') == 42" },
             { "stage_init": "(1.0)" }
           ]
         },
         "play_being": {
           "transitions": [
-            { "play_loop": "query.scoreboard('species') == 42" }
+            { "play_loop": "query.scoreboard('species') == 42" },
             { "play_perish": "(1.0)" }
           ],
           "on_entry": [ "/function minecraft/player/species/push" ]
@@ -43,13 +43,13 @@
         },
         "play_loop": {
           "transitions": [
-            { "play_loop1": "query.scoreboard('species') == 42" }
+            { "play_loop1": "query.scoreboard('species') == 42" },
             { "play_perish": "(1.0)" }
           ]
         },
         "play_loop1": {
           "transitions": [
-            { "play_loop": "query.scoreboard('species') == 42" }
+            { "play_loop": "query.scoreboard('species') == 42" },
             { "play_perish": "(1.0)" }
           ]
         }

@@ -1,2 +1,2 @@
 #minecraft/player/species/push
-event entity @s minecraft:being_player
+event entity @s species:being_human
