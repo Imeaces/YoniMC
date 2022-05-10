@@ -55,7 +55,7 @@ Callback.addCallback("tick", () => {
     log(err)
   }
 });
-
+/*
 Callback.addCallback("itemStartUseOn", (event) => {
    say("itemStartUseOn", event.source)
 });
@@ -64,3 +64,4 @@ Callback.addCallback("itemStopUseOn", (event) => {
    say("itemStopUseOn", event.source)
 });
 
+*/

@@ -1,3 +1,7 @@
+
+# 此函数用作处理一些身体上的状态
+# 比如，是否应该将鞘翅展开
+
 scoreboard objectives add guxi:v20 dummy profile
 scoreboard objectives add guxi:v21 dummy "used profile"
 scoreboard players add @s guxi:v20 0

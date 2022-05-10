@@ -13,3 +13,6 @@ execute @s[scores={guxi:op201=..-1}] ~ ~ ~ scoreboard players operation @s guxi:
 
 execute @e[type=guxi:energy,r=7] ~ ~ ~ scoreboard players add @e[family=guxi,family=energy_entity,r=7,c=1] guxi:energy 5000000
 execute @e[type=guxi:energy,r=7] ~ ~ ~ function suicide
+
+# 维持能量秩序的消耗
+scoreboard players remove @s guxi:energy 14
