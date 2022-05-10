@@ -7,13 +7,13 @@
       "states": {
         "loop1": {
           "transitions": [
-            { "loop2": "(1.0)" }
+            { "loop2": "(v.species = query.scoreboard('species'); return 1.0;);" }
           ],
           "on_entry": [ "/function yoni/species/play" ]
         },
         "loop2": {
           "transitions": [
-            { "loop1": "(1.0)" }
+            { "loop1": "(v.species = query.scoreboard('species'); return 1.0;);" }
           ],
           "on_entry": [ "/function yoni/species/play" ]
         }

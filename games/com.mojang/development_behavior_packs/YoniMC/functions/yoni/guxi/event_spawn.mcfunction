@@ -15,6 +15,7 @@ scoreboard objectives add guxi:memory dummy
 scoreboard objectives add guxi:mining dummy
 scoreboard objectives add guxi:force dummy
 scoreboard objectives add guxi:resistance dummy
+scoreboard objectives add guxi:resicheck dummy
 # 状态 可能没用
 scoreboard objectives add guxi:order dummy
 scoreboard objectives add guxi:status dummy
@@ -30,7 +31,7 @@ scoreboard objectives add guxi:v103 dummy
 # 值初始化
 scoreboard players set @s guxi:mining 0
 scoreboard players set @s guxi:resistance 0
-scoreboard players set @s guxi:resi2 -1
+scoreboard players set @s guxi:resicheck -1
 scoreboard players set @s guxi:force 0
 
 scoreboard players operation @s guxi:energies = spawn_energy guxi:value

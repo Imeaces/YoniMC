@@ -40,3 +40,21 @@ Callback.addCallback("projectileHit", (event) => {
     }
   } catch {}
 });
+
+Callback.addCallback("entityHurt", (event) => {
+  try {
+    let rawtext = [{
+      translate: "实体%%s 受到了 %%s 的 %%s 点伤害",
+      with: {
+        rawtext: [
+          { translate: yoni.getEntityLocaleName(event.hurtEntity) },
+          { text: event.cause },
+          { text: ""+event.damage }
+        ]
+      }
+    }]
+    runCmd("tellraw @a "+JSON.stringify({rawtext}));
+  } catch(err){
+    say(err)
+  }
+});

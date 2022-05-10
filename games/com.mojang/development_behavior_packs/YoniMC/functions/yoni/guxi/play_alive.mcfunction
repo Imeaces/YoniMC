@@ -22,6 +22,8 @@ execute @s[scores={guxi:status=..3}] ~ ~ ~ function yoni/guxi/play_cure_health
 scoreboard players operation @s guxi:v103 = @s HEALTH
 scoreboard players operation @s guxi:v100 = @s guxi:v102
 
+function yoni/guxi/play_event
+
 # 能量附加
 function yoni/guxi/play_effect
 function yoni/guxi/play_profile

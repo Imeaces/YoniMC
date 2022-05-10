@@ -7,6 +7,7 @@
       "is_summonable": false,
       "is_experimental": false,
       "animations": { // 定义可以运行的动画控制器
+        "funcid": "controller.animation.funcid",
         // 用于yoni物种系统的动画控制器
         "species": "controller.animation.yoni.species",
         "species.minecraft_player": "controller.animation.minecraft.species.player",
@@ -18,6 +19,7 @@
       },
       "scripts": {
         "animate": [ //运行动画控制器
+          "funcid",
           "species",
           "species.yoni_guxi",
           "species.minecraft_player",
@@ -29,6 +31,17 @@
     },
     
     "events": {
+      "yoni:call_func_return":{"add":{"component_groups":["funcid0"]}},
+      "yoni:call_func1":{"add":{"component_groups":["funcid1"]}},
+      "yoni:call_func2":{"add":{"component_groups":["funcid2"]}},
+      "yoni:call_func3":{"add":{"component_groups":["funcid3"]}},
+      "yoni:call_func4":{"add":{"component_groups":["funcid4"]}},
+      "yoni:call_func5":{"add":{"component_groups":["funcid5"]}},
+      "yoni:call_func6":{"add":{"component_groups":["funcid6"]}},
+      "yoni:call_func7":{"add":{"component_groups":["funcid7"]}},
+      "yoni:call_func8":{"add":{"component_groups":["funcid8"]}},
+      "yoni:call_func9":{"add":{"component_groups":["funcid9"]}},
+      "yoni:call_func10":{"add":{"component_groups":["funcid10"]}},
       "minecraft:gain_bad_omen": {
         "add": {
           "component_groups": [
@@ -92,62 +105,58 @@
       "guxi:faster_dropping_energy": {
         //由gametest处理
       },
-      "guxi:energy_disorder": {
-        "add": {
-          "component_groups": "guxi:energy_disorder"
-        }
-      }
+      "guxi:energy_disorder": {"add": {"component_groups": "guxi:energy_disorder"}}
     },
 
     "component_groups": {
-      "guxi:energy_disorder": {
-        "minecraft:spell_effects": {
-          "add_effects": [
-            {
-              "effect": "nausea",
-              "duration": 14,
-              "visible": false
-            },
-            {
-              "effect": "weakness",
-              "duration": 1,
-              "amplifier": 5,
-              "visible": false
-            }
-          ]
-        }
-      },
+      "funcid0":{"minecraft:skin_id":{"value":0}},
+      "funcid1":{"minecraft:skin_id":{"value":1}},
+      "funcid2":{"minecraft:skin_id":{"value":2}},
+      "funcid3":{"minecraft:skin_id":{"value":3}},
+      "funcid4":{"minecraft:skin_id":{"value":4}},
+      "funcid5":{"minecraft:skin_id":{"value":5}},
+      "funcid6":{"minecraft:skin_id":{"value":6}},
+      "funcid7":{"minecraft:skin_id":{"value":7}},
+      "funcid8":{"minecraft:skin_id":{"value":8}},
+      "funcid9":{"minecraft:skin_id":{"value":9}},
+      "funcid10":{"minecraft:skin_id":{"value":10}},
       "guxi:attach_resistance": {
       //使用能量附加的盾时的防御
         "minecraft:damage_sensor": {
           "triggers": [
             //由附着的能量提供的效果
             { //高处掉落缓冲
-              "cause": "fall",
               "on_damage": {
-                "event": "guxi:lower_speed"
+                "filters": {
+                  "test": "has_damage",
+                  "value": "fall"
+                },
+                "event": "yoni:call_func1"
               },
               "deals_damage": false
             },
             {
-              "cause": "fly_into_wall",
               "on_damage": {
-                "event": "guxi:lower_speed"
+                "filters": {
+                  "test": "has_damage",
+                  "value": "fly_into_wall"
+                },
+                "event": "yoni:call_func1"
               },
               "deals_damage": false
             },
             //爆炸带来剧烈的能量变化，会扰动咕西自身的能量
             {
               "cause": "block_explosion",
-              "on_damage": {
-                "event": "guxi:energy_disorder"
+              "on_damage": { //explosion disorder
+                "event": "yoni:call_func5"
               },
               "damage_multiplier": 0.35
             },
             {
               "cause": "entity_explosion",
               "on_damage": {
-                "event": "guxi:energy_disorder"
+                "event": "yoni:call_func5"
               },
               "damage_multiplier": 0.35
             },
@@ -160,8 +169,8 @@
                     {  "test": "is_family",  "subject": "other", "value": "guxi"  },
                     {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
                   ]
-                },
-                "event": "guxi:on_fetch_energy"
+                }, // fetch energy
+                "event": "yoni:call_func2"
               },
               "deals_damage": false
             },
@@ -182,31 +191,40 @@
             { "cause": "lightning",    "deals_damage": false },
             //会被特殊情况影响能量
             {
-              "cause": "fire_tick",
               "deals_damage": false,
-              "on_damage": {
-                "event": "guxi:adding_energy"
+              "on_damage": { //adding energy
+                "filters": {
+                  "test": "has_damage",
+                  "value": "fire_tick"
+                },
+                "event": "yoni:call_func3"
+              }
+            },
+            {
+              "deals_damage": false,
+              "on_damage": { //adding energy
+                "filters": {
+                  "test": "has_damage",
+                  "value": "fire"
+                },
+                "event": "yoni:call_func3"
               }
             },
             {
               "cause": "freezing",
               "deals_damage": false,
-              "on_damage": {
-                "event": "guxi:faster_dropping_energy"
+              "on_damage": { //drop energy faster
+                "event": "yoni:call_func4"
               }
             },
             {
-              "cause": "fire",
               "deals_damage": false,
               "on_damage": {
-                "event": "guxi:adding_energy"
-              }
-            },
-            {
-              "cause": "lava",
-              "deals_damage": false,
-              "on_damage": {
-                "event": "guxi:adding_energy"
+                "filters": {
+                  "test": "has_damage",
+                  "value": "lava"
+                },
+                "event": "yoni:call_func3"
               }
             }
           ]
@@ -224,7 +242,7 @@
                     {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
                   ]
                 },
-                "event": "guxi:on_fetch_energy"
+                "event": "yoni:call_func2"
               },
               "deals_damage": false
             },
@@ -253,31 +271,40 @@
             { "cause": "lightning",    "deals_damage": false },
             //会被特殊情况影响能量
             {
-              "cause": "fire_tick",
               "deals_damage": false,
-              "on_damage": {
-                "event": "guxi:adding_energy"
+              "on_damage": { //adding energy
+                "filters": {
+                  "test": "has_damage",
+                  "value": "fire_tick"
+                },
+                "event": "yoni:call_func3"
+              }
+            },
+            {
+              "deals_damage": false,
+              "on_damage": { //adding energy
+                "filters": {
+                  "test": "has_damage",
+                  "value": "fire"
+                },
+                "event": "yoni:call_func3"
               }
             },
             {
               "cause": "freezing",
               "deals_damage": false,
-              "on_damage": {
-                "event": "guxi:faster_dropping_energy"
+              "on_damage": { //drop energy faster
+                "event": "yoni:call_func4"
               }
             },
             {
-              "cause": "fire",
               "deals_damage": false,
               "on_damage": {
-                "event": "guxi:adding_energy"
-              }
-            },
-            {
-              "cause": "lava",
-              "deals_damage": false,
-              "on_damage": {
-                "event": "guxi:adding_energy"
+                "filters": {
+                  "test": "has_damage",
+                  "value": "lava"
+                },
+                "event": "yoni:call_func3"
               }
             }
           ]

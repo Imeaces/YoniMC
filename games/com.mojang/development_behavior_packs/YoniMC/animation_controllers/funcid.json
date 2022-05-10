@@ -1,0 +1,21 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.funcid": {
+      "initial_state": "zero",
+      "states": {
+        "zero": {
+          "transitions": [
+            { "reset": "(v.funcid = query.skin_id; return v.funcid != 0;);" }
+          ]
+        },
+        "reset": {
+          "transitions": [
+            { "zero": "(v.funcid = query.skin_id; return 1.0;);" }
+          ],
+          "on_entry": [ "/tell @s func return", "@s yoni:call_func_return" ]
+        }
+      }
+    }
+  }
+}
