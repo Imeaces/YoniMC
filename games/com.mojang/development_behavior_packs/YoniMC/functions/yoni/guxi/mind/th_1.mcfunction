@@ -16,6 +16,8 @@ execute @s[scores={mind:v101=1,mind:ti100=..0}] ~ ~ ~ scoreboard players set @s 
 execute @s[rx=84,scores={mind:ti100=1..}] ~ ~ ~ scoreboard players set @s mind:ti100 0
 ## 如果标志为1，跳转面板26951
 execute @s[rx=84,scores={mind:v101=1}] ~ ~ ~ function yoni/guxi/mind/goto/goto_100
+#enter
+execute @s[scores={mind:enter=1}] ~ ~ ~ function yoni/guxi/mind/goto/goto_100
 ## 重置标志
 execute @s[rx=84] ~ ~ ~ scoreboard players set @s mind:v101 0
 

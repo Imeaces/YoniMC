@@ -7,6 +7,6 @@ execute @s[scores={yoni:guxi=2}] ~ ~ ~ scoreboard players set @s yoni:guxi 102
 
 # 如果物理死亡则爆炸
 execute @s[scores={yoni:guxi=101}] ~ ~ ~ summon guxi:explode ~ ~ ~ explode_true_small
-execute @s[scores={yoni:guxi=101}] ~ ~ ~ say 物理死亡
+#execute @s[scores={yoni:guxi=101}] ~ ~ ~ say 物理死亡
 
 scoreboard players set @s yoni:guxi -2
