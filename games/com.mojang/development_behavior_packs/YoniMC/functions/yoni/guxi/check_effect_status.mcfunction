@@ -5,6 +5,7 @@ scoreboard players set @s guxi:order 0
 # 计算需要的待用能量等级
 scoreboard players operation @s guxi:order += @s guxi:resistance
 scoreboard players operation @s guxi:order += @s guxi:mining
+scoreboard players operation @s guxi:order += @s guxi:force
 
 # 能量秩序混乱
 execute @s[scores={guxi:status=4..}] ~ ~ ~ scoreboard players set @s guxi:order -1
