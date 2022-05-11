@@ -40,7 +40,7 @@ Callback.addCallback("projectileHit", (event) => {
     }
   } catch {}
 });
-
+/*
 Callback.addCallback("entityHurt", (event) => {
   try {
     let rawtext = [{
@@ -58,3 +58,4 @@ Callback.addCallback("entityHurt", (event) => {
     say(err)
   }
 });
+*/

@@ -13,7 +13,7 @@
           "transitions": [
             { "zero": "(v.funcid = query.skin_id; return 1.0;);" }
           ],
-          "on_entry": [ "/tell @s func return", "@s yoni:call_func_return" ]
+          "on_entry": [ "@s yoni:call_func_return" ]
         }
       }
     }

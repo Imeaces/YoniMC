@@ -38,6 +38,8 @@ scoreboard players reset @s yoni:guxi
 
 # 移除运算变量
 scoreboard players reset @s guxi:op3
+scoreboard players reset @s guxi:op200
+scoreboard players reset @s guxi:op201
 scoreboard players reset @s guxi:op300
 scoreboard players reset @s guxi:op0
 scoreboard players reset @s guxi:ti0

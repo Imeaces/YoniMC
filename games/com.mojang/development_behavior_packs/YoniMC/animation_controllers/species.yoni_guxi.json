@@ -68,7 +68,7 @@
         },
         "falled": {
           "transitions": [
-            { "falled": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 1" },
+//            { "falled": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 1" },
             { "disorder": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 5" },
             { "fetch_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 2" },
             { "adding_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 3" },
@@ -77,7 +77,6 @@
             { "play_perish": "(1.0)" }
           ],
           "on_entry": [
-            "/tell @s falled",
             "/tag @s add guxi:event_falled",
             "/function yoni/guxi/play",
             "/tag @s remove guxi:event_falled"
@@ -86,7 +85,7 @@
         "disorder": {
           "transitions": [
             { "falled": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 1" },
-            { "disorder": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 5" },
+//            { "disorder": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 5" },
             { "fetch_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 2" },
             { "adding_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 3" },
             { "drop_faster": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 4" },
@@ -94,7 +93,6 @@
             { "play_perish": "(1.0)" }
           ],
           "on_entry": [
-            "/tell @s disorder",
             "/tag @s add guxi:event_disorder",
             "/function yoni/guxi/play",
             "/tag @s remove guxi:event_disorder"
@@ -104,14 +102,13 @@
           "transitions": [
             { "falled": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 1" },
             { "disorder": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 5" },
-            { "fetch_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 2" },
+//            { "fetch_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 2" },
             { "adding_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 3" },
             { "drop_faster": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 4" },
             { "play_loop": "(v.species ?? 0) == 2695" },
             { "play_perish": "(1.0)" }
           ],
           "on_entry": [
-            "/tell @s fetch_energy",
             "/tag @s add guxi:event_fetch_energy",
             "/function yoni/guxi/play",
             "/tag @s remove guxi:event_fetch_energy"
@@ -122,13 +119,12 @@
             { "falled": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 1" },
             { "disorder": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 5" },
             { "fetch_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 2" },
-            { "adding_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 3" },
+//            { "adding_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 3" },
             { "drop_faster": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 4" },
             { "play_loop": "(v.species ?? 0) == 2695" },
             { "play_perish": "(1.0)" }
           ],
           "on_entry": [
-            "/tell @s adding_energy",
             "/tag @s add guxi:event_adding_energy",
             "/function yoni/guxi/play",
             "/tag @s remove guxi:event_adding_energy"
@@ -140,12 +136,11 @@
             { "disorder": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 5" },
             { "fetch_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 2" },
             { "adding_energy": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 3" },
-            { "drop_faster": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 4" },
+//            { "drop_faster": "(v.species ?? 0) == 2695 && (v.funcid ?? 0) == 4" },
             { "play_loop": "(v.species ?? 0) == 2695" },
             { "play_perish": "(1.0)" }
           ],
           "on_entry": [
-            "/tell @s drop_faster",
             "/tag @s add guxi:event_drop_faster",
             "/function yoni/guxi/play",
             "/tag @s remove guxi:event_drop_faster"
