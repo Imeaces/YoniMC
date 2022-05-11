@@ -2,10 +2,6 @@
 # 记录当前想法
 scoreboard objectives add mind dummy
 scoreboard players add @s mind 0
-execute @s[scores={mind=..-1},tag=yoni:debug] ~ ~ ~ tellraw @s {"rawtext":[{"text":"出现错误，已重置mind为0"}]}
-execute @s[scores={mind=4..},tag=yoni:debug] ~ ~ ~ tellraw @s {"rawtext":[{"text":"出现错误，已重置mind为0"}]}
-execute @s[scores={mind=..-1}] ~ ~ ~ scoreboard players set @s mind 0
-execute @s[scores={mind=4..}] ~ ~ ~ scoreboard players set @s mind 0
 
 # 记录已经决定想法
 scoreboard objectives add mind:enter dummy
@@ -44,7 +40,6 @@ execute @s[scores={mind=3},hasitem={location=slot.weapon.mainhand,slot=0,item=fi
 execute @s[scores={mind:lock=0}] ~ ~ ~ scoreboard players operation @s mind:scene = @s mind:slot
 
 ## 轮盘菜单
-execute @s[scores={mind:scene=0..,mind:lock=0},rx=-89,tag=yoni:debug] ~ ~ ~ say set mind:scene -1
 execute @s[scores={mind:scene=0..,mind:lock=0},rx=-89] ~ ~ ~ scoreboard players set @s mind:scene -1
 
 # 检测是否已经决定
