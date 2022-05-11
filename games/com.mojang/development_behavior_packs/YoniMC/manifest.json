@@ -4,7 +4,7 @@
     "name": "YoniMC",
     "description": "YoniMC 可能的不一样的世界",
     "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-    "version": [0, 4, 0],
+    "version": [0, 4, 1],
     "min_engine_version": [1, 19, 0]
   },
   "modules": [
@@ -12,7 +12,7 @@
       "description": "data:yoni",
       "type": "data",
       "uuid": "6e360e97-62a7-4515-a052-3813e306488e",
-      "version": [0, 5, 0]
+      "version": [0, 5, 1]
     },
     {
       "description": "scripts:yoni",
