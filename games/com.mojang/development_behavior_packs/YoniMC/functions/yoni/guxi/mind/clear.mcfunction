@@ -19,3 +19,5 @@ scoreboard players reset @s th:flag2
 scoreboard players reset @s th:flag3
 
 scoreboard players reset @s ths:enter
+
+replaceitem entity @s slot.hotbar 8 air
