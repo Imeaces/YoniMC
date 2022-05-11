@@ -16,7 +16,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[ //第二部分，此项目是否用作退出按钮
-              {"selector":"@s[scores={mind:v101=1}]"},
+              {"selector":"@s[scores={mind:v101=1,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"显示"}
             ]}
@@ -39,7 +39,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=2}]"},
+              {"selector":"@s[scores={mind:v101=2,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -62,7 +62,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=3}]"},
+              {"selector":"@s[scores={mind:v101=3,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -85,7 +85,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=4}]"},
+              {"selector":"@s[scores={mind:v101=4,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -108,7 +108,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=5}]"},
+              {"selector":"@s[scores={mind:v101=5,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -131,7 +131,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=6}]"},
+              {"selector":"@s[scores={mind:v101=6,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -154,7 +154,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=7}]"},
+              {"selector":"@s[scores={mind:v101=7,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -177,7 +177,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=8}]"},
+              {"selector":"@s[scores={mind:v101=8,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -190,7 +190,7 @@
           }
         ]}
       },
-      {"translate":"§r%%s调节%%s§r",
+      {"translate":"§r%%s%%s%%s§r",
         "with": {"rawtext":[
           {"translate":"§f%%2",
             "with": {"rawtext":[
@@ -200,7 +200,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=9}]"},
+              {"selector":"@s[scores={mind:v101=9,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"调节"}
             ]}

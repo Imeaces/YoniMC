@@ -4,7 +4,7 @@
     {"rawtext":[{"translate":"%%s§f%%s%%s%%s","with":{"rawtext":[{"translate":"§r%%2","with":{"rawtext":[{"selector":"@s[scores={guxi:energies=..10}]"},{"text":"§l"}]}},{"score":{"objective":"guxi:energies","name":"@s"}},{"translate":"§r%%2","with":{"rawtext":[{"selector":"@s[scores={mind:v105=1}]"},{"translate":"§o§7|§r%%s%%s","with":{"rawtext":[{"translate":"%%2","with":{"rawtext":[{"selector":"@s[scores={guxi:energies=..10}]"},{"text":"§f"},{"text":"§7"}]}},{"score":{"objective":"guxi:energy","name":"@s"}}]}}]}}]}}]},
     //主面板部分
     //分成3行，每行3个，对应with.rawtext[]中的9个{}，以后不再注释
-    {"translate":"%%s  %%s  %%s\n%%s  %%s  %%s\n%%s  %%s  %%s",
+    {"translate":"§r%%s  %%s  %%s\n§r%%s  %%s  %%s\n§r%%s  %%s  %%s",
       "with":{"rawtext":[
       {"translate":"§r%%s%%s%%s§r",
         "with": {"rawtext":[
@@ -16,7 +16,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[ //第二部分，此项目是否用作退出按钮
-              {"selector":"@s[scores={mind:v101=1}]"},
+              {"selector":"@s[scores={mind:v101=1,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"translate":"mining[%%s]",
                 "with": {"rawtext":[
@@ -43,7 +43,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=2}]"},
+              {"selector":"@s[scores={mind:v101=2,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -66,7 +66,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=3}]"},
+              {"selector":"@s[scores={mind:v101=3,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -89,7 +89,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=4}]"},
+              {"selector":"@s[scores={mind:v101=4,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -112,7 +112,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=5}]"},
+              {"selector":"@s[scores={mind:v101=5,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -135,7 +135,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=6}]"},
+              {"selector":"@s[scores={mind:v101=6,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -158,7 +158,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=7}]"},
+              {"selector":"@s[scores={mind:v101=7,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -181,7 +181,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=8}]"},
+              {"selector":"@s[scores={mind:v101=8,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
@@ -194,7 +194,7 @@
           }
         ]}
       },
-      {"translate":"§r%%s调节%%s§r",
+      {"translate":"§r%%s%%s%%s§r",
         "with": {"rawtext":[
           {"translate":"§f%%2",
             "with": {"rawtext":[
@@ -204,7 +204,7 @@
           },
           {"translate":"%%2",
             "with": {"rawtext":[
-              {"selector":"@s[scores={mind:v101=9}]"},
+              {"selector":"@s[scores={mind:v101=9,mind:v102=1}]"},
               {"text":"§r§o§f关闭§r"},
               {"text":"§r§o§7空§r"}
             ]}
