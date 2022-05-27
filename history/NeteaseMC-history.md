@@ -31,3 +31,5 @@
 <https://g79.gdl.netease.com/mcpe-release_2.1.0.162042-Publish-compatible_netease_62_x19_20220330_221914.apk>
 
 <https://g79.gdl.netease.com/mcpe_netease_62_x19_840162567_20220407_102949.apk>
+
+<https://g79.gdl.netease.com/mcpe-release_20220127_2.1-2.1.10.166270-Publish-20220518182622-compatible_netease_62_x19_840166270_20220525_095253.apk>
