@@ -2,24 +2,51 @@
   "format_version": 2,
   "header": {
     "name": "PocketLight",
-    "description": "手上的光源\n\n在beta1.18.10.26进行测试，某些物品仍然不可用\n\n已有功能：\n  1.主手手持特定物品时根据物品类型以及情景设置光块\n  2.自动移除光块\n  3.不覆盖已有的光块",
+    "description": "手上的光源\n\n于beta1.19.10重写",
     "uuid": "c4f369e6-755c-11ec-ab4d-1f5bc29f21d7",
-    "version": [0, 1, 2],
-    "min_engine_version": [1, 18, 10]
+    "version": [0, 2, 0],
+    "min_engine_version": [1, 19, 10]
   },
   "modules": [
     {
       "description": "data:yoni",
       "type": "data",
       "uuid": "c4f366da-755c-11ec-ab4c-6b1bf04ab40a",
-      "version": [0, 0, 1]
+      "version": [0, 1, 1]
+    },
+    {
+      "description": "scripts:yoni",
+      "type": "script",
+      "language": "javascript",
+      "uuid": "c28ec86e-eb4d-11ec-8dd1-97f4918d8910",
+      "version": [0, 1, 0],
+      "entry": "scripts/main.js"
     }
+  ],
+  "dependencies": [
+    /* Gametest需要的依赖项 begin */
+    {
+      //mojang-minecraft
+      "uuid": "b26a4d4c-afdf-4690-88f8-931846312678",
+      "version": [0, 1, 0]
+    },
+    {
+      //mojang-gametest
+      "uuid": "6f4b6893-1bb6-42fd-b458-7fa3d0c89616",
+      "version": [0, 1, 0]
+    },
+    {
+      // mojang-minecraft-ui
+      "uuid": "2bd50a27-ab5f-4f40-a596-3641627c635e",
+      "version": [ 0, 1, 0 ]
+    }
+    /* Gametest需要的依赖项 end */
   ],
   "metadata": {
     "authors": [
       "Silvigarabis"
     ],
-    "license": "MIT License",
+    "license": "CC BY-SA 4.0",
     "url": "https://github.com/Silvigarabis/YoniMC"
   }
 }
