@@ -1,0 +1,1 @@
+guxi:val_2001        need_at_least_amount_of_energy_to_keep_stable

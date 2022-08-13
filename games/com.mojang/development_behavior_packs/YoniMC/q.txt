@@ -1,0 +1,1 @@
+query.is_alive和query.scoreboard哪个更快？

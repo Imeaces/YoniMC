@@ -4,34 +4,41 @@
     "name": "YoniMC",
     "description": "YoniMC 可能的不一样的世界",
     "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-    "version": [0, 4, 1],
-    "min_engine_version": [1, 19, 0]
+    "version": [0, 5, 1],
+    "min_engine_version": [1, 19, 30]
   },
   "modules": [
     {
       "description": "data:yoni",
       "type": "data",
       "uuid": "6e360e97-62a7-4515-a052-3813e306488e",
-      "version": [0, 5, 1]
+      "version": [0, 6, 0]
     },
     {
       "description": "scripts:yoni",
       "type": "script",
       "language": "javascript",
       "uuid": "7537ab86-a509-4029-87bb-2a63e817e798",
-      "version": [0, 1, 0],
+      "version": [0, 3, 0],
       "entry": "scripts/main.js"
     }
   ],
   "dependencies": [
     /* Gametest需要的依赖项 begin */
     {
+      //mojang-minecraft
       "uuid": "b26a4d4c-afdf-4690-88f8-931846312678",
-      "version": [0, 1, 0]
+      "version": "1.0.0-beta"
     },
     {
+      //mojang-gametest
       "uuid": "6f4b6893-1bb6-42fd-b458-7fa3d0c89616",
-      "version": [0, 1, 0]
+      "version": "1.0.0-beta"
+    },
+    {
+      // mojang-minecraft-ui
+      "uuid": "2bd50a27-ab5f-4f40-a596-3641627c635e",
+      "version": "1.0.0-beta"
     }
     /* Gametest需要的依赖项 end */
   ],

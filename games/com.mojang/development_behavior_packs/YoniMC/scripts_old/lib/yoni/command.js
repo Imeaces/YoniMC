@@ -1,5 +1,5 @@
-import { dim } from "scripts/yoni/basis.js";
-import * as minecraft from "scripts/yoni/minecraft.js";
+import { dim } from "scripts/lib/yoni/basis.js";
+import minecraft from "scripts/lib/yoni/minecraft.js";
 
 //need more ideas
 
@@ -41,7 +41,7 @@ export class TargetSelector {
   }
 }
 
-export class Command {
+export default class Command {
   constructor(command){
     if (runCommand("help "+command).statusCode != 0)
       throw new SyntaxError("Unknown command: "+command);
@@ -52,10 +52,10 @@ export class Command {
 
 
   static run(cmd){
-    return runCommand(cmd);
+    runCommand(cmd);
   }
   static execute(runner, command){
-    return executeCommand(runner, command);
+    executeCommand(runner, command);
   }
 }
 
@@ -63,7 +63,7 @@ function executeCommand(runner, command){
   try {
     return runner.runCommand(command);
   } catch(errorJSON){
-    return JSON.parse(errorJSON);
+    return errorJSON;
   }
 }
 

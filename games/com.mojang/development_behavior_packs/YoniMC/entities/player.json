@@ -1,465 +1,301 @@
-{
-  "format_version": "1.18.10",
-  "minecraft:entity": {
+{"format_version": "1.18.20",
+"minecraft:entity": {
     "description": {
-      "identifier": "minecraft:player",
-      "is_spawnable": false,
-      "is_summonable": false,
-      "is_experimental": false,
-      "animations": { // 定义可以运行的动画控制器
-        "funcid": "controller.animation.funcid",
-        // 用于yoni物种系统的动画控制器
-        "species": "controller.animation.yoni.species",
-        "species.minecraft_player": "controller.animation.minecraft.species.player",
-        "species.yoni_guxi": "controller.animation.yoni.species.guxi",
-        // 实体状态
-        "entity.status_alive": "controller.animation.entity.status.alive",
-        "entity.status.is_gliding": "controller.animation.entity.status.is_gliding",
-        "entity.status_attack": "controller.animation.entity.status.attack_time"
-      },
-      "scripts": {
-        "animate": [ //运行动画控制器
-          "funcid",
-          "species",
-          "species.yoni_guxi",
-          "species.minecraft_player",
-          "entity.status_alive",
-          "entity.status.is_gliding",
-          "entity.status_attack"
-        ]
-      }
-    },
-    
-    "events": {
-      "yoni:call_func_return":{"add":{"component_groups":["funcid0"]}},
-      "yoni:call_func1":{"add":{"component_groups":["funcid1"]}},
-      "yoni:call_func2":{"add":{"component_groups":["funcid2"]}},
-      "yoni:call_func3":{"add":{"component_groups":["funcid3"]}},
-      "yoni:call_func4":{"add":{"component_groups":["funcid4"]}},
-      "yoni:call_func5":{"add":{"component_groups":["funcid5"]}},
-      "yoni:call_func6":{"add":{"component_groups":["funcid6"]}},
-      "yoni:call_func7":{"add":{"component_groups":["funcid7"]}},
-      "yoni:call_func8":{"add":{"component_groups":["funcid8"]}},
-      "yoni:call_func9":{"add":{"component_groups":["funcid9"]}},
-      "yoni:call_func10":{"add":{"component_groups":["funcid10"]}},
-      "minecraft:gain_bad_omen": {
-        "add": {
-          "component_groups": [
-            "minecraft:add_bad_omen"
-          ]
-        }
-      },
-      "minecraft:clear_add_bad_omen": {
-        "remove": {
-          "component_groups": [
-            "minecraft:add_bad_omen"
-          ]
-        },
-        "add": {
-          "component_groups": [
-            "minecraft:clear_bad_omen_spell_effect"
-          ]
-        }
-      },
-      "minecraft:trigger_raid": {
-        "add": {
-          "component_groups": [ "minecraft:raid_trigger" ]
-        }
-      },
-      "minecraft:remove_raid_trigger": {
-        "remove": {
-          "component_groups": [ "minecraft:raid_trigger" ]
-        }
-      },
-      "species:being_human": {
-        "add": { "component_groups": [ "species:minecraft_player" ] }
-      },
-      "species:perish_human": {
-        "remove": { "component_groups": [ "species:minecraft_player" ] }
-      },
-      "species:being_guxi": {
-        "add": { "component_groups": [ "species:yoni_guxi" ] }
-      },
-      "species:perish_guxi": {
-        "remove": { "component_groups": [
-          "guxi:attach_resistance",
-          "guxi:none_resistance",
-          "species:yoni_guxi"
-        ]}
-      },
-      "guxi:attach_resistance": {
-        "add": { "component_groups": [ "guxi:attach_resistance" ] }
-      },
-      "guxi:detach_resistance": {
-        "add": { "component_groups": [ "guxi:none_resistance" ] }
-      },
-      "guxi:on_fetch_energy": {
-        //由gametest处理
-      },
-      "guxi:lower_speed": {
-        //由gametest处理
-      },
-      "guxi:adding_energy": {
-        //由gametest处理
-      },
-      "guxi:faster_dropping_energy": {
-        //由gametest处理
-      },
-      "guxi:energy_disorder": {"add": {"component_groups": "guxi:energy_disorder"}}
-    },
+        "identifier": "minecraft:player",
+        "is_spawnable": false,
+        "is_summonable": false,
+        "is_experimental": false,
+    "scripts": {
+        "animate": [
+            "entity.status.alive",
+            "entity.yonimc.effect",
+            "player.yonimc.species.guxi",
+            //{ "condition.guxi.val": "query.variant == 2695" },
+            //{ "status.guxi.health_by_energy_state": "query.variant == 2695" },
+            "player.yonimc.species.vanilla.player"
+    ]},
+    "animations": {
+        "entity.status.alive": "controller.animation.entity.status.alive",
+        "entity.yonimc.effect": "controller.animation.entity.yonimc.effect",
+        //"status.guxi.health_by_energy_state": "controller.animation.entity.status.guxi.health_by_energy_state",
+        "condition.guxi.val": "controller.animation.entity.condition.guxi.val",
+        "player.yonimc.species.guxi": "controller.animation.entity.player.yonimc.species.guxi",
+        "player.yonimc.species.vanilla.player": "controller.animation.entity.player.yonimc.species.vanilla.player",
+        "player.yonimc.species.vanilla": "controller.animation.entity.player.yonimc.species.vanilla"
+    }},
 
-    "component_groups": {
-      "funcid0":{"minecraft:skin_id":{"value":0}},
-      "funcid1":{"minecraft:skin_id":{"value":1}},
-      "funcid2":{"minecraft:skin_id":{"value":2}},
-      "funcid3":{"minecraft:skin_id":{"value":3}},
-      "funcid4":{"minecraft:skin_id":{"value":4}},
-      "funcid5":{"minecraft:skin_id":{"value":5}},
-      "funcid6":{"minecraft:skin_id":{"value":6}},
-      "funcid7":{"minecraft:skin_id":{"value":7}},
-      "funcid8":{"minecraft:skin_id":{"value":8}},
-      "funcid9":{"minecraft:skin_id":{"value":9}},
-      "funcid10":{"minecraft:skin_id":{"value":10}},
-      "guxi:attach_resistance": {
-      //使用能量附加的盾时的防御
-        "minecraft:damage_sensor": {
-          "triggers": [
-            //由附着的能量提供的效果
-            { //高处掉落缓冲
-              "on_damage": {
-                "filters": {
-                  "test": "has_damage",
-                  "value": "fall"
-                },
-                "event": "yoni:call_func1"
-              },
-              "deals_damage": false
-            },
-            {
-              "on_damage": {
-                "filters": {
-                  "test": "has_damage",
-                  "value": "fly_into_wall"
-                },
-                "event": "yoni:call_func1"
-              },
-              "deals_damage": false
-            },
-            //爆炸带来剧烈的能量变化，会扰动咕西自身的能量
-            {
-              "cause": "block_explosion",
-              "on_damage": { //explosion disorder
-                "event": "yoni:call_func5"
-              },
-              "damage_multiplier": 0.35
-            },
-            {
-              "cause": "entity_explosion",
-              "on_damage": {
-                "event": "yoni:call_func5"
-              },
-              "damage_multiplier": 0.35
-            },
-            { "cause": "contact",           "damage_multiplier": 0.1 },
-            { "cause": "entity_attack",     "damage_multiplier": 0.1 },
-            { //传输的能量对于普通的物体来说会引起爆炸，但对于咕西则并不会发生这种事情
-              "on_damage": {
-                "filters": {
-                  "all_of": [
-                    {  "test": "is_family",  "subject": "other", "value": "guxi"  },
-                    {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
-                  ]
-                }, // fetch energy
-                "event": "yoni:call_func2"
-              },
-              "deals_damage": false
-            },
-            //动能的剧烈变化，会对咕西造成巨大的伤害
-            { "cause": "anvil",             "damage_multiplier": 1 },
-            { "cause": "stalactite",        "damage_multiplier": 1 },  //钟乳石 stalactite
-            { "cause": "falling_block",     "damage_multiplier": 1 },
-            { "cause": "projectile",        "damage_multiplier": 0.5 },
-            { "cause": "stalagmite",        "damage_multiplier": 1 }, //石笋 stalagmite
-            //爆炸带来剧烈的能量变化，会扰动咕西自身的能量
-            { "cause": "fireworks",         "damage_multiplier": 0.1 },
-            //咕西本身为能量生物，故不会受到下列伤害
-            { "cause": "suffocation",  "deals_damage": false },
-            { "cause": "drowning",     "deals_damage": false },
-            { "cause": "starve",       "deals_damage": false },
-            { "cause": "magma",        "deals_damage": false },
-            { "cause": "piston",       "deals_damage": false },
-            { "cause": "lightning",    "deals_damage": false },
-            //会被特殊情况影响能量
-            {
-              "deals_damage": false,
-              "on_damage": { //adding energy
-                "filters": {
-                  "test": "has_damage",
-                  "value": "fire_tick"
-                },
-                "event": "yoni:call_func3"
-              }
-            },
-            {
-              "deals_damage": false,
-              "on_damage": { //adding energy
-                "filters": {
-                  "test": "has_damage",
-                  "value": "fire"
-                },
-                "event": "yoni:call_func3"
-              }
-            },
-            {
-              "cause": "freezing",
-              "deals_damage": false,
-              "on_damage": { //drop energy faster
-                "event": "yoni:call_func4"
-              }
-            },
-            {
-              "deals_damage": false,
-              "on_damage": {
-                "filters": {
-                  "test": "has_damage",
-                  "value": "lava"
-                },
-                "event": "yoni:call_func3"
-              }
-            }
-          ]
-        }
-      },
-      "guxi:none_resistance": {
-      //未使用能量附加的盾时的防御
-        "minecraft:damage_sensor": {
-          "triggers": [
-            { //传输的能量对于普通的物体来说会引起爆炸，但对于咕西则并不会发生这种事情
-              "on_damage": {
-                "filters": {
-                  "all_of": [
-                    {  "test": "is_family",  "subject": "other", "value": "guxi"  },
-                    {  "test": "is_family",  "subject": "other", "value": "flow_energy"  }
-                  ]
-                },
-                "event": "yoni:call_func2"
-              },
-              "deals_damage": false
-            },
-            //动能的剧烈变化，会对咕西造成巨大的伤害
-            { "cause": "anvil",             "damage_multiplier": 6 },
-            { "cause": "stalactite",        "damage_multiplier": 5 },  //钟乳石 stalactite
-            { "cause": "falling_block",     "damage_multiplier": 4 },
-            { "cause": "projectile",        "damage_multiplier": 2 },
-            { "cause": "fly_into_wall",     "damage_multiplier": 10 },
-            { "cause": "stalagmite",        "damage_multiplier": 3 }, //石笋 stalagmite
-            { "cause": "fall",              "damage_multiplier": 3 },
-            //爆炸带来剧烈的能量变化，会扰动咕西自身的能量
-            { "cause": "block_explosion",   "damage_multiplier": 3 },
-            { "cause": "entity_explosion",  "damage_multiplier": 3 },
-            { "cause": "fireworks",         "damage_multiplier": 1.5 },
-            //咕西本身较为脆弱，普通的攻击也可能会带来较大的伤害
-            { "cause": "entity_attack",     "damage_multiplier": 3 },
-            //由于在刺穿时自身会进行修复，缓慢穿刺带来的伤害较小
-            { "cause": "contact",           "damage_multiplier": 0.5 },
-            //咕西本身为能量生物，故不会受到下列伤害
-            { "cause": "suffocation",  "deals_damage": false },
-            { "cause": "drowning",     "deals_damage": false },
-            { "cause": "starve",       "deals_damage": false },
-            { "cause": "magma",        "deals_damage": false },
-            { "cause": "piston",       "deals_damage": false },
-            { "cause": "lightning",    "deals_damage": false },
-            //会被特殊情况影响能量
-            {
-              "deals_damage": false,
-              "on_damage": { //adding energy
-                "filters": {
-                  "test": "has_damage",
-                  "value": "fire_tick"
-                },
-                "event": "yoni:call_func3"
-              }
-            },
-            {
-              "deals_damage": false,
-              "on_damage": { //adding energy
-                "filters": {
-                  "test": "has_damage",
-                  "value": "fire"
-                },
-                "event": "yoni:call_func3"
-              }
-            },
-            {
-              "cause": "freezing",
-              "deals_damage": false,
-              "on_damage": { //drop energy faster
-                "event": "yoni:call_func4"
-              }
-            },
-            {
-              "deals_damage": false,
-              "on_damage": {
-                "filters": {
-                  "test": "has_damage",
-                  "value": "lava"
-                },
-                "event": "yoni:call_func3"
-              }
-            }
-          ]
-        }
-      },
-      "species:yoni_guxi": {
-        "minecraft:variant": { "value": 2695 },
-        "minecraft:type_family": { "family": [ "guxi", "mob", "yoni", "energy_entity" ] },
-        "minecraft:health": { "max": 60, "value": 60, "min": 0 },
-        "minecraft:attack": { "damage": 0 },
-        "minecraft:breathable": { "breathes_air": true, "breathes_water": true, "breathes_lava": true, "breathes_solids": true, "generates_bubbles": false },
-        "minecraft:nameable": { "always_show": false, "allow_name_tag_renaming": false },
-        "minecraft:is_hidden_when_invisible": {},
-        "minecraft:block_climber": true,
-        "minecraft:can_climb": true,
-        "minecraft:loot": { "table": "loot_tables/empty.json" },
-        "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
-        "minecraft:scale": { "value": 0.76 },
-        "minecraft:movement": { "value": 0.1 },
-        "minecraft:physics": {}
-      },
-      "minecraft:add_bad_omen": {
+"component_groups": {
+    "minecraft:add_bad_omen": {
         "minecraft:spell_effects": {
-          "add_effects": [
-            {
-              "effect": "bad_omen",
-              "duration": 6000,
-              "visible": false,
-              "display_on_screen_animation": true
-            }
-          ]
-        },
-        "minecraft:timer": {
-          "time": [ 0.0, 0.0 ],
-          "looping": false,
-          "time_down_event": {
-            "event": "minecraft:clear_add_bad_omen",
-            "target": "self"
-          }
-        }
-      },
-      "minecraft:clear_bad_omen_spell_effect": {
-        "minecraft:spell_effects": {}
-      },
-      "minecraft:raid_trigger": {
+            "add_effects": [
+                { "effect": "bad_omen", "duration": 6000, "visible": false, "display_on_screen_animation": true }
+        ]},
+        "minecraft:timer": { "time": [ 0.0, 0.0 ], "looping": false,
+            "time_down_event": {
+                "event": "minecraft:clear_add_bad_omen",
+                "target": "self"
+        }}},
+        
+    "minecraft:clear_bad_omen_spell_effect": {
+        "minecraft:spell_effects": {}},
+            
+    "minecraft:raid_trigger": {
         "minecraft:raid_trigger": {
-          "triggered_event": {
-            "event": "minecraft:remove_raid_trigger",
-            "target": "self"
-          }
-        },
+            "triggered_event": {
+                "event": "minecraft:remove_raid_trigger",
+                "target": "self"}},
         "minecraft:spell_effects": {
-          "remove_effects": "bad_omen"
-        }
-      },
-      "species:minecraft_player":{
-        "minecraft:variant": { "value": 42 },
-        "minecraft:health": { "max": 20, "value": 20, "min": 0 },
+            "remove_effects": "bad_omen"}
+        },
+    
+    "minecraft:as_player":{
         "minecraft:experience_reward": {
-          "on_death": "Math.Min(query.player_level * 7, 100)"
+            "on_death": "Math.Min(query.player_level * 7, 100)"
         },
         "minecraft:type_family": {
-          "family": [ "player" ]
+            "family": [ "player" ]
         },
         "minecraft:is_hidden_when_invisible": {
         },
         "minecraft:loot": {
-          "table": "loot_tables/empty.json"
+            "table": "loot_tables/empty.json"
+        },
+        "minecraft:collision_box": {
+            "width": 0.6,
+            "height": 1.8
         },
         "minecraft:can_climb": {
         },
         "minecraft:movement": {
-          "value": 0.1
+            "value": 0.1
         },
         "minecraft:hurt_on_condition": {
-          "damage_conditions": [
-            {
-              "filters": { "test": "in_lava", "subject": "self", "operator": "==", "value": true },
-              "cause": "lava",
-              "damage_per_tick": 4
-            }
-          ]
+            "damage_conditions": [
+                {
+                    "filters": { "test": "in_lava", "subject": "self", "operator": "==", "value": true },
+                    "cause": "lava",
+                    "damage_per_tick": 4
+                }
+            ]
         },
         "minecraft:attack": {
-          "damage": 1
+            "damage": 1
+        },
+        "minecraft:exhaustion_values": {
+            "heal": 6,
+            "jump": 0.05,
+            "sprint_jump": 0.2,
+            "mine": 0.005,
+            "attack": 0.1,
+            "damage": 0.1,
+            "walk": 0.0,
+            "sprint": 0.01,
+            "swim": 0.01
+        },
+        "minecraft:player.saturation": {
+            "value": 5,
+            "max": 20
+        },
+        "minecraft:player.exhaustion": {
+            "value": 0,
+            "max": 20
+        },
+        "minecraft:health": {
+            "value": 20,
+            "max": 20,
+            "min": 0
+        },
+        "minecraft:player.level": {
+            "value": 0,
+            "max": 24791
+        },
+        "minecraft:player.experience": {
+            "value": 0,
+            "max": 1
         },
         "minecraft:breathable": {
-          "total_supply": 15,
-          "suffocate_time": -1,
-          "inhale_time": 3.75,
-          "generates_bubbles": false
+            "total_supply": 15,
+            "suffocate_time": -1,
+            "inhale_time": 3.75,
+            "generates_bubbles": false
         },
         "minecraft:nameable": {
-          "always_show": true,
-          "allow_name_tag_renaming": false
+            "always_show": true,
+            "allow_name_tag_renaming": false
         },
         "minecraft:physics": {
         },
         "minecraft:pushable": {
-          "is_pushable": false,
-          "is_pushable_by_piston": true
+            "is_pushable": false,
+            "is_pushable_by_piston": true
         },
         "minecraft:insomnia": {
-          "days_until_insomnia": 3
+            "days_until_insomnia": 3
         },
         "minecraft:rideable": {
-          "seat_count": 2,
-          "family_types": [
-            "parrot_tame"
-          ],
-          "pull_in_entities": true,
-          "seats": [
-            {
-              "position": [ 0.4, -0.2, -0.1 ],
-              "min_rider_count": 0,
-              "max_rider_count": 0,
-              "lock_rider_rotation": 0
-            },
-            {
-              "position": [ -0.4, -0.2, -0.1 ],
-              "min_rider_count": 1,
-              "max_rider_count": 2,
-              "lock_rider_rotation": 0
-            }
-          ]
+            "seat_count": 2,
+            "family_types": [
+                "parrot_tame"
+            ],
+            "pull_in_entities": true,
+            "seats": [
+                {
+                    "position": [ 0.4, -0.2, -0.1 ],
+                    "min_rider_count": 0,
+                    "max_rider_count": 0,
+                    "lock_rider_rotation": 0
+                },
+                {
+                    "position": [ -0.4, -0.2, -0.1 ],
+                    "min_rider_count": 1,
+                    "max_rider_count": 2,
+                    "lock_rider_rotation": 0
+                }
+            ]
         },
         "minecraft:block_climber": {},
         "minecraft:environment_sensor": {
-          "triggers": {
-            "filters": {
-              "all_of": [
-                {
-                  "test": "has_mob_effect",
-                  "subject": "self",
-                  "value": "bad_omen"
+            "triggers": {
+                "filters": {
+                    "all_of": [
+                        {
+                            "test": "has_mob_effect",
+                            "subject": "self",
+                            "value": "bad_omen"
+                        },
+                        {
+                            "test": "is_in_village",
+                            "subject": "self",
+                            "value": true
+                        }
+                    ]
                 },
-                {
-                  "test": "is_in_village",
-                  "subject": "self",
-                  "value": true
-                }
-              ]
-            },
-            "event": "minecraft:trigger_raid"
-          }
+                "event": "minecraft:trigger_raid"
+            }
         }
-      }
+    },
+    "setvalue:30:mark_variant": {"minecraft:mark_variant": { "value": 30 }},
+    "setvalue:20:mark_variant": {"minecraft:mark_variant": { "value": 20 }},
+    "setvalue:2695:variant": {"minecraft:variant": { "value": 2695 }},
+    "setvalue:0:variant": {"minecraft:variant": { "value": 0 }},
+    "setvalue:42:variant": {"minecraft:variant": { "value": 42 }},
+    "yonimc:as_guxi": {
+        "minecraft:movement": { "value": 0.35 },
+        "minecraft:nameable": { "always_show": true, "allow_name_tag_renaming": false },
+        "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
+        "minecraft:breathable": {
+            "breathes_air": true,
+            "breathes_water": true,
+            "breathes_lava": true,
+            "breathes_solids": true,
+            "generates_bubbles": false},
+        "minecraft:is_hidden_when_invisible": {},
+        "minecraft:physics": {},
+        "minecraft:pushable": { "is_pushable": false, "is_pushable_by_piston": true },
+        "minecraft:scale": { "value": 0.76 },
+        "minecraft:block_climber": {},
+        "minecraft:type_family": { "family": [ "yonimc", "energy", "guxi" ] }
+    },
+    "guxi:default_family": {
+        "minecraft:type_family": { "family": [ "yonimc", "energy", "guxi" ] }
+    },
+    "guxi:like_player": {
+        "minecraft:type_family": { "family": [ "yonimc", "energy", "guxi", "player" ] }
+    },
+    "guxi:env_seneor": {
+        "minecraft:environment_sensor": { "triggers": [
+            {
+                "filters": { "test": "is_mark_variant","value": 30 },
+                "event": "append:guxi_in_enough_energy"
+            },
+            {
+                "filters": { "test": "is_mark_variant","value": 20 },
+                "event": "append:guxi_in_low_energy"
+            }
+        ]}
+    },
+    
+    "guxi:in_plenty_energy": {"minecraft:health": {"max": 50,"min": 1}},
+    "guxi:in_enough_energy": {"minecraft:health": {"max": 35,"min": 0}},
+    "guxi:in_low_energy": {"minecraft:health": {"max": 5,"min": 0}}
+
+},
+"components": {
+    "minecraft:conditional_bandwidth_optimization": {}
+    
+},
+"events": {
+    "remove:all": {
+        "remove": { "component_groups": [
+            "yonimc:as_guxi",
+            "minecraft:as_player",
+            "guxi:in_enough_energy",
+            "guxi:in_low_energy",
+            "guxi:env_seneor"
+        ] }
+        
     },
 
-    "components": {
-      "minecraft:conditional_bandwidth_optimization": {},
-      "minecraft:player.saturation": { "value": 20 },
-      "minecraft:player.exhaustion": { "value": 0, "max": 4 },
-      "minecraft:player.level": { "value": 0, "max": 24791 },
-      "minecraft:player.experience": { "value": 0, "max": 1 }
+    "guxi:like_player": {
+        "add": { "component_groups": [ "guxi:like_player" ] }
+    
+    },
+    
+    "guxi:not_like_player": {
+        "add": { "component_groups": [ "guxi:default_family" ] }
+    
+    },
+    
+    "append:minecraft_as_player": {
+        "add": { "component_groups": [ "minecraft:as_player" ] }
+            
+    },
+    
+    "append:guxi_in_low_energy": {"add": { "component_groups": [ "guxi:in_low_energy" ] }},
+    "append:guxi_in_enough_energy": {"add": { "component_groups": [ "guxi:in_enough_energy" ] }},
+    "append:guxi_in_plenty_energy": {"add": { "component_groups": [ "guxi:in_plenty_energy" ] }},
+            
+    "setvalue:30:mark_variant": {"add": { "component_groups": [ "setvalue:30:mark_variant" ] }},
+    "setvalue:20:mark_variant": {"add": { "component_groups": [ "setvalue:20:mark_variant" ] }},
+    "setvalue:0:variant": {"add": { "component_groups": [ "setvalue:0:variant" ] }},
+    "setvalue:42:variant": {"add": { "component_groups": [ "setvalue:42:variant" ] }},
+    "setvalue:2695:variant": {"add": { "component_groups": [ "setvalue:2695:variant" ] }},
+    
+    "minecraft:gain_bad_omen": {
+        "add": {
+            "component_groups": [
+                "minecraft:add_bad_omen"
+            ]
+        }
+    },
+    "minecraft:clear_add_bad_omen": {
+        "remove": {
+            "component_groups": [
+                "minecraft:add_bad_omen"
+            ]
+        },
+        "add": {
+            "component_groups": [
+                "minecraft:clear_bad_omen_spell_effect"
+            ]
+        }
+    },
+    "minecraft:trigger_raid": {
+        "add": {
+            "component_groups": [ "minecraft:raid_trigger" ]
+        }
+    },
+    "minecraft:remove_raid_trigger": {
+        "remove": {
+            "component_groups": [ "minecraft:raid_trigger" ]
+        }
     }
-  }
+
+//events end
+}
+
+//minecraft:entity end
+}
+
+//object end
 }

@@ -1,0 +1,72 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.entity.player.yonimc.species.guxi": {
+            //while (true)
+            //    run func
+            "initial_state": "init",
+            "states": {
+                "init": {
+                    "transitions": [
+                        { "init_spawn_wait1": "(query.scoreboard('species') == 2695 && query.variant != 2695)" },
+                        { "init_drop": "(query.scoreboard('species') != 2695 && query.variant == 2695)" },
+                        { "loop0": "query.variant == 2695"}
+                    ],
+                    "on_entry": [
+                    ]
+                },
+                "init_spawn_wait1": {
+                    "transitions": [
+                        { "init_spawn_wait2": "(1.0)" }
+                    ]
+                },
+                "init_spawn_wait2": {
+                    "transitions": [
+                        { "init_spawn_start": "(1.0)" }
+                    ]
+                },
+                "init_spawn_start": {
+                    "transitions": [
+                        { "init": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "@s remove:all",
+                        "@s append:yonimc_as_guxi",
+                        "@s setvalue:2695:variant",
+                        "/say species as guxi"
+                    ]
+                },
+                "init_drop": {
+                    "transitions": [
+                        { "init": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "@s remove:all",
+                        "@s setvalue:0:variant",
+                        "/say species drop guxi"
+                    ]
+                },
+                "loop0": {
+                    "transitions": [
+                        { "loop1": "query.scoreboard('species') == 2695" },
+                        { "init": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "v.species_vaild = 1;",
+                        "/function yonimc/species/guxi/player"
+                    ]
+                },
+                "loop1": {
+                    "transitions": [
+                        { "loop0": "query.scoreboard('species') == 2695" },
+                        { "init": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "v.species_vaild = 1;",
+                        "/function yonimc/species/guxi/player"
+                    ]
+                }
+            }
+        }
+    }
+}
