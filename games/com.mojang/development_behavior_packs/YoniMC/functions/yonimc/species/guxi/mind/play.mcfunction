@@ -1,12 +1,12 @@
 #初始化
-# 记录当前想法
+#:var mind 记录当前想法
 scoreboard objectives add mind dummy
 scoreboard players add @s mind 0
 
-# 记录已经决定想法
+#:var mind:enter 记录已经决定想法
 scoreboard objectives add mind:enter dummy
 scoreboard players set @s mind:enter 0
-# 记录当前slot物品
+#:var mind:slot 记录当前slot物品
 scoreboard objectives add mind:slot dummy
 
 # 记录当前是否持握slot物品

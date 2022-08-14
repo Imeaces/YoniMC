@@ -8,9 +8,9 @@
             "states": {
                 "init": {
                     "transitions": [
-                        { "init_spawn_wait1": "(query.scoreboard('species') == 42 && query.variant != 42)" },
-                        { "init_drop": "(query.scoreboard('species') != 42 && query.variant == 42)" },
-                        { "loop0": "query.variant == 42"}
+                        { "init_spawn_wait1": "(query.scoreboard('species') == 42 && !query.has_any_family('minecraft_player'))" },
+                        { "init_drop": "(query.scoreboard('species') != 42 && query.has_any_family('minecraft_player'))" },
+                        { "loop0": "query.has_any_family('minecraft_player')"}
                     ],
                     "on_entry": [
                     ]

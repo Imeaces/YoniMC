@@ -51,4 +51,22 @@ scoreboard objectives add guxi:ef_res dummy
 #var default guxi:ef_res 0
 scoreboard players operation @s guxi:ef_res = default_resistance_affect guxi:values
 
-tell @s 设置了自己使用的变量
+#var guxi:ef_fireimmu - use effect to modify guxi's fire immune 
+scoreboard objectives add guxi:ef_fireimmu dummy
+#var default guxi:ef_fireimmu 0
+scoreboard players operation @s guxi:ef_fireimmu = default_fire_immune_affect guxi:values
+
+#var guxi:ef_res - use value to keep guxi's resistance 
+scoreboard objectives add guxi:keep_res dummy
+#var default guxi:keep_res 0
+scoreboard players set @s guxi:keep_res 0
+
+#var guxi:like_player 0n 1y 2no
+scoreboard objectives add guxi:like_player dummy
+scoreboard players set @s guxi:like_player 0
+
+#var guxi:exp_st
+scoreboard objectives add guxi:exp_st dummy
+scoreboard players operation @s guxi:exp_st = default_max_exp_energy_volume guxi:values
+
+#tell @s 设置了自己使用的变量

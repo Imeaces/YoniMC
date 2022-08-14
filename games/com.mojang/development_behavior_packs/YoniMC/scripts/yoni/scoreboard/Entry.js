@@ -3,7 +3,7 @@ import {
     Player as VanillaPlayer,
     Entity as VanillaEntity
 } from "mojang-minecraft";
-import { vanillaScoreboard } from "scripts/yoni/basis.js";
+import { VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
 import EntryType from "scripts/yoni/scoreboard/EntryType.js";
 
 let idRecords = new Map();
@@ -18,7 +18,7 @@ export default class Entry {
     
     static getEntries(){
         let entries = [];
-        Array.from(vanillaScoreboard.getParticipants()).forEach((scbId) => {
+        Array.from(VanillaScoreboard.getParticipants()).forEach((scbId) => {
             let entry = this.getEntry(scbId);
             if (!entries.includes(entry))
                 entries.push(entry);
@@ -28,8 +28,42 @@ export default class Entry {
     }
     
     static getEntry(id, type, displayName, entity){
+        //只传入一个参数时
+        if (id != null && type == null && displayName == null && entity == null){
+            if (id instanceof Minecraft.Player || id instanceof Minecraft.Entity){ //实体
+                entity = id;
+                id = null;
+                if (entity instanceof Minecraft.Player)
+                   type = EntryType.PLAYER;
+                else if (entity instanceof Minecraft.Entity)
+                   type = EntryType.Entity
+            } else if (isNaN(Number(id)) && typeof id == "string"){ //名字/假玩家
+                displayName = id;
+                type = EntryType.FAKE_PLAYER;
+                id = null;
+            } else if (!isNaN(Number(id))){
+                let vanillaScbId;
+                for (let s of VanillaScoreboard.getParticipants()){
+                    if (id == s.id){
+                        vanillaScbId = s;
+                        break;
+                    }
+                }
+                if (vanillaScbId != null){
+                    id = vanillaScbId;
+                } else {
+                    throw new Error("Could not get info from number id "+id);
+                }
+            }
+        }
+        //scbid, null, null, null
+        //number, null, null, null
+        //null, entity type, null, entity
+        //null, fake, name, null
+
+        //根据原版scbid获取需要的信息
         let vanillaScbId;
-        if (id instanceof VanillaScoreboardIdentity){
+        if (id instanceof Minecraft.ScoreboardIdentity){
             vanillaScbId = id;
             id = vanillaScbId.id;
             type = vanillaScbId.type;
@@ -47,16 +81,20 @@ export default class Entry {
             }
             
         }
-
+        
+        //从entry记录中获取信息
         let entityRecord;
         let idRecord;
         let nameRecord;
         let record;
         
+        //实体从实体获取
         if (type != EntryType.FAKE_PLAYER && entity != null)
             entityRecord = entityRecords.get(entity);
+        //如果是数字id则从数字id获取
         if (!isNaN(Number(id)))
             idRecord = idRecords.get(id);
+        //假玩家从假玩家获取
         if (type == EntryType.FAKE_PLAYER && displayName != null)
             nameRecord = nameRecords.get(displayName);
         
@@ -88,14 +126,16 @@ export default class Entry {
                 throw new TypeError("Unknown type "+type)
         }
         
+        //如果没有记录，并且获取到了scbid
         if (record == null){
             if (vanillaScbId != null){
                 record = new Entry(vanillaScbId);
-            } else {
+            } else { //如果没有获取到scbid，先创建没有scbid的
                 record = new Entry(id, type, displayName, entity);
             }
         }
         
+        //如果记录不为空或者根据信息成功，记录到记录
         if (record != null){
             switch (type){
                 // FAKE_PLAYER 优先 name
@@ -167,7 +207,7 @@ export default class Entry {
     get vanillaScbId(){
         if (this.#vanillaScbId == null){
             if (this.#type == EntryType.FAKE_PLAYER && this.#displayName != null){
-                for (let s of vanillaScoreboard.getParticipants()){
+                for (let s of VanillaScoreboard.getParticipants()){
                     if (this.#displayName == s.displayName){
                         this.#setValueByVanillaScbId(s);
                         break;
@@ -193,7 +233,7 @@ export default class Entry {
      * this constructor CANNOT make the entry unique
      */
     constructor(id, type, displayName, entity){
-        if (id instanceof VanillaScoreboardIdentity)
+        if (id instanceof Minecraft.ScoreboardIdentity)
         {
             this.#setValueByVanillaScbId(id);
         } else if (typeof id == "number" && !isNaN(Number(id)) && entity == null && type == null && displayName == null)
@@ -226,7 +266,7 @@ export default class Entry {
     
     #setValueByNumberId(id){
         let vanillaScbId;
-        for (let s of vanillaScoreboard.getParticipants()){
+        for (let s of VanillaScoreboard.getParticipants()){
             if (id == s.id){
                 vanillaScbId = s;
                 break;

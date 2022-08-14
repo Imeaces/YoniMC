@@ -1,7 +1,5 @@
-import { world } from "mojang-minecraft";
-let vanillaEvents = world.events;
-
-let schedules = [];
+import { VanillaEvents }  from "scripts/yoni/basis.js";
+import { Listener } from "scripts/yoni/Listener.js";
 
 export default class ChatCommand {
     static #prefix = "!";
@@ -140,16 +138,9 @@ export default class ChatCommand {
     }
 }
 
-function runCommandSchedules(schedules){
-    while (schedules.length > 0){
-        try {
-            schedules.shift()();
-        } catch(e) {
-        }
-    }
-}
 
-vanillaEvents.beforeChat.subscribe((event) => {
+export { ChatCommand }
+
+Listener(VanillaEvents.beforeChat, (event) => {
     ChatCommand.receiveBeforeChatEvent(event);
 });
-vanillaEvents.tick.subscribe(() => runCommandSchedules(schedules));

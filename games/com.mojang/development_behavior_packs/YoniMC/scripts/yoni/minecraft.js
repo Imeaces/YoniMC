@@ -1,4 +1,6 @@
-export function isEducationEdition(){
-  //function not implemented 
-  return false;
+export class MinecraftMeta {
+    static isEducationEdition(){
+      //function not implemented 
+        return false;
+    }
 }

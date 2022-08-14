@@ -13,7 +13,7 @@ execute if score @s var_0 matches 881 run scoreboard players set @s arg_0 15
 execute if score @s var_0 matches 881 run scoreboard players set @s arg_1 70
 execute if score @s var_0 matches 881 run scoreboard players operation @s arg_0 *= @s guxi:ef_speed
 execute if score @s var_0 matches 881 run scoreboard players operation @s arg_1 *= @s guxi:ef_speed
-execute if score @s var_0 matches 881 run scoreboard players remove @s guxi:ef_speed 1
+execute if score @s guxi:ef_speed > default_speed_affect guxi:values run scoreboard players remove @s guxi:ef_speed 1
 execute if score @s var_0 matches 881 run function yonimc/guxi/energy/drop_randomly
 
 # effect about guxi:ef_mining
@@ -23,7 +23,7 @@ execute if score @s var_0 matches 531 run scoreboard players set @s arg_0 27
 execute if score @s var_0 matches 531 run scoreboard players set @s arg_1 142
 execute if score @s var_0 matches 531 run scoreboard players operation @s arg_0 *= @s guxi:ef_mining
 execute if score @s var_0 matches 531 run scoreboard players operation @s arg_1 *= @s guxi:ef_mining
-execute if score @s var_0 matches 531 run scoreboard players remove @s guxi:ef_mining 1
+execute if score @s guxi:ef_mining > default_mining_affect guxi:values run scoreboard players remove @s guxi:ef_mining 1
 execute if score @s var_0 matches 531 run function yonimc/guxi/energy/drop_randomly
 
 
@@ -34,7 +34,7 @@ execute if score @s var_0 matches -662 run scoreboard players set @s arg_0 49
 execute if score @s var_0 matches -662 run scoreboard players set @s arg_1 752
 execute if score @s var_0 matches -662 run scoreboard players operation @s arg_0 *= @s guxi:ef_damage
 execute if score @s var_0 matches -662 run scoreboard players operation @s arg_1 *= @s guxi:ef_damage
-execute if score @s var_0 matches -662 run scoreboard players remove @s guxi:ef_damage 1
+execute if score @s guxi:ef_damage > default_damage_affect guxi:values run scoreboard players remove @s guxi:ef_damage 1
 execute if score @s var_0 matches -662 run function yonimc/guxi/energy/drop_randomly
 
 
@@ -45,5 +45,16 @@ execute if score @s var_0 matches 471 run scoreboard players set @s arg_0 49
 execute if score @s var_0 matches 471 run scoreboard players set @s arg_1 752
 execute if score @s var_0 matches 471 run scoreboard players operation @s arg_0 *= @s guxi:ef_res
 execute if score @s var_0 matches 471 run scoreboard players operation @s arg_1 *= @s guxi:ef_res
+execute if entity @s[scores={guxi:ef_res=1..,guxi:keep_res=0}] run scoreboard players remove @s guxi:ef_res 1
 execute if score @s var_0 matches 471 run function yonimc/guxi/energy/drop_randomly
+
+# effect about guxi:ef_fireimmu
+execute if entity @s[scores={guxi:ef_fireimmu=!0}] run function yonimc/guxi/effect/fire_immune
+execute if score @s guxi:ef_fireimmu matches 1.. run scoreboard players set @s var_0 134
+execute if score @s var_0 matches 134 run scoreboard players set @s arg_0 160
+execute if score @s var_0 matches 134 run scoreboard players set @s arg_1 390
+execute if score @s var_0 matches 134 run scoreboard players operation @s arg_0 *= @s guxi:ef_fireimmu
+execute if score @s var_0 matches 134 run scoreboard players operation @s arg_1 *= @s guxi:ef_fireimmu
+execute if score @s var_0 matches 134 run scoreboard players remove @s guxi:ef_fireimmu 4
+execute if score @s var_0 matches 134 run function yonimc/guxi/energy/raise_randomly
 

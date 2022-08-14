@@ -8,7 +8,7 @@ import {
     Player as VanillaPlayer,
     ScoreboardIdentity as VanillaScoreboardIdentity
 } from "mojang-minecraft";
-import { execCmd as execCommand, dim, vanillaScoreboard } from "scripts/yoni/basis.js";
+import { execCmd as execCommand, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
 
 export default class Objective {
     #isUnregistered = false;
@@ -37,7 +37,7 @@ export default class Objective {
             result = true;
         } else {
             try {
-                vanillaScoreboard.getObjective(this.#id);
+                VanillaScoreboard.getObjective(this.#id);
             } catch {
                 result = true;
                 this.unregister();
@@ -164,21 +164,9 @@ export default class Objective {
     getScoreInfo(entry, autoInit=false){
         if (this.isUnregistered) throw new Error("Objective has been removed!");
         
-        if ((entry instanceof VanillaEntity || entry instanceof VanillaPlayer) && entry != null){
-            let isPlayer = (entry instanceof VanillaPlayer);
-            let entity = entry;
+        if (!(entry instanceof Entry))
+            entry = Entry.getEntry(entry, null, null, null);
 
-            let type;
-            if (isPlayer){
-                type = EntryType.PLAYER;
-            } else {
-                type = EntryType.EMTITY;
-            }
-
-            entry = Entry.getEntry(null, type, null, entity);
-        }
-        if (entry instanceof VanillaScoreboardIdentity)
-            entry = Entry.getEntry(entry);
         if (!(entry instanceof Entry))
             throw new TypeError("Not an Entry type or cannot cover to an Entry");
 

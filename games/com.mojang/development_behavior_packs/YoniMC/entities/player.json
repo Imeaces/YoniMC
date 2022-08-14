@@ -53,7 +53,7 @@
             "on_death": "Math.Min(query.player_level * 7, 100)"
         },
         "minecraft:type_family": {
-            "family": [ "player" ]
+            "family": [ "player", "minecraft_player" ]
         },
         "minecraft:is_hidden_when_invisible": {
         },
@@ -180,7 +180,7 @@
     "setvalue:0:variant": {"minecraft:variant": { "value": 0 }},
     "setvalue:42:variant": {"minecraft:variant": { "value": 42 }},
     "yonimc:as_guxi": {
-        "minecraft:movement": { "value": 0.35 },
+        "minecraft:movement": { "value": 0.40 },
         "minecraft:nameable": { "always_show": true, "allow_name_tag_renaming": false },
         "minecraft:collision_box": { "width": 0.6, "height": 1.8 },
         "minecraft:breathable": {
@@ -193,14 +193,15 @@
         "minecraft:physics": {},
         "minecraft:pushable": { "is_pushable": false, "is_pushable_by_piston": true },
         "minecraft:scale": { "value": 0.76 },
+        "minecraft:can_climb": {},
         "minecraft:block_climber": {},
-        "minecraft:type_family": { "family": [ "yonimc", "energy", "guxi" ] }
+        "minecraft:type_family": { "family": [ "yoni_guxi", "yonimc", "energy", "guxi" ] }
     },
     "guxi:default_family": {
-        "minecraft:type_family": { "family": [ "yonimc", "energy", "guxi" ] }
+        "minecraft:type_family": { "family": [ "yoni_guxi","yonimc", "energy", "guxi" ] }
     },
     "guxi:like_player": {
-        "minecraft:type_family": { "family": [ "yonimc", "energy", "guxi", "player" ] }
+        "minecraft:type_family": { "family": [ "yoni_guxi","yonimc", "energy", "guxi", "player" ] }
     },
     "guxi:env_seneor": {
         "minecraft:environment_sensor": { "triggers": [
@@ -215,7 +216,7 @@
         ]}
     },
     
-    "guxi:in_plenty_energy": {"minecraft:health": {"max": 50,"min": 1}},
+    "guxi:in_plenty_energy": {"minecraft:health": {"max": 50,"min": 0}},
     "guxi:in_enough_energy": {"minecraft:health": {"max": 35,"min": 0}},
     "guxi:in_low_energy": {"minecraft:health": {"max": 5,"min": 0}}
 
@@ -248,6 +249,11 @@
     
     "append:minecraft_as_player": {
         "add": { "component_groups": [ "minecraft:as_player" ] }
+            
+    },
+    
+    "append:yonimc_as_guxi": {
+        "add": { "component_groups": [ "yonimc:as_guxi" ] }
             
     },
     

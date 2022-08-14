@@ -1,4 +1,4 @@
-import { StatusCode, execCmd, dim, vanillaScoreboard } from "scripts/yoni/basis.js";
+import { StatusCode, execCmd, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
 import Objective from "scripts/yoni/scoreboard/Objective.js";
 import DisplaySlot from "scripts/yoni/scoreboard/DisplaySlot.js";
 
@@ -43,7 +43,7 @@ export default class SimpleScoreboard {
         let objective = this.#objectives.get(name);
         let vanillaObjective;
         try {
-            vanillaObjective = vanillaScoreboard.getObjective(name);
+            vanillaObjective = VanillaScoreboard.getObjective(name);
         } catch {}
         
         if (objective != null && !objective.isUnregistered){
@@ -58,7 +58,7 @@ export default class SimpleScoreboard {
     }
 
     static getObjectives(){
-        let vanillaObjectives = vanillaScoreboard.getObjectives();
+        let vanillaObjectives = VanillaScoreboard.getObjectives();
         let objectives = [];
         for (let vanillaObj of vanillaObjectives){
            objectives.push(this.getObjective(vanillaObj.id));

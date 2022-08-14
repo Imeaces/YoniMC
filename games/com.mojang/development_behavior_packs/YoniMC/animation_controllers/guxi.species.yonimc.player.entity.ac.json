@@ -8,9 +8,9 @@
             "states": {
                 "init": {
                     "transitions": [
-                        { "init_spawn_wait1": "(query.scoreboard('species') == 2695 && query.variant != 2695)" },
-                        { "init_drop": "(query.scoreboard('species') != 2695 && query.variant == 2695)" },
-                        { "loop0": "query.variant == 2695"}
+                        { "init_spawn_wait1": "(query.scoreboard('species') == 2695 && !query.has_any_family('yoni_guxi'))" },
+                        { "init_drop": "(query.scoreboard('species') != 2695 && query.has_any_family('yoni_guxi'))" },
+                        { "loop0": "query.has_any_family('yoni_guxi')"}
                     ],
                     "on_entry": [
                     ]
@@ -32,7 +32,6 @@
                     "on_entry": [
                         "@s remove:all",
                         "@s append:yonimc_as_guxi",
-                        "@s setvalue:2695:variant",
                         "/say species as guxi"
                     ]
                 },
@@ -42,7 +41,6 @@
                     ],
                     "on_entry": [
                         "@s remove:all",
-                        "@s setvalue:0:variant",
                         "/say species drop guxi"
                     ]
                 },
@@ -52,8 +50,8 @@
                         { "init": "(1.0)" }
                     ],
                     "on_entry": [
-                        "v.species_vaild = 1;",
-                        "/function yonimc/species/guxi/player"
+                        "/function yonimc/species/guxi/player",
+                        "/function yonimc/species/guxi/player_t2"
                     ]
                 },
                 "loop1": {
@@ -62,8 +60,8 @@
                         { "init": "(1.0)" }
                     ],
                     "on_entry": [
-                        "v.species_vaild = 1;",
-                        "/function yonimc/species/guxi/player"
+                        "/function yonimc/species/guxi/player",
+                        "/function yonimc/species/guxi/player_t2"
                     ]
                 }
             }

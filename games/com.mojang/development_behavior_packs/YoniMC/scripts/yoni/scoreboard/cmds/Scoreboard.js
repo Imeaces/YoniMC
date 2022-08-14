@@ -1,5 +1,5 @@
 import {
-    world as vanillaWorld,
+    world as VanillaWorld,
     ScoreboardObjective as VanillaScoreboardObjective,
     ScoreboardIdentity as VanillaScoreboardIdentity
 } from "mojang-minecraft";
@@ -8,7 +8,7 @@ import Objective from "scripts/yoni/scoreboard/Objective.js";
 import Score from "scripts/yoni/scoreboard/Score.js";
 import ScoreEntry from "scripts/yoni/scoreboard/ScoreEntry.js";
 
-const vanillaScoreboard = vanillaWorld.scoreboard;
+const VanillaScoreboard = VanillaWorld.scoreboard;
 const maxObjectiveNameLength = 16;
 const maxObjectiveDisplayNameLength = 32;
 
@@ -32,7 +32,7 @@ export default class Scoreboard {
     }
     static getObjective(name){
         let objective;
-        for (let vanillaObjective of vanillaScoreboard.getObjectives()){
+        for (let vanillaObjective of VanillaScoreboard.getObjectives()){
             if (vanillaObjective.id == name){
                 objective = Scoreboard.getObjectiveFromVanilla(vanillaObjective);
                 break;
@@ -45,7 +45,7 @@ export default class Scoreboard {
     
     static getObjectives(){
         let objectives = [];
-        for (let vanillaObjective of vanillaScoreboard.getObjectives()){
+        for (let vanillaObjective of VanillaScoreboard.getObjectives()){
             objectives.put(Scoreboard.getObjectiveFromVanilla(vanillaObjective));
         }
         return objectives;
@@ -66,7 +66,7 @@ export default class Scoreboard {
     
     static getEntries(){
         let entries = [];
-        for (let vanillaParticipant of vanillaScoreboard.getParticipants()){
+        for (let vanillaParticipant of VanillaScoreboard.getParticipants()){
             entries.push(Scoreboard.getEntryFromVanilla(vanillaParticipant));
         }
         return entries;
@@ -108,7 +108,7 @@ function getByteLength(str){
 
 function runCommand(command = ""){
     const cmd = "scoreboard " + command;
-    vanillaWorld.getDimension("overworld").runCommand(cmd);
+    VanillaWorld.getDimension("overworld").runCommand(cmd);
 }
 
 function escapeCharacter(str){
