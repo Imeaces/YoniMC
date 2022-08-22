@@ -1,3 +1,5 @@
+//说实话，我写这东西的时候不知道有个叫做Map的东西
+
 export default class Memory {
   nameStringify(name){
     if (typeof name == "undefined"){

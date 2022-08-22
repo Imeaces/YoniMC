@@ -1,5 +1,5 @@
 import { VanillaEvents }  from "scripts/yoni/basis.js";
-import { Listener } from "scripts/yoni/Listener.js";
+import { EventListener } from "scripts/yoni/event.js";
 
 export default class ChatCommand {
     static #prefix = "!";
@@ -141,6 +141,6 @@ export default class ChatCommand {
 
 export { ChatCommand }
 
-Listener(VanillaEvents.beforeChat, (event) => {
+EventListener.register("beforeChat", (event) => {
     ChatCommand.receiveBeforeChatEvent(event);
 });

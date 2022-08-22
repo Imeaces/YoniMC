@@ -1,2 +1,0 @@
-#yoni/dying
-kill @s

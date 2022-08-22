@@ -144,14 +144,15 @@ export default class Objective {
     
     getEntries(){
         if (this.isUnregistered) throw new Error("Objective has been removed!");
-
+        
+        let entriesInObj = [];
         let entries = this.#vanillaObjective.getParticipants();
-        entries.forEach((scbid) => {
-            if (!this.#scores.has(scbid)){
-                this.getScoreInfo(scbid);
+        Array.from(entries).forEach((scbid) => {
+            if (this.getScoreInfo(scbid).score != null){
+                entriesInObj.push(this.getScoreInfo(scbid).getEntry());
             }
         });
-        return entries;
+        return entriesInObj;
     }
     
     getScoreInfos(){

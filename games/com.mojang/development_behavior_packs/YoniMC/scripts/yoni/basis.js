@@ -16,17 +16,24 @@ export class StatusCode {
     static success = 0;
 }
 
-export function dim(dimid = "overworld"){
+export function dim(dimid = Minecraft.MinecraftDimensionTypes.overworld){
   switch (dimid) {
     case -1:
     case "nether":
-      return VanillaWorld.getDimension("nether");
+      return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.nether);
     case 1:
     case "the end":
     case "the_end":
-      return VanillaWorld.getDimension("the end");
+      return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.theEnd);
+    case 0:
+    case "overworld":
+       return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.overworld);
     default:
-      return VanillaWorld.getDimension("overworld");
+      try {
+          return VanillaWorld.getDimension(dimid);
+      } catch {
+          return dim(0);
+      }
   }
 }
 

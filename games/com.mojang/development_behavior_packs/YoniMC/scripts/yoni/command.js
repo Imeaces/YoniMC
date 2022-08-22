@@ -3,7 +3,6 @@ import { MinecraftMeta } from "scripts/yoni/minecraft.js";
 
 //need more ideas
 
-
 export class TargetSelector {
     #selector;
     #arguments = [];

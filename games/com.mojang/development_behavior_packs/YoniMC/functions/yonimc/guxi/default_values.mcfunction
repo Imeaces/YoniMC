@@ -69,4 +69,12 @@ scoreboard players set @s guxi:like_player 0
 scoreboard objectives add guxi:exp_st dummy
 scoreboard players operation @s guxi:exp_st = default_max_exp_energy_volume guxi:values
 
+#var guxi:health_stat default 0
+scoreboard objectives add guxi:health_stat dummy
+scoreboard players set @s guxi:health_stat 0
+
+#var guxi:health_stat default 0
+scoreboard objectives add guxi:auto_energy dummy
+scoreboard players set @s guxi:auto_energy 1
+
 #tell @s 设置了自己使用的变量

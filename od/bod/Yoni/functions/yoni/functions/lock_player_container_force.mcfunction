@@ -1,6 +1,0 @@
-#yoni/functions/lock_player_container_force
-yoni/functions/lock_entity_armors_force
-yoni/functions/lock_entity_inventory_force
-yoni/functions/lock_entity_offhand_force
-yoni/functions/lock_player_enderchest_force
-yoni/functions/lock_player_hotbar_force

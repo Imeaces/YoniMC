@@ -11,3 +11,5 @@ export default class Block {
     return result;
   }
 }
+
+export { Block }

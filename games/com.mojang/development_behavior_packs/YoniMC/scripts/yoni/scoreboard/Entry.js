@@ -5,6 +5,7 @@ import {
 } from "mojang-minecraft";
 import { VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
 import EntryType from "scripts/yoni/scoreboard/EntryType.js";
+import YoniEntity from "scripts/yoni/entity.js";
 
 let idRecords = new Map();
 let entityRecords = new Map();
@@ -30,8 +31,12 @@ export default class Entry {
     static getEntry(id, type, displayName, entity){
         //只传入一个参数时
         if (id != null && type == null && displayName == null && entity == null){
-            if (id instanceof Minecraft.Player || id instanceof Minecraft.Entity){ //实体
-                entity = id;
+            if (id instanceof Minecraft.Player || id instanceof Minecraft.Entity || id instanceof YoniEntity){ //实体
+                if (id instanceof YoniEntity){ //兼容YoniEntity
+                    entity = id.getMinecraftEntity();
+                } else {
+                    entity = id;
+                }
                 id = null;
                 if (entity instanceof Minecraft.Player)
                    type = EntryType.PLAYER;

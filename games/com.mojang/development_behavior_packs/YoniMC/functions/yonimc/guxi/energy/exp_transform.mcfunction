@@ -24,7 +24,6 @@ scoreboard players operation @s var_1 = @s exp
 #:同时确保不超过用经验存储的上限
 scoreboard players operation @s var_1 < @s guxi:exp_st
 scoreboard players operation @s var_1 -= @s guxi:exp_tr
-
 #根据结果来判断应该运行什么函数，并输出次数
 execute if score @s var_1 matches 1.. run scoreboard players set @s var_0 2
 execute if score @s var_1 matches ..-1 run scoreboard players set @s var_0 5
@@ -39,8 +38,8 @@ scoreboard players operation @s arg_0 = @s var_1
 
 #:换成能量
 execute if score @s var_0 matches 2 run function yonimc/guxi/energy/transform_from_exp
-#: 换成经验
-execute if score @s var_0 matches 5 run function yonimc/guxi/energy/transform_to_exp
+#: 换成经验(仅当剩余能量大于30%时)
+execute if score @s var_0 matches 5 if score @s guxi:pp_energy matches 3000.. run function yonimc/guxi/energy/transform_to_exp
 
 #对于能量池状态作出响应
 scoreboard players set @s var_0 0
