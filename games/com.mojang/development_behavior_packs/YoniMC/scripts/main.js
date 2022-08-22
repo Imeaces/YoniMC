@@ -1,30 +1,24 @@
 import ChatCommand from "scripts/yoni/command/ChatCommand.js";
 import {
     Minecraft,
-    VanillaWorld,
-    VanillaEvents,
-    runCmd, dim
+    dim
     } from "scripts/yoni/basis.js";
-import YoniEntity as Entity from "scripts/yoni/entity.js";
+import { YoniEntity as Entity } from "scripts/yoni/entity.js";
 import { tell, say } from "scripts/yoni/util/yoni-lib.js";
 import Command from "scripts/yoni/command.js";
 import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
-import EntryType from "scripts/yoni/scoreboard/EntryType.js";
-import EventListener from "scripts/yoni/event.js";
+import { EventListener } from "scripts/yoni/event.js";
 import { EntityDamageCause } from "mojang-minecraft";
 
-class SpeciesCommandExecutor {
-    onCommand(sender, rawCommand, label, args){
+//切换物种命令（使用id作为参数）
+ChatCommand.registerCommand("species", (sender, rawCommand, label, args) => {
         let obj = SimpleScoreboard.getObjective("species");
         if (obj == null){
             obj = SimpleScoreboard.addObjective("species", "dummy");
         }
         obj.setScore(sender, Number(args[0]));
     }
-}
-
-//切换物种命令（使用id作为参数）
-ChatCommand.registerCommand("species", new SpeciesCommandExecutor());
+);
 
 //自杀命令
 ChatCommand.registerCommand("suicide", (sender) => sender.kill() );
@@ -34,7 +28,9 @@ ChatCommand.registerCommand("test", (sender) => {
 });
 
 EventListener.register("tick", (event) => {
+
     if (event.currentTick % 10 != 0) return;
+    
     Array.from(Minecraft.world.getPlayers()).forEach((e)=>{
         if (e.isSneaking === true){
            if (!e.hasTag("stat:is_sneaking")){
@@ -48,6 +44,9 @@ EventListener.register("tick", (event) => {
            }
         }
     });
+    
+    if (event.currentTick % 20 != 0) return;
+
     let healthObj = SimpleScoreboard.getObjective("health");
     if (healthObj == null) healthObj = SimpleScoreboard.addObjective("health", "dummy");
     let maxHealthObj = SimpleScoreboard.getObjective("max_health");
@@ -59,6 +58,7 @@ EventListener.register("tick", (event) => {
         healthObj.setScore(e, comp.current);
         maxHealthObj.setScore(e, comp.value);
     });
+    
 });
 
 EventListener.register("itemUse", (event) => {
@@ -95,14 +95,17 @@ EventListener.register("beforeItemUse", (event)=> {
            ent.addTag("event:itemUse");
         }
     }
+    
     if (event.item.id == "minecraft:lava_bucket" && event.source != null && Entity.hasFamily(event.source, "guxi")){
         let ent = event.source;
         say("using lava");
+        event.cancel = true;
         Command.execute(ent, "replaceitem entity @s slot.weapon.mainhand 0 bucket 1");
         let lavaBucketEnergyVolume = SimpleScoreboard.getObjective("guxi:values").getScore("lava_bucket_energy_volume");
         SimpleScoreboard.getObjective("guxi:energy").addScore(ent, Math.round(lavaBucketEnergyVolume*Math.max(1, 100*Math.random())));
         ent.dimension.spawnItem(new Minecraft.ItemStack(Minecraft.MinecraftItemTypes.obsidian, 1, 0), ent.location);
     }
+    
 });
 
 EventListener.register("beforeExplosion", (event) => {
@@ -114,7 +117,8 @@ EventListener.register("entityHurt", (event)=> {
     if (Entity.hasFamily(event.hurtEntity, "guxi")){
         let ent = event.hurtEntity;
         let damage = event.damage;
-        Command.execute(ent, "tell @s "+event.cause+": "+event.damage);
+        Command.execute(ent, "title @s title §r");
+        Command.execute(ent, "title @s subtitle "+event.cause+": "+event.damage);
         let obj = SimpleScoreboard.getObjective("guxi:energy_pool");
         let immuObj = SimpleScoreboard.getObjective("guxi:ef_fireimmu");
         switch(event.cause){
@@ -126,7 +130,7 @@ EventListener.register("entityHurt", (event)=> {
                 Command.execute(ent, "effect @s instant_health 1 20 false");
                 obj.addScore(ent, Math.round(damage*Math.max(1, 100*Math.random())));
                 immuObj.setScore(ent, Math.round(Math.max(4, immuObj.getScore(ent)*3.1*Math.random())));
-                if (Math.random()*10000<=3){
+                if (Math.random()*1000<=1){
                     Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace lava 0");
                     Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 netherrack 0 replace magma -1");
                     Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace flowing_lava 0");

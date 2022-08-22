@@ -45,7 +45,7 @@ export default class ChatCommand {
             }
         } else if (typeof commandExecutor == "function" ) {
             try {
-                commandExecutor(sender, rawCommand);
+                commandExecutor(sender, rawCommand, command, args);
             } catch(err) {
                 console.error("[ChatCommand]: 运行命令" + command + "时发生错误");
                 console.error(err.message+"\n"+err.stack);

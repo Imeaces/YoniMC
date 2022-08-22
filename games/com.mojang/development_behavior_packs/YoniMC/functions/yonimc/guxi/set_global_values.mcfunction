@@ -13,7 +13,7 @@ scoreboard players set default_energy_volume guxi:values 10000
 scoreboard players set max_energy_volume guxi:values 1000000
 
 #var default guxi:energy 10000
-scoreboard players set default_energy_count guxi:values 10000
+scoreboard players set default_energy_count guxi:values 0
 
 #var default guxi:memory_er 10000
 scoreboard players set default_memory_count guxi:values 10000

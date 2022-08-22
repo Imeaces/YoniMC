@@ -1,3 +1,4 @@
+tell @s 你出生了
 function yonimc/guxi/default_values
 xp 24l @s
-tell @s 你出生了
+event entity @s append:guxi_in_enough_energy

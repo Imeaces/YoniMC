@@ -1,5 +1,7 @@
-import StatusCode from "scripts/yoni/StatusCode.js";
-import { MinecraftEvents } from "scripts/basis.js";
+import { VanillaEvents as MinecraftEvents } from "scripts/yoni/basis.js";
+
+export class Events {
+}
 
 export class EventListener {
     static #callbacks = [];
@@ -13,7 +15,10 @@ export class EventListener {
      */
     static register(eventType, callback, ...eventFilters){
         let idx = this.#callbacks.push(callback);
-        if (MinecraftEvents[eventType]) eventType = MinecraftEvents[eventType];
+        
+        if (Events[eventType]) eventType = Events[eventType];
+        else if (MinecraftEvents[eventType]) eventType = MinecraftEvents[eventType];
+        
         eventType.subscribe((...args) => {
             let func = this.#callbacks[idx-1];
             if (func != null){

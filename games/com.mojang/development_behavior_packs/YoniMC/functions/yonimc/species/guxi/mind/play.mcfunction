@@ -46,7 +46,7 @@ execute if score @s var_1 matches 10 run titleraw @s actionbar {"rawtext":[{"tra
 
 execute if score @s var_1 matches 201 run titleraw @s actionbar {"rawtext":[{"translate":"\n§7%%s§f|%%s\n将切换到xxxx","with":{"rawtext":[{"score":{"objective":"guxi:energy","name":"@s"}},{"score":{"objective":"guxi:energy_pool","name":"@s"}}]}}]}
 
-execute if score @s var_0 matches 20001 run tell @s unknown mind
+execute if score @s var_0 matches 20001 run title @s actionbar unknown mind
 
 #废弃代码
 #: execute if score @s mind matches 0 unless score @s mind:nt matches 0 run scoreboard players operation @s mind = @s mind:nt
