@@ -27,19 +27,28 @@ export default class ScoreInfo {
             
         if (!Utils.isBetweenRange(score))
             throw new RangeError("Score can only range -2147483648 to 2147483647");
-            
+        
+        if (score != Math.round(score)){
+            throw new RangeError("Score can only be an integer");
+        }
+        
         if (this.#entry.type == EntryType.PLAYER || this.#entry.type == EntryType.ENTITY){
-            let isSuccess = false;;
-            for (let e of getLoadedEntities()){
-                if (e === this.#entry.getEntity()){
-                    if (execCmd(this.#entry.getEntity(), "scoreboard", "players", "set", "@s", this.#objective.id, score) != StatusCode.fail){
-                        isSuccess = true;
-                        break;
+            let ent;
+            if (this.#entry.type == EntryType.PLAYER){
+                ent = this.#entry.getEntity();
+            } else {
+                for (let e of getLoadedEntities()){
+                    if (e === this.#entry.getEntity()){
+                        ent = e;
                     }
                 }
             }
-            if (!isSuccess)
+            if (ent == null){
+                throw new Error("Could not find the entity");
+            }
+            if (execCmd(ent, "scoreboard", "players", "set", "@s", this.#objective.id, score).statusCode != StatusCode.success){
                 throw new Error("Could not set score, maybe entity or player disappeared?");
+            }
         } else {
         
             let hasConflict = false;

@@ -45,6 +45,3 @@ scoreboard players set default_max_exp_energy_volume guxi:values 40
 
 #:var lava_bucket_eat_energy
 scoreboard players set lava_bucket_energy_volume guxi:values 20000
-
-
-tell @s 设置了全局使用的变量

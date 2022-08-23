@@ -2,6 +2,8 @@ import * as Gametest from "mojang-gametest";
 import * as MinecraftGui from "mojang-minecraft-ui";
 import * as Minecraft from "mojang-minecraft";
 
+import * as yoni from "scripts/yoni/util/yoni-lib.js";//仅用作调试
+
 export { Gametest }
 export { MinecraftGui }
 export { Minecraft }
@@ -68,20 +70,9 @@ export function runCmd(command = "", commandRunner){
  * @return {JSON}
  */
 export function execCmd(runner, command, ...args){
-/*
-  runner.runCommand("say execCmd..");
-  runner.runCommand("say "+command);
-  runner.runCommand("say §r"+args);
-  try {
-    throw new Error();
-  } catch (e) {
-    runCmd("say §r"+e.stack);
-  }
-*/
-  if (typeof runner == "undefined")
-    return { StatusCode: StatusCode.fail };
-  if (typeof runner.runCommand != "function")
+  if (runner == null || typeof runner.runCommand != "function")
     return { StatusCode: StatusCode.error };
+
   args.forEach((arg) => {
     arg = String(arg);
     if (arg.replace(/\"/g, "") != arg)
@@ -93,10 +84,7 @@ export function execCmd(runner, command, ...args){
   try {
     return runner.runCommand(command);
   } catch(err) {
-    if (err instanceof ReferenceError)
-      return { StatusCode: StatusCode.fail };
-    else
-      return err;
+    return JSON.parse(err);
   }
 }
 

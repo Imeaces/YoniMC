@@ -16,7 +16,7 @@ export default class SimpleScoreboard {
         if (displayName == null)
             displayName = name;
         
-        if (execCmd(dim(0), "scoreboard", "objectives", "add", name, criteria, displayName) != StatusCode.fail){
+        if (execCmd(dim(0), "scoreboard", "objectives", "add", name, criteria, displayName).statusCode = StatusCode.success){
             return this.getObjective(name);
         }
         let objective = new Objective(name, criteria, displayName);

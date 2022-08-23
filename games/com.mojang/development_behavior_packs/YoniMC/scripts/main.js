@@ -24,7 +24,7 @@ ChatCommand.registerCommand("species", (sender, rawCommand, label, args) => {
 ChatCommand.registerCommand("suicide", (sender) => sender.kill() );
 
 ChatCommand.registerCommand("test", (sender) => {
-    say(new Entity(sender).getHealthComponent().value);
+    say(Command.run("scoreboard players set @a var_0 333").statusCode);
 });
 
 EventListener.register("tick", (event) => {
@@ -55,8 +55,8 @@ EventListener.register("tick", (event) => {
         return e.hasTag("test:health");
     }).forEach((e) => {
         let comp = e.getComponent("minecraft:health");
-        healthObj.setScore(e, comp.current);
-        maxHealthObj.setScore(e, comp.value);
+        healthObj.setScore(e, Math.floor(comp.current));
+        maxHealthObj.setScore(e, Math.floor(comp.value));
     });
     
 });
@@ -113,34 +113,18 @@ EventListener.register("beforeExplosion", (event) => {
    event.cancel = true;
 });
 
+let energyPool = SimpleScoreboard.getObjective("guxi:energy_pool");
+let energy = SimpleScoreboard.getObjective("guxi:energy");
 EventListener.register("entityHurt", (event)=> {
     if (Entity.hasFamily(event.hurtEntity, "guxi")){
-        let ent = event.hurtEntity;
-        let damage = event.damage;
-        Command.execute(ent, "title @s title §r");
-        Command.execute(ent, "title @s subtitle "+event.cause+": "+event.damage);
-        let obj = SimpleScoreboard.getObjective("guxi:energy_pool");
-        let immuObj = SimpleScoreboard.getObjective("guxi:ef_fireimmu");
+        let type = "unknown";
         switch(event.cause){
             case EntityDamageCause.fire:
             case EntityDamageCause.fireTick:
             case EntityDamageCause.freezing:
             case EntityDamageCause.lava:
             case EntityDamageCause.magma:
-                Command.execute(ent, "effect @s instant_health 1 20 false");
-                obj.addScore(ent, Math.round(damage*Math.max(1, 100*Math.random())));
-                immuObj.setScore(ent, Math.round(Math.max(4, immuObj.getScore(ent)*3.1*Math.random())));
-                if (Math.random()*1000<=1){
-                    Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace lava 0");
-                    Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 netherrack 0 replace magma -1");
-                    Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace flowing_lava 0");
-                    Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace lava -1");
-                    Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace flowing_lava -1");
-                    Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace fire -1");
-                }
-                break;
-            case EntityDamageCause.piston:
-                //nothing
+                type = "hot";
                 break;
             case EntityDamageCause.projectile:
             case EntityDamageCause.flyIntoWall:
@@ -149,19 +133,52 @@ EventListener.register("entityHurt", (event)=> {
             case EntityDamageCause.entityExplosion:
             case EntityDamageCause.blockExplosion:
             case EntityDamageCause.anvil:
-                obj.removeScore(ent, damage/Entity.getMaxHealth(ent)*2*obj.getScore(ent));
+                type = "fatal";
+                break;
             default:
-                obj.removeScore(ent, Math.round(damage/Entity.getMaxHealth(ent)*obj.getScore(ent)));
+                type = "normal";
         }
+        let ent = event.hurtEntity;
+        let damage = event.damage;
+        let immuObj = SimpleScoreboard.getObjective("guxi:ef_fireimmu");
+        let maxHealth = Entity.getMaxHealth(ent);
+        let currentHealth = Entity.getCurrentHealth(ent);
+        let lostHealth = maxHealth - currentHealth;
+        if (type == "fatal"){
+            energyPool.removeScore(ent, Math.round(Math.max(0, damage**2*0.01*energyPool.getScore(ent))));
+        } else if(type == "hot"){
+            Command.execute(ent, "effect @s instant_health 1 20 false");
+            energyPool.addScore(ent, Math.round(damage*Math.max(1, 100*Math.random())));
+            immuObj.setScore(ent, Math.round(Math.max(4, immuObj.getScore(ent)*3.1*Math.random())));
+            if (Math.random()*1000<=1){
+                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace lava 0");
+                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 netherrack 0 replace magma -1");
+                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace flowing_lava 0");
+                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace lava -1");
+                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace flowing_lava -1");
+                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace fire -1");
+            }
+        } else if(type == "immune"){
+        } else {
+            let resLevel = SimpleScoreboard.getObjective("guxi:ef_res").getScore(ent);
+            let lost = Math.max(0, Math.min(lostHealth, damage));
+            
+            if (resLevel > 0) //防伤害
+                energyPool.removeScore(ent, Math.max(0,Math.round(Math.max(1, damage)/resLevel*1000)));
+                lost = lost - 16;
+                
+            if (lost > 0)
+                energypPool.removeScore(ent, Math.round(Math.max(0, lost/maxHealth*energyPool.getScore(ent))));
+        }
+        Command.execute(ent, "title @s title 损失血量"+lostHealth);
+        Command.execute(ent, "title @s subtitle "+event.cause+": "+event.damage);
     } else if (Entity.hasFamily(event.damagingEntity, "guxi")){
-        try {Command.execute(event.damagingEntity,"tell @s 伤害: " + event.damage);
-        } catch {}
         let cost = Math.round(event.damage*72*(SimpleScoreboard.getObjective("guxi:ef_damage").getScore(event.damagingEntity)+1));
-        say(cost);
-        if (cost < 1) return;
-        
-        let obj = SimpleScoreboard.getObjective("guxi:energy_pool");
-        obj.removeScore(event.damagingEntity, cost);
+        if (cost > 0){
+            let obj = SimpleScoreboard.getObjective("guxi:energy_pool");
+            obj.removeScore(event.damagingEntity, cost);
+        }
+        Command.execute(event.damagingEntity,"title @s actionbar §c伤害: " + event.damage+"\ncost: "+cost);
     }
 });
 

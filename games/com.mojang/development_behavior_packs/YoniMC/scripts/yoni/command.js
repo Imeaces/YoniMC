@@ -50,7 +50,7 @@ export default class Command {
     }
     
     static run(cmd){
-        return Command.execute(dim(0), command);
+        return Command.execute(dim(0), cmd);
     }
     static execute(runner, command){
         try {

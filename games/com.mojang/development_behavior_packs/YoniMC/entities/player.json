@@ -216,8 +216,8 @@
         ]}
     },
     
-    "guxi:in_plenty_energy": {"minecraft:health": {"max": 50,"min": 0}},
-    "guxi:in_enough_energy": {"minecraft:health": {"max": 35,"min": 0}},
+    "guxi:in_plenty_energy": {"minecraft:health": {"max": 25,"min": 0}},
+    "guxi:in_enough_energy": {"minecraft:health": {"max": 15,"min": 0}},
     "guxi:in_low_energy": {"minecraft:health": {"max": 5,"min": 0}}
 
 },

@@ -26,7 +26,7 @@ export class EventListener {
                     return func(...args);
                 } catch(err){
                     console.error("尝试对事件进行ID为"+idx+"的回调时发生错误");
-                    console.error(err.stack);
+                    console.error(err.message+"\n"+err.stack);
                 }
             }
             return;

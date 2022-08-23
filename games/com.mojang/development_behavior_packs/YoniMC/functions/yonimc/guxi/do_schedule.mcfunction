@@ -1,8 +1,6 @@
 #schedule 每秒一次
 
 
-# creation
-function yonimc/guxi/do_create
 
 # 能量池处理
 function yonimc/guxi/energy/pool

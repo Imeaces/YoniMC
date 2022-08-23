@@ -61,6 +61,11 @@ scoreboard objectives add guxi:keep_res dummy
 #var default guxi:keep_res 0
 scoreboard players set @s guxi:keep_res 0
 
+scoreboard objectives add guxi:keep_ef dummy
+#var default guxi:keep_res 0
+scoreboard players set @s guxi:keep_ef 0
+
+
 #var guxi:like_player 0n 1y 2no
 scoreboard objectives add guxi:like_player dummy
 scoreboard players set @s guxi:like_player 0
