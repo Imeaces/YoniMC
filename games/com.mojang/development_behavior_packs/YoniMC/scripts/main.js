@@ -179,6 +179,13 @@ EventListener.register("entityHurt", (event)=> {
             obj.removeScore(event.damagingEntity, cost);
         }
         Command.execute(event.damagingEntity,"title @s actionbar §c伤害: " + event.damage+"\ncost: "+cost);
+    } else if (event.hurtEntity.id == "minecraft:player"){
+        let ent = event.hurtEntity;
+        let maxHealth = Entity.getMaxHealth(ent);
+        let currentHealth = Entity.getCurrentHealth(ent);
+        let lostHealth = maxHealth - currentHealth;
+        Command.execute(ent, "title @s title 损失血量"+lostHealth);
+        Command.execute(ent, "title @s subtitle "+event.cause+": "+event.damage);
     }
 });
 
