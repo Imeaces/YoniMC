@@ -6,6 +6,11 @@ export class Events {
 export class EventListener {
     static #callbacks = [];
     
+    //这个方法不推荐使用，但是用起来是很方便
+    static _getCallback(id){
+        return this.#callbacks[id];
+    }
+    
     /**
      * add a new callback function for specific event
      * @param {EventIdentity} caller - the event identify 
@@ -26,7 +31,7 @@ export class EventListener {
                     return func(...args);
                 } catch(err){
                     console.error("尝试对事件进行ID为"+idx+"的回调时发生错误");
-                    console.error(err.message+"\n"+err.stack);
+                    console.error(err.name+": "+err.message+"\n"+err.stack);
                 }
             }
             return;
@@ -37,12 +42,12 @@ export class EventListener {
     static unregister(id){
         if (this.#callbacks[id] != null){
             this.#callbacks[id] = null;
-            console.warning("移除了ID为"+(id+1)+"的回调");
+            console.warn("移除了ID为"+(id+1)+"的回调");
         } else {
             for (let idx = 0; idx < this.#callbacks.length; idx++){
                 if (this.#callbacks[idx] === id){
                     this.#callbacks[idx] = null;
-                    console.warning("移除了ID为"+(idx+1)+"的回调");
+                    console.warn("移除了ID为"+(idx+1)+"的回调");
                     break;
                 }
             }

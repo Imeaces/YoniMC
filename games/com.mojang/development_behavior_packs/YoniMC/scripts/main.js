@@ -23,8 +23,22 @@ ChatCommand.registerCommand("species", (sender, rawCommand, label, args) => {
 //自杀命令
 ChatCommand.registerCommand("suicide", (sender) => sender.kill() );
 
+ChatCommand.registerPrefixCommand("$", "function", (sender, rawCommand, label, args) => {
+    Function(rawCommand.slice(rawCommand.indexOf("\x20"))).call(this);
+});
+ChatCommand.registerPrefixCommand("$", "gfunction", (sender, rawCommand, label, args) => {
+    Function(rawCommand.slice(rawCommand.indexOf("\x20")));
+});
+ChatCommand.registerPrefixCommand("$", "geval", (sender, rawCommand, label, args) => {
+    globalThis.eval(rawCommand.slice(rawCommand.indexOf("\x20")));
+});
+ChatCommand.registerPrefixCommand("$", "eval", (sender, rawCommand, label, args) => {
+    eval(rawCommand.slice(rawCommand.indexOf("\x20")));
+});
+
 ChatCommand.registerCommand("test", (sender) => {
-    say(Command.run("scoreboard players set @a var_0 333").statusCode);
+    let o = Minecraft.world.scoreboard.getObjective("abctest");
+  say(o === Minecraft.world.scoreboard.getObjective("abctest"));
 });
 
 EventListener.register("tick", (event) => {

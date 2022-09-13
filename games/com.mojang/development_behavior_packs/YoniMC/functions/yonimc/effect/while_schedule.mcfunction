@@ -1,4 +1,3 @@
-scoreboard objectives add var_0 dummy
 scoreboard players set global var_0 0
 
 execute if score timer yonimc:effect matches 0..20 run scoreboard players set global var_0 1

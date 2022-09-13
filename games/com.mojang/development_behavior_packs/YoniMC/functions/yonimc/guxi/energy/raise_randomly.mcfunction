@@ -1,8 +1,6 @@
 # arg_0最小值
 # arg_1最大值
 
-scoreboard objectives add var_0 dummy
-scoreboard objectives add var_1 dummy
 scoreboard players set @s var_0 0
 scoreboard players set @s var_1 0
 

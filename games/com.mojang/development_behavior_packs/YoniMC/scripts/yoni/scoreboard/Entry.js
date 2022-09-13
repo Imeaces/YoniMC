@@ -1,19 +1,10 @@
-import {
-    ScoreboardIdentity as VanillaScoreboardIdentity,
-    Player as VanillaPlayer,
-    Entity as VanillaEntity
-} from "mojang-minecraft";
 import { VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
 import EntryType from "scripts/yoni/scoreboard/EntryType.js";
-import YoniEntity from "scripts/yoni/entity.js";
+import { YoniEntity } from "scripts/yoni/entity.js";
 
 let idRecords = new Map();
 let entityRecords = new Map();
 let nameRecords = new Map();
-
-function recordEntry(entry){
-}
-
 
 export default class Entry {
     
@@ -245,8 +236,8 @@ export default class Entry {
         {
             this.#setValueByNumberId(id);
         }/* else if (id == null && displayName == null && type != null &&
-                (entity instanceof VanillaPlayer && type == EntryType.PLAYER) ||
-                (entity instanceof VanillaEntity && type == EntryType.ENTITY)
+                (entity instanceof Minecraft.Player && type == EntryType.PLAYER) ||
+                (entity instanceof Minecraft.Entity && type == EntryType.ENTITY)
             )
         {
             this.#type = type;

@@ -1,16 +1,10 @@
-scoreboard objectives add var_0 dummy
 scoreboard players set @s var_0 0
-scoreboard objectives add var_1 dummy
 scoreboard players set @s var_1 0
 
-scoreboard objectives add var_2 dummy
 scoreboard players set @s var_2 100
 
-scoreboard objectives add var_3 dummy
 scoreboard players set @s var_3 0
 
-scoreboard objectives add arg_0 dummy
-scoreboard objectives add arg_1 dummy
 
 #: 活着就会消耗的能量
 scoreboard players set @s arg_0 1

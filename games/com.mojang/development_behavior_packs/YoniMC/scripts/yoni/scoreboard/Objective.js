@@ -8,71 +8,75 @@ import {
     Player as VanillaPlayer,
     ScoreboardIdentity as VanillaScoreboardIdentity
 } from "mojang-minecraft";
-import { execCmd as execCommand, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
+import { Minecraft, execCmd as execCommand, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
 
 export default class Objective {
-    #isUnregistered = false;
+    #scoreboard;
+    
     #id;
     get id(){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
         
         return this.#id;
     }
+    
     #criteria;
     get criteria(){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
         
         return this.#criteria;
     }
+    
     #displayName;
     get displayName(){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
         
         return this.#displayName;
     }
     
-    get isUnregistered(){
+    #isUnregistered;
+    get checkUnregistered(){
         let result = false;
-        if (this.#isUnregistered){
+        if (this.#scoreboard._getObjectiveMap().get(this.#id) == null){
             result = true;
-        } else {
-            try {
-                VanillaScoreboard.getObjective(this.#id);
-            } catch {
-                result = true;
-                this.unregister();
-            }
+        } else if (this.vanillaObjective == null){
+            this.#scoreboard.removeObjective(this);
+            result = true;
         }
         return result;
     }
     
     #scores = new Map();
 
-    #vanillaObjective;
     get vanillaObjective(){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
-        
-        return this.#vanillaObjective;
+        try {
+            return VanillaScoreboard.getObjective(this.#id);
+        } catch {
+            return null;
+        }
     }
     
     unregister(){
-        if (this.#isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
         
-        this.#isUnregistered = true;
-        
-        if (this.#vanillaObjective != null){
+        if (this.vanillaObjective != null){
             execCommand(dim(0), "scoreboard", "objectives", "remove", this.#id);
         }
     }
     
-    constructor(name, criteria, displayName){
+    checkUnregistered(){
+        if (this.isUnregistered) throw new Error("Objective has been removed!");
+    }
+    
+    constructor(scoreboard, name, criteria, displayName){
+        
+        this.#scoreboard = scoreboard;
         
         if (name instanceof VanillaScoreboardObjective){
             let vanillaObj = name;
             name = vanillaObj.id;
             criteria = "dummy";
             displayName = vanillaObj.displayName;
-            this.#vanillaObjective = vanillaObj;
         }
         
         this.#id = name;
@@ -81,7 +85,7 @@ export default class Objective {
         
     }
     addScore(entry, score){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
 
         if (!Utils.isBetweenRange(score))
             throw new RangeError("Score can only range -2147483648 to 2147483647");
@@ -91,7 +95,7 @@ export default class Objective {
         scoreInfo.score = newScore;
     }
     randomScore(entry, min=-2147483648, max=2147483647){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
 
         if (!Utils.isBetweenRange(min))
             throw new RangeError("Score can only range -2147483648 to 2147483647");
@@ -104,7 +108,7 @@ export default class Objective {
         return newScore;
     }
     removeScore(entry, score){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
 
         if (!Utils.isBetweenRange(score))
             throw new RangeError("Score can only range -2147483648 to 2147483647");
@@ -114,56 +118,52 @@ export default class Objective {
         scoreInfo.score = newScore;
     }
     resetScore(entry){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
 
         this.getScoreInfo(entry).reset();
     }
     
     resetScores(){
+        checkUnregistered();
+
         execCommand(dim(0), "scoreboard", "players", "reset", "*", this.#id);
     }
     
     setScore(entry, score){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
 
         let scoreInfo = this.getScoreInfo(entry);
         scoreInfo.score = score;
     }
     
     getScore(entry){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
 
         return this.getScoreInfo(entry).score;
     }
     
-    getScores(...args){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
-
-        this.getScoreInfos(...args);
-    }
-    
     getEntries(){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
         
         let entriesInObj = [];
         let entries = this.#vanillaObjective.getParticipants();
-        Array.from(entries).forEach((scbid) => {
-            if (this.getScoreInfo(scbid).score != null){
-                entriesInObj.push(this.getScoreInfo(scbid).getEntry());
+        Array.from(entries).forEach((_) => {
+            if (this.getScoreInfo(_).score != null){
+                entriesInObj.push(this.getScoreInfo(_).getEntry());
             }
         });
         return entriesInObj;
     }
     
     getScoreInfos(){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
 
         this.getEntries();
         return this.#scores.values();
     }
     
     getScoreInfo(entry, autoInit=false){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
+        checkUnregistered();
         
         if (!(entry instanceof Entry))
             entry = Entry.getEntry(entry, null, null, null);

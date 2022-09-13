@@ -3,13 +3,13 @@ import Entry from "scripts/yoni/scoreboard/Entry.js";
 import Objective from "scripts/yoni/scoreboard/Objective.js";
 import EntryType from "scripts/yoni/scoreboard/EntryType.js";
 import { StatusCode, execCmd, dim } from "scripts/yoni/basis.js";
-import { getLoadedEntities } from "scripts/yoni/util/yoni-lib.js";
+import { YoniEntitiy } from "scripts/yoni/entity.js";
 
 //基础功能已实现
  
 export default class ScoreInfo {
     #entry;
-    #score = null;
+    #score;
     #objective;
     
     constructor(obj, entry){
@@ -37,9 +37,10 @@ export default class ScoreInfo {
             if (this.#entry.type == EntryType.PLAYER){
                 ent = this.#entry.getEntity();
             } else {
-                for (let e of getLoadedEntities()){
+                for (let e of YoniEntitiy.getLpadedEntities()){
                     if (e === this.#entry.getEntity()){
                         ent = e;
+                        break;
                     }
                 }
             }
@@ -72,11 +73,11 @@ export default class ScoreInfo {
     get score(){
         let score;
         if (this.#entry.vanillaScbId == null){
-            score = null;
+            score = undefined;
         } else {
             try {
                 score = this.#objective.vanillaObjective.getScore(this.#entry.vanillaScbId);
-            } catch { score = null; }
+            } catch { score = undefined; }
         }
         return score;
     }
@@ -84,7 +85,7 @@ export default class ScoreInfo {
     reset(){
         if (this.#entry.type == EntryType.PLAYER || this.#entry.type == EntryType.ENTITY){
             let isSuccess = false;;
-            for (let e of getLoadedEntities()){
+            for (let e of YoniEntitiy.getLoadedEntities()){
                 if (e === this.#entry.getEntity()){
                     if (execCmd(this.#entry.getEntity(), "scoreboard", "players", "reset", "@s") != StatusCode.fail){
                         isSuccess = true;

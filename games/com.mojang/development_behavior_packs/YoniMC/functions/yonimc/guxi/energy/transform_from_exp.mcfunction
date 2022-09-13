@@ -1,6 +1,5 @@
 scoreboard players remove @s arg_0 1
 
-scoreboard objectives add var_0 dummy
 scoreboard players random @s var_0 377 1121
 
 xp -1l @s

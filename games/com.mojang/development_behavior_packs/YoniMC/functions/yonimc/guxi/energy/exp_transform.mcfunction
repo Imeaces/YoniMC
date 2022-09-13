@@ -2,21 +2,16 @@
 #: get exp level
 function status/player/exp
 
-scoreboard objectives add var_0 dummy
 scoreboard players set @s var_0 0
 
-scoreboard objectives add var_1 dummy
 scoreboard players set @s var_1 0
 
 #一次转换的经验等级（太大会超函数限制，建议不超过150？（不是，这东西是给谁看的？）
-scoreboard objectives add var_2 dummy
 scoreboard players set @s var_2 24
 
 #: 用于转换负数
-scoreboard objectives add var_3 dummy
 scoreboard players set @s var_3 -1
 
-scoreboard objectives add var_4 dummy
 scoreboard players set @s var_4 0
 
 #计算与应该保持的经验的差值
@@ -33,7 +28,6 @@ execute if score @s var_1 matches ..-1 run scoreboard players operation @s var_1
 scoreboard players operation @s var_1 < @s var_2
 
 #运行函数
-scoreboard objectives add arg_0 dummy 
 scoreboard players operation @s arg_0 = @s var_1
 
 #:换成能量

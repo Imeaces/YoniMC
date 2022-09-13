@@ -1,5 +1,4 @@
 scoreboard objectives add guxi:time_47 dummy
-scoreboard objectives add var_0 dummy
 scoreboard players set @s var_0 0
 
 execute if score @s guxi:time_47 matches 0..10 run scoreboard players set @s var_0 1

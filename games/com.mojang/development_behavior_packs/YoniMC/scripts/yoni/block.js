@@ -10,6 +10,10 @@ export default class Block {
     
     return result;
   }
+  
+  constructor(blockLoc){
+  }
+  
 }
 
 export { Block }

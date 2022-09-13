@@ -1,8 +1,6 @@
 scoreboard objectives add guxi:energy_pool dummy
 #mapping var self.guxi.energy_pool_size = guxi:energy_pool
 
-scoreboard objectives add var_0 dummy
-scoreboard objectives add var_1 dummy
 
 #scoreboard players set @s var_0 0
 #scoreboard players set @s var_1 0

@@ -4,24 +4,37 @@ import DisplaySlot from "scripts/yoni/scoreboard/DisplaySlot.js";
 
 export default class SimpleScoreboard {
     static #objectives = new Map();
+    static #shadowObjectives = new Map();
     static #displayObjectiveLocation = new Map();;
     static #entries = [];
-    static addObjective(name, criteria, displayName){
+    
+    static _getObjectiveMap(){
+        return this.#objectives;
+    }
+    
+    static addObjective(name, criteria="dummy", displayName=null){
         if (name == null)
             throw new Error("Objective name not null!");
         if (this.getObjective(name) != null)
             throw new Error("Objective "+name+" existed!");
         if (criteria != "dummy")
             throw new Error("Unsupported criteria: " + criteria);
-        if (displayName == null)
+        if (displayName === null)
             displayName = name;
         
-        if (execCmd(dim(0), "scoreboard", "objectives", "add", name, criteria, displayName).statusCode = StatusCode.success){
-            return this.getObjective(name);
+        for (let char of name){
+            if (char.charCodeAt() < 32){
+                throw new Error("name contains Ascii Control Character");
+            }
         }
-        let objective = new Objective(name, criteria, displayName);
-        this.#objectives.set(name, objective);
-        return objective;
+        for (let char of displayName){
+            if (char.charCodeAt() < 32){
+                throw new Error("displayName contains Ascii Control Character");
+            }
+        }
+        
+        if (execCmd(dim(0), "scoreboard", "objectives", "add", name, criteria, displayName).statusCode = StatusCode.success)
+            return this.getObjective(name);
     }
     
     static removeObjective(name){
@@ -33,36 +46,59 @@ export default class SimpleScoreboard {
         } else {
             objective = this.getObjective(name);
         }
-        if (objective != null && !objective.isUnregistered){
+        if (objective !== undefined && !objective.isUnregistered){
             objective.unregister();
             this.#objectives.delete(name);
+            this.#shadoeObjectives.set(name, objective);
         }
     }
     
-    static getObjective(name){
+    static getObjective(name, autoCreateDummy=false){
         let objective = this.#objectives.get(name);
-        let vanillaObjective;
-        try {
-            vanillaObjective = VanillaScoreboard.getObjective(name);
-        } catch {}
+        let shadowObjective = this.#shadowObjectives.get(name);
+        let vanillaObjective = ()=>{
+            try {
+                return VanillaScoreboard.getObjective(name);
+            } catch {}
+        }();
         
-        if (objective != null && !objective.isUnregistered){
+        if (objective != null && shadowObjective == null && vanillaObjective != null){
             return objective;
-        } else if (vanillaObjective != null){
-            let objective = new Objective(vanillaObjective);
+        } else if (objective == null && shadowObjective != null && vanillaObjective != null){
+            this.#shadowObjectives.delete(name);
+            this.#objectives.set(name, shadowObjective);
+            return shadowObjective;
+        } else if (objective == null && shadowObjective == null && vanillaObjective != null){
+            let objective = new Objective(this, vanillaObjective);
             this.#objectives.set(name, objective);
             return objective;
+        } else if (vanillaObjective == null && autoCreateDummy == true){
+            let newObjective;
+            if (objective != null || shadowObjective != null){
+                newObjective = (objective == null) ? shadowObjective : objective;
+            } else {
+                newObjective = this.addObjective(name, "dummy");
+            }
+            
+            return newObjective;
+        } else if (shadowObjective != null && objective != null){
+            //我认为这种情况正常不可能出现
+            console.warn(`错误，${name}同时存在objective与shadowObjective，尝试修复中`);
+            if (vanillaObjective == null){
+                this.#objectives.delete(name);
+            } else {
+                this.#shadowObjectives.delete(name);
+            }
         }
         
         return null;
     }
 
     static getObjectives(){
-        let vanillaObjectives = VanillaScoreboard.getObjectives();
         let objectives = [];
-        for (let vanillaObj of vanillaObjectives){
-           objectives.push(this.getObjective(vanillaObj.id));
-        }
+        Array.from(VanillaScoreboard.getObjectives()).forEach((_)=>{
+            objectives.push(this.getObjective(_.id));
+        });
         return objectives;
     }
     

@@ -2,56 +2,78 @@ import { VanillaEvents }  from "scripts/yoni/basis.js";
 import { EventListener } from "scripts/yoni/event.js";
 
 export default class ChatCommand {
-    static #prefix = "!";
-    static #commands = {};
-
-    get prefix(){
-        return prefix;
+    static #prefixCmds = new Map();
+    getPrefixes(){
+        return Array.from(this.#prefixCmds.keys());
     }
-    static executeCommand(sender, rawCommand){
+    static executeCommand(sender, prefix, rawCommand){
         const parameters = this.#getParameters(rawCommand);
         const label = parameters[0];
-        this.#invokeCommand(sender, rawCommand, label, parameters.splice(1));
+        this.#invokeCommand(sender, prefix, rawCommand, label, parameters.splice(1));
         
     }
     static receiveBeforeChatEvent(event){
         const message = event.message;
-        if (!message.startsWith(this.#prefix))
-            return
-        this.executeCommand(event.sender, message.substring(this.#prefix.length));
+        let isCmd = false;
+        let prefix = "";
+        for (let p of this.#prefixCmds.keys()){
+            if (message.startsWith(p)){
+                isCmd = true;
+                prefix = p;
+                break;
+            }
+        }
+        if (!isCmd)
+            return;
+        this.executeCommand(event.sender, prefix, message.substring(prefix.length));
         event.cancel = true;
         return event;
     }
     
-    static registerCommand(command, commandExecutor){
-        this.#commands[command] = commandExecutor;
+    static registerPrefixCommand(prefix, command, commandExecutor){
+        if (this.#prefixCmds.get(prefix) == null){
+            this.#prefixCmds.set(prefix, new Map());
+        }
+        this.#prefixCmds.get(prefix).set(command, commandExecutor);
     }
     
-    static unregisterCommand(command, commandExecutor){
-        if (commandExecutor != undefined && commands[command] === commandExecutor)
-            this.#commands[command] = null;
-        else if (commandExecutor == undefined)
-            this.#commands[command] = null;
+    static registerCommand(...args){
+        this.registerPrefixCommand('!', ...args);
     }
     
-    static #invokeCommand(sender, rawCommand, command, args){
-        let commandExecutor = this.#commands[command];
-        if (commandExecutor != null && typeof commandExecutor.onCommand == "function"){
+    static unregisterPrefixCommand(prefix, command, commandExecutor){
+        if (commandExecutor === null || commandExecutor !== undefined && this.#prefixCmds.get(prefix).get(command) === commandExecutor)
+            this.#prefixCmds.get(prefix).delete(command);
+            if (this.#prefixCmds.get(prefix).size == 0){
+                this.#prefixCmds.delete(prefix);
+            }
+    }
+    
+    static unregisterCommand(...args){
+        this.unregisterPrefixCommand('!', ...args);
+    }
+    
+    static #invokeCommand(sender, prefix, rawCommand, command, args){
+        let commandExecutor = this.#prefixCmds.get(prefix).get(command);
+        let label = prefix+command;
+        if (typeof commandExecutor?.onCommand == "function"){
             try {
-                commandExecutor.onCommand(sender, rawCommand, command, args);
+                commandExecutor.onCommand(sender, rawCommand, label, args);
             } catch(err) {
-                console.error("[ChatCommand]: 运行命令" + command + "时发生错误");
-                console.error(err.message+"\n"+err.stack);
+                console.error(`[ChatCommand]: 运行命令${label}时发生错误`+
+                `\n${err.name}: ${err.message}`+
+                `\n${err.stack}`);
             }
         } else if (typeof commandExecutor == "function" ) {
             try {
-                commandExecutor(sender, rawCommand, command, args);
+                commandExecutor(sender, rawCommand, label, args);
             } catch(err) {
-                console.error("[ChatCommand]: 运行命令" + command + "时发生错误");
-                console.error(err.message+"\n"+err.stack);
+                console.error(`[ChatCommand]: 运行命令${label}时发生错误`+
+                `\n${err.name}: ${err.message}`+
+                `\n${err.stack}`);
             }
         } else {
-            console.error("[ChatCommand]: 无法找到命令" + command);
+            console.error("[ChatCommand]: 无法找到命令" + label);
             //Messager.sendMessage(sender, "没有找到命令 {}", command);
         }
     }
@@ -142,5 +164,6 @@ export default class ChatCommand {
 export { ChatCommand }
 
 EventListener.register("beforeChat", (event) => {
+    if (event.cancel) return;
     ChatCommand.receiveBeforeChatEvent(event);
 });

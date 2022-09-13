@@ -49,6 +49,14 @@ export default class Command {
         this.#command = command;
     }
     
+    static asyncRun(cmd){
+        return asyncExecute(dim(0), cmd);
+    }
+    
+    static asyncExecute(runner, command){
+        return runner.runCommandAsync(command);
+    }
+    
     static run(cmd){
         return Command.execute(dim(0), cmd);
     }

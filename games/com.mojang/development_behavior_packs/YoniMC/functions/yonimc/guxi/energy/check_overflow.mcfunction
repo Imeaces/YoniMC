@@ -1,12 +1,8 @@
-scoreboard objectives add var_0 dummy
 scoreboard players set @s var_0 0
-scoreboard objectives add var_1 dummy
 scoreboard players set @s var_1 0
 #:递归次数限制
-scoreboard objectives add var_2 dummy
 scoreboard players set @s var_2 50
 
-scoreboard objectives add arg_0 dummy
 scoreboard players set @s arg_0 0
 
 execute if score @s guxi:pp_energy matches 10000 run scoreboard players set @s var_0 71

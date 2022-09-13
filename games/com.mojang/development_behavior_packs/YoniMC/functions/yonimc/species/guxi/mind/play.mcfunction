@@ -1,1 +1,2 @@
-function yonimc/species/mind_old/play
+#function yonimc/species/guxi/mind_old/play
+list

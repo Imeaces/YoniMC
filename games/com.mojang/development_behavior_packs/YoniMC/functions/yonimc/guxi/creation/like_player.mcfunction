@@ -1,4 +1,3 @@
-scoreboard objectives add var_0 dummy
 scoreboard players set @s var_0 0
 
 #pp<7700 能量少了点，骗一点生物过来

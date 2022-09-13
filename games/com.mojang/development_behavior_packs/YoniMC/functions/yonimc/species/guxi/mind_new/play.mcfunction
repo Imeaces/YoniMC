@@ -1,9 +1,7 @@
 #初始化
 
-scoreboard objectives add var_0 dummy
 scoreboard players set @s var_0 0
 
-scoreboard objectives add var_1 dummy
 scoreboard players set @s var_1 0
 
 #:var mind 记录当前想法

@@ -7,7 +7,6 @@
 # entity.guxi.isEnergyEnough
 
 scoreboard objectives add guxi:val_4002 dummy
-scoreboard objectives add var_0 dummy
 
 # if guxi:val_4002 == null
 # then guxi:val_4002 = 0

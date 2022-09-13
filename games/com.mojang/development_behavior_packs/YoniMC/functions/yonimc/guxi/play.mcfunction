@@ -1,4 +1,3 @@
-scoreboard objectives add var_0 dummy
 scoreboard players set @s var_0 0
 
 #var

@@ -9,18 +9,6 @@ export default class YoniEntity {
     getMinecraftEntity(){
         return this.#vanillaEntity;
     }
-    get location(){
-        return this.#vanillaEntity.location;
-    }
-    get headLocation(){
-        return this.#vanillaEntity.headLocation;
-    }
-    get id(){
-        return this.#vanillaEntity.id;
-    }
-    get isSneaking(){
-        return this.#vanillaEntity.isSneaking;
-    }
     get nameTag(){
         if (YoniEntity.entityIsPlayer(this.#vanillaEntity))
             return this.#vanillaEntity.name;
@@ -33,23 +21,12 @@ export default class YoniEntity {
     set nameTag(name){
         this.#vanillaEntity.nameTag = name;
     }
-    get rotation(){
-        return this.#vanillaEntity.rotation;
-    }
     get scoreboard(){
-        return Entry.getEntry(this);
-    }
-    get target(){
-        return this.#vanillaEntity.target;
-    }
-    get velocity(){
-        return this.#vanillaEntity.velocity;
-    }
-    get viewVector(){
-        return this.#vanillaEntity.viewVector;
-    }
-    get dimension(){
-        return this.#vanillaEntity.dimension;
+        if (this.#vanillaEntity.scoreboard != null){
+            return this.#vanillaEntity.scoreboard;
+        } else {
+            return Entry.getEntry(this);
+        }
     }
     get isPlayer(){
         if (this.#vanillaEntity instanceof Minecraft.Player)
@@ -65,15 +42,33 @@ export default class YoniEntity {
         for (let s in this.#vanillaEntity){ //建立变量,函数
             if (this[s])
                 continue;
-            if (typeof this.#vanillaEntity[s] == "function")
+            if (typeof this.#vanillaEntity[s] == "function"){
                 this[s] = function (...args){ return this.#vanillaEntity[s](...args); };
+            } else {
+                Object.defineProperties(this, {
+                    [s]: {
+                        get(){
+                            return this.#vanillaEntity[s];
+                        },
+                        set(t){
+                            return this.#vanillaEntity[s] = t;
+                        }
+                    }
+                });
+            }
         }
     }
     isAliveEntity(){
         return YoniEntity.isAliveEntity(this.#vanillaEntity);
     }
-// get vanilla health component
-// internal function for YoniEntity
+    getCurrentHealth(){
+        let comp = this.getHealthComponent();
+        if (comp != null){
+            return comp.current;
+        } else {
+            return null;
+        }
+    }
     getHealthComponent(){
         try {
             return this.#vanillaEntity.getComponent("minecraft:health");
@@ -123,18 +118,29 @@ export default class YoniEntity {
             return 0;
     }
     
+    /**
+     * 获取所有存活的实体
+     */
+    static getAliveEntities(){
+        let entities = [];
+        
+        for (dimid in Minecraft.MinecraftDimensionTypes){
+            entities.push(...Array.from(dim(dimid).getEntities()));
+        }
+        return entities;
+    }
+    
+    /**
+     * 获取所有存在的实体
+     */
     static getLoadedEntities(){
-        let loadedEntities = [];
-        Array.from(dim(0).getEntities()).forEach((entity) => {
-            loadedEntities.push(new YoniEntity(entity));
+        let entities = this.getAliveEntities();
+        Array.from(VanillaWorld.getPlayers()).forEach((_)=>{
+            if (!entities.includes(_)){
+                entities.push(_);
+            }
         });
-        Array.from(dim(1).getEntities()).forEach((entity) => {
-            loadedEntities.push(new YoniEntity(entity));
-        });
-        Array.from(dim(-1).getEntities()).forEach((entity) => {
-            loadedEntities.push(new YoniEntity(entity));
-        });
-        return loadedEntities;
+        return entities;
     }
     
     static getMaxHealth(entity){

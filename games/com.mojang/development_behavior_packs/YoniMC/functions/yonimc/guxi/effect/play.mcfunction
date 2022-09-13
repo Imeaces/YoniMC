@@ -1,7 +1,4 @@
-scoreboard objectives add arg_0 dummy
-scoreboard objectives add arg_1 dummy
 
-scoreboard objectives add var_0 dummy
 scoreboard players set @s var_0 0
 
 function yonimc/guxi/effect/talent

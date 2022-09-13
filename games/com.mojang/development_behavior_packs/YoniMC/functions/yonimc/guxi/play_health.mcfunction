@@ -1,5 +1,4 @@
 
-scoreboard objectives add var_0 dummy
 scoreboard players set @s var_0 0
 
 execute unless score @s guxi:health_stat = @s guxi:sp_energy run scoreboard players set @s var_0 2333

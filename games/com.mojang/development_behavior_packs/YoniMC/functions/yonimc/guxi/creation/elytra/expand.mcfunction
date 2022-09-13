@@ -1,5 +1,4 @@
 scoreboard objectives add guxi:cre_ely dummy
-scoreboard objectives add var_0 dummy
 
 scoreboard players add @s guxi:cre_ely 0
 scoreboard players set @s var_0 0
