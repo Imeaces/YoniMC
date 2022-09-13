@@ -1,7 +1,6 @@
 import Utils from "scripts/yoni/scoreboard/Utils.js";
-import Entry from "scripts/yoni/scoreboard/Entry.js";
 import Objective from "scripts/yoni/scoreboard/Objective.js";
-import EntryType from "scripts/yoni/scoreboard/EntryType.js";
+import { Entry2 as Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
 import { StatusCode, execCmd, dim } from "scripts/yoni/basis.js";
 import { YoniEntitiy } from "scripts/yoni/entity.js";
 

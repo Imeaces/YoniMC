@@ -1,7 +1,6 @@
 import Utils from "scripts/yoni/scoreboard/Utils.js";
 import ScoreInfo from "scripts/yoni/scoreboard/ScoreInfo.js";
-import Entry from "scripts/yoni/scoreboard/Entry.js";
-import EntryType from "scripts/yoni/scoreboard/EntryType.js";
+import { Entry2 as Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
 import { Minecraft, execCmd as execCommand, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
 
 export default class Objective {
@@ -160,10 +159,7 @@ export default class Objective {
         checkUnregistered();
         
         if (!(entry instanceof Entry))
-            entry = Entry.getEntry(entry, null, null, null);
-
-        if (!(entry instanceof Entry))
-            throw new TypeError("Not an Entry type or cannot cover to an Entry");
+            entry = Entry.guessEntry(entry);
 
         let scoreInfo = this.#scores.get(entry);
         if (scoreInfo == null) {
