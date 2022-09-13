@@ -6,7 +6,153 @@ let idRecords = new Map();
 let entityRecords = new Map();
 let nameRecords = new Map();
 
-export default class Entry {
+export default class Entry2 {
+    static #fakePlayerEntity = Symbol("fakePlayerEntity");
+    static get fakePlayerEntity(){
+        return this.#fakePlayerEntity;
+    }
+    
+    #type;
+    #id;
+    #displayName;
+    #vanillaScbid;
+    
+    get type(){
+        return this.#type;
+    }
+    get id(){
+        if (this.#id == null && this.vanillaScbid != null){
+            this.#id = this.vanillaScbid.id;
+        } else if (this.#id !== this.vanillaScbid.id){
+            this.#id = null;
+            this.#vanillaScbid = null;
+        }
+        return this.#id;
+    }
+    get displayName(){
+        if (this.type == EntryType.PLAYER){
+            this.#displayName = this.getEntity().name;
+        } else if (this.type == EntryType.ENTITY){
+            this.#displayName = this.id;
+        }
+        return this.#displayName;
+    }
+    get vanillaScbid(){
+        if (this.#entity?.scoreboard != null && this.#entity.scoreboard !== this.#vanillaScbid){
+            this.#vanillaScbid = this.#entity?.scoreboard;
+        }
+        return this.#vanillaScbid;
+    }
+    
+    getEntity(){
+        if (this.vanillaScbid != null && this.#type !== EntryType.FAKE_PLAYER){
+            try {
+                return this.vanillaScbid.getEntity();
+            } catch {
+                return null;
+            }
+        } else {
+            return this.#entity;
+        }
+    }
+    
+    constructor(numid, type, entityOrName){
+        
+        let entity;
+        let name = null;
+        let scbid;
+        if (numid instanceof Minecraft.ScoreboardIdentity){
+            scbid = numid;
+            numid = scbid.id;
+            type = scbid.type;
+            if (type === EntryType.FAKE_PLAYER){
+                name = scbid.displayName;
+            } else {
+                entity = scbid.getEntity();
+            }
+        }
+        
+        
+        /*
+        这个函数会判断entityOrName的变量类型
+        如果是实体，就会赋值给entity
+        否则是假玩家
+        */
+        if (scbid == null){
+            entity = function(){
+                let ret = entityOrName;
+                if (entityOrName instanceof Minecraft.Player || entityOrName instanceof YoniEntity && entityOrName.isPlayer){
+                    type = EntryType.PLAYER;
+                } else if (entityOrName instanceof Minecraft.Entity || entityOrName instanceof YoniEntity && !entityOrName.isPlayer){
+                    type = EntryType.ENTITY;
+                } else if (entityOrName != null){
+                    type = EntryType.FAKE_PLAYER;
+                    ret = Entry2.fakePlayerEntity;
+                    name = entityOrName;
+                }
+                return ret;
+            }();
+        }
+        if (numid == null && entity === Entry2.fakePlayerEntity && name == null){
+            throw new Error("Unable to get the entry");
+        }
+        
+        //判断numid是否为数字
+        if (numid != null && isNaN(Number(numid))){
+            throw new TypeError("Number id must be a number!");
+        }
+        
+        //根据numid和name找到scbid
+        if (scbid == null){
+            let condF;
+            if (name == null) condF = function (e){ return e.id === numid; };
+            else if (numid == null) condF = function (e){ return e.name === name; };
+            else condF = function (e){ return e.name === name && e.id === numid; };
+            for (let _ of VanillaScoreboard.getParticipants()){
+                if (condF(_)){
+                    scbid = _;
+                    break;
+                }
+            }
+        }
+        
+        //获取原版实体对象
+        let vanillaEntity = (entity instanceof YoniEntity) ? YoniEntity.vanillaEntity : entity;
+        
+        if (type == EntryType.FAKE_PLAYER){ //传递了名字的时候会判定到这里
+            if (scbid != null){
+                this.#vanillaScbid = scbid;
+                this.#id = numid;
+                this.#displayName = name;
+            } else if (numid == null && name != null){
+                this.#displayName = name;
+            } else {
+                throw new Error("Could not find entry that matches");
+            }
+        } else if (type === EntryType.PLAYER || type === EntryType.ENTITY){ //传入实体的时候会判定到这里
+            let scbid = (vanillaEntity == null) ? scbid : vanillaEntity.scoreboard;
+            if (scbid != null){
+                this.#vanillaScbid = scbid;
+                this.#id = numid;
+                this.#displayName = (entity.nameTag == null) ? entity.name : entity.nameTag;
+                this.#entity = vanillaEntity;
+            } else if (numid != null){
+                throw new Error("Could not find entry that matches number id "+numid);
+            }
+            this.#entity = vanillaEntity;
+            
+        } else if (scbid != null){ //如果只传入了数字的时候会判定到危机
+            return new Entry(scbid);
+        } else {
+            throw new TypeError("Unknown type: "+type);
+        }
+        
+        this.#type = type;
+        
+    }
+}
+
+export class Entry {
     
     static getEntries(){
         let entries = [];
@@ -295,3 +441,5 @@ export default class Entry {
         }
     }
 }
+
+export { Entry, Entry2 }

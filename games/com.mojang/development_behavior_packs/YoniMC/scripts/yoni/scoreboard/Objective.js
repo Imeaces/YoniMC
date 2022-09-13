@@ -2,12 +2,6 @@ import Utils from "scripts/yoni/scoreboard/Utils.js";
 import ScoreInfo from "scripts/yoni/scoreboard/ScoreInfo.js";
 import Entry from "scripts/yoni/scoreboard/Entry.js";
 import EntryType from "scripts/yoni/scoreboard/EntryType.js";
-import {
-    ScoreboardObjective as VanillaScoreboardObjective,
-    Entity as VanillaEntity,
-    Player as VanillaPlayer,
-    ScoreboardIdentity as VanillaScoreboardIdentity
-} from "mojang-minecraft";
 import { Minecraft, execCmd as execCommand, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
 
 export default class Objective {
@@ -60,7 +54,7 @@ export default class Objective {
         checkUnregistered();
         
         if (this.vanillaObjective != null){
-            execCommand(dim(0), "scoreboard", "objectives", "remove", this.#id);
+            vanillaScoreboard.removeObjective(this.#id);
         }
     }
     
@@ -72,7 +66,7 @@ export default class Objective {
         
         this.#scoreboard = scoreboard;
         
-        if (name instanceof VanillaScoreboardObjective){
+        if (name instanceof Minecraft.ScoreboardObjective){
             let vanillaObj = name;
             name = vanillaObj.id;
             criteria = "dummy";

@@ -1,12 +1,21 @@
-import { StatusCode, execCmd, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
+import { StatusCode, execCmd, dim, VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
 import Objective from "scripts/yoni/scoreboard/Objective.js";
-import DisplaySlot from "scripts/yoni/scoreboard/DisplaySlot.js";
+
+export class DisplaySlotType {
+    static list = "lisy";
+    static sidebar = "sidebar";
+    static belowname = "belowname";
+    
+    static *[Symbol.iterator](){
+        yield "sidebar";
+        yield "belowname";
+        yield "list";
+    }
+}
+
 
 export default class SimpleScoreboard {
     static #objectives = new Map();
-    static #shadowObjectives = new Map();
-    static #displayObjectiveLocation = new Map();;
-    static #entries = [];
     
     static _getObjectiveMap(){
         return this.#objectives;
@@ -49,46 +58,27 @@ export default class SimpleScoreboard {
         if (objective !== undefined && !objective.isUnregistered){
             objective.unregister();
             this.#objectives.delete(name);
-            this.#shadoeObjectives.set(name, objective);
         }
     }
     
     static getObjective(name, autoCreateDummy=false){
         let objective = this.#objectives.get(name);
-        let shadowObjective = this.#shadowObjectives.get(name);
         let vanillaObjective = ()=>{
             try {
                 return VanillaScoreboard.getObjective(name);
             } catch {}
         }();
         
-        if (objective != null && shadowObjective == null && vanillaObjective != null){
+        if (vanillaObjective != null && objective?.vanillaObjective === vanillaObjective){
             return objective;
-        } else if (objective == null && shadowObjective != null && vanillaObjective != null){
-            this.#shadowObjectives.delete(name);
-            this.#objectives.set(name, shadowObjective);
-            return shadowObjective;
-        } else if (objective == null && shadowObjective == null && vanillaObjective != null){
-            let objective = new Objective(this, vanillaObjective);
-            this.#objectives.set(name, objective);
-            return objective;
-        } else if (vanillaObjective == null && autoCreateDummy == true){
-            let newObjective;
-            if (objective != null || shadowObjective != null){
-                newObjective = (objective == null) ? shadowObjective : objective;
-            } else {
-                newObjective = this.addObjective(name, "dummy");
-            }
+        } else if (objective == null && vanillaObjective != null){
+            let newObjective = new Objective(this, vanillaObjective);
+            this.#objectives.set(name, newObjective);
+            return newObjective;
+        } else if (vanillaObjective == null && autoCreateDummy === true){
+            let newObjective = this.addObjective(name, "dummy");
             
             return newObjective;
-        } else if (shadowObjective != null && objective != null){
-            //我认为这种情况正常不可能出现
-            console.warn(`错误，${name}同时存在objective与shadowObjective，尝试修复中`);
-            if (vanillaObjective == null){
-                this.#objectives.delete(name);
-            } else {
-                this.#shadowObjectives.delete(name);
-            }
         }
         
         return null;
@@ -103,36 +93,20 @@ export default class SimpleScoreboard {
     }
     
     static getObjectiveInSlot(slot){
-        let hasSucnSlot = false;
-        for (let s in DisplaySlot){
-            if (slot = DisplaySlot[s]){
-                hasSucnSlot = true;
-                slot = s;
-                break;
-            }
-        }
-        if (!hasSucnSlot)
+        if (!Array.from(DisplaySlotType).includes(slot))
             throw new TypeError("Not a DisplaySlot type");
-        return this.#displayObjectiveLocation.get(slot);
+        return VanillaScoreboard.getObjectiveAtDisplaySlot(slot);
     }
     
     static setDisplaySlot(slot, objective, sequence){
-        let hasSucnSlot = false;
-        for (let s in DisplaySlot){
-            if (slot = DisplaySlot[s]){
-                hasSucnSlot = true;
-                slot = s;
-                break;
-            }
-        }
-        if (!hasSucnSlot)
+        if (!Array.from(DisplaySlotType).includes(slot))
             throw new TypeError("Not a DisplaySlot type");
         if (!(objective instanceof Objective))
             objective = this.getObjective(objective);
         if (objective == null)
             throw new TypeError("Not a Objective or a objective name");
         
-        if (slot == DisplaySlot.BELOW_NAME){
+        if (slot == DisplaySlotType.BELOW_NAME){
             execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id);
         } else {
             execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id, sequence);
@@ -142,19 +116,11 @@ export default class SimpleScoreboard {
             
     }
     
-    static clearDisplaySlot(){
-        let hasSucnSlot = false;
-        for (let s in DisplaySlot){
-            if (slot = DisplaySlot[s]){
-                hasSucnSlot = true;
-                slot = s;
-                break;
-            }
-        }
-        if (!hasSucnSlot)
+    static clearDisplaySlot(slot){
+        if (!Array.from(DisplaySlotType).includes(slot)){
             throw new TypeError("Not a DisplaySlot type");
-        execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot);
-        this.displayObjectiveLocation.delete(slot);
+        }
+        return VanillaScoreboard.clearObjectiveAtDisplaySlot(slot);
     }
     
     static removeAllObjectives(){
