@@ -1,4 +1,4 @@
-import { Minecraft, execCmd, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
+import { Minecraft, execCmd, StatusCode, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
 import Utils from "scripts/yoni/scoreboard/Utils.js";
 import { Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
 import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "scripts/yoni/scoreboard/ScoreboardError.js"
@@ -8,27 +8,27 @@ export default class Objective {
     
     #id;
     get id(){
-        checkUnregistered();
+        this.checkUnregistered();
 
         return this.#id;
     }
     
     #criteria;
     get criteria(){
-        checkUnregistered();
+        this.checkUnregistered();
 
         return this.#criteria;
     }
     
     #displayName;
     get displayName(){
-        checkUnregistered();
+        this.checkUnregistered();
         
         return this.#displayName;
     }
     
     #isUnregistered = false;
-    isUnregistered(){
+    get isUnregistered(){
         if (this.#isUnregistered){
             return true;
         } else if (this.vanillaObjective === null){
@@ -60,7 +60,7 @@ export default class Objective {
     }
     
     unregister(){
-        checkUnregistered();
+        this.checkUnregistered();
         
         if (this.vanillaObjective != null){
             VanillaScoreboard.removeObjective(this.#id);
@@ -72,10 +72,12 @@ export default class Objective {
         this.#scoreboard = scoreboard;
         
         if (name instanceof Minecraft.ScoreboardObjective){
-            let vanillaObj = name;
-            name = vanillaObj.id;
+            this.#vanillaObjective = name;
+            name = this.#vanillaObjective.id;
             criteria = "dummy";
-            displayName = vanillaObj.displayName;
+            displayName = this.#vanillaObjective.displayName;
+        } else {
+            this.#vanillaObjective = VanillaScoreboard.get(name);
         }
         
         this.#id = name;
@@ -85,7 +87,7 @@ export default class Objective {
     }
     
     addScore(entry, score){
-        checkUnregistered();
+        this.checkUnregistered();
 
         if (!Number.isInteger(score))
             throw new TypeError("Score can only be an integer number");
@@ -98,7 +100,7 @@ export default class Objective {
     }
     
     randomScore(entry, min=-2147483648, max=2147483647){
-        checkUnregistered();
+        this.checkUnregistered();
 
         if (!Number.isInteger(min) || !Number.isInteger(max))
             throw new TypeError("Score can only be an integer number");
@@ -112,7 +114,7 @@ export default class Objective {
     }
     
     removeScore(entry, score){
-        checkUnregistered();
+        this.checkUnregistered();
 
         if (!Number.isInteger(score))
             throw new TypeError("Score can only be an integer number");
@@ -125,7 +127,7 @@ export default class Objective {
     }
     
     resetScore(entry){
-        checkUnregistered();
+        this.checkUnregistered();
 
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
@@ -164,13 +166,13 @@ export default class Objective {
     }
     
     resetScores(){
-        checkUnregistered();
+        this.checkUnregistered();
 
         execCmd(dim(0), "scoreboard", "players", "reset", "*", this.#id);
     }
     
     setScore(entry, score){
-        checkUnregistered();
+        this.checkUnregistered();
 
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
@@ -215,7 +217,7 @@ export default class Objective {
     }
     
     getScore(entry){
-        checkUnregistered();
+        this.checkUnregistered();
         
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
@@ -231,18 +233,17 @@ export default class Objective {
     }
     
     getEntries(){
-        checkUnregistered();
+        this.checkUnregistered();
         
         let entries = [];
         Array.from(this.vanillaObjective.getParticipants()).forEach((_) => {
             entries.push(Entry.getEntry({scbid: _, type: scbid.type}));
-            }
         });
         return entries;
     }
     
     getScoreInfos(){
-        checkUnregistered();
+        this.checkUnregistered();
         
         let scoreInfos = [];
         Array.from(getEntries()).forEach((_)=>{
@@ -252,7 +253,7 @@ export default class Objective {
     }
     
     getScoreInfo(entry, autoInit=false){
-        checkUnregistered();
+        this.checkUnregistered();
         
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
@@ -302,3 +303,5 @@ export class ScoreInfo {
     }
     
 }
+
+export { Objective }

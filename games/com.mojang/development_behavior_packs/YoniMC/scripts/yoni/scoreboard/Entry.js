@@ -1,5 +1,4 @@
 import { VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
-import EntryType from "scripts/yoni/scoreboard/EntryType.js";
 import { YoniEntity } from "scripts/yoni/entity.js";
 
 let idRecords = new Map();
@@ -200,7 +199,7 @@ export default class Entry {
         
         this.#displayName = name;
         this.#id = id;
-        this.#scbid = scbid;
+        this.#vanillaScbid = scbid;
         this.#entity = entity;
         this.#type = type;
         

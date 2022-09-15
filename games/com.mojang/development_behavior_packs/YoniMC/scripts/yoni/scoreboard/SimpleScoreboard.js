@@ -67,15 +67,15 @@ export default class SimpleScoreboard {
             } catch {}
         }();
         
-        if (vanillaObjective != null && objective?.vanillaObjective === vanillaObjective){
+        if (vanillaObjective != null && objective?.vanillaObjective != null){
             return objective;
         } else if (objective == null && vanillaObjective != null){
+            this.#objectives.delete(name);
             let newObjective = new Objective(this, vanillaObjective);
             this.#objectives.set(name, newObjective);
             return newObjective;
         } else if (vanillaObjective == null && autoCreateDummy === true){
             let newObjective = this.addObjective(name, "dummy");
-            
             return newObjective;
         }
         
@@ -122,7 +122,7 @@ export default class SimpleScoreboard {
     static getEntries(){
         let entries;
         Array.from(VanillaScoreboard.getParticipants()).forEach((_)=>{
-            entries.push(Entry.getEntry({scbid: _, type: scbid.type});
+            entries.push(Entry.getEntry({scbid: _, type: scbid.type}));
         });
         return entries;
     }
