@@ -40,6 +40,10 @@ export default class Entry {
         throw new Error("Sorry, couldn't guess the entry");
     }
     
+    static getEntries(){
+        return symbolRecords.values();
+    }
+    
     static getEntry(option){
         let { entity, id, name, scbid, type } = option;
         entity = (entity instanceof YoniEntity) ? YoniEntity.vanillaEntity : entity;

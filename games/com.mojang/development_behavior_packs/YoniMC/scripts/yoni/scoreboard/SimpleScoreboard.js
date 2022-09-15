@@ -119,6 +119,14 @@ export default class SimpleScoreboard {
         return VanillaScoreboard.clearObjectiveAtDisplaySlot(slot);
     }
     
+    static getEntries(){
+        let entries;
+        Array.from(VanillaScoreboard.getParticipants()).forEach((_)=>{
+            entries.push(Entry.getEntry({scbid: _, type: scbid.type});
+        });
+        return entries;
+    }
+    
     static removeAllObjectives(){
         this.getObjectives().forEach((obj) => obj.unregister());
     }
