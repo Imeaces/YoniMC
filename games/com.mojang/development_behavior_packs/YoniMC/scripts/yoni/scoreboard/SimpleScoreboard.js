@@ -17,10 +17,6 @@ export class DisplaySlotType {
 export default class SimpleScoreboard {
     static #objectives = new Map();
     
-    static _getObjectiveMap(){
-        return this.#objectives;
-    }
-    
     static addObjective(name, criteria="dummy", displayName=null){
         if (name == null)
             throw new Error("Objective name not null!");
@@ -36,9 +32,11 @@ export default class SimpleScoreboard {
                 throw new Error("name contains Ascii Control Character");
             }
         }
-        for (let char of displayName){
-            if (char.charCodeAt() < 32){
-                throw new Error("displayName contains Ascii Control Character");
+        if (name !== displayName){
+            for (let char of displayName){
+                if (char.charCodeAt() < 32){
+                    throw new Error("displayName contains Ascii Control Character");
+                }
             }
         }
         
@@ -50,15 +48,15 @@ export default class SimpleScoreboard {
         let objective;
         if (name instanceof Objective){
             objective = name;
-        } else if ( name instanceof VanillaScoreboardObjective ){
+        } else if ( name instanceof Minecraft.ScoreboardObjective ){
             objective = this.getObjective(name.id);
         } else {
             objective = this.getObjective(name);
         }
-        if (objective !== undefined && !objective.isUnregistered){
+        if (objective != null && !objective.isUnregistered){
             objective.unregister();
-            this.#objectives.delete(name);
         }
+        this.#objectives.delete(name);
     }
     
     static getObjective(name, autoCreateDummy=false){
@@ -95,7 +93,7 @@ export default class SimpleScoreboard {
     static getObjectiveInSlot(slot){
         if (!Array.from(DisplaySlotType).includes(slot))
             throw new TypeError("Not a DisplaySlot type");
-        return VanillaScoreboard.getObjectiveAtDisplaySlot(slot);
+        return this.getObjective(VanillaScoreboard.getObjectiveAtDisplaySlot(slot).id);
     }
     
     static setDisplaySlot(slot, objective, sequence){
@@ -112,8 +110,6 @@ export default class SimpleScoreboard {
             execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id, sequence);
         }
 
-        this.#displayObjectiveLocation.set(slot,objective);
-            
     }
     
     static clearDisplaySlot(slot){
@@ -133,7 +129,7 @@ export default class SimpleScoreboard {
     
     static resetScore(entry){
         this.getObjectives().forEach((obj) => {
-            obj.getScoreInfo(entry).reset();
+            obj.resetScore(entry);
         });
     }
 }

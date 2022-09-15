@@ -1,7 +1,7 @@
+import { Minecraft, execCmd, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
 import Utils from "scripts/yoni/scoreboard/Utils.js";
-import ScoreInfo from "scripts/yoni/scoreboard/ScoreInfo.js";
-import { Entry2 as Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
-import { Minecraft, execCmd as execCommand, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
+import { Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
+import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "scripts/yoni/scoreboard/ScoreboardError.js"
 
 export default class Objective {
     #scoreboard;
@@ -9,14 +9,14 @@ export default class Objective {
     #id;
     get id(){
         checkUnregistered();
-        
+
         return this.#id;
     }
     
     #criteria;
     get criteria(){
         checkUnregistered();
-        
+
         return this.#criteria;
     }
     
@@ -27,38 +27,44 @@ export default class Objective {
         return this.#displayName;
     }
     
-    #isUnregistered;
-    get checkUnregistered(){
-        let result = false;
-        if (this.#scoreboard._getObjectiveMap().get(this.#id) == null){
-            result = true;
-        } else if (this.vanillaObjective == null){
-            this.#scoreboard.removeObjective(this);
-            result = true;
+    #isUnregistered = false;
+    isUnregistered(){
+        if (this.#isUnregistered){
+            return true;
+        } else if (this.vanillaObjective === null){
+            this.#isUnregistered = true;
+            return true;
+        } else if (this.#scoreboard.getObjective(this.#id) !== this){
+            this.#isUnregistered = true;
+            return true;
         }
-        return result;
+        return false;
+    }
+    checkUnregistered(){
+        if (this.isUnregistered)
+            throw new ObjectiveUnregisteredError(this.#id);
     }
     
-    #scores = new Map();
-
+    #vanillaObjective;
     get vanillaObjective(){
-        try {
-            return VanillaScoreboard.getObjective(this.#id);
-        } catch {
+        let vanilla = ()=>{
+            try {
+                return VanillaScoreboard.getObjective(this.#id);
+            } catch {}
+        }();
+        if (vanilla === this.##vanillaObjective)
+            return vanilla;
+        else
             return null;
-        }
+            
     }
     
     unregister(){
         checkUnregistered();
         
         if (this.vanillaObjective != null){
-            vanillaScoreboard.removeObjective(this.#id);
+            VanillaScoreboard.removeObjective(this.#id);
         }
-    }
-    
-    checkUnregistered(){
-        if (this.isUnregistered) throw new Error("Objective has been removed!");
     }
     
     constructor(scoreboard, name, criteria, displayName){
@@ -77,82 +83,172 @@ export default class Objective {
         this.#displayName = displayName;
         
     }
+    
     addScore(entry, score){
         checkUnregistered();
 
-        if (!Utils.isBetweenRange(score))
-            throw new RangeError("Score can only range -2147483648 to 2147483647");
+        if (!Number.isInteger(score))
+            throw new TypeError("Score can only be an integer number");
 
-        let scoreInfo = this.getScoreInfo(entry, true);
-        let newScore = (scoreInfo.score + score + 1) % (2**31) - 1;
-        scoreInfo.score = newScore;
+        if (!Utils.isBetweenRange(score))
+            throw new ScoreRangeError();
+        
+        let newScore = (this.getScore(entry) + score + 1) % (2**31) - 1;
+        this.setScore(entry, newScore);
     }
+    
     randomScore(entry, min=-2147483648, max=2147483647){
         checkUnregistered();
 
-        if (!Utils.isBetweenRange(min))
-            throw new RangeError("Score can only range -2147483648 to 2147483647");
-        if (!Utils.isBetweenRange(max))
-            throw new RangeError("Score can only range -2147483648 to 2147483647");
+        if (!Number.isInteger(min) || !Number.isInteger(max))
+            throw new TypeError("Score can only be an integer number");
+
+        if (!Utils.isBetweenRange(min) || !Utils.isBetweenRange(max))
+            throw new ScoreRangeError();
         
-        let scoreInfo = this.getScoreInfo(entry);
         let newScore = Math.round((max - min) * Math.random() + min);
-        scoreInfo.score = newScore;
+        this.setScore(entry, newScore);
         return newScore;
     }
+    
     removeScore(entry, score){
         checkUnregistered();
 
-        if (!Utils.isBetweenRange(score))
-            throw new RangeError("Score can only range -2147483648 to 2147483647");
+        if (!Number.isInteger(score))
+            throw new TypeError("Score can only be an integer number");
 
-        let scoreInfo = this.getScoreInfo(entry, true);
-        let newScore = (scoreInfo.score - score + 1) % (2**31) - 1;
-        scoreInfo.score = newScore;
+        if (!Utils.isBetweenRange(score))
+            throw new ScoreRangeError();
+
+        let newScore = (this.getScore(entry) - score + 1) % (2**31) - 1;
+        this.setScore(entry, newScore);
     }
+    
     resetScore(entry){
         checkUnregistered();
 
-        this.getScoreInfo(entry).reset();
+        if (!(entry instanceof Entry))
+            entry = Entry.guessEntry(entry);
+
+        if (entry.type === EntryType.PLAYER || type === EntryType.ENTITY){
+            let ent;
+            if (entry.type == EntryType.PLAYER){
+                ent = entry.getEntity();
+            } else {
+                let entryEnt = entry.getEntity();
+                for (let e of YoniEntitiy.getAliveEntities()){
+                    if (e === entryEnt){
+                        ent = e;
+                        break;
+                    }
+                }
+            }
+            if (ent == null){
+                throw new InternalError("Could not find the entity");
+            }
+            if (execCmd(ent, "scoreboard", "players", "reset", "@s", this.#id).statusCode != StatusCode.success){
+                throw new InternalError("Could not set score, maybe entity or player disappeared?");
+            }
+        } else {
+        
+            for (let pl of Minecraft.getPlayers()){
+                if (pl.name = entry.displayName){
+                    throw new NameConflictError(entry.displayName);
+                }
+            }
+
+            execCmd(dim(0), "scoreboard", "players", "reset", entry.displayName, this.#id);
+            
+        }
+        
     }
     
     resetScores(){
         checkUnregistered();
 
-        execCommand(dim(0), "scoreboard", "players", "reset", "*", this.#id);
+        execCmd(dim(0), "scoreboard", "players", "reset", "*", this.#id);
     }
     
     setScore(entry, score){
         checkUnregistered();
 
-        let scoreInfo = this.getScoreInfo(entry);
-        scoreInfo.score = score;
+        if (!(entry instanceof Entry))
+            entry = Entry.guessEntry(entry);
+
+        if (!Number.isInteger(score))
+            throw new TypeError("Score can only be an integer number");
+            
+        if (!Utils.isBetweenRange(score))
+            throw new ScoreRangeError();
+        
+        if (entry.type === EntryType.PLAYER || type === EntryType.ENTITY){
+            let ent;
+            if (entry.type == EntryType.PLAYER){
+                ent = entry.getEntity();
+            } else {
+                let entryEnt = entry.getEntity();
+                for (let e of YoniEntitiy.getAliveEntities()){
+                    if (e === entryEnt){
+                        ent = e;
+                        break;
+                    }
+                }
+            }
+            if (ent == null){
+                throw new InternalError("Could not find the entity");
+            }
+            if (execCmd(ent, "scoreboard", "players", "set", "@s", this.#id, score).statusCode != StatusCode.success){
+                throw new InternalError("Could not set score, maybe entity or player disappeared?");
+            }
+        } else {
+        
+            for (let pl of Minecraft.getPlayers()){
+                if (pl.name = entry.displayName){
+                    throw new NameConflictError(entry.displayName);
+                }
+            }
+
+            execCmd(dim(0), "scoreboard", "players", "set", entry.displayName, this.#id, score);
+            
+        }
+        
     }
     
     getScore(entry){
         checkUnregistered();
+        
+        if (!(entry instanceof Entry))
+            entry = Entry.guessEntry(entry);
 
-        return this.getScoreInfo(entry).score;
+        let score;
+        let scbid = entry.vanillaScbId;
+        if (scbid == null){
+            score = undefined;
+        } else {
+            score = this.vanillaObjective.getScore(scbid);
+        }
+        return score;
     }
     
     getEntries(){
         checkUnregistered();
         
-        let entriesInObj = [];
-        let entries = this.#vanillaObjective.getParticipants();
-        Array.from(entries).forEach((_) => {
-            if (this.getScoreInfo(_).score != null){
-                entriesInObj.push(this.getScoreInfo(_).getEntry());
+        let entries = [];
+        Array.from(this.vanillaObjective.getParticipants()).forEach((_) => {
+            entries.push(Entry.getEntry({scbid: _, type: scbid.type}));
             }
         });
-        return entriesInObj;
+        return entries;
     }
     
     getScoreInfos(){
         checkUnregistered();
-
-        this.getEntries();
-        return this.#scores.values();
+        
+        let scoreInfos = [];
+        Array.from(getEntries()).forEach((_)=>{
+            scoreInfos.push(this.getScoreInfo(_));
+        });
+        return scoreInfos;
     }
     
     getScoreInfo(entry, autoInit=false){
@@ -161,13 +257,48 @@ export default class Objective {
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
 
-        let scoreInfo = this.#scores.get(entry);
-        if (scoreInfo == null) {
-            scoreInfo = new ScoreInfo(this, entry);
-            this.#scores.set(entry, scoreInfo);
-        }
+        let scoreInfo = new ScoreInfo(this, entry);
         if (autoInit == true && scoreInfo.score == null)
             scoreInfo.score = 0;
         return scoreInfo;
     }
+}
+
+export class ScoreInfo {
+    #entry;
+    #objective;
+    
+    constructor(obj, entry){
+        if (!(obj instanceof Objective))
+            throw new TypeError("Not an Objective type");
+        if (!(entry instanceof Entry))
+            throw new TypeError("Not an Entry type");
+        this.#objective = obj;
+        this.#entry = entry;
+    }
+    
+    set score(score){
+        this.#objective.setScore(this.#entry, score);
+    }
+    
+    get score(){
+        return this.#objective.getScore(this.#entry);
+    }
+    
+    reset(){
+        this.#objective.resetScore(this.#entry);
+    }
+    
+    getEntry(){
+        return this.#entry;
+    }
+    
+    getObjective(){
+        return this.#objective;
+    }
+    
+    toString(){
+        return String(this.score);
+    }
+    
 }
