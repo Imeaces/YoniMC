@@ -115,6 +115,7 @@ export default class Entry {
         return this.#vanillaScbid;
     }
     
+    #entity;
     getEntity(){
         if (this.vanillaScbid != null && this.#type !== EntryType.FAKE_PLAYER){
             try {

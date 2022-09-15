@@ -52,7 +52,7 @@ export default class Objective {
                 return VanillaScoreboard.getObjective(this.#id);
             } catch {}
         }();
-        if (vanilla === this.##vanillaObjective)
+        if (vanilla === this.#vanillaObjective)
             return vanilla;
         else
             return null;
