@@ -77,10 +77,7 @@ class Objective {
     get isUnregistered(){
         if (this.#isUnregistered){
             return true;
-        } else if (this.vanillaObjective === null){
-            this.#isUnregistered = true;
-            return true;
-        } else if (this.#scoreboard.getObjective(this.#id) !== this){
+        } else if (this.#vanillaObjective !== VanillaScoreboard.getObjective(this.#id)){
             this.#isUnregistered = true;
             return true;
         }
@@ -103,16 +100,7 @@ class Objective {
      * @return {Minecraft.ScoreboardObjective}
      */
     get vanillaObjective(){
-        let vanilla = ()=>{
-            try {
-                return VanillaScoreboard.getObjective(this.#id);
-            } catch {}
-        }();
-        if (vanilla === this.#vanillaObjective)
-            return vanilla;
-        else
-            return null;
-            
+        return this.#vanillaObjective;
     }
     #vanillaObjective;
     

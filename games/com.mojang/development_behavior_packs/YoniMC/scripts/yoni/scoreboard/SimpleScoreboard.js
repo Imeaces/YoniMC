@@ -88,7 +88,7 @@ export default class SimpleScoreboard {
     static getObjective(name, autoCreateDummy=false){
         let objective = this.#objectives.has(name) ? this.#objectives.get(name) : null;
         
-        if (!objective.isUnregistered){
+        if (objective?.isUnregistered === false){
             return objective;
         }
         

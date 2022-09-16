@@ -46,7 +46,6 @@ class Entry {
             ...nameRecords.values()]).values()];
     }
     
-    ...new Set([1,2,34,5]).values();
     static getEntry(option){
         let { entity, id, name, scbid, type } = option;
         entity = (entity instanceof YoniEntity) ? YoniEntity.vanillaEntity : entity;
@@ -67,13 +66,13 @@ class Entry {
         }
         
         if (entry.getEntity() != null)
-            entityRecords.set(entry.getEntity(), symbol);
+            entityRecords.set(entry.getEntity(), entry);
         if (entry.id != null)
-            idRecords.set(entry.id, symbol);
+            idRecords.set(entry.id, entry);
         if (entry.vanillaScbid != null)
-            scbidRecords.set(entry.vanillaScbid, symbol);
+            scbidRecords.set(entry.vanillaScbid, entry);
         if (entry.displayName != null && type === EntryType.FAKE_PLAYER)
-            nameRecords.set(entry.displayName, symbol);
+            nameRecords.set(entry.displayName, entry);
             
         if (type != null && entry.type !== type)
             throw new Error("entry type do not matches");
