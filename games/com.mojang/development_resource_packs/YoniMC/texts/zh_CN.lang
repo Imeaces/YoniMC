@@ -10,3 +10,5 @@ entity.guxi:flow_energy.name=能量束
 entity.guxi:energy_light.name=能量痕迹
 
 item.spawn_egg.entity.yoni:guxi.name=创建咕西实体数据
+
+tile.yonimc:blue_carnation.name=梦中的康乃馨

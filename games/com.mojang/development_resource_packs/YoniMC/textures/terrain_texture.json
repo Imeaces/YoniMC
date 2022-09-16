@@ -8,6 +8,11 @@
       "textures": [
         "textures/blocks/energy_block"
       ]
+    },
+    "blue_carnation": {
+      "textures": [
+        "textures/blocks/blue_carnation"
+      ]
     }
   }
 }
