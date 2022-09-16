@@ -3,6 +3,7 @@ import Entry from "scripts/yoni/scoreboard/Entry.js";
 import Command from "scripts/yoni/command.js";
 
 //need more info
+let entityMap = new WeakMap();
 
 export default class YoniEntity {
     #vanillaEntity;
@@ -34,13 +35,18 @@ export default class YoniEntity {
         else return false;
     }
     constructor(entity){
+        // 如果有记录，直接返回对应实体
+        if (entityMap.has(entity)) return entityMap.get(entity);
+        
         if (YoniEntity.isYoniEntity(entity)) //如果已经封装为YoniEntity，则直接返回原实体
             return entity;
+            
         if (!YoniEntity.isMinecraftEntity(entity)) //如果不是MCEntity则报错
             throw new TypeError("There is not a Minecraft Entity type");
+            
         this.#vanillaEntity = entity; //如果是MCEntity则保存
         for (let s in this.#vanillaEntity){ //建立变量,函数
-            if (this[s])
+            if (this.hasOwnProperty(s))
                 continue;
             if (typeof this.#vanillaEntity[s] == "function"){
                 this[s] = function (...args){ return this.#vanillaEntity[s](...args); };
@@ -57,6 +63,8 @@ export default class YoniEntity {
                 });
             }
         }
+        
+        entityMap.set(entity, this);
     }
     isAliveEntity(){
         return YoniEntity.isAliveEntity(this.#vanillaEntity);

@@ -3,31 +3,77 @@ import Utils from "scripts/yoni/scoreboard/Utils.js";
 import { Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
 import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "scripts/yoni/scoreboard/ScoreboardError.js"
 
-export default class Objective {
+const objectiveTypes = Object.create(null);
+
+/**
+ * Contains objectives and participants for the scoreboard.
+ */
+class Objective {
+    static hasCriteria(name){
+        return objectiveTypes[name] !== undefined;
+    }
+    static addCriteria(name, objectiveType){
+        if (this.hasCriteria(name))
+            throw new Error(`Criteria existed! (${name})`);
+        
+        objectiveTypes[name] = objectiveType;
+    }
+    
+    static create(nameOrObj, criteria, displayName){
+        let name;
+        if (nameOrObj instanceof Minecraft.ScoreboardObjective){
+            name = nameOrObj.id;
+            criteria = "dummy";
+            displayName = nameOrObj.displayName;
+        }
+        if (this.hasCriteria(criteria)){
+            let objectiveType = objectiveTypes[criteria];
+            let newObjective = new objectiveType(name, criteria, displayName);
+            return newObjective;
+        } else {
+            throw new Error(`Unknown criteria: ${criteria}`);
+        }
+    }
+    
     #scoreboard;
     
-    #id;
+    /**
+     * Identifier of the scoreboard objective.
+     * @throws This property can throw when used.
+     */
     get id(){
         this.checkUnregistered();
 
         return this.#id;
     }
+    #id;
     
-    #criteria;
+    /**
+     * Returns the criteria of the objective
+     * @throws This property can throw when used.
+     */
     get criteria(){
         this.checkUnregistered();
 
         return this.#criteria;
     }
+    #criteria;
     
-    #displayName;
+    /**
+     * Returns the player-visible name of this scoreboard
+     * objective.
+     * @throws This property can throw when used.
+     */
     get displayName(){
         this.checkUnregistered();
         
         return this.#displayName;
     }
+    #displayName;
     
-    #isUnregistered = false;
+    /**
+     * Returns whether the objective has been removed.
+     */
     get isUnregistered(){
         if (this.#isUnregistered){
             return true;
@@ -40,12 +86,22 @@ export default class Objective {
         }
         return false;
     }
+    #isUnregistered = false;
+
+    /**
+     * Returns whether the objective has been removed.
+     * @throws Throw when the objective has been removed.
+     */
     checkUnregistered(){
         if (this.isUnregistered)
             throw new ObjectiveUnregisteredError(this.#id);
     }
     
-    #vanillaObjective;
+    /**
+     * Returns the origin objective class of this scoreboard
+     * objective.
+     * @return {Minecraft.ScoreboardObjective}
+     */
     get vanillaObjective(){
         let vanilla = ()=>{
             try {
@@ -58,7 +114,13 @@ export default class Objective {
             return null;
             
     }
+    #vanillaObjective;
     
+    /**
+     * @remarks
+     * Remove this objective
+     * @throws This function can throw error when objective has been unregistered.
+     */
     unregister(){
         this.checkUnregistered();
         
@@ -171,6 +233,13 @@ export default class Objective {
         execCmd(dim(0), "scoreboard", "players", "reset", "*", this.#id);
     }
     
+    /**
+     * @remarks
+     * Set a specific score for a participant.
+     * @param entry, or other thing that can be set score
+     * @param {Number} an integer number
+     * @throws This function can throw errors.
+     */
     setScore(entry, score){
         this.checkUnregistered();
 
@@ -216,6 +285,13 @@ export default class Objective {
         
     }
     
+    /**
+     * @remarks
+     * Returns a specific score for a participant.
+     * @param participant
+     * @return {Number} - the score of entry
+     * @throws This function can throw errors.
+     */
     getScore(entry){
         this.checkUnregistered();
         
@@ -232,24 +308,33 @@ export default class Objective {
         return score;
     }
     
+    /**
+     * @remarks
+     * Returns all objective participant identities.
+     * @throws This function can throw errors.
+     */
     getEntries(){
         this.checkUnregistered();
         
-        let entries = [];
-        Array.from(this.vanillaObjective.getParticipants()).forEach((_) => {
-            entries.push(Entry.getEntry({scbid: _, type: scbid.type}));
-        });
-        return entries;
+        return Array.from(this.vanillaObjective.getParticipants())
+            .map((_) => {
+                return Entry.getEntry({scbid: _, type: scbid.type});
+            });
     }
     
+    /**
+     * @remarks
+     * Returns specific scores for this objective for all
+     * participants.
+     * @throws This function can throw errors.
+     */
     getScoreInfos(){
         this.checkUnregistered();
         
-        let scoreInfos = [];
-        Array.from(getEntries()).forEach((_)=>{
-            scoreInfos.push(this.getScoreInfo(_));
-        });
-        return scoreInfos;
+        return Array.from(getEntries())
+            .map((_)=>{
+                return this.getScoreInfo(_)
+            });
     }
     
     getScoreInfo(entry, autoInit=false){
@@ -265,7 +350,9 @@ export default class Objective {
     }
 }
 
-export class ScoreInfo {
+Objective.addCriteria("dummy", Objective);
+
+class ScoreInfo {
     #entry;
     #objective;
     
@@ -304,4 +391,5 @@ export class ScoreInfo {
     
 }
 
-export { Objective }
+export { Objective, ScoreInfo, objectiveTypes as ObjectTypes };
+export default Objective;

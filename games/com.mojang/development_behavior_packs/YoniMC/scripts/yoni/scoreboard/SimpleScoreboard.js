@@ -1,8 +1,11 @@
 import { StatusCode, execCmd, dim, VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
 import Objective from "scripts/yoni/scoreboard/Objective.js";
 
+/**
+ * enum of alive display slot
+ */
 export class DisplaySlotType {
-    static list = "lisy";
+    static list = "list";
     static sidebar = "sidebar";
     static belowname = "belowname";
     
@@ -13,16 +16,25 @@ export class DisplaySlotType {
     }
 }
 
-
+/**
+ * Contains objectives and participants for the scoreboard.
+ */
 export default class SimpleScoreboard {
     static #objectives = new Map();
     
+    /**
+     * @remarks
+     * Adds a new objective to the scoreboard.
+     * @param objectiveId
+     * @param displayName
+     * @throws This function can throw errors.
+     */
     static addObjective(name, criteria="dummy", displayName=null){
         if (name == null)
             throw new Error("Objective name not null!");
         if (this.getObjective(name) != null)
             throw new Error("Objective "+name+" existed!");
-        if (criteria != "dummy")
+        if (!Objective.hasCriteria(criteria))
             throw new Error("Unsupported criteria: " + criteria);
         if (displayName === null)
             displayName = name;
@@ -40,10 +52,17 @@ export default class SimpleScoreboard {
             }
         }
         
-        if (execCmd(dim(0), "scoreboard", "objectives", "add", name, criteria, displayName).statusCode = StatusCode.success)
-            return this.getObjective(name);
+        let newObjective = Objective.create(name, criteria, displayName);
+        this.#objectives.set(name, newObjective);
+        
+        return newObjective;
     }
     
+    /**
+     * @remarks
+     * Removes an objective from the scoreboard.
+     * @param objectiveId or Objective
+     */
     static removeObjective(name){
         let objective;
         if (name instanceof Objective){
@@ -59,18 +78,27 @@ export default class SimpleScoreboard {
         this.#objectives.delete(name);
     }
     
+    /**
+     * @remarks
+     * Returns a specific objective (by id).
+     * @param objectiveId
+     * @param (Boolean) if true, it will try to create a dummy objective when objective didn't exist
+     * @return return Objective if existed, else return null
+     */
     static getObjective(name, autoCreateDummy=false){
-        let objective = this.#objectives.get(name);
+        let objective = this.#objectives.has(name) ? this.#objectives.get(name) : null;
+        
+        if (!objective.isUnregistered){
+            return objective;
+        }
+        
         let vanillaObjective = ()=>{
             try {
                 return VanillaScoreboard.getObjective(name);
             } catch {}
         }();
         
-        if (vanillaObjective != null && objective?.vanillaObjective != null){
-            return objective;
-        } else if (objective == null && vanillaObjective != null){
-            this.#objectives.delete(name);
+        if (objective === null && vanillaObjective != null){
             let newObjective = new Objective(this, vanillaObjective);
             this.#objectives.set(name, newObjective);
             return newObjective;
@@ -81,7 +109,11 @@ export default class SimpleScoreboard {
         
         return null;
     }
-
+    
+    /**
+     * @remarks
+     * Returns all defined objectives.
+     */
     static getObjectives(){
         let objectives = [];
         Array.from(VanillaScoreboard.getObjectives()).forEach((_)=>{
@@ -90,6 +122,13 @@ export default class SimpleScoreboard {
         return objectives;
     }
     
+    /**
+     * @remarks
+     * Returns an objective that occupies the specified display
+     * slot.
+     * @param displaySlotId
+     * @throws This function can throw errors.
+     */
     static getObjectiveInSlot(slot){
         if (!Array.from(DisplaySlotType).includes(slot))
             throw new TypeError("Not a DisplaySlot type");
@@ -112,6 +151,12 @@ export default class SimpleScoreboard {
 
     }
     
+    /**
+     * @remarks
+     * Clears the objective that occupies a display slot.
+     * @param displaySlotId
+     * @throws TypeError when slot not a DisplaySlot.
+     */
     static clearDisplaySlot(slot){
         if (!Array.from(DisplaySlotType).includes(slot)){
             throw new TypeError("Not a DisplaySlot type");
@@ -119,12 +164,15 @@ export default class SimpleScoreboard {
         return VanillaScoreboard.clearObjectiveAtDisplaySlot(slot);
     }
     
+    /**
+     * @remarks
+     * Returns all defined scoreboard identities.
+     */
     static getEntries(){
-        let entries;
-        Array.from(VanillaScoreboard.getParticipants()).forEach((_)=>{
-            entries.push(Entry.getEntry({scbid: _, type: scbid.type}));
-        });
-        return entries;
+        return Array.from(VanillaScoreboard.getParticipants())
+            .map((_)=>{
+                return Entry.getEntry({scbid: _, type: scbid.type});
+            });
     }
     
     static removeAllObjectives(){

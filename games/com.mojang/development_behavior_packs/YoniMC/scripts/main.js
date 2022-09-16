@@ -10,12 +10,19 @@ import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
 import { EventListener } from "scripts/yoni/event.js";
 import { EntityDamageCause } from "mojang-minecraft";
 
+let interruptCount = 0
+let lastTimeMS = 0;
+EventListener.register(Minecraft.system.events.beforeWatchdogTerminate, (event) => {
+    let currentDateMS = Date.now();
+    if (currentDateMS - lastTimeMS > 5000){
+        console.warn("interruptCount: "+ (++interruptCount));
+        lastTimeMS = currentDateMS;
+    }
+    event.cancel = true;
+});
 //切换物种命令（使用id作为参数）
 ChatCommand.registerCommand("species", (sender, rawCommand, label, args) => {
-        let obj = SimpleScoreboard.getObjective("species");
-        if (obj == null){
-            obj = SimpleScoreboard.addObjective("species", "dummy");
-        }
+        let obj = SimpleScoreboard.getObjective("species", true);
         obj.setScore(sender, Number(args[0]));
     }
 );
@@ -61,10 +68,8 @@ EventListener.register("tick", (event) => {
     
     if (event.currentTick % 20 != 0) return;
 
-    let healthObj = SimpleScoreboard.getObjective("health");
-    if (healthObj == null) healthObj = SimpleScoreboard.addObjective("health", "dummy");
-    let maxHealthObj = SimpleScoreboard.getObjective("max_health");
-    if (maxHealthObj == null) maxHealthObj = SimpleScoreboard.addObjective("max_health", "dummy");
+    let healthObj = SimpleScoreboard.getObjective("health", true);
+    let maxHealthObj = SimpleScoreboard.getObjective("max_health", true);
     Array.from(Minecraft.world.getPlayers()).filter((e)=>{
         return e.hasTag("test:health");
     }).forEach((e) => {

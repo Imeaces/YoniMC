@@ -5,15 +5,14 @@ let idRecords = new Map();
 let entityRecords = new Map();
 let nameRecords = new Map();
 let scbidRecords = new Map();
-let symbolRecords = new Map();
 
-export class EntryType {
+class EntryType {
     static PLAYER = Minecraft.ScoreboardIdentityType.player;
     static ENTITY = Minecraft.ScoreboardIdentityType.entity;
     static FAKE_PLAYER = Minecraft.ScoreboardIdentityType.fakePlayer;
 }
 
-export class EntryOption {
+class EntryOption {
     name;
     id;
     scbid;
@@ -21,7 +20,7 @@ export class EntryOption {
     type;
 }
 
-export default class Entry {
+class Entry {
     static #fakePlayerEntity = Symbol("fakePlayerEntity");
     static get fakePlayerEntity(){
         return this.#fakePlayerEntity;
@@ -40,34 +39,32 @@ export default class Entry {
     }
     
     static getEntries(){
-        return symbolRecords.values();
+        let entries = [];
+        return [...new Set([...entityRecords.values(),
+            ...scbidRecords.values(),
+            ...idRecords.values(),
+            ...nameRecords.values()]).values()];
     }
     
+    ...new Set([1,2,34,5]).values();
     static getEntry(option){
         let { entity, id, name, scbid, type } = option;
         entity = (entity instanceof YoniEntity) ? YoniEntity.vanillaEntity : entity;
         
-        let symbol;
+        let entry;
         
         //优先级: entity, scbid, id, name
-        let e = entityRecords.get(entity);
-        let i = idRecords.get(id);
-        let n = nameRecords.get(name);
-        let s = scbidRecords.get(scbid);
-        
-        for (let _ of [e, s, i, n]){
-            if (_ == null)
-                continue;
-            symbol = _;
+        if (entityRecords.has(entity))
+            entry = entityRecords.get(entity);
+        else if (scbidRecords.has(scbid))
+            entry = scbidRecords.get(scbid)
+        else if (idRecords.has(id))
+            entry = idRecords.get(id);
+        else if (nameRecords.has(name))
+            entry = nameRecords.get(name);
+        else {
+            entry = new Entry(option);
         }
-        
-        if (symbol === undefined){
-            symbol = Symbol("entry");
-            let newEntry = new Entry(option);
-            symbolRecords.set(symbol, newEntry);
-        }
-        
-        let entry = symbolRecords.get(symbol);
         
         if (entry.getEntity() != null)
             entityRecords.set(entry.getEntity(), symbol);
@@ -80,6 +77,7 @@ export default class Entry {
             
         if (type != null && entry.type !== type)
             throw new Error("entry type do not matches");
+            
         return entry;
     }
     
@@ -206,4 +204,5 @@ export default class Entry {
     }
 }
 
-export { Entry } 
+export { Entry, EntryType, EntryOption };
+export default Entry;
