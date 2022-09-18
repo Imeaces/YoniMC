@@ -69,6 +69,10 @@ scoreboard players set @s guxi:keep_ef 0
 #var guxi:like_player 0n 1y 2no
 scoreboard objectives add guxi:like_player dummy
 scoreboard players set @s guxi:like_player 0
+scoreboard objectives add guxi:is_player dummy
+scoreboard players set @s guxi:is_player 0
+scoreboard objectives add guxi:auto_player dummy
+scoreboard players set @s guxi:auto_player 1
 
 #var guxi:exp_st
 scoreboard objectives add guxi:exp_st dummy

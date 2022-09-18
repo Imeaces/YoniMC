@@ -4,26 +4,18 @@
         "description": {
             "identifier": "yonimc:blue_carnation"
         },
-        "events": {
-            "yonimc:fix_under_block": {
-                "run_command": {
-                    "command": [ "fill ~ ~-1 ~ ~ ~-1 ~ grass 0 replace dirt" ],
-                    "target": "self"
-                }
-            }
-        },
         "components": {
             "minecraft:creative_category": {
                 "category": "nature",
                 "group": "itemGroup.name.flower"
             },
-            "minecraft:breathability": "air",
             "minecraft:selection_box": {
                 "origin": [-3, 0, -3],
-                "size": [6, 10, 6]
+                "size": [6, 8, 6]
             },
             "minecraft:block_collision": false,
             "minecraft:block_light_emission": 1,
+            "minecraft:block_light_filter": 0,
             "minecraft:geometry": "geometry.yonimc.blue_carnation",
             "minecraft:placement_filter": {
                 "conditions": [
@@ -37,17 +29,12 @@
                     }
                 ]
             },
+            "minecraft:breathability": "air",
             "minecraft:material_instances": {
                 "*": {
                     "texture": "blue_carnation",
                     "render_method": "blend",
                     "ambient_occlusion": false
-                }
-            },
-            "minecraft:random_ticking": {
-                "on_tick": {
-                    "target": "self",
-                    "event": "yonimc:fix_under_block"
                 }
             },
             "tag:yonimc_dreamy": {}

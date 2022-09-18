@@ -26,12 +26,14 @@ export default class ChatCommand {
         if (!isCmd)
             return;
         this.executeCommand(event.sender, prefix, message.substring(prefix.length));
-        event.cancel = true;
+        if (prefix !== "") event.cancel = true;
         return event;
     }
     
     static registerPrefixCommand(prefix, command, commandExecutor){
-        if (this.#prefixCmds.get(prefix) == null){
+        if (this.#prefixCmds.get(prefix) === undefined){
+            if (prefix === "")
+                console.warn("registering non-prefix command, the message that like command without prefix won't be cancel");
             this.#prefixCmds.set(prefix, new Map());
         }
         this.#prefixCmds.get(prefix).set(command, commandExecutor);
@@ -53,7 +55,7 @@ export default class ChatCommand {
         this.unregisterPrefixCommand('!', ...args);
     }
     
-    static #invokeCommand(sender, prefix, rawCommand, command, args){
+    static #invokeCommand(sender, prefix, rawCommand, command="", args){
         let commandExecutor = this.#prefixCmds.get(prefix).get(command);
         let label = prefix+command;
         if (typeof commandExecutor?.onCommand == "function"){
@@ -72,7 +74,7 @@ export default class ChatCommand {
                 `\n${err.name}: ${err.message}`+
                 `\n${err.stack}`);
             }
-        } else {
+        } else if (prefix !== ""){
             console.error("[ChatCommand]: 无法找到命令" + label);
             //Messager.sendMessage(sender, "没有找到命令 {}", command);
         }

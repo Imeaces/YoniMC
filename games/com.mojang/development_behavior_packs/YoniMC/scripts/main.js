@@ -4,126 +4,21 @@ import {
     dim
     } from "scripts/yoni/basis.js";
 import { YoniEntity as Entity } from "scripts/yoni/entity.js";
+import { YoniEntity } from "scripts/yoni/entity.js";
 import { tell, say } from "scripts/yoni/util/yoni-lib.js";
 import Command from "scripts/yoni/command.js";
 import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
 import { EventListener } from "scripts/yoni/event.js";
-import { EntityDamageCause } from "mojang-minecraft";
-
-let interruptCount = 0
-let lastTimeMS = 0;
-EventListener.register(Minecraft.system.events.beforeWatchdogTerminate, (event) => {
-    let currentDateMS = Date.now();
-    if (currentDateMS - lastTimeMS > 5000){
-        console.warn("interruptCount: "+ (++interruptCount));
-        lastTimeMS = currentDateMS;
-    }
-    event.cancel = true;
+/*
+let cent = new YoniEntity(Array.from(Minecraft.world.getPlayers())[0]);
+ChatCommand.registerCommand("test", (sender, raw, label, args)=>{
+    sender = new YoniEntity(sender);
+    say(cent === sender);
 });
-//切换物种命令（使用id作为参数）
-ChatCommand.registerCommand("species", (sender, rawCommand, label, args) => {
-        let obj = SimpleScoreboard.getObjective("species", true);
-        obj.setScore(sender, Number(args[0]));
-    }
-);
-
-//自杀命令
-ChatCommand.registerCommand("suicide", (sender) => sender.kill() );
-
-ChatCommand.registerPrefixCommand("$", "function", (sender, rawCommand, label, args) => {
-    Function(rawCommand.slice(rawCommand.indexOf("\x20"))).call(this);
-});
-ChatCommand.registerPrefixCommand("$", "gfunction", (sender, rawCommand, label, args) => {
-    Function(rawCommand.slice(rawCommand.indexOf("\x20")));
-});
-ChatCommand.registerPrefixCommand("$", "geval", (sender, rawCommand, label, args) => {
-    globalThis.eval(rawCommand.slice(rawCommand.indexOf("\x20")));
-});
-ChatCommand.registerPrefixCommand("$", "eval", (sender, rawCommand, label, args) => {
-    eval(rawCommand.slice(rawCommand.indexOf("\x20")));
-});
-
-ChatCommand.registerCommand("test", (sender) => {
-    let o = Minecraft.world.scoreboard.getObjective("abctest");
-  say(o === Minecraft.world.scoreboard.getObjective("abctest"));
-});
-
-EventListener.register("tick", (event) => {
-
-    if (event.currentTick % 10 != 0) return;
-    
-    Array.from(Minecraft.world.getPlayers()).forEach((e)=>{
-        if (e.isSneaking === true){
-           if (!e.hasTag("stat:is_sneaking")){
-               //Command.execute(e, "say 我正在潜行");
-               e.addTag("stat:is_sneaking");
-           }
-        } else if (e.isSneaking === false){
-           if (e.hasTag("stat:is_sneaking")){
-               //Command.execute(e, "say 我没有再潜行了");
-               e.removeTag("stat:is_sneaking");
-           }
-        }
-    });
-    
-    if (event.currentTick % 20 != 0) return;
-
-    let healthObj = SimpleScoreboard.getObjective("health", true);
-    let maxHealthObj = SimpleScoreboard.getObjective("max_health", true);
-    Array.from(Minecraft.world.getPlayers()).filter((e)=>{
-        return e.hasTag("test:health");
-    }).forEach((e) => {
-        let comp = e.getComponent("minecraft:health");
-        healthObj.setScore(e, Math.floor(comp.current));
-        maxHealthObj.setScore(e, Math.floor(comp.value));
-    });
-    
-});
-
-EventListener.register("itemUse", (event) => {
-    if (event.source != null && event.source instanceof Minecraft.Player){
-        let ent = event.source;
-        if (ent.hasTag("event:itemUse")){
-           ent.removeTag("event:itemUse");
-        }
-    }
-});
-
-EventListener.register("itemUseOn", (event) => {
-    if (event.source != null && event.source instanceof Minecraft.Player){
-        let ent = event.source;
-        if (ent.hasTag("event:itemUseOn")){
-           ent.removeTag("event:itemUseOn");
-        }
-    }
-});
-
-EventListener.register("beforeItemUseOn", (event) => {
-    if (event.source != null && event.source instanceof Minecraft.Player){
-        let ent = event.source;
-        if (!ent.hasTag("event:itemUseOn")){
-            ent.addTag("event:itemUseOn");
-        }
-    }
-});
-
-EventListener.register("beforeItemUse", (event)=> {
-    if (event.source != null && event.source instanceof Minecraft.Player){
-        let ent = event.source;
-        if (!ent.hasTag("event:itemUse")){
-           ent.addTag("event:itemUse");
-        }
-    }
-    
-    if (event.item.id == "minecraft:lava_bucket" && event.source != null && Entity.hasFamily(event.source, "guxi")){
-        let ent = event.source;
-        say("using lava");
-        event.cancel = true;
-        Command.execute(ent, "replaceitem entity @s slot.weapon.mainhand 0 bucket 1");
-        let lavaBucketEnergyVolume = SimpleScoreboard.getObjective("guxi:values").getScore("lava_bucket_energy_volume");
-        SimpleScoreboard.getObjective("guxi:energy").addScore(ent, Math.round(lavaBucketEnergyVolume*Math.max(1, 100*Math.random())));
-        ent.dimension.spawnItem(new Minecraft.ItemStack(Minecraft.MinecraftItemTypes.obsidian, 1, 0), ent.location);
-    }
+*/
+ChatCommand.registerPrefixCommand("", "@all", (runner, command, label, args) => {
+    Command.execute(runner, "title @a title @s");
+    Command.execute(runner, "title @a subtitle @了所有人");
     
 });
 
@@ -132,72 +27,9 @@ EventListener.register("beforeExplosion", (event) => {
    event.cancel = true;
 });
 
-let energyPool = SimpleScoreboard.getObjective("guxi:energy_pool");
-let energy = SimpleScoreboard.getObjective("guxi:energy");
 EventListener.register("entityHurt", (event)=> {
-    if (Entity.hasFamily(event.hurtEntity, "guxi")){
-        let type = "unknown";
-        switch(event.cause){
-            case EntityDamageCause.fire:
-            case EntityDamageCause.fireTick:
-            case EntityDamageCause.freezing:
-            case EntityDamageCause.lava:
-            case EntityDamageCause.magma:
-                type = "hot";
-                break;
-            case EntityDamageCause.projectile:
-            case EntityDamageCause.flyIntoWall:
-            case EntityDamageCause.fall:
-            case EntityDamageCause.fallingBlock:
-            case EntityDamageCause.entityExplosion:
-            case EntityDamageCause.blockExplosion:
-            case EntityDamageCause.anvil:
-                type = "fatal";
-                break;
-            default:
-                type = "normal";
-        }
-        let ent = event.hurtEntity;
-        let damage = event.damage;
-        let immuObj = SimpleScoreboard.getObjective("guxi:ef_fireimmu");
-        let maxHealth = Entity.getMaxHealth(ent);
-        let currentHealth = Entity.getCurrentHealth(ent);
-        let lostHealth = maxHealth - currentHealth;
-        if (type == "fatal"){
-            energyPool.removeScore(ent, Math.round(Math.max(0, damage**2*0.01*energyPool.getScore(ent))));
-        } else if(type == "hot"){
-            Command.execute(ent, "effect @s instant_health 1 20 false");
-            energyPool.addScore(ent, Math.round(damage*Math.max(1, 100*Math.random())));
-            immuObj.setScore(ent, Math.round(Math.max(4, immuObj.getScore(ent)*3.1*Math.random())));
-            if (Math.random()*1000<=1){
-                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace lava 0");
-                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 netherrack 0 replace magma -1");
-                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace flowing_lava 0");
-                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace lava -1");
-                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace flowing_lava -1");
-                Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace fire -1");
-            }
-        } else if(type == "immune"){
-        } else {
-            let resLevel = SimpleScoreboard.getObjective("guxi:ef_res").getScore(ent);
-            let lost = Math.max(0, Math.min(lostHealth, damage));
-            
-            if (resLevel > 0) //防伤害
-                energyPool.removeScore(ent, Math.max(0,Math.round(Math.max(1, damage)/resLevel*1000)));
-                lost = lost - 16;
-                
-            if (lost > 0)
-                energypPool.removeScore(ent, Math.round(Math.max(0, lost/maxHealth*energyPool.getScore(ent))));
-        }
-        Command.execute(ent, "title @s title 损失血量"+lostHealth);
-        Command.execute(ent, "title @s subtitle "+event.cause+": "+event.damage);
-    } else if (Entity.hasFamily(event.damagingEntity, "guxi")){
-        let cost = Math.round(event.damage*72*(SimpleScoreboard.getObjective("guxi:ef_damage").getScore(event.damagingEntity)+1));
-        if (cost > 0){
-            let obj = SimpleScoreboard.getObjective("guxi:energy_pool");
-            obj.removeScore(event.damagingEntity, cost);
-        }
-        Command.execute(event.damagingEntity,"title @s actionbar §c伤害: " + event.damage+"\ncost: "+cost);
+    if (event.damagingEntity === "minecraft:player"){
+        Command.execute(event.damagingEntity,"title @s actionbar §c伤害: " + event.damage);
     } else if (event.hurtEntity.id == "minecraft:player"){
         let ent = event.hurtEntity;
         let maxHealth = Entity.getMaxHealth(ent);
@@ -207,5 +39,11 @@ EventListener.register("entityHurt", (event)=> {
         Command.execute(ent, "title @s subtitle "+event.cause+": "+event.damage);
     }
 });
+
+import "scripts/WatchBird.js";
+import "scripts/command.js";
+import "scripts/debug.js";
+import "scripts/TagAdapter.js";
+import "scripts/guxi.js";
 
 console.warn("scripts main end");

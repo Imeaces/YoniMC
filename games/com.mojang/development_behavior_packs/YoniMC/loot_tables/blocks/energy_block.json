@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "item",
-          "name": "yoni:energy",
+          "name": "yonimc:energy",
           "weight": 1,
           "quality": 0,
           "functions": [

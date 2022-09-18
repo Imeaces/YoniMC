@@ -7,6 +7,9 @@ let entityMap = new WeakMap();
 
 export default class YoniEntity {
     #vanillaEntity;
+    get vanillaEntity(){
+        return this.#vanillaEntity;
+    }
     getMinecraftEntity(){
         return this.#vanillaEntity;
     }

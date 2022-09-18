@@ -48,7 +48,7 @@ class Entry {
     
     static getEntry(option){
         let { entity, id, name, scbid, type } = option;
-        entity = (entity instanceof YoniEntity) ? YoniEntity.vanillaEntity : entity;
+        entity = (entity instanceof YoniEntity) ? entity.vanillaEntity : entity;
         
         let entry;
         
@@ -89,11 +89,8 @@ class Entry {
         return this.#type;
     }
     get id(){
-        if (this.#id == null && this.vanillaScbid != null){
+        if (this.#id == null && this.#vanillaScbid != null){
             this.#id = this.vanillaScbid.id;
-        } else if (this.#id !== this.vanillaScbid.id){
-            this.#id = null;
-            this.#vanillaScbid = null;
         }
         return this.#id;
     }
@@ -109,17 +106,30 @@ class Entry {
     }
     
     get vanillaScbid(){
-        if (this.#entity?.scoreboard != null && this.#entity.scoreboard !== this.#vanillaScbid){
-            this.#vanillaScbid = this.#entity?.scoreboard;
+        if (this.#vanillaScbid == null && this.#type !== EntryType.FAKE_PLAYER){
+            try {
+                this.#vanillaScbid = this.getEntity().scoreboard;
+            } catch {
+                this.#vanillaScbid = null!
+            }
+        } else if (this.#vanillaScbid == null){
+            for (let scbid of VanillaScoreboard.getParticipants()){
+                if (scbid.type === this.#type && this.#type === EntryType.FAKE_PLAYER && scbid.displayName === this.#displayName){
+                    this.#vanillaScbid = scbid;
+                    break;
+                }
+            }
         }
         return this.#vanillaScbid;
     }
     
     #entity;
     getEntity(){
-        if (this.vanillaScbid != null && this.#type !== EntryType.FAKE_PLAYER){
+        if (this.#type === EntryType.FAKE_PLAYER)
+            this.#entity = null;
+        if (this.#entity == null && this.#vanillaScbid != null){
             try {
-                this.#entity = this.vanillaScbid.getEntity();
+                this.#entity = this.#vanillaScbid.getEntity();
             } catch {}
         }
         return this.#entity;

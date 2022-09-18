@@ -51,8 +51,7 @@ export default class SimpleScoreboard {
                 }
             }
         }
-        
-        let newObjective = Objective.create(name, criteria, displayName);
+        let newObjective = Objective.create(this, name, criteria, displayName);
         this.#objectives.set(name, newObjective);
         
         return newObjective;
@@ -97,7 +96,6 @@ export default class SimpleScoreboard {
                 return VanillaScoreboard.getObjective(name);
             } catch {}
         }();
-        
         if (objective === null && vanillaObjective != null){
             let newObjective = new Objective(this, vanillaObjective);
             this.#objectives.set(name, newObjective);

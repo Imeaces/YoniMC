@@ -19,16 +19,21 @@ class Objective {
         objectiveTypes[name] = objectiveType;
     }
     
-    static create(nameOrObj, criteria, displayName){
+    static create(scoreboard, nameOrObj, criteria, displayName){
         let name;
         if (nameOrObj instanceof Minecraft.ScoreboardObjective){
             name = nameOrObj.id;
             criteria = "dummy";
             displayName = nameOrObj.displayName;
+        } else if (typeof nameOrObj === "string"){
+            name = nameOrObj;
+        } else {
+            throw new TypeError("argument [1] should be a string or Minecraft.ScoreboardObjective");
         }
+        
         if (this.hasCriteria(criteria)){
             let objectiveType = objectiveTypes[criteria];
-            let newObjective = new objectiveType(name, criteria, displayName);
+            let newObjective = new objectiveType(scoreboard, name, criteria, displayName);
             return newObjective;
         } else {
             throw new Error(`Unknown criteria: ${criteria}`);
@@ -127,7 +132,10 @@ class Objective {
             criteria = "dummy";
             displayName = this.#vanillaObjective.displayName;
         } else {
-            this.#vanillaObjective = VanillaScoreboard.get(name);
+            this.#vanillaObjective = VanillaScoreboard.getObjective(name);
+        }
+        if (this.#vanillaObjective == null){
+            this.#vanillaObjective = VanillaScoreboard.addObjective(name, displayName);
         }
         
         this.#id = name;
@@ -285,15 +293,12 @@ class Objective {
         
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
-
-        let score;
-        let scbid = entry.vanillaScbId;
-        if (scbid == null){
-            score = undefined;
-        } else {
-            score = this.vanillaObjective.getScore(scbid);
+        
+        try {
+            return this.vanillaObjective.getScore(entry.vanillaScbid);
+        } catch {
+            return undefined;
         }
-        return score;
     }
     
     /**

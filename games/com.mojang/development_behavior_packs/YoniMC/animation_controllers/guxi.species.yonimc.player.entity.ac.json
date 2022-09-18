@@ -32,6 +32,8 @@
                     "on_entry": [
                         "@s remove:all",
                         "@s append:yonimc_as_guxi",
+                        "/scoreboard objectives add yoni:guxi dummy",
+                        "/scoreboard players set @s yoni:guxi 0",
                         "/say species as guxi"
                     ]
                 },
@@ -41,6 +43,7 @@
                     ],
                     "on_entry": [
                         "@s remove:all",
+                        "clear @s yonimc:energy 9",
                         "/say species drop guxi"
                     ]
                 },

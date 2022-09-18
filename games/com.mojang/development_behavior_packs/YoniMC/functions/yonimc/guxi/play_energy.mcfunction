@@ -30,6 +30,8 @@ execute if score @s var_0 matches 715152 run scoreboard players add @s guxi:ener
 execute if score @s var_0 matches 715152 run scoreboard players operation @s guxi:energy -= @s guxi:energy_pool
 #:扩展经验存储上限
 execute if score @s var_0 matches 715152 if score @s guxi:exp_tr < @s guxi:exp_st run scoreboard players add @s guxi:exp_tr 1
+#:debug 
+#execute if score @s var_0 matches 715152 run say this 715152
 
 #经验池存储百分比（没写，这不是应该在经验管理里边写吗？
 scoreboard objectives add guxi:lp_energy dummy
@@ -61,6 +63,8 @@ execute if score @s guxi:energy_pool < @s var_0 run scoreboard players set @s gu
 execute if score @s guxi:sp_energy matches ..10030 if score @s guxi:energy_st > default_energy_volume guxi:values run scoreboard players set @s var_0 751415
 execute if score @s var_0 matches 751415 run scoreboard players remove @s guxi:energy_st 1
 execute if score @s var_0 matches 751415 run scoreboard players operation @s guxi:energy += @s guxi:energy_pool
+#:debug 
+#execute if score @s var_0 matches 751415 run say this 751415
 
 
 #如果可能，降低经验需求来获得能量
