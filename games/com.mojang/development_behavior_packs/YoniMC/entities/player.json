@@ -25,6 +25,9 @@
     }},
 
 "component_groups": {
+    "yonimc:despawn": {
+        "minecraft:instant_despawn": {}
+    },
     "minecraft:add_bad_omen": {
         "minecraft:spell_effects": {
             "add_effects": [
@@ -267,6 +270,13 @@
     "setvalue:42:variant": {"add": { "component_groups": [ "setvalue:42:variant" ] }},
     "setvalue:2695:variant": {"add": { "component_groups": [ "setvalue:2695:variant" ] }},
     
+    "yonimc:despawn": {
+        "add": {
+            "component_groups": [
+                "yonimc:despawn"
+            ]
+        }
+    },
     "minecraft:gain_bad_omen": {
         "add": {
             "component_groups": [

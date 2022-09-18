@@ -1,9 +1,9 @@
-item.yoni:energy=能量晶体
+item.yonimc:energy=能量晶体
 item.guxi:enter=#
 item.guxi:enter_attack=#=>
 item.guxi:enter_shield=#=#
 
-tile.yoni:energy_block.name=能量块
+tile.yonimc:energy_block.name=能量块
 
 entity.yoni:guxi.name=咕西
 entity.guxi:flow_energy.name=能量束

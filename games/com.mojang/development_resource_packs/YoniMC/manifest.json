@@ -15,6 +15,10 @@
             "version": [0, 1, 1]
         }
     ],
+    "dependencies": [{
+        "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
+        "version": [0, 5, 1]
+    }],
     "metadata": {
       "authors": [
         "Silvigarabis"

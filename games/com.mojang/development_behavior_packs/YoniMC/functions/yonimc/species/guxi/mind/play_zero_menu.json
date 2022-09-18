@@ -34,7 +34,7 @@
       "with": {"rawtext": [
         {"selector": "@s[scores={md:timer_076=1..}]"},
         {
-          "translate": "\n>>%%s",
+          "translate": "\n>>抬头进入",
           "with": {"rawtext": [
             {"score": {
               "objective": "md:timer_076",
