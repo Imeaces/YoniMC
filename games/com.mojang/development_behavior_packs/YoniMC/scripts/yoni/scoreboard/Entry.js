@@ -61,78 +61,73 @@ class Entry {
             entry = idRecords.get(id);
         else if (nameRecords.has(name))
             entry = nameRecords.get(name);
-        else {
+        else
             entry = new Entry(option);
-        }
         
-        if (entry.getEntity() != null)
-            entityRecords.set(entry.getEntity(), entry);
-        if (entry.id != null)
-            idRecords.set(entry.id, entry);
-        if (entry.vanillaScbid != null)
-            scbidRecords.set(entry.vanillaScbid, entry);
-        if (entry.displayName != null && type === EntryType.FAKE_PLAYER)
-            nameRecords.set(entry.displayName, entry);
-            
         if (type != null && entry.type !== type)
             throw new Error("entry type do not matches");
             
+        if (entry.getEntity() !== null)
+            entityRecords.set(entry.getEntity(), entry);
+        if (entry.id !== undefined)
+            idRecords.set(entry.id, entry);
+        if (entry.vanillaScbid !== undefined)
+            scbidRecords.set(entry.vanillaScbid, entry);
+        if (type === EntryType.FAKE_PLAYER && entry.displayName !== undefined)
+            nameRecords.set(entry.displayName, entry);
+        
         return entry;
     }
     
     #type;
     #id;
-    #displayName;
+    #name;
     #vanillaScbid;
+    #entity;
     
     get type(){
         return this.#type;
     }
+    
     get id(){
-        if (this.#id == null && this.#vanillaScbid != null){
-            this.#id = this.vanillaScbid.id;
-        }
+        if (this.vanillaScbid?.id !== this.#id)
+            this.#id = this.vanillaScbid?.id;
         return this.#id;
     }
+    
     get displayName(){
-        if (this.vanillaScbid != null){
-            this.#displayName = this.vanillaScbid.displayName;
-        } else if (this.type == EntryType.PLAYER){
-            this.#displayName = this.getEntity().name;
-        } else if (this.type == EntryType.ENTITY){
-            this.#displayName = this.id;
-        }
-        return this.#displayName;
+        if (this.#type == EntryType.PLAYER)
+            return this.#entity.name;
+        else if (this.#type  == EntryType.ENTITY)
+            return this.id;
+        else if (this.#type === EntryType.FAKE_PLAYER)
+            return this.#name;
     }
     
     get vanillaScbid(){
-        if (this.#vanillaScbid == null && this.#type !== EntryType.FAKE_PLAYER){
-            try {
-                this.#vanillaScbid = this.getEntity().scoreboard;
-            } catch {
-                this.#vanillaScbid = null!
-            }
-        } else if (this.#vanillaScbid == null){
-            for (let scbid of VanillaScoreboard.getParticipants()){
-                if (scbid.type === this.#type && this.#type === EntryType.FAKE_PLAYER && scbid.displayName === this.#displayName){
-                    this.#vanillaScbid = scbid;
-                    break;
-                }
-            }
-        }
+        if (this.#type === EntryType.PLAYER || this.#type === EntryType.ENTITY && this.#entity.scoreboard !== this.#vanillaScbid)
+            this.#vanillaScbid = this.#entity.scoreboard;
         return this.#vanillaScbid;
     }
     
-    #entity;
     getEntity(){
         if (this.#type === EntryType.FAKE_PLAYER)
             this.#entity = null;
-        if (this.#entity == null && this.#vanillaScbid != null){
-            try {
-                this.#entity = this.#vanillaScbid.getEntity();
-            } catch {}
-        }
         return this.#entity;
+    }
+    
+    update(){
+        if (this.#type === EntryType.FAKE_PLAYER){
+            this.#vanillaScbid = undefined;
+            for (let s of VanillaScoreboard.getParticipants()){
+                if (s.displayName === this.#name && s.type === this.#type){
+                    this.#vanillaScbid = s;
+                    break;
+            }
+        } else {
+            let i = this.vanillaScbid;
+        }
+        return this;
     }
     
     constructor(option){
@@ -140,75 +135,45 @@ class Entry {
         let { entity, id, name, scbid, type } = option;
         entity = (entity instanceof YoniEntity) ? YoniEntity.vanillaEntity : entity;
         
-        let condF;
-        if (name == null) condF = function (e){ return e.id === id; };
-        else if (id == null && type === EntryType.FAKE_PLAYER) condF = function (e){ return e.type === EntryType.FAKE_PLAYER && e.displayName === name; };
-        else condF = function (e){ return e.displayName === name && e.id === id; };
-        
-        /*
-        entity scbid
-        scbid entity, id
-        type entity, scbid 
-        id scbid
-        name entity, scbid, id
-        */
-        if (entity == null){
-            if (scbid != null){
-                entity = function (){
-                    try {
-                        return scbid.getEntity();
-                    } catch {}
-                }();
-            }
-        }
-
-        if (scbid == null){
-           if (entity?.scoreboard != null){
-               scbid = entity.scoreboard;
-           } else if (id != null || type === EntryType.FAKE_PLAYER && name != null){
-               scbid = function (){
-                   for (let _ of VanillaScoreboard.getParticipants()){
-                       if (condF(_)){
-                           return _;
-                       }
-                   }
-               }();
-           }
-        }
-        
-        if (id == null){
-            if (scbid != null){
-                id = scbid.id;
-            }
-        }
-        
-        if (type == null){
-            if (scbid != null){
-                type = scbid.type;
-            } else if (entity != null){
-                if (entity instanceof Minecraft.Entity){
-                    type = EntryType.ENTITY;
-                } else if (entity instanceof Minecraft.Player){
-                    type = EntryType.PLAYER;
+        if (entity !== undefined){
+            if (entity instanceof Minecraft.Entity)
+                type = EntryType.ENTITY;
+            else if (entity instanceof Minecraft.Player)
+                type = EntryType.PLAYER;
+            else throw new TypeError("Unknown entity type");
+            scbid = entity.scoreboard;
+            id = scbid.id;
+        } else {
+            let condF = null;
+            if (type = EntryType.FAKE_PLAYER && name !== "" && name !== scbid?.displayName)
+                condF = (_)=>{ return _.displayName === name && type === _.type; };
+            else if (id !=== undefined && scbid === undefined)
+                condF = (_)=>{ return _.id === id; };
+            
+            if (condF !== null){
+                scbid = undefined;
+                for (let s of VanillaScoreboard.getParticipants()){
+                    if (condF(s)){
+                        scbid = s;
+                        break;
+                    }
                 }
-            } else {
-                type = EntryType.FAKE_PLAYER;
+                if (scbid !== undefined){
+                    type = scbid.type;
+                    name = scbid.displayName;
+                    id = scbid.id;
+                    entity = scbid.getEntity();
+                } else if (id !== undefined){
+                    throw new Error(`Unable to determine the scbid ${id}`);
+                }
             }
         }
         
-        if (name == null){
-            if (scbid != null){
-                name = scbid.displayName;
-            } else if (type === EntryType.PLAYER && entity != null){
-                name = entity.name;
-            }
-        }
-        
-        this.#displayName = name;
         this.#id = id;
-        this.#vanillaScbid = scbid;
         this.#entity = entity;
+        this.#name = name;
         this.#type = type;
+        this.#vanillaScbid = scbid;
         
     }
 }

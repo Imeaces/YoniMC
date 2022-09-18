@@ -297,7 +297,9 @@ class Objective {
         try {
             return this.vanillaObjective.getScore(entry.vanillaScbid);
         } catch {
-            return undefined;
+            try {
+                return this.vanillaObjective.getScore(entry.update().vanillaScbid);
+            } catch { return undefined; }
         }
     }
     
