@@ -2,6 +2,7 @@ import { Minecraft, execCmd, StatusCode, dim, VanillaScoreboard } from "scripts/
 import Utils from "scripts/yoni/scoreboard/Utils.js";
 import { Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
 import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "scripts/yoni/scoreboard/ScoreboardError.js"
+import * as yoni from "scripts/yoni/util/yoni-lib.js";
 
 const objectiveTypes = Object.create(null);
 
@@ -190,7 +191,7 @@ class Objective {
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
 
-        if (entry.type === EntryType.PLAYER || type === EntryType.ENTITY){
+        if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
             let ent;
             if (entry.type == EntryType.PLAYER){
                 ent = entry.getEntity();
@@ -238,7 +239,7 @@ class Objective {
      */
     setScore(entry, score){
         this.checkUnregistered();
-
+        
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
 
@@ -247,8 +248,7 @@ class Objective {
             
         if (!Utils.isBetweenRange(score))
             throw new ScoreRangeError();
-        
-        if (entry.type === EntryType.PLAYER || type === EntryType.ENTITY){
+        if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
             let ent;
             if (entry.type == EntryType.PLAYER){
                 ent = entry.getEntity();
@@ -269,8 +269,8 @@ class Objective {
             }
         } else {
         
-            for (let pl of Minecraft.getPlayers()){
-                if (pl.name = entry.displayName){
+            for (let pl of Minecraft.world.getPlayers()){
+                if (pl.name === entry.displayName){
                     throw new NameConflictError(entry.displayName);
                 }
             }

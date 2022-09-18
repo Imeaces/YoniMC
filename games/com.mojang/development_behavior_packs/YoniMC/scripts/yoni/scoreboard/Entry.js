@@ -1,5 +1,6 @@
 import { VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
 import { YoniEntity } from "scripts/yoni/entity.js";
+import * as yoni from "scripts/yoni/util/yoni-lib.js";
 
 let idRecords = new Map();
 let entityRecords = new Map();
@@ -47,16 +48,16 @@ class Entry {
     }
     
     static getEntry(option){
+        
         let { entity, id, name, scbid, type } = option;
         entity = (entity instanceof YoniEntity) ? entity.vanillaEntity : entity;
-        
         let entry;
         
         //优先级: entity, scbid, id, name
         if (entityRecords.has(entity))
             entry = entityRecords.get(entity);
         else if (scbidRecords.has(scbid))
-            entry = scbidRecords.get(scbid)
+            entry = scbidRecords.get(scbid);
         else if (idRecords.has(id))
             entry = idRecords.get(id);
         else if (nameRecords.has(name))
@@ -123,6 +124,7 @@ class Entry {
                 if (s.displayName === this.#name && s.type === this.#type){
                     this.#vanillaScbid = s;
                     break;
+                }
             }
         } else {
             let i = this.vanillaScbid;
@@ -131,9 +133,8 @@ class Entry {
     }
     
     constructor(option){
-        
         let { entity, id, name, scbid, type } = option;
-        entity = (entity instanceof YoniEntity) ? YoniEntity.vanillaEntity : entity;
+        entity = (entity instanceof YoniEntity) ? entity.vanillaEntity : entity;
         
         if (entity !== undefined){
             if (entity instanceof Minecraft.Entity)
@@ -145,10 +146,15 @@ class Entry {
             id = scbid.id;
         } else {
             let condF = null;
-            if (type = EntryType.FAKE_PLAYER && name !== "" && name !== scbid?.displayName)
-                condF = (_)=>{ return _.displayName === name && type === _.type; };
-            else if (id !=== undefined && scbid === undefined)
-                condF = (_)=>{ return _.id === id; };
+            if (type === EntryType.FAKE_PLAYER && name !== "" && name !== scbid?.displayName){
+                condF = (_)=>{
+                    return _.displayName === name && type === _.type;
+                };
+            } else if (id !== undefined && scbid === undefined){
+                condF = (_)=>{
+                    return _.id === id;
+                };
+            }
             
             if (condF !== null){
                 scbid = undefined;

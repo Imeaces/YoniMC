@@ -10,7 +10,9 @@ execute if score @s var_0 matches 881 run scoreboard players set @s arg_0 15
 execute if score @s var_0 matches 881 run scoreboard players set @s arg_1 70
 execute if score @s var_0 matches 881 run scoreboard players operation @s arg_0 *= @s guxi:ef_speed
 execute if score @s var_0 matches 881 run scoreboard players operation @s arg_1 *= @s guxi:ef_speed
-execute if score @s guxi:keep_ef matches 0 if score @s guxi:ef_speed > default_speed_affect guxi:values run scoreboard players remove @s guxi:ef_speed 1
+#不受控制，自动降低
+execute if score @s guxi:keep_ef matches 0 if score @s guxi:ef_speed matches 1.. run scoreboard players remove @s guxi:ef_speed 1
+execute if score @s guxi:ef_speed matches ..0 if score @s guxi:ef_speed > default_speed_affect guxi:values run scoreboard players remove @s guxi:ef_speed 1
 execute if score @s var_0 matches 881 run function yonimc/guxi/energy/drop_randomly
 
 # effect about guxi:ef_mining
@@ -20,7 +22,8 @@ execute if score @s var_0 matches 531 run scoreboard players set @s arg_0 27
 execute if score @s var_0 matches 531 run scoreboard players set @s arg_1 142
 execute if score @s var_0 matches 531 run scoreboard players operation @s arg_0 *= @s guxi:ef_mining
 execute if score @s var_0 matches 531 run scoreboard players operation @s arg_1 *= @s guxi:ef_mining
-execute if score @s guxi:keep_ef matches 0 if score @s guxi:ef_mining > default_mining_affect guxi:values run scoreboard players remove @s guxi:ef_mining 1
+execute if score @s guxi:keep_ef matches 0 if score @s guxi:ef_mining matches 1.. run scoreboard players remove @s guxi:ef_mining 1
+execute if score @s guxi:ef_mining matches ..0 if score @s guxi:ef_mining > default_mining_affect guxi:values run scoreboard players remove @s guxi:ef_mining 1
 execute if score @s var_0 matches 531 run function yonimc/guxi/energy/drop_randomly
 
 
@@ -31,7 +34,8 @@ execute if score @s var_0 matches -662 run scoreboard players set @s arg_0 49
 execute if score @s var_0 matches -662 run scoreboard players set @s arg_1 752
 execute if score @s var_0 matches -662 run scoreboard players operation @s arg_0 *= @s guxi:ef_damage
 execute if score @s var_0 matches -662 run scoreboard players operation @s arg_1 *= @s guxi:ef_damage
-execute if score @s guxi:keep_ef matches 0 if score @s guxi:ef_damage > default_damage_affect guxi:values run scoreboard players remove @s guxi:ef_damage 1
+execute if score @s guxi:keep_ef matches 0 if score @s guxi:ef_damage matches 1.. run scoreboard players remove @s guxi:ef_damage 1
+execute if score @s guxi:ef_damage matches ..0 if score @s guxi:ef_damage > default_damage_affect guxi:values run scoreboard players remove @s guxi:ef_damage 1
 execute if score @s var_0 matches -662 run function yonimc/guxi/energy/drop_randomly
 
 

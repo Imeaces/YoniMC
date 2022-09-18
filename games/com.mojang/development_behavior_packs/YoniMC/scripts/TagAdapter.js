@@ -10,7 +10,6 @@ import { EventListener } from "scripts/yoni/event.js";
 import { EntityDamageCause } from "mojang-minecraft";
 
 EventListener.register("tick", (event) => {
-
     if (event.currentTick % 10 != 0) return;
     
     Array.from(Minecraft.world.getPlayers()).forEach((e)=>{
@@ -31,9 +30,7 @@ EventListener.register("tick", (event) => {
 
     let healthObj = SimpleScoreboard.getObjective("health", true);
     let maxHealthObj = SimpleScoreboard.getObjective("max_health", true);
-    Array.from(Minecraft.world.getPlayers()).filter((e)=>{
-        return e.hasTag("test:health");
-    }).forEach((e) => {
+    Array.from(Minecraft.world.getPlayers({tags:["test:health"]})).forEach((e) => {
         let comp = e.getComponent("minecraft:health");
         healthObj.setScore(e, Math.floor(comp.current));
         maxHealthObj.setScore(e, Math.floor(comp.value));

@@ -132,11 +132,11 @@ export default class YoniEntity {
     /**
      * 获取所有存活的实体
      */
-    static getAliveEntities(){
+    static getAliveEntities(...args){
         let entities = [];
         
         for (dimid in Minecraft.MinecraftDimensionTypes){
-            entities.push(...Array.from(dim(dimid).getEntities()));
+            entities.push(...Array.from(dim(dimid).getEntities(...args)));
         }
         return entities;
     }
@@ -144,9 +144,9 @@ export default class YoniEntity {
     /**
      * 获取所有存在的实体
      */
-    static getLoadedEntities(){
-        let entities = this.getAliveEntities();
-        Array.from(VanillaWorld.getPlayers()).forEach((_)=>{
+    static getLoadedEntities(...args){
+        let entities = this.getAliveEntities(...args);
+        Array.from(VanillaWorld.getPlayers(...args)).forEach((_)=>{
             if (!entities.includes(_)){
                 entities.push(_);
             }

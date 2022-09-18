@@ -11,3 +11,4 @@ EventListener.register(Minecraft.system.events.beforeWatchdogTerminate, (event) 
     }
     event.cancel = true;
 });
+//这个比狗要温和点

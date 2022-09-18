@@ -11,6 +11,8 @@ export { Minecraft }
 export const VanillaWorld = Minecraft.world;
 export const VanillaEvents = VanillaWorld.events;
 export const VanillaScoreboard = VanillaWorld.scoreboard;
+export const MinecraftSystem = Minecraft.system;
+export const SystemEvents = MinecraftSystem.events;
 
 export class StatusCode {
     static fail = -1;

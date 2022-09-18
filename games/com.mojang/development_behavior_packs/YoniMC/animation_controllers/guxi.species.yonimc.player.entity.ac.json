@@ -30,11 +30,7 @@
                         { "init": "(1.0)" }
                     ],
                     "on_entry": [
-                        "@s remove:all",
-                        "@s append:yonimc_as_guxi",
-                        "/scoreboard objectives add yoni:guxi dummy",
-                        "/scoreboard players set @s yoni:guxi 0",
-                        "/say species as guxi"
+                        "/function yonimc/species/guxi/spawn_player"
                     ]
                 },
                 "init_drop": {
@@ -42,9 +38,7 @@
                         { "init": "(1.0)" }
                     ],
                     "on_entry": [
-                        "@s remove:all",
-                        "clear @s yonimc:energy 9",
-                        "/say species drop guxi"
+                        "/function yonimc/species/guxi/drop_player"
                     ]
                 },
                 "loop0": {

@@ -94,13 +94,13 @@ ChatCommand.registerPrefixCommand("#", "guxi", (runner, command, label, args) =>
             try {
                 SimpleScoreboard.getObjective(o).setScore(sender, val);
                 sender.sendMessage("成功");
-            } catch(e) {
+            } catch (e){
                 sender.sendMessage(e.message);
             }
         } else {
                 sender.sendMessage("感到疑惑");
         }
-    } else if (opt === "elytra"){
+    } else if (args[0] === "elytra"){
         let opt = args[1];
         if (opt === "expand"){
             Command.execute(sender, "function yonimc/guxi/creation/elytra/expand");
@@ -115,7 +115,7 @@ ChatCommand.registerPrefixCommand("#", "guxi", (runner, command, label, args) =>
         sender.sendMessage("咕西");
         sender.sendMessage(`${label} value [set|get|list]`);
         sender.sendMessage(`${label} boom <radius:number>`);
-        sender.sendMessage(`${label} elytra <expand: recovery>`);
+        sender.sendMessage(`${label} elytra <expand|recovery>`);
     }
 });
 
@@ -159,14 +159,21 @@ EventListener.register("beforeItemUse", (event)=> {
     }
 });
 
-EventListener.register("itemUse", (event)=> {
-    if (event.item.id === "yonimc:energy" && event.source != null && YoniEntity.hasFamily(event.source, "guxi")){
+let itemUseCondition = (event)=> {
+    if (!YoniEntity.hasFamily(event.source, "guxi")) return;
+    if (event.item.id === "yonimc:energy"){
         event.cancel = true;
         let ent = event.source;
         Command.execute(ent, "effect @s instant_health 1 20 false");
         Energy.add(Energy.stack, ent, 30000000);
+    } else if (event.item.id === "minecraft:firework_rocket" &&
+        SimpleScoreboard.getObjective("guxi:cre_ely").getScore(event.source) === 2 && event.source.selectedSlot === 8){
+            Energy.remove(Energy.stack, event.source, 262144);
     }
-});
+};
+
+EventListener.register("itemUse", itemUseCondition);
+EventListener.register("itemUseOn", itemUseCondition);
 
 class Energy {
     get pool(){
