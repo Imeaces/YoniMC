@@ -4,7 +4,8 @@ import {
     dim,
     VanillaWorld,
     VanillaEvents,
-    VanillaScoreboard
+    VanillaScoreboard,
+    Gametest
     } from "scripts/yoni/basis.js";
 import { YoniEntity } from "scripts/yoni/entity.js";
 import { tell, say } from "scripts/yoni/util/yoni-lib.js";
@@ -59,6 +60,15 @@ ChatCommand.registerCommand("test", (sender, rawCommand, label, args)=>{
         sender.sendMessage(`maxC: ${maxC}`);
         sender.sendMessage(`lastDT: ${lastDT}`);
     } else if (opt === "test03"){
+        let it = dim(0).getEntities();
+        let rt = it.next();
+        while (!rt.done){
+            let c = new YoniEntity(rt.value);
+            c.say("awa");
+            
+            rt = it.next();
+        }
+    } else if (opt === "test04"){
         let it = dim(0).getEntities();
         let rt = it.next();
         while (!rt.done){

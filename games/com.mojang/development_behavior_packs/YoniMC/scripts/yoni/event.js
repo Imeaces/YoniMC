@@ -14,14 +14,14 @@ eventRegisterMap.set("minecraft", ()=>{
         map.set(s, MinecraftEvents[s]);
     }
     return Object.freeze(map);
-});
+}());
 eventRegisterMap.set("system", ()=>{
     let map = new Map();
     for (let s in SystemEvents){
         map.set(s, SystemEvents[s]);
     }
     return Object.freeze(map);
-});
+}());
 eventRegisterMap.set("custom", new Map());
 
 function getEventType(namespace, type){
@@ -37,7 +37,7 @@ function getEventType(namespace, type){
 }
 function setEventType(namespace, type, signal){
     if (!eventRegisterMap.has(namespace))
-        eventRegisterMap.set((namespace, new Map());
+        eventRegisterMap.set(namespace, new Map());
         
     eventRegisterMap.get(namespace).set(type, signal);
 }
@@ -77,6 +77,7 @@ const Events = new Proxy({}, {
 
 export class EventSignal {
     #callbacks;
+    #eventClass;
     #registered = false;
     #register(){
     }
@@ -114,7 +115,7 @@ export class EventSignal {
             prefix = "custom";
         }
         
-        let eventSignalClass = class [eventName]+"Signal" {
+        let eventSignalClass = class {
             get name(){
                 return eventName;
             }
@@ -213,9 +214,11 @@ export class EventListener {
     static register(eventType, callback, ...eventFilters){
         let idx = this.#callbacks.push(callback);
         
-        let namespaces = getNameSpace(eventType);
-        let registeredEvent = getEventType(namespaces.namespace, namespaces.eventName);
-        if (registeredEvent !== undefined) eventType = registeredEvent;
+        if (eventType.constructor === String){
+            let namespaces = getNameSpace(eventType);
+            let registeredEvent = getEventType(namespaces.namespace, namespaces.eventName);
+            if (registeredEvent !== undefined) eventType = registeredEvent;
+        }
         try {
             eventType.subscribe((...args) => {
                 let func = this.#callbacks[idx-1];
@@ -254,5 +257,5 @@ export class EventListener {
 //防止被覆盖
 eventRegisterMap.set("yonimc", new Map());
 //导入事件
-import "scripts/yoni/events/TickEvent.js";
-import "scripts/yoni/events/PlayerDeadEvent.js";
+import("scripts/yoni/events/TickEvent.js");
+import("scripts/yoni/events/PlayerDeadEvent.js");

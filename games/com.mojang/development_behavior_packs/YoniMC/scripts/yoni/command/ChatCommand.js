@@ -1,5 +1,6 @@
 import { VanillaEvents }  from "scripts/yoni/basis.js";
 import { EventListener } from "scripts/yoni/event.js";
+import { printError } from "scripts/yoni/util/console.js";
 
 export default class ChatCommand {
     static #prefixCmds = new Map();
@@ -7,9 +8,10 @@ export default class ChatCommand {
         return Array.from(this.#prefixCmds.keys());
     }
     static executeCommand(sender, prefix, rawCommand){
-        const parameters = this.#getParameters(rawCommand);
+        const parameters = this.getParameters(rawCommand);
         const label = parameters[0];
-        this.#invokeCommand(sender, prefix, rawCommand, label, parameters.splice(1));
+        const command = prefix + rawCommand;
+        this.#invokeCommand(sender, prefix, command, label, parameters.splice(1));
         
     }
     static receiveBeforeChatEvent(event){
@@ -20,14 +22,14 @@ export default class ChatCommand {
             if (message.startsWith(p)){
                 isCmd = true;
                 prefix = p;
-                break;
+                if (p !== "")
+                    break;
             }
         }
-        if (!isCmd)
-            return;
-        this.executeCommand(event.sender, prefix, message.substring(prefix.length));
-        if (prefix !== "") event.cancel = true;
-        return event;
+        if (isCmd){
+            if (prefix !== "") event.cancel = true;
+            this.executeCommand(event.sender, prefix, message.substring(prefix.length));
+        }
     }
     
     static registerPrefixCommand(prefix, command, commandExecutor){
@@ -55,28 +57,20 @@ export default class ChatCommand {
         this.unregisterPrefixCommand('!', ...args);
     }
     
-    static #invokeCommand(sender, prefix, rawCommand, command="", args){
-        let commandExecutor = this.#prefixCmds.get(prefix).get(command);
-        let label = prefix+command;
-        if (typeof commandExecutor?.onCommand == "function"){
-            try {
-                commandExecutor.onCommand(sender, rawCommand, label, args);
-            } catch(err) {
-                console.error(`[ChatCommand]: 运行命令${label}时发生错误`+
-                `\n${err.name}: ${err.message}`+
-                `\n${err.stack}`);
+    static #invokeCommand(sender, prefix, command, label, args){
+        let commandExecutor = this.#prefixCmds.get(prefix).get(label);
+        try {
+            if (commandExecutor?.onCommand instanceof Function){
+                commandExecutor.onCommand(sender, command, label, args);
+                return;
+            } else if (commandExecutor instanceof Function){
+                commandExecutor(sender, command, label, args);
+                return;
+            } else if (prefix !== ""){
+                console.error("[ChatCommand]: 无法找到命令" + label);
             }
-        } else if (typeof commandExecutor == "function" ) {
-            try {
-                commandExecutor(sender, rawCommand, label, args);
-            } catch(err) {
-                console.error(`[ChatCommand]: 运行命令${label}时发生错误`+
-                `\n${err.name}: ${err.message}`+
-                `\n${err.stack}`);
-            }
-        } else if (prefix !== ""){
-            console.error("[ChatCommand]: 无法找到命令" + label);
-            //Messager.sendMessage(sender, "没有找到命令 {}", command);
+        } catch(err) {
+            printError(`[ChatCommand]: 运行命令${label}时发生错误`, err);
         }
     }
     
@@ -86,7 +80,7 @@ export default class ChatCommand {
       如果有引号就将里边的内容当成一段文字
       参考了bash对单引号（'） 双引号（"） 反斜杠（\） 空格（ ）这四个符号的处理
     */
-    static #getParameters(commandContent){
+    static getParameters(commandContent){
         let args = [];
         let command = "";
         

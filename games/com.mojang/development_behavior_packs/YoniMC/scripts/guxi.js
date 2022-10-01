@@ -10,6 +10,33 @@ import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
 import { EventListener } from "scripts/yoni/event.js";
 import { EntityDamageCause } from "mojang-minecraft";
 
+class Energy {
+    get pool(){
+        return SimpleScoreboard.getObjective("guxi:energy_pool", true);
+    }
+    get stack(){
+        return SimpleScoreboard.getObjective("guxi:energy", true);
+    }
+    get fireImmune(){
+        return SimpleScoreboard.getObjective("guxi:ef_fireimmu", true);
+    }
+    get efRes(){
+        return SimpleScoreboard.getObjective("guxi:ef_res", true);
+    }
+    add(t, ent, e){
+        t.addScore(ent, +e);
+    }
+    remove(t, ent, e){
+        t.removeScore(ent, e);
+    }
+    get(t, ent){
+        return t.getScore(ent);
+    }
+    set(t, ent, e){
+        t.setScore(ent, e);
+    }
+}
+
 let valueList = {
     "guxi:energy": "能量堆",
     "guxi:energy_pool": "能量池",
@@ -193,33 +220,6 @@ let itemUseCondition = (event)=> {
 EventListener.register("itemUse", itemUseCondition);
 EventListener.register("itemUseOn", itemUseCondition);
 
-class Energy {
-    get pool(){
-        return SimpleScoreboard.getObjective("guxi:energy_pool", true);
-    }
-    get stack(){
-        return SimpleScoreboard.getObjective("guxi:energy", true);
-    }
-    get fireImmune(){
-        return SimpleScoreboard.getObjective("guxi:ef_fireimmu", true);
-    }
-    get efRes(){
-        return SimpleScoreboard.getObjective("guxi:ef_res", true);
-    }
-    add(t, ent, e){
-        t.addScore(ent, +e);
-    }
-    remove(t, ent, e){
-        t.removeScore(ent, e);
-    }
-    get(t, ent){
-        return t.getScore(ent);
-    }
-    set(t, ent, e){
-        t.setScore(ent, e);
-    }
-}
-
 Energy = new Energy();
 
 EventListener.register("entityHurt", (event)=> {
@@ -254,7 +254,6 @@ EventListener.register("entityHurt", (event)=> {
     let maxHealth = YoniEntity.getMaxHealth(ent);
     let currentHealth = YoniEntity.getCurrentHealth(ent);
     let lostHealth = maxHealth - currentHealth;
-    
     
     if (type == "fatal"){
         let i = Math.round(Math.max(0, damage**2*0.01*Energy.pool.getScore(ent)));
@@ -295,7 +294,6 @@ EventListener.register("entityHurt", (event)=> {
         
     }
 });
-
 EventListener.register("entityHurt", (event)=> {
     if (YoniEntity.hasFamily(event.damagingEntity, "guxi")){
         let cost = Math.round(event.damage*722*(SimpleScoreboard.getObjective("guxi:ef_damage").getScore(event.damagingEntity)+1));
@@ -304,19 +302,7 @@ EventListener.register("entityHurt", (event)=> {
         }
     }
 });
-let guxis = new Set();
-
 EventListener.register("tick", (event)=>{
-    //say(JSON.stringify(Command.run("time query gametime")));
-    //say(`c: ${event.currentTick}, d: ${event.deltaTime}`)
-    /*
-    let plAlive = new Set();
-    Array.from(YoniEntity.getAliveEntities({type:"minecraft:player"})).forEach(_=>plAlive.add(_));
-    Array.from(Minecraft.world.getPlayers()).forEach((_)=>{
-        if (plAlive.has(_)) return;
-        say(_.name);
-    });
-*/    
     if (event.currentTick % 30 != 6) return;
     
     Command.run("execute if entity @e[type=guxi:energy] as @e[type=guxi:energy] at @s run particle minecraft:endrod ~ ~ ~");

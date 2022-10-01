@@ -26,6 +26,7 @@ EventListener.register("entityHurt", (event)=> {
     if (event.damagingEntity === "minecraft:player"){
         Command.execute(event.damagingEntity,"title @s actionbar §c伤害: " + event.damage);
     } else if (event.hurtEntity.id == "minecraft:player"){
+        console.error("y");
         let ent = event.hurtEntity;
         let maxHealth = Entity.getMaxHealth(ent);
         let currentHealth = Entity.getCurrentHealth(ent);
@@ -33,6 +34,13 @@ EventListener.register("entityHurt", (event)=> {
         Command.execute(ent, "title @s title 损失血量"+lostHealth);
         Command.execute(ent, "title @s subtitle "+event.cause+": "+event.damage);
     }
+});
+
+EventListener.register("entityHurt", (event)=>{
+    if (YoniEntity.getAliveEntities().includes(event.hurtEntity))
+        return;
+    let {x, y, z} = event.hurtEntity.location;
+    Command.execute(event.hurtEntity, `say 啊我死了\n位置: ${x} ${y} ${z}`);
 });
 
 import "scripts/WatchBird.js";

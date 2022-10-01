@@ -1,17 +1,17 @@
 export function printError(msg, err=""){
     let errMsg = "";
-    if (msg instanceof Error || err.name !== undefined){
-        errMsg += `[${msg.name}]: ${msg.message}`;
-        if (msg.stack !== undefined)
-            errMsg += `\n${msg.stack}`;
-    } else if (msg.constructor instanceof String){
-        errMsg = msg;
-    } else {
+    if (err instanceof Error){
+        errMsg += `${err.name}: ${err.message}`;
+        if (err.stack !== undefined)
+            errMsg += `\n${err.stack}`;
+    } else if (err.constructor instanceof String){
+        errMsg = err;
+    } else if (err instanceof Object) {
         try { 
-            errMsg = JSON.stringify(err);
+            errMsg += "\n" + JSON.stringify(err);
         } catch {
-            errMsg = "";
+            errMsg = "未知错误";
         }
     }
-    console.error(errMsg);
+    console.error(msg+"\n"+errMsg);
 }

@@ -235,3 +235,4 @@ export default class SimpleScoreboard {
     }
 }
 
+export { SimpleScoreboard }

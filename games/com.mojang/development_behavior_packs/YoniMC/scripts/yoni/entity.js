@@ -7,6 +7,9 @@ let entityMap = new WeakMap();
 
 export default class YoniEntity {
     #vanillaEntity;
+    get vanillaEntity(){
+        return this.#vanillaEntity;
+    }
     constructor(entity, symbol){
         // 如果有记录，直接返回对应实体
         if (entityMap.has(entity)) return entityMap.get(entity);
@@ -25,16 +28,19 @@ export default class YoniEntity {
         for (let s in this.#vanillaEntity){ //建立变量,函数
             if (s in this)
                 continue;
-            Object.defineProperties(this, {
-                [s]: {
-                    get(){
-                        return this.#vanillaEntity[s];
-                    },
-                    set(t){
-                        return this.#vanillaEntity[s] = t;
+            if (this.#vanillaEntity[s] instanceof Function)
+                this[s] = (...args)=>{ return this.#vanillaEntity[s](...args); };
+            else 
+                Object.defineProperties(this, {
+                    [s]: {
+                        get(){
+                            return this.#vanillaEntity[s];
+                        },
+                        set(t){
+                            return this.#vanillaEntity[s] = t;
+                        }
                     }
-                }
-            });
+                });
         }
         
         entityMap.set(entity, this);
@@ -123,7 +129,7 @@ export default class YoniEntity {
             return false;
         if (object instanceof Minecraft.Player)
             return true;
-        if (object instanceof YoniEntity && object.isPlayer)
+        if (object instanceof Player)
             return true;
         return false;
     }
@@ -144,49 +150,6 @@ export default class YoniEntity {
         if (object instanceof YoniEntity)
             return true;
     }
-}
-
-export { YoniEntity }
-
-export class Entity extends YoniEntity {
-    
-    get vanillaEntity(){
-        return this.#vanillaEntity;
-    }
-    getMinecraftEntity(){
-        return this.#vanillaEntity;
-    }
-    get scoreboard(){
-        return Entry.getEntry(this);
-    }
-    isAliveEntity(){
-        return YoniEntity.isAliveEntity(this.#vanillaEntity);
-    }
-    getCurrentHealth(){
-        let comp = this.getHealthComponent();
-        if (comp != null){
-            return comp.current;
-        } else {
-            return null;
-        }
-    }
-    getHealthComponent(){
-        try {
-            return this.#vanillaEntity.getComponent("minecraft:health");
-        } catch {
-            return null;
-        }
-    }
-    hasFamily(family){
-        return YoniEntity.hasFamily(this.#vanillaEntity, familiy);
-    }
-    hasAnyFamily(...families){
-        return YoniEntity.hasAnyFamily(this.#vanillaEntity, ...families);
-    }
-    say(message){
-        let command = "say +" + message;
-        return Command.execute(this, command);
-    }
     
     static entityIsPlayer(entity){
         entity = YoniEntity.getMinecraftEntity(entity);
@@ -198,7 +161,7 @@ export class Entity extends YoniEntity {
     static getCurrentHealth(entity){
         entity = new YoniEntity(entity);
         let component = entity.getHealthComponent();
-        if (component != null)
+        if (component !== null)
             return component.current;
         else 
             return 0;
@@ -210,7 +173,7 @@ export class Entity extends YoniEntity {
     static getAliveEntities(...args){
         let entities = [];
         
-        for (dimid in Minecraft.MinecraftDimensionTypes){
+        for (let dimid in Minecraft.MinecraftDimensionTypes){
             entities.push(...Array.from(dim(dimid).getEntities(...args)));
         }
         return entities;
@@ -218,14 +181,52 @@ export class Entity extends YoniEntity {
     
 }
 
+export { YoniEntity }
+
+export class Entity extends YoniEntity {
+    
+    getMinecraftEntity(){
+        return this.vanillaEntity;
+    }
+    get scoreboard(){
+        return Entry.getEntry(this);
+    }
+    isAliveEntity(){
+        return YoniEntity.isAliveEntity(this.vanillaEntity);
+    }
+    getCurrentHealth(){
+        let comp = this.getHealthComponent();
+        if (comp != null){
+            return comp.current;
+        } else {
+            return null;
+        }
+    }
+    getHealthComponent(){
+        try {
+            return this.vanillaEntity.getComponent("minecraft:health");
+        } catch {
+            return null;
+        }
+    }
+    hasFamily(family){
+        return YoniEntity.hasFamily(this.vanillaEntity, familiy);
+    }
+    hasAnyFamily(...families){
+        return YoniEntity.hasAnyFamily(this.vanillaEntity, ...families);
+    }
+    say(message){
+        let command = "say +" + message;
+        return Command.execute(this, command);
+    }
+}
+
 export class Player extends Entity {
     sendMessage(message){
-        if (!this.isPlayer) return false;
         let rawtext = JSON.stringify({ rawtext: [ { text: String(message) } ]});
         return this.sendRawMessage(rawtext);
     }
     sendRawMessage(messageJson){
-        if (!this.isPlayer) return false;
         let command = "tellraw @s " + messageJson;
         try {
             if (Command.execute(this, command).statusCode == 0)
