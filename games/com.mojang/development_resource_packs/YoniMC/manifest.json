@@ -4,7 +4,7 @@
         "name": "YoniMC",
         "description": "是的\n这是一个美丽的世界",
         "uuid": "86e4face-ed0c-4945-bd61-f648424cd056",
-        "version": [0, 1, 2],
+        "version": [0, 1, 3],
         "min_engine_version": [1, 18, 30]
     },
     "modules": [
@@ -17,7 +17,7 @@
     ],
     "dependencies": [{
         "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-        "version": [0, 5, 1]
+        "version": [0, 6, 0]
     }],
     "metadata": {
       "authors": [

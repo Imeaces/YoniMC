@@ -13,7 +13,7 @@
         "default": "geometry.energy_light"
       },
       "particle_effects": {
-        "light": "minecraft:endrod"
+        "light_part": "minecraft:endrod"
       },
       "render_controllers": [ "controller.render.flow_energy" ],
       "animations": {
@@ -21,35 +21,42 @@
         "particle": "animation.energy.particle"
       },
       "scripts": {
-        "scale": "v.show_scale",
-        "pre_animation": [
-          "v.show_scale = 0;",
-         // "v.show_scale = query.camera_rotation(0);"
-          //"(for_each(v.pl, query.get_nearby_entities(15, 'minecraft:player'), { (v.pl->query.variant == 2695) ? { v.show_scale = (v.pl->query.target_x_rotation - query.camera_rotation(0) < 0.1) ? 0.6 : 0;};}));"
-        //  "(for_each(v.pl, query.get_nearby_entities(15, 'minecraft:player'), { v.show_scale = v.pl->query.target_x_rotation; break; }));"
-          "(for_each(v.pl, query.get_nearby_entities(32, 'minecraft:player'), { (v.pl->query.variant != 2695) ? { continue;}; (v.pl->query.target_x_rotation - query.camera_rotation(0) > 0.1) ? { continue; }; v.show_scale = 0.6; break; }));"
-        ],
         "animate": [
-          "face_player",
-          "particle"
+          "face_player"
+        ],
+        "scale": "v.show_scale",
+        "initialize": [
+          "v.show_scale = 0;",
+          "v.client_player_entity = 0;"
+        ],
+        "pre_animation": [
+          "(v.client_player_entity == 0) ? {for_each(t.pl, query.get_nearby_entities(32, 'minecraft:player'), { (math.abs(t.pl->query.target_x_rotation - query.camera_rotation(0)) < 0.01 && math.abs(t.pl->query.head_y_rotation('head') - query.camera_rotation(1)) < 0.01) ? { v.client_player_entity = t.pl; break; }; });};",
+          "(v.client_player_entity->query.variant == 2695) ? { v.show_scale = math.clamp(query.distance_from_camera/19, 0.3, 2.1); } : { v.show_scale = 0; };"
+          //    v.npl->((query.camera_rotation(0) - query.target_x_rotation) == 0 && (query.camera_rotation(1) - query.head_y_rotation('head')) == 0) ? 1 : 0;}););"
+          //"(for_each(v.pl,query.get_nearby_entities(32, 'minecraft:player'),{              (((v.pl->query.mark_variant)==2695)&&              ((v.pl->query.target_x_rotation)==query.camera_rotation(0));)?{                  v.show_scale=0.6;                  break;              };          }));"
+          /*
+          //(for_each(v.pl, query.get_nearby_entities(32, 'minecraft:player'), { 
+              (v.pl->query.variant != 2695) ? {
+                  continue;
+              };
+              (v.pl->query.target_x_rotation - query.camera_rotation(0) > 0.1) ? {
+                  continue;
+              };
+              v.show_scale = 0.6;
+              break;
+          }));"
+          
+          "(
+              for_each(v.pl, query.get_nearby_entities(32, 'minecraft:player'), {
+                  (v.pl->query.mark_variant == 2695 && v.pl->query.target_x_rotation == query.camera_rotation(0) && v.pl->query.head_y_rotation('head') == query.camera_rotation(1) ) ? {
+                      v.show_scale = 0.6;
+                      break;
+                  }
+              )
+          );"
+          */
         ]
       }
     }
   }
-} 
-/* scale code
-(for_each(v.pl, query.get_nearby_entities(10, 'minecraft:player'), {
-  (v.pl->variable.player_x_rotation == query.camera_rotation(0);) ? {
-    (v.pl->variable.player_y_rotation == query.camera_rotation(1);) ? {
-      return 0.4;
-    } : {
-      continue;
-    };
-  }: {
-    continue;
-  };
-};); return 2;)
-*/
-/*
-          "(for_each(v.pl, query.get_nearby_entities(10, 'minecraft:player'), {(v.pl->query.target_x_rotation + query.camera_rotation(0) < 1;) ? {v.show_scale = 0.4; break;}: {continue;};}););"
-*/
+}
