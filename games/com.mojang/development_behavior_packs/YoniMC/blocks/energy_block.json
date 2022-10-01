@@ -13,8 +13,6 @@
         "components": {
             "minecraft:destroy_time": 0,
             "minecraft:explosion_resistance": 3600000,
-            //"minecraft:preventsjumping": true,
-            //"minecraft:onlypistonpush": true,
             "minecraft:map_color": "#FFFFFF",
             "minecraft:block_light_emission": 1,
             "minecraft:block_light_filter": 0,
@@ -37,18 +35,7 @@
                     "render_method": "blend"
                 }
             },
-            "minecraft:geometry": "geometry.yonimc.energy_block",
-            "minecraft:on_player_destroyed": {
-                "event": "on_break",
-                "target": "self"
-            }
-        },
-        "events": {
-            "on_break": {
-                "spawn_loot": {
-                    "table": "loot_tables/blocks/energy_block.json"
-                }
-            }
+            "minecraft:geometry": "geometry.yonimc.energy_block"
         }
     }
 }

@@ -22,10 +22,6 @@
                     "target": "self"
                 }
             },
-            "minecraft:block_placer": {
-                "block": "yonimc:energy_block",
-                "use_block_description": false
-            },
             "tag:yonimc:energy": {}
         },
         "events": {

@@ -1,4 +1,5 @@
 import ChatCommand from "scripts/yoni/command/ChatCommand.js";
+import { printError } from "scripts/yoni/util/console.js";
 import {
     Minecraft,
     dim
@@ -7,15 +8,9 @@ import { YoniEntity as Entity } from "scripts/yoni/entity.js";
 import { YoniEntity } from "scripts/yoni/entity.js";
 import { tell, say } from "scripts/yoni/util/yoni-lib.js";
 import Command from "scripts/yoni/command.js";
-import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
+import SimpleScoreboard from "scripts/yoni/scoreboard.js";
 import { EventListener } from "scripts/yoni/event.js";
-/*
-let cent = new YoniEntity(Array.from(Minecraft.world.getPlayers())[0]);
-ChatCommand.registerCommand("test", (sender, raw, label, args)=>{
-    sender = new YoniEntity(sender);
-    say(cent === sender);
-});
-*/
+
 ChatCommand.registerPrefixCommand("", "@all", (runner, command, label, args) => {
     Command.execute(runner, "title @a title @s");
     Command.execute(runner, "title @a subtitle @了所有人");
@@ -45,5 +40,13 @@ import "scripts/command.js";
 import "scripts/debug.js";
 import "scripts/TagAdapter.js";
 import "scripts/guxi.js";
+
+import('scripts/test.js')
+    .then(()=>{
+        console.error("已经导入测试");
+    })
+    .catch((e)=>{
+        printError("未能导入测试", e);
+    });
 
 console.warn("scripts main end");

@@ -10,56 +10,56 @@ import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
 import { EventListener } from "scripts/yoni/event.js";
 import { EntityDamageCause } from "mojang-minecraft";
 
-ChatCommand.registerPrefixCommand("#", "guxi", (runner, command, label, args) => {
-    if (!YoniEntity.hasAnyFamily(runner, "guxi")) return;
-    let sender = new YoniEntity(runner);
-    if (args[0] === "boom"){
-        let radius = Number(args[1]);
-        if (isNaN(radius)){
-          sender.sendMessage("范围得是数字");
-          return;
-        }
-        let location = runner.location;
+let valueList = {
+    "guxi:energy": "能量堆",
+    "guxi:energy_pool": "能量池",
+    "guxi:energy_st": "堆上限",
+    "guxi:energy_stpo": "池上限",
+    "guxi:health_stat": "生命状态",
     
-        let opts = new Minecraft.ExplosionOptions();
-        opts.breaksBlocks = true;
-        opts.source = runner;
+    "guxi:ef_speed": "速度",
+    "guxi:ef_mining": "挖掘",
+    "guxi:ef_damage": "伤害",
+    "guxi:ef_res": "防御",
+    "guxi:ef_fireimmu": "火抗",
+    "guxi:auto_energy": "自动获得能量",
+    "guxi:keep_res": "保持防御",
+    "guxi:keep_ef": "保持状态",
+    "guxi:like_player": "伪装玩家",
+    "guxi:auto_player": "自行伪装玩家"
+};
+let setList = {
+    "guxi:ef_speed": "速度",
+    "guxi:ef_mining": "挖掘",
+    "guxi:ef_damage": "伤害",
+    "guxi:ef_res": "防御",
+    "guxi:ef_fireimmu": "火抗",
+    "guxi:auto_energy": "自动获得能量",
+    "guxi:keep_res": "保持防御",
+    "guxi:keep_ef": "保持状态",
+    "guxi:like_player": "伪装玩家",
+    "guxi:auto_player": "自行伪装玩家"
+};
+
+function createBoom(runner, r){
+    let radius = Number(r);
+    if (isNaN(radius)){
+        sender.sendMessage("范围得是数字");
+        return;
+    }
+    let location = runner.location;
     
-        say("boom!", runner);
-        runner.dimension.createExplosion(location, radius, opts);
-    } else if (args[0] === "value"){
-        let valueList = {
-            "guxi:energy": "能量堆",
-            "guxi:energy_pool": "能量池",
-            "guxi:energy_st": "堆上限",
-            "guxi:energy_st": "池上限",
-            "guxi:health_stat": "生命状态",
-            
-            "guxi:ef_speed": "速度",
-            "guxi:ef_mining": "挖掘",
-            "guxi:ef_damage": "伤害",
-            "guxi:ef_res": "防御",
-            "guxi:ef_fireimmu": "火抗",
-            "guxi:auto_energy": "自动获得能量",
-            "guxi:keep_res": "保持防御",
-            "guxi:keep_ef": "保持状态",
-            "guxi:like_player": "伪装玩家",
-            "guxi:auto_player": "自行伪装玩家"
-        };
-        let setList = {
-            "guxi:ef_speed": "速度",
-            "guxi:ef_mining": "挖掘",
-            "guxi:ef_damage": "伤害",
-            "guxi:ef_res": "防御",
-            "guxi:ef_fireimmu": "火抗",
-            "guxi:auto_energy": "自动获得能量",
-            "guxi:keep_res": "保持防御",
-            "guxi:keep_ef": "保持状态",
-            "guxi:like_player": "伪装玩家",
-            "guxi:auto_player": "自行伪装玩家"
-        };
-        let opt = args[1];
-        if (opt === "list"){
+    let opts = {
+        breaksBlocks: true,
+        source: runner.vanillaEntity
+    };
+    
+    say("boom!", runner);
+    runner.dimension.createExplosion(location, radius, opts);
+}
+function valueCtrl(sender, args){
+    switch (args.shift()){
+        case "list":
             sender.sendMessage("\n当前状态");
             for (let s in valueList){
                 let o = SimpleScoreboard.getObjective(s, true);
@@ -67,55 +67,73 @@ ChatCommand.registerPrefixCommand("#", "guxi", (runner, command, label, args) =>
                 let v = setList[s] !== undefined ? "" : "§7";
                 sender.sendMessage(`${v}${valueList[s]}(${o.id}): ${r}`);
             };
-        } else if (opt === "get"){
-            let o = args[2];
-            if (!o.startsWith("guxi:")) o = "guxi:" + o;
-            if (valueList[o] === undefined){
+            break;
+        case "get":
+            let valueToGet = args.shift();
+            if (!valueToGet.startsWith("guxi:")) valueToGet = "guxi:" + valueToGet;
+            if (valueList[valueToGet] === undefined){
                 sender.sendMessage("没有");
                 return;
             }
-            let r = SimpleScoreboard.getObjective(o).getScore(sender);
-            sender.sendMessage(`${valueList[o]}(${o}): ${r}`);
-        } else if (opt === "set"){
-            let o = args[2];
-            if (!o.startsWith("guxi:")) o = "guxi:" + o;
-            if (setList[o] === undefined){
+            let valueVal = SimpleScoreboard.getObjective(valueToGet).getScore(sender);
+            sender.sendMessage(`${valueList[valueToGet]}(${valueToGet}): ${valueVal}`);
+        case "set":
+            let valueToSet = args.shift();
+            if (!valueToSet.startsWith("guxi:")) valueToSet = "guxi:" + valueToSet;
+            if (setList[valueToSet] === undefined){
                 sender.sendMessage("做不到");
                 return;
             }
-            let val = args[3];
-            if (val === "false"){
-                val = 0;
-            } else if (val === "true"){
-                val = 1;
+            let valForValue = args.shift();
+            if (valForValue === "false"){
+                valForValue = 0;
+            } else if (valForValue === "true"){
+                valForValue = 1;
             } else {
-                val = Number(args[3]);
+                valForValue = Number(valForValue);
             }
             try {
-                SimpleScoreboard.getObjective(o).setScore(sender, val);
+                SimpleScoreboard.getObjective(valueToSet).setScore(sender, valForValue);
                 sender.sendMessage("成功");
             } catch (e){
                 sender.sendMessage(e.message);
             }
-        } else {
-                sender.sendMessage("感到疑惑");
-        }
-    } else if (args[0] === "elytra"){
-        let opt = args[1];
-        if (opt === "expand"){
-            Command.execute(sender, "function yonimc/guxi/creation/elytra/expand");
-            sender.sendMessage("展开鞘翅");
-        } else if (opt === "recovery"){
-            Command.execute(sender, "function yonimc/guxi/creation/elytra/recovery");
-            sender.sendMessage("收起鞘翅");
-        } else {
+            break;
+        default:
             sender.sendMessage("感到疑惑");
-        }
+    }
+}
+function elytraManage(sender, args){
+    let opt = args[0];
+    if (opt === "expand"){
+        Command.execute(sender, "function yonimc/guxi/creation/elytra/expand");
+        sender.sendMessage("展开鞘翅");
+    } else if (opt === "recovery"){
+        Command.execute(sender, "function yonimc/guxi/creation/elytra/recovery");
+        sender.sendMessage("收起鞘翅");
     } else {
-        sender.sendMessage("咕西");
-        sender.sendMessage(`${label} value [set|get|list]`);
-        sender.sendMessage(`${label} boom <radius:number>`);
-        sender.sendMessage(`${label} elytra <expand|recovery>`);
+        sender.sendMessage("感到疑惑");
+    }
+}
+
+ChatCommand.registerPrefixCommand("#", "guxi", (runner, command, label, args) => {
+    if (!YoniEntity.hasAnyFamily(runner, "guxi")) return;
+    let sender = new YoniEntity(runner);
+    switch (args.shift()){
+        case "boom":
+            createBoom(sender, args.shift());
+            break;
+        case "value":
+            valueCtrl(sender, Array.from(args));
+            break;
+        case "elytra":
+            elytraManage(sender, Array.from(args));
+            break;
+        default:
+            sender.sendMessage("咕西");
+            sender.sendMessage(`${label} value [set|get|list]`);
+            sender.sendMessage(`${label} boom <radius:number>`);
+            sender.sendMessage(`${label} elytra <expand|recovery>`);
     }
 });
 
@@ -140,7 +158,7 @@ EventListener.register("blockBreak", (event)=>{
     
     Energy.remove(Energy.stack, event.player,
         Math.round(Math.max(0,
-            722*
+            72219*
             SimpleScoreboard
             .getObjective("guxi:ef_mining")
             .getScore(event.player)
@@ -284,6 +302,23 @@ EventListener.register("entityHurt", (event)=> {
         if (cost > 0){
             Energy.stack.removeScore(event.damagingEntity, cost);
         }
-        Command.execute(event.damagingEntity, `title @s actionbar §c伤害: ${event.damage}\ncost: ${cost}`);
     }
+});
+let guxis = new Set();
+
+EventListener.register("tick", (event)=>{
+    //say(JSON.stringify(Command.run("time query gametime")));
+    //say(`c: ${event.currentTick}, d: ${event.deltaTime}`)
+    /*
+    let plAlive = new Set();
+    Array.from(YoniEntity.getAliveEntities({type:"minecraft:player"})).forEach(_=>plAlive.add(_));
+    Array.from(Minecraft.world.getPlayers()).forEach((_)=>{
+        if (plAlive.has(_)) return;
+        say(_.name);
+    });
+*/    
+    if (event.currentTick % 30 != 6) return;
+    
+    Command.run("execute if entity @e[type=guxi:energy] as @e[type=guxi:energy] at @s run particle minecraft:endrod ~ ~ ~");
+    
 });

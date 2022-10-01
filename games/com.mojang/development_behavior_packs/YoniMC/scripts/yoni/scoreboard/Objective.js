@@ -2,7 +2,6 @@ import { Minecraft, execCmd, StatusCode, dim, VanillaScoreboard } from "scripts/
 import Utils from "scripts/yoni/scoreboard/Utils.js";
 import { Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
 import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "scripts/yoni/scoreboard/ScoreboardError.js"
-import * as yoni from "scripts/yoni/util/yoni-lib.js";
 
 const objectiveTypes = Object.create(null);
 

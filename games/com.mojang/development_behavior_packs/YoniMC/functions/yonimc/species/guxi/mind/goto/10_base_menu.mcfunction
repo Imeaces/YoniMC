@@ -1,2 +1,1 @@
-title @s title done!
-give @s yonimc:energy
+title @s actionbar 咕西

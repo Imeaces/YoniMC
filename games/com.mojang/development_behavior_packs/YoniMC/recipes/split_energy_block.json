@@ -1,0 +1,20 @@
+{
+    "format_version": "1.12",
+    "minecraft:recipe_shapeless": {
+        "description": {
+            "identifier": "yonimc:split_energy_block"
+        },
+        "tags": [
+            "crafting_table"
+        ],
+        "ingredients": [
+            {
+                "item": "yonimc:energy_block"
+            }
+        ],
+        "result": {
+            "item": "yonimc:energy",
+            "count": 9
+        }
+    }
+}

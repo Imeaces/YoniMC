@@ -2,11 +2,24 @@ import * as Gametest from "mojang-gametest";
 import * as MinecraftGui from "mojang-minecraft-ui";
 import * as Minecraft from "mojang-minecraft";
 
-import * as yoni from "scripts/yoni/util/yoni-lib.js";//仅用作调试
+//import * as yoni from "scripts/yoni/util/yoni-lib.js";//仅用作调试
 
 export { Gametest }
 export { MinecraftGui }
 export { Minecraft }
+
+/*
+let ServerAdmin;
+let MojangNet;
+import("mojang-server-admin")
+    .then((m)=>{ ServerAdmin = m })
+    .catch();
+import("mojang-net")
+    .then((m)=>{ MojangNet = m })
+    .catch();
+export { ServerAdmin }
+export { MojangNet }
+*/
 
 export const VanillaWorld = Minecraft.world;
 export const VanillaEvents = VanillaWorld.events;

@@ -1,6 +1,5 @@
 import { VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
 import { YoniEntity } from "scripts/yoni/entity.js";
-import * as yoni from "scripts/yoni/util/yoni-lib.js";
 
 let idRecords = new Map();
 let entityRecords = new Map();
@@ -37,14 +36,6 @@ class Entry {
         if (!isNaN(Number(any)))
             return this.getEntry({id: any});
         throw new Error("Sorry, couldn't guess the entry");
-    }
-    
-    static getEntries(){
-        let entries = [];
-        return [...new Set([...entityRecords.values(),
-            ...scbidRecords.values(),
-            ...idRecords.values(),
-            ...nameRecords.values()]).values()];
     }
     
     static getEntry(option){
@@ -137,10 +128,10 @@ class Entry {
         entity = (entity instanceof YoniEntity) ? entity.vanillaEntity : entity;
         
         if (entity !== undefined){
-            if (entity instanceof Minecraft.Entity)
-                type = EntryType.ENTITY;
-            else if (entity instanceof Minecraft.Player)
+            if (entity instanceof Minecraft.Player)
                 type = EntryType.PLAYER;
+            else if (entity instanceof Minecraft.Entity)
+                type = EntryType.ENTITY;
             else throw new TypeError("Unknown entity type");
             scbid = entity.scoreboard;
             id = scbid.id;

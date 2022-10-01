@@ -183,6 +183,7 @@
     "setvalue:0:variant": {"minecraft:variant": { "value": 0 }},
     "setvalue:42:variant": {"minecraft:variant": { "value": 42 }},
     "yonimc:as_guxi": {
+        "minecraft:mark_variant": { "value": 2695 },
         "minecraft:movement": { "value": 0.40 },
         "minecraft:nameable": { "always_show": true, "allow_name_tag_renaming": false },
         "minecraft:collision_box": { "width": 0.6, "height": 1.8 },

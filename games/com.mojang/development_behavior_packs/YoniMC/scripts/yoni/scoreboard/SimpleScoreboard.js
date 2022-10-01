@@ -177,14 +177,61 @@ export default class SimpleScoreboard {
         this.getObjectives().forEach((obj) => obj.unregister());
     }
     
-    static resetAllScore(){
-        execCommand(dim(0), "scoreboard", "players", "reset", "*");
+    /**
+     * reset scores of all participants
+     * @param particular filter function, the function will be call for every participants, if return true, then reset the scores of participants
+     */
+    static resetAllScore(filter){
+        if (filter === undefined){
+            execCommand(dim(0), "scoreboard", "players", "reset", "*");
+            return;
+        }
+        
+        [...SimpleScoreboard.getEntries()].forEach(id=>{
+            if (filter(id)){
+                SimpleScoreboard.resetScore(id);
+            }
+        });
     }
     
+    /**
+     * reset scores of a participant
+     * @param entry
+     */
     static resetScore(entry){
-        this.getObjectives().forEach((obj) => {
-            obj.resetScore(entry);
-        });
+        if (!(entry instanceof Entry))
+            entry = Entry.guessEntry(entry);
+        
+        if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
+            let ent;
+            if (entry.type == EntryType.PLAYER){
+                ent = entry.getEntity();
+            } else {
+                let entryEnt = entry.getEntity();
+                for (let e of YoniEntitiy.getAliveEntities()){
+                    if (e === entryEnt){
+                        ent = e;
+                        break;
+                    }
+                }
+            }
+            if (ent === undefined){
+                throw new InternalError("Could not find the entity");
+            }
+            if (execCmd(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
+                throw new InternalError("Could not set score, maybe entity or player disappeared?");
+            }
+        } else {
+        
+            for (let pl of Minecraft.getPlayers()){
+                if (pl.name = entry.displayName){
+                    throw new NameConflictError(entry.displayName);
+                }
+            }
+
+            execCmd(dim(0), "scoreboard", "players", "reset", entry.displayName);
+            
+        }
     }
 }
 

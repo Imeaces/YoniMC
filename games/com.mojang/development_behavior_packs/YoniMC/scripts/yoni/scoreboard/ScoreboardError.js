@@ -5,13 +5,13 @@ export class ScoreRangeError extends Error {
 export class ObjectiveUnregisteredError extends Error {
     name = "ObjectiveUnregisteredError";
     constructor(name){
-        this.message = `Objective ${name} has been unregistered.`
+        super(`Objective ${name} has been unregistered.`);
     }
 }
 
 export class NameConflictError extends Error {
     name = "NameConflictError";
     constructor(name){
-        this.message = `Could not set score because there are name conflict! More than one ${name}`;
+        super(`Could not set score because there are name conflict! More than one ${name}`);
     }
 }

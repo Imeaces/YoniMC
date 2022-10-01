@@ -10,14 +10,14 @@
         "flow_energy": "controller.animation.guxi.flow_energy"
       },
       "scripts": {
-        "animate": [ "flow_energy" ]
+        "animate": [ /*"flow_energy"*/ ]
       }
     },
     "events": {
-      "guxi:energy_freezed": { "add": { "component_groups": [ "mark_freezed" ] } }
+      "guxi:energy_freezed": { "add": { "component_groups": [ "guxi:energy_freezed" ] } }
     },
     "component_groups": {
-      "mark_freezed": { "minecraft:skin_id": { "value": 1 } }
+      "guxi:energy_freezed": { "minecraft:health": { "value": 0 } }
     },
     "components": {
       "minecraft:timer": {
