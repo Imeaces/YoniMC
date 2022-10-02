@@ -1,6 +1,6 @@
-import * as Gametest from "mojang-gametest";
-import * as MinecraftGui from "mojang-minecraft-ui";
-import * as Minecraft from "mojang-minecraft";
+import * as Gametest from "@minecraft/server-gametest";
+import * as MinecraftGui from "@minecraft/server-ui";
+import * as Minecraft from "@minecraft/server";
 
 //import * as yoni from "scripts/yoni/util/yoni-lib.js";//仅用作调试
 

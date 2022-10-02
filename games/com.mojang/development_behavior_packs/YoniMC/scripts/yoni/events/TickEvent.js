@@ -1,5 +1,5 @@
-import { MinecraftSystem, dim } from "scripts/yoni/basis.js";
-import { EventSignal } from "scripts/yoni/events.js";
+import { MinecraftSystem, dim } from "yoni/basis.js";
+import { EventSignal } from "yoni/events.js";
 
 export class TickEvent {
     constructor(c, d){

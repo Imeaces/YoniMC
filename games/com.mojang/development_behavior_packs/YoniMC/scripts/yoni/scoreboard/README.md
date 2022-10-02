@@ -1,15 +1,13 @@
 # scoreboard
 
+相比文档，我建议你直接装载这个行为包进游戏看看，并查看test.js的内容（其实是我懒得写）
 
-
-注意：版本为1.19.30，或者1.19.40
-
-注意：这个是单独弄出来的，没测试过  
-如果不能用就找我吧（，我会修的
+## 未完成的文档
+注意：版本为1.19.40
 
 注意，当增删记分板分数时，超出原版分数限制的数字与原版的结果有所不同，目前暂时无法解决（除非我愿意用指令增删），由于gametest中数字被限制在-2^31~2^31-1之间
 
-`<scoreboard.js>`中包含了独立的scoreboard模块，只需要按照这样的方法使用
+`<scripts/yoni/scoreboard.js>`中导出了所有的scoreboard模块，只需要按照这样的方法使用
 ```js
 import Scoreboard from "scripts/yoni/scoreboard/scoreboard.js";
 
@@ -23,6 +21,10 @@ gameObjective.setScore("target", 233);
 ```
 
 其他的则需要依赖其他模块运行
+
+目前确认没有bug的只有与分数加减有关的操作
+
+设置记分项的显示位置，以及各种getAll操作尚未进行测试
 
 ## 更多示例
 

@@ -1,6 +1,6 @@
-import { VanillaEvents }  from "scripts/yoni/basis.js";
-import { EventListener } from "scripts/yoni/event.js";
-import { printError } from "scripts/yoni/util/console.js";
+import { VanillaEvents }  from "yoni/basis.js";
+import { EventListener } from "yoni/event.js";
+import { printError } from "yoni/util/console.js";
 
 export default class ChatCommand {
     static #prefixCmds = new Map();

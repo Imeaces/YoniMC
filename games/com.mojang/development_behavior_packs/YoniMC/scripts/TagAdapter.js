@@ -1,13 +1,13 @@
 import {
     Minecraft,
     dim
-    } from "scripts/yoni/basis.js";
-import { YoniEntity as Entity } from "scripts/yoni/entity.js";
-import { tell, say } from "scripts/yoni/util/yoni-lib.js";
-import Command from "scripts/yoni/command.js";
-import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
-import { EventListener } from "scripts/yoni/event.js";
-import { EntityDamageCause } from "mojang-minecraft";
+    } from "yoni/basis.js";
+import { YoniEntity as Entity } from "yoni/entity.js";
+import { tell, say } from "yoni/util/yoni-lib.js";
+import Command from "yoni/command.js";
+import SimpleScoreboard from "yoni/scoreboard/SimpleScoreboard.js";
+import { EventListener } from "yoni/event.js";
+const { EntityDamageCause } = Minecraft;
 
 EventListener.register("tick", (event) => {
     if (event.currentTick % 10 != 0) return;

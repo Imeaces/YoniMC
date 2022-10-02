@@ -1,15 +1,15 @@
-import ChatCommand from "scripts/yoni/command/ChatCommand.js";
-import { printError } from "scripts/yoni/util/console.js";
+import ChatCommand from "yoni/command/ChatCommand.js";
+import { printError } from "yoni/util/console.js";
 import {
     Minecraft,
     dim
-    } from "scripts/yoni/basis.js";
-import { YoniEntity as Entity } from "scripts/yoni/entity.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
-import { tell, say } from "scripts/yoni/util/yoni-lib.js";
-import Command from "scripts/yoni/command.js";
-import SimpleScoreboard from "scripts/yoni/scoreboard.js";
-import { EventListener } from "scripts/yoni/event.js";
+    } from "yoni/basis.js";
+import { YoniEntity as Entity } from "yoni/entity.js";
+import { YoniEntity } from "yoni/entity.js";
+import { tell, say } from "yoni/util/yoni-lib.js";
+import Command from "yoni/command.js";
+import SimpleScoreboard from "yoni/scoreboard.js";
+import { EventListener } from "yoni/event.js";
 
 ChatCommand.registerPrefixCommand("", "@all", (runner, command, label, args) => {
     Command.execute(runner, "title @a title @s");
@@ -43,13 +43,13 @@ EventListener.register("entityHurt", (event)=>{
     Command.execute(event.hurtEntity, `say 啊我死了\n位置: ${x} ${y} ${z}`);
 });
 
-import "scripts/WatchBird.js";
-import "scripts/command.js";
-import "scripts/debug.js";
-import "scripts/TagAdapter.js";
-import "scripts/guxi.js";
+import "WatchBird.js";
+import "command.js";
+import "debug.js";
+import "TagAdapter.js";
+import "guxi.js";
 
-import('scripts/test.js')
+import('test.js')
     .then(()=>{
         console.error("已经导入测试");
     })

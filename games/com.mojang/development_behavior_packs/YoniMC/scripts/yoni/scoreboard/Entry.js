@@ -1,5 +1,5 @@
-import { VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
+import { VanillaScoreboard, Minecraft } from "yoni/basis.js";
+import { YoniEntity } from "yoni/entity.js";
 
 let idRecords = new Map();
 let entityRecords = new Map();
@@ -44,15 +44,18 @@ class Entry {
         entity = (entity instanceof YoniEntity) ? entity.vanillaEntity : entity;
         let entry;
         
+        if (type === EntryType.FAKE_PLAYER && scbid !== undefined)
+            name = scbid.displayName;
+            
         //优先级: entity, scbid, id, name
         if (entityRecords.has(entity))
             entry = entityRecords.get(entity);
+        else if (type === EntryType.FAKE_PLAYER && nameRecords.has(name))
+            entry = nameRecords.get(name);
         else if (scbidRecords.has(scbid))
             entry = scbidRecords.get(scbid);
         else if (idRecords.has(id))
             entry = idRecords.get(id);
-        else if (nameRecords.has(name))
-            entry = nameRecords.get(name);
         else
             entry = new Entry(option);
         
@@ -88,17 +91,22 @@ class Entry {
     }
     
     get displayName(){
+        if (this.vanillaScbid !== undefined && this.#vanillaScbid.displayName !== undefined)
+            return this.vanillaScbid.displayName;
         if (this.#type == EntryType.PLAYER)
             return this.#entity.name;
-        else if (this.#type  == EntryType.ENTITY)
+        if (this.#type  == EntryType.ENTITY)
             return this.id;
-        else if (this.#type === EntryType.FAKE_PLAYER)
+        if (this.#type === EntryType.FAKE_PLAYER)
             return this.#name;
+        
     }
     
     get vanillaScbid(){
         if (this.#type === EntryType.PLAYER || this.#type === EntryType.ENTITY && this.#entity.scoreboard !== this.#vanillaScbid)
             this.#vanillaScbid = this.#entity.scoreboard;
+        if (this.#vanillaScbid !== undefined && scbidRecords.get(this.#vanillaScbid) !== this)
+            scbidRecords.set(this.#vanillaScbid, this);
         return this.#vanillaScbid;
     }
     
@@ -134,7 +142,7 @@ class Entry {
                 type = EntryType.ENTITY;
             else throw new TypeError("Unknown entity type");
             scbid = entity.scoreboard;
-            id = scbid.id;
+            id = scbid?.id;
         } else {
             let condF = null;
             if (type === EntryType.FAKE_PLAYER && name !== "" && name !== scbid?.displayName){

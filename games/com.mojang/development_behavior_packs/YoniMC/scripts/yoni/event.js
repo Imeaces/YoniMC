@@ -1,9 +1,9 @@
-import { VanillaEvents as MinecraftEvents, SystemEvents } from "scripts/yoni/basis.js";
-import { printError } from "scripts/yoni/util/console.js";
+import { VanillaEvents as MinecraftEvents, SystemEvents } from "yoni/basis.js";
+import { printError } from "yoni/util/console.js";
 
 //动态导入，防止出什么奇怪的问题
 let Debug;
-import("scripts/yoni/debug.js")
+import("yoni/debug.js")
     .then((m)=>{Debug=m})
     .catch();
     
@@ -257,5 +257,5 @@ export class EventListener {
 //防止被覆盖
 eventRegisterMap.set("yonimc", new Map());
 //导入事件
-import("scripts/yoni/events/TickEvent.js");
-import("scripts/yoni/events/PlayerDeadEvent.js");
+import("yoni/events/TickEvent.js");
+import("yoni/events/PlayerDeadEvent.js");

@@ -1,4 +1,4 @@
-import { say } from "scripts/yoni/util/yoni-lib.js";
+import { say } from "yoni/util/yoni-lib.js";
 
 import('./main.js').catch((e=null)=>{
     let errMsg = "";

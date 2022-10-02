@@ -1,5 +1,6 @@
-import { StatusCode, execCmd, dim, VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
-import Objective from "scripts/yoni/scoreboard/Objective.js";
+import { StatusCode, execCmd, dim, VanillaScoreboard, Minecraft } from "yoni/basis.js";
+import Objective from "yoni/scoreboard/Objective.js";
+import Entry from "yoni/scoreboard/Entry.js";
 
 /**
  * enum of alive display slot
@@ -133,7 +134,7 @@ export default class SimpleScoreboard {
         return this.getObjective(VanillaScoreboard.getObjectiveAtDisplaySlot(slot).id);
     }
     
-    static setDisplaySlot(slot, objective, sequence){
+    static setDisplaySlot(slot, objective, sequence="descending"){
         if (!Array.from(DisplaySlotType).includes(slot))
             throw new TypeError("Not a DisplaySlot type");
         if (!(objective instanceof Objective))
@@ -169,7 +170,7 @@ export default class SimpleScoreboard {
     static getEntries(){
         return Array.from(VanillaScoreboard.getParticipants())
             .map((_)=>{
-                return Entry.getEntry({scbid: _, type: scbid.type});
+                return Entry.getEntry({scbid: _, type: _.type});
             });
     }
     
@@ -203,34 +204,16 @@ export default class SimpleScoreboard {
             entry = Entry.guessEntry(entry);
         
         if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
-            let ent;
-            if (entry.type == EntryType.PLAYER){
-                ent = entry.getEntity();
-            } else {
-                let entryEnt = entry.getEntity();
-                for (let e of YoniEntitiy.getAliveEntities()){
-                    if (e === entryEnt){
-                        ent = e;
-                        break;
-                    }
-                }
-            }
+            let ent = entry.getEntity();
             if (ent === undefined){
                 throw new InternalError("Could not find the entity");
-            }
-            if (execCmd(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
+            } else if (execCmd(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
                 throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
-        } else {
-        
-            for (let pl of Minecraft.getPlayers()){
-                if (pl.name = entry.displayName){
-                    throw new NameConflictError(entry.displayName);
-                }
-            }
-
+        } else if ([...VanillaWorld.getPlayers()].length === 0){
             execCmd(dim(0), "scoreboard", "players", "reset", entry.displayName);
-            
+        } else {
+            throw new NameConflictError(entry.displayName);
         }
     }
 }

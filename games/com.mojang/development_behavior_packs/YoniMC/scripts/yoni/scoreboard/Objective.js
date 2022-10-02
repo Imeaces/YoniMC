@@ -1,7 +1,7 @@
-import { Minecraft, execCmd, StatusCode, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
-import Utils from "scripts/yoni/scoreboard/Utils.js";
-import { Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
-import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "scripts/yoni/scoreboard/ScoreboardError.js"
+import { Minecraft, VanillaWorld, execCmd, StatusCode, dim, VanillaScoreboard } from "yoni/basis.js";
+import Utils from "yoni/scoreboard/Utils.js";
+import { Entry, EntryType } from "yoni/scoreboard/Entry.js";
+import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "yoni/scoreboard/ScoreboardError.js"
 
 const objectiveTypes = Object.create(null);
 
@@ -191,34 +191,16 @@ class Objective {
             entry = Entry.guessEntry(entry);
 
         if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
-            let ent;
-            if (entry.type == EntryType.PLAYER){
-                ent = entry.getEntity();
-            } else {
-                let entryEnt = entry.getEntity();
-                for (let e of YoniEntitiy.getAliveEntities()){
-                    if (e === entryEnt){
-                        ent = e;
-                        break;
-                    }
-                }
-            }
+            let ent = entry.getEntity();
             if (ent == null){
                 throw new InternalError("Could not find the entity");
-            }
-            if (execCmd(ent, "scoreboard", "players", "reset", "@s", this.#id).statusCode != StatusCode.success){
+            } else if (execCmd(ent, "scoreboard", "players", "reset", "@s", this.#id).statusCode != StatusCode.success){
                 throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
-        } else {
-        
-            for (let pl of Minecraft.getPlayers()){
-                if (pl.name = entry.displayName){
-                    throw new NameConflictError(entry.displayName);
-                }
-            }
-
+        } else if ([...VanillaWorld.getPlayers()].length === 0){
             execCmd(dim(0), "scoreboard", "players", "reset", entry.displayName, this.#id);
-            
+        } else {
+            throw new NameConflictError(entry.displayName);
         }
         
     }
@@ -248,34 +230,16 @@ class Objective {
         if (!Utils.isBetweenRange(score))
             throw new ScoreRangeError();
         if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
-            let ent;
-            if (entry.type == EntryType.PLAYER){
-                ent = entry.getEntity();
-            } else {
-                let entryEnt = entry.getEntity();
-                for (let e of YoniEntitiy.getAliveEntities()){
-                    if (e === entryEnt){
-                        ent = e;
-                        break;
-                    }
-                }
-            }
+            let ent = entry.getEntity();
             if (ent == null){
                 throw new InternalError("Could not find the entity");
-            }
-            if (execCmd(ent, "scoreboard", "players", "set", "@s", this.#id, score).statusCode != StatusCode.success){
+            } else if (execCmd(ent, "scoreboard", "players", "set", "@s", this.#id, score).statusCode != StatusCode.success){
                 throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
-        } else {
-        
-            for (let pl of Minecraft.world.getPlayers()){
-                if (pl.name === entry.displayName){
-                    throw new NameConflictError(entry.displayName);
-                }
-            }
-
+        } else if ([...VanillaWorld.getPlayers({name: entry.displayName})].length === 0){
             execCmd(dim(0), "scoreboard", "players", "set", entry.displayName, this.#id, score);
-            
+        } else {
+            throw new NameConflictError(entry.displayName);
         }
         
     }

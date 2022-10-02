@@ -1,5 +1,5 @@
-import { dim } from "scripts/yoni/basis.js";
-import { MinecraftMeta } from "scripts/yoni/minecraft.js";
+import { dim } from "yoni/basis.js";
+import { MinecraftMeta } from "yoni/minecraft.js";
 
 //need more ideas
 

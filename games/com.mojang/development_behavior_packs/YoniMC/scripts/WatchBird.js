@@ -1,5 +1,5 @@
-import { Minecraft } from "scripts/yoni/basis.js";
-import { EventListener } from "scripts/yoni/event.js";
+import { Minecraft } from "yoni/basis.js";
+import { EventListener } from "yoni/event.js";
 
 let interruptCount = 0;
 let lastTimeMS = 0;

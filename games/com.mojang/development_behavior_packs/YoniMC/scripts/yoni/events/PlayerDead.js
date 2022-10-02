@@ -1,6 +1,6 @@
-import { VanillaWorld } from "scripts/yoni/basis.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
-import { EventListener } from "scripts/yoni/event.js";
+import { VanillaWorld } from "yoni/basis.js";
+import { YoniEntity } from "yoni/entity.js";
+import { EventListener } from "yoni/event.js";
 
 let eventId;
 export class PlayerDeadEvent {

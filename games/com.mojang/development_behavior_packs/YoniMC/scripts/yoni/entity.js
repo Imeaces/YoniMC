@@ -1,6 +1,6 @@
-import { Minecraft, Gametest, dim } from "scripts/yoni/basis.js";
-import Entry from "scripts/yoni/scoreboard/Entry.js";
-import Command from "scripts/yoni/command.js";
+import { Minecraft, Gametest, dim } from "yoni/basis.js";
+import Entry from "yoni/scoreboard/Entry.js";
+import Command from "yoni/command.js";
 
 //need more info
 let entityMap = new WeakMap();
