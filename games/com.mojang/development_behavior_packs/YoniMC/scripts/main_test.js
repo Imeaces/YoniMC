@@ -1,6 +1,7 @@
-import { say } from "yoni/util/yoni-lib.js";
-
-import('./main.js').catch((e=null)=>{
+import "scripts/WatchBird.js";
+import { say } from "scripts/yoni/util/yoni-lib.js";
+/*
+import('scripts/main.js').catch((e=null)=>{
     let errMsg = "";
     if (e instanceof Error || e.name !== undefined){
         errMsg += `[${e.name}]: ${e.message}`;
@@ -17,3 +18,5 @@ import('./main.js').catch((e=null)=>{
     }
     say(errMsg);
 });
+*/
+import 'scripts/main.js'

@@ -1,7 +1,7 @@
-import { Minecraft, VanillaWorld, execCmd, StatusCode, dim, VanillaScoreboard } from "yoni/basis.js";
-import Utils from "yoni/scoreboard/Utils.js";
-import { Entry, EntryType } from "yoni/scoreboard/Entry.js";
-import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "yoni/scoreboard/ScoreboardError.js"
+import { Minecraft, VanillaWorld, execCmd, StatusCode, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
+import Utils from "scripts/yoni/scoreboard/Utils.js";
+import { Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
+import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "scripts/yoni/scoreboard/ScoreboardError.js"
 
 const objectiveTypes = Object.create(null);
 

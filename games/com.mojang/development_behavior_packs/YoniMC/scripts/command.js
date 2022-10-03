@@ -1,14 +1,14 @@
-import ChatCommand from "yoni/command/ChatCommand.js";
+import ChatCommand from "scripts/yoni/command/ChatCommand.js";
 import {
     Minecraft,
     dim
-    } from "yoni/basis.js";
-import { YoniEntity as Entity } from "yoni/entity.js";
-import { YoniEntity } from "yoni/entity.js";
-import { tell, say } from "yoni/util/yoni-lib.js";
-import Command from "yoni/command.js";
-import SimpleScoreboard from "yoni/scoreboard/SimpleScoreboard.js";
-import { EventListener } from "yoni/event.js";
+    } from "scripts/yoni/basis.js";
+import { YoniEntity as Entity } from "scripts/yoni/entity.js";
+import { YoniEntity } from "scripts/yoni/entity.js";
+import { tell, say } from "scripts/yoni/util/yoni-lib.js";
+import Command from "scripts/yoni/command.js";
+import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
+import { EventListener } from "scripts/yoni/event.js";
 const { EntityDamageCause } = Minecraft;
 
 //切换物种命令（使用id作为参数）

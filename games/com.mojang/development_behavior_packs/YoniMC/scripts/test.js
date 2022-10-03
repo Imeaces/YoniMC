@@ -1,4 +1,4 @@
-import ChatCommand from "yoni/command/ChatCommand.js";
+import ChatCommand from "scripts/yoni/command/ChatCommand.js";
 import {
     Minecraft,
     dim,
@@ -6,12 +6,12 @@ import {
     VanillaEvents,
     VanillaScoreboard,
     Gametest
-    } from "yoni/basis.js";
-import { YoniEntity } from "yoni/entity.js";
-import { tell, say } from "yoni/util/yoni-lib.js";
-import Command from "yoni/command.js";
-import SimpleScoreboard from "yoni/scoreboard/SimpleScoreboard.js";
-import { EventListener } from "yoni/event.js";
+    } from "scripts/yoni/basis.js";
+import { YoniEntity } from "scripts/yoni/entity.js";
+import { tell, say } from "scripts/yoni/util/yoni-lib.js";
+import Command from "scripts/yoni/command.js";
+import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
+import { EventListener } from "scripts/yoni/event.js";
 const { EntityDamageCause } = Minecraft;
 
 

@@ -1,5 +1,5 @@
-import { VanillaScoreboard, Minecraft } from "yoni/basis.js";
-import { YoniEntity } from "yoni/entity.js";
+import { VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
+import { YoniEntity } from "scripts/yoni/entity.js";
 
 let idRecords = new Map();
 let entityRecords = new Map();

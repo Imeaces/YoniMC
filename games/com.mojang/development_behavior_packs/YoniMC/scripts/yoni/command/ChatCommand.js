@@ -1,6 +1,6 @@
-import { VanillaEvents }  from "yoni/basis.js";
-import { EventListener } from "yoni/event.js";
-import { printError } from "yoni/util/console.js";
+import { VanillaEvents }  from "scripts/yoni/basis.js";
+import { EventListener } from "scripts/yoni/event.js";
+import { printError } from "scripts/yoni/util/console.js";
 
 export default class ChatCommand {
     static #prefixCmds = new Map();
@@ -159,7 +159,7 @@ export default class ChatCommand {
 
 export { ChatCommand }
 
-EventListener.register("beforeChat", (event) => {
+EventListener.register(VanillaEvents.beforeChat, (event) => {
     if (event.cancel) return;
     ChatCommand.receiveBeforeChatEvent(event);
 });

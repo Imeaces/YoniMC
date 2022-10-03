@@ -1,6 +1,6 @@
-import { StatusCode, execCmd, dim, VanillaScoreboard, Minecraft } from "yoni/basis.js";
-import Objective from "yoni/scoreboard/Objective.js";
-import Entry from "yoni/scoreboard/Entry.js";
+import { StatusCode, execCmd, dim, VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
+import Objective from "scripts/yoni/scoreboard/Objective.js";
+import Entry from "scripts/yoni/scoreboard/Entry.js";
 
 /**
  * enum of alive display slot
@@ -184,7 +184,7 @@ export default class SimpleScoreboard {
      */
     static resetAllScore(filter){
         if (filter === undefined){
-            execCommand(dim(0), "scoreboard", "players", "reset", "*");
+            execCmd(dim(0), "scoreboard", "players", "reset", "*");
             return;
         }
         
