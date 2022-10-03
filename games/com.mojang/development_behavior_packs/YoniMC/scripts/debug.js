@@ -11,6 +11,7 @@ import Command from "scripts/yoni/command.js";
 import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
 import { EventListener, Events } from "scripts/yoni/event.js";
 const { EntityDamageCause } = Minecraft;
+import { getErrorMsg } from "scripts/yoni/util/console.js";
 
 ChatCommand.registerPrefixCommand("$", "function", (sender, rawCommand, label, args) => {
     sender = new YoniEntity(sender);

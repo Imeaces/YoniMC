@@ -9,7 +9,7 @@ import { YoniEntity } from "scripts/yoni/entity.js";
 import { tell, say } from "scripts/yoni/util/yoni-lib.js";
 import Command from "scripts/yoni/command.js";
 import SimpleScoreboard from "scripts/yoni/scoreboard.js";
-import { EventListener, Events } from "scripts/yoni/event.js";
+import { EventListener } from "scripts/yoni/event.js";
 
 ChatCommand.registerPrefixCommand("", "@all", (runner, command, label, args) => {
     Command.execute(runner, "title @a title @s");
@@ -18,11 +18,11 @@ ChatCommand.registerPrefixCommand("", "@all", (runner, command, label, args) => 
 });
 
 EventListener.register("yonimc:playerJoined", (event)=>{
-    Command.execute(event.player, "say 各位好啊");
     if (SimpleScoreboard.getObjective("species").getScore(event.player) === undefined){
         say("正在设置玩家");
         SimpleScoreboard.getObjective("species").setScore(event.player, 42);
     }
+    say(`欢迎${event.player.name}游玩本服务器`);
 });
 
 EventListener.register("beforeExplosion", (event) => {
@@ -31,16 +31,11 @@ EventListener.register("beforeExplosion", (event) => {
 });
 
 EventListener.register("entityHurt", (event)=> {
-console.error("entityHurt");
     if (event.damagingEntity === "minecraft:player"){
         Command.execute(event.damagingEntity,"title @s actionbar §c伤害: " + event.damage);
     } else if (event.hurtEntity.id == "minecraft:player"){
-        console.error("y");
         let ent = event.hurtEntity;
-        let maxHealth = Entity.getMaxHealth(ent);
-        let currentHealth = Entity.getCurrentHealth(ent);
-        let lostHealth = maxHealth - currentHealth;
-        Command.execute(ent, "title @s title 损失血量"+lostHealth);
+        Command.execute(ent, "title @s title §r");
         Command.execute(ent, "title @s subtitle "+event.cause+": "+event.damage);
     }
 });
@@ -49,6 +44,7 @@ EventListener.register("yonimc:playerDead", (event)=>{
     let pl = new YoniEntity(event.player);
     let {x, y, z} = pl.location;
     let dim = pl.dimension;
+    console.log(`玩家 ${pl.name} 死在了 ${dim.id} 的 ${x.toFixed(1)} ${y.toFixed(1)} ${z.toFixed(1)}`);
     pl.sendMessage(`你死在了 ${dim.id} 的 ${x.toFixed(1)} ${y.toFixed(1)} ${z.toFixed(1)}`);
 });
 
@@ -65,5 +61,11 @@ import('scripts/test.js')
     .catch((e)=>{
         printError("未能导入测试", e);
     });
+
+import('scripts/yonimc/server.js')
+    .then(()=>{
+        console.info("已经导入YoniMC Server");
+    })
+
 
 console.warn("scripts main end");

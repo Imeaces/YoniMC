@@ -1,11 +1,18 @@
-import { YoniEntity } from "scripts/yoni/entity.js";
+import { Player } from "scripts/yoni/entity.js";
 import { EventListener, EventSignal } from "scripts/yoni/event.js";
 import { dim, VanillaWorld } from "scripts/yoni/basis.js";
 
 class PlayerJoinedEvent {
     constructor (player){
-        this.player = player;
+        this.player = new Player(player);
         Object.freeze(this);
+    }
+    get cancel(){
+        if (new Set(VanillaWorld.getPlayers()).has(this.player.vanillaEntity)) return true;
+        return false;
+    }
+    set cancel(y){
+        if (y == true) this.player.kick("加入游戏被取消");
     }
 }
 

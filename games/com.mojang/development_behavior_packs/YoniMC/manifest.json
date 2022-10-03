@@ -36,6 +36,11 @@
             "uuid": "2bd50a27-ab5f-4f40-a596-3641627c635e",
             "version": "1.0.0-beta"
         },
+        {
+            // mojang-net
+            "uuid": "777b1798-13a6-401c-9cba-0cf17e31a81b",
+            "version": "1.0.0-beta"
+        },
         { //YoniMC资源包
             "uuid": "86e4face-ed0c-4945-bd61-f648424cd056",
             "version": [0, 1, 3]

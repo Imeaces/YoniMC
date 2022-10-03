@@ -143,9 +143,11 @@ function elytraManage(sender, args){
     }
 }
 
-ChatCommand.registerPrefixCommand("#", "guxi", (runner, command, label, args) => {
-    if (!YoniEntity.hasAnyFamily(runner, "guxi")) return;
-    let sender = new YoniEntity(runner);
+ChatCommand.registerPrefixCommand("#", "guxi", (sender, command, label, args) => {
+    if (!sender.hasAnyFamily("guxi")){
+        sender.sendMessage("抱歉，非本族群不可使用");
+        return;
+    }
     switch (args.shift()){
         case "boom":
             createBoom(sender, args.shift());

@@ -1,6 +1,7 @@
 import { VanillaEvents }  from "scripts/yoni/basis.js";
 import { EventListener } from "scripts/yoni/event.js";
-import { printError } from "scripts/yoni/util/console.js";
+import { printError, getErrorMsg } from "scripts/yoni/util/console.js";
+import YoniEntity from "scripts/yoni/entity.js";
 
 export default class ChatCommand {
     static #prefixCmds = new Map();
@@ -57,7 +58,8 @@ export default class ChatCommand {
         this.unregisterPrefixCommand('!', ...args);
     }
     
-    static #invokeCommand(sender, prefix, command, label, args){
+    static #invokeCommand(sender, prefix, command, label="", args){
+        sender = new YoniEntity(sender);
         let commandExecutor = this.#prefixCmds.get(prefix).get(label);
         try {
             if (commandExecutor?.onCommand instanceof Function){
@@ -67,10 +69,11 @@ export default class ChatCommand {
                 commandExecutor(sender, command, label, args);
                 return;
             } else if (prefix !== ""){
-                console.error("[ChatCommand]: 无法找到命令" + label);
+                sender.sendMessage("[ChatCommand]: 无法找到命令" + label);
             }
         } catch(err) {
             printError(`[ChatCommand]: 运行命令${label}时发生错误`, err);
+            sender.sendMessage(`[ChatCommand]: 运行命令${label}时发生错误 ${getErrorMsg("", err).errMsg}`);
         }
     }
     

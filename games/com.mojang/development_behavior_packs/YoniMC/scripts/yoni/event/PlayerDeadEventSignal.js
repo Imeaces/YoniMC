@@ -1,12 +1,12 @@
 import { VanillaWorld, dim } from "scripts/yoni/basis.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
+import { Player } from "scripts/yoni/entity.js";
 import { EventListener, EventSignal,  Events } from "scripts/yoni/event.js";
 import { printError } from "scripts/yoni/util/console.js";
 
 let eventId;
 export class PlayerDeadEvent {
     constructor(player){
-        this.player = player;
+        this.player = new Player(player);
         Object.freeze(this);
     }
 }

@@ -1,4 +1,4 @@
-export function printError(msg, err=""){
+export function getErrorMsg(msg="", err=msg){
     let errMsg = "";
     if (err instanceof Error){
         errMsg += `${err.name}: ${err.message}`;
@@ -13,5 +13,9 @@ export function printError(msg, err=""){
             errMsg = "未知错误";
         }
     }
+    return { msg: msg, errMsg: errMsg };
+}
+export function printError(...args){
+    let { msg, errMsg } = getErrorMsg(...args);
     console.error(msg+"\n"+errMsg);
 }

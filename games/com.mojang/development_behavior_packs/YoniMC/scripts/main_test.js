@@ -1,6 +1,6 @@
 import "scripts/WatchBird.js";
-import { say } from "scripts/yoni/util/yoni-lib.js";
 /*
+import { say } from "scripts/yoni/util/yoni-lib.js";
 import('scripts/main.js').catch((e=null)=>{
     let errMsg = "";
     if (e instanceof Error || e.name !== undefined){
@@ -19,4 +19,4 @@ import('scripts/main.js').catch((e=null)=>{
     say(errMsg);
 });
 */
-import 'scripts/main.js'
+import('scripts/main.js');

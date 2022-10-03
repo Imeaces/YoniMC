@@ -216,12 +216,14 @@ export class EventSignal {
             this.registered = false;
     }
     #triggerEvent(...args){
-        this.#callbacks.forEach(f=>{
-            if (f?.callback instanceof Function)
-                f.callback(new this.#eventClass(...args, ...f.filters));
-            else
-                f(new this.#eventClass(...args));
-        });
+        if (this.registered){
+            this.#callbacks.forEach(f=>{
+                if (f?.callback instanceof Function)
+                    f.callback(new this.#eventClass(...args, ...f.filters));
+                else
+                    f(new this.#eventClass(...args));
+            });
+        }
     }
 }
 
