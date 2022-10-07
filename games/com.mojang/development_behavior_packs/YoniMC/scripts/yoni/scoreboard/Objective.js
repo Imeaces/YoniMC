@@ -1,7 +1,7 @@
 import { Minecraft, VanillaWorld, execCmd, StatusCode, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
-import Utils from "scripts/yoni/scoreboard/Utils.js";
-import { Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
-import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "scripts/yoni/scoreboard/ScoreboardError.js"
+
+import { Entry, EntryType } from "./Entry.js";
+import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "./ScoreboardError.js"
 
 const objectiveTypes = Object.create(null);
 
@@ -148,11 +148,8 @@ class Objective {
         this.checkUnregistered();
 
         if (!Number.isInteger(score))
-            throw new TypeError("Score can only be an integer number");
-
-        if (!Utils.isBetweenRange(score))
             throw new ScoreRangeError();
-        
+
         let newScore = (this.getScore(entry) + score + 1) % (2**31) - 1;
         this.setScore(entry, newScore);
     }
@@ -161,9 +158,6 @@ class Objective {
         this.checkUnregistered();
 
         if (!Number.isInteger(min) || !Number.isInteger(max))
-            throw new TypeError("Score can only be an integer number");
-
-        if (!Utils.isBetweenRange(min) || !Utils.isBetweenRange(max))
             throw new ScoreRangeError();
         
         let newScore = Math.round((max - min) * Math.random() + min);
@@ -175,11 +169,8 @@ class Objective {
         this.checkUnregistered();
 
         if (!Number.isInteger(score))
-            throw new TypeError("Score can only be an integer number");
-
-        if (!Utils.isBetweenRange(score))
             throw new ScoreRangeError();
-
+        
         let newScore = (this.getScore(entry) - score + 1) % (2**31) - 1;
         this.setScore(entry, newScore);
     }
@@ -225,10 +216,8 @@ class Objective {
             entry = Entry.guessEntry(entry);
 
         if (!Number.isInteger(score))
-            throw new TypeError("Score can only be an integer number");
-            
-        if (!Utils.isBetweenRange(score))
             throw new ScoreRangeError();
+
         if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
             let ent = entry.getEntity();
             if (ent == null){
@@ -276,7 +265,7 @@ class Objective {
         
         return Array.from(this.vanillaObjective.getParticipants())
             .map((_) => {
-                return Entry.getEntry({scbid: _, type: scbid.type});
+                return Entry.getEntry({scbid: _, type: _.type});
             });
     }
     
@@ -289,7 +278,7 @@ class Objective {
     getScoreInfos(){
         this.checkUnregistered();
         
-        return Array.from(getEntries())
+        return Array.from(this.getEntries())
             .map((_)=>{
                 return this.getScoreInfo(_)
             });

@@ -1,39 +1,38 @@
 import ChatCommand from "scripts/yoni/command/ChatCommand.js";
-import {
-    Minecraft,
-    dim
-    } from "scripts/yoni/basis.js";
+import { Minecraft, dim } from "scripts/yoni/basis.js";
 import { YoniEntity } from "scripts/yoni/entity.js";
-import { tell, say } from "scripts/yoni/util/yoni-lib.js";
 import Command from "scripts/yoni/command.js";
-import SimpleScoreboard from "scripts/yoni/scoreboard/SimpleScoreboard.js";
+import { Scoreboard, FastScoreboard as Object } from "scripts/yoni/scoreboard.js";
 import { EventListener } from "scripts/yoni/event.js";
 const { EntityDamageCause } = Minecraft;
+const energyO = Object("guxi:energy");
+const energylO = Object("guxi:energy_pool");
+const valuesO = Object("guxi:values");
 
-class Energy {
-    get pool(){
-        return SimpleScoreboard.getObjective("guxi:energy_pool", true);
+class Obj {
+    static get(object, part){
+        if (!object.startsWith("guxi:")) object="guxi:"+object;
+        return Scoreboard.getObjective(object).getScore(part);
     }
-    get stack(){
-        return SimpleScoreboard.getObjective("guxi:energy", true);
+    static add(object, part, score){
+        if (!object.startsWith("guxi:")) object="guxi:"+object;
+        return Scoreboard.getObjective(object).addScore(part, score);
     }
-    get fireImmune(){
-        return SimpleScoreboard.getObjective("guxi:ef_fireimmu", true);
+    static set(object, part, score){
+        if (!object.startsWith("guxi:")) object="guxi:"+object;
+        return Scoreboard.getObjective(object).setScore(part, score);
     }
-    get efRes(){
-        return SimpleScoreboard.getObjective("guxi:ef_res", true);
+    static remove(object, part, score){
+        if (!object.startsWith("guxi:")) object="guxi:"+object;
+        return Scoreboard.getObjective(object).removeScore(part, score);
     }
-    add(t, ent, e){
-        t.addScore(ent, +e);
+    static reset(object, part){
+        if (!object.startsWith("guxi:")) object="guxi:"+object;
+        return Scoreboard.getObjective(object).resetScore(part);
     }
-    remove(t, ent, e){
-        t.removeScore(ent, e);
-    }
-    get(t, ent){
-        return t.getScore(ent);
-    }
-    set(t, ent, e){
-        t.setScore(ent, e);
+    static random(object, part, min, max){
+        if (!object.startsWith("guxi:")) object="guxi:"+object;
+        return Scoreboard.getObjective(object).randomScore(part, min, max);
     }
 }
 
@@ -55,6 +54,7 @@ let valueList = {
     "guxi:like_player": "伪装玩家",
     "guxi:auto_player": "自行伪装玩家"
 };
+
 let setList = {
     "guxi:ef_speed": "速度",
     "guxi:ef_mining": "挖掘",
@@ -69,8 +69,9 @@ let setList = {
 };
 
 function createBoom(runner, r){
+    
     let radius = Number(r);
-    if (isNaN(radius)){
+    if (!isFinate(radius)){
         sender.sendMessage("范围得是数字");
         return;
     }
@@ -81,17 +82,18 @@ function createBoom(runner, r){
         source: runner.vanillaEntity
     };
     
-    say("boom!", runner);
+    runner.say("boom!");
     runner.dimension.createExplosion(location, radius, opts);
 }
+
 function valueCtrl(sender, args){
     switch (args.shift()){
         case "list":
             sender.sendMessage("\n当前状态");
             for (let s in valueList){
-                let o = SimpleScoreboard.getObjective(s, true);
+                let o = Scoreboard.getObjective(s, true);
                 let r = o.getScore(sender);
-                let v = setList[s] !== undefined ? "" : "§7";
+                let v = (s in setList) ? "" : "§7";
                 sender.sendMessage(`${v}${valueList[s]}(${o.id}): ${r}`);
             };
             break;
@@ -102,7 +104,7 @@ function valueCtrl(sender, args){
                 sender.sendMessage("没有");
                 return;
             }
-            let valueVal = SimpleScoreboard.getObjective(valueToGet).getScore(sender);
+            let valueVal = Obj.get(valueToGet, sender);
             sender.sendMessage(`${valueList[valueToGet]}(${valueToGet}): ${valueVal}`);
         case "set":
             let valueToSet = args.shift();
@@ -120,31 +122,34 @@ function valueCtrl(sender, args){
                 valForValue = Number(valForValue);
             }
             try {
-                SimpleScoreboard.getObjective(valueToSet).setScore(sender, valForValue);
+                Obj.set(valueToSet, sender, valForValue);
                 sender.sendMessage("成功");
             } catch (e){
-                sender.sendMessage(e.message);
+                sender.sendMessage("失败");
             }
             break;
         default:
             sender.sendMessage("感到疑惑");
     }
 }
+
 function elytraManage(sender, args){
-    let opt = args[0];
-    if (opt === "expand"){
-        Command.execute(sender, "function yonimc/guxi/creation/elytra/expand");
-        sender.sendMessage("展开鞘翅");
-    } else if (opt === "recovery"){
-        Command.execute(sender, "function yonimc/guxi/creation/elytra/recovery");
-        sender.sendMessage("收起鞘翅");
-    } else {
-        sender.sendMessage("感到疑惑");
+    switch(args[0]){
+        case "expand":
+            Command.execute(sender, "function yonimc/guxi/creation/elytra/expand");
+            sender.sendMessage("展开鞘翅");
+            break;
+        case "recovery":
+            Command.execute(sender, "function yonimc/guxi/creation/elytra/recovery");
+            sender.sendMessage("收起鞘翅");
+            break;
+        default: 
+            sender.sendMessage("感到疑惑");
     }
 }
 
 ChatCommand.registerPrefixCommand("#", "guxi", (sender, command, label, args) => {
-    if (!sender.hasAnyFamily("guxi")){
+    if (!sender.hasFamily("guxi")){
         sender.sendMessage("抱歉，非本族群不可使用");
         return;
     }
@@ -185,12 +190,10 @@ EventListener.register("entityHurt", (event) => {
 EventListener.register("blockBreak", (event)=>{
     if (!YoniEntity.hasFamily(event.player, "guxi")) return;
     
-    Energy.remove(Energy.stack, event.player,
+    Obj.remove("energy", event.player,
         Math.round(Math.max(0,
             72219*
-            SimpleScoreboard
-            .getObjective("guxi:ef_mining")
-            .getScore(event.player)
+            Obj.get("ef_mining", event.player)
         )));
 });
 
@@ -200,29 +203,42 @@ EventListener.register("beforeItemUse", (event)=> {
 
         let ent = event.source;
         Command.execute(ent, "replaceitem entity @s slot.weapon.mainhand 0 bucket 1");
-        let lavaBucketEnergyVolume = SimpleScoreboard.getObjective("guxi:values").getScore("lava_bucket_energy_volume");
-        SimpleScoreboard.getObjective("guxi:energy").addScore(ent, Math.round(lavaBucketEnergyVolume*Math.max(1, 100*Math.random())));
-        ent.dimension.spawnItem(new Minecraft.ItemStack(Minecraft.MinecraftItemTypes.obsidian, 1, 0), ent.location);
+        let lavaBucketEnergyVolume = Obj.get("values", "lava_bucket_energy_volume");
+        Obj.add(
+            "energy",
+            ent,
+            Math.round(
+                lavaBucketEnergyVolume
+                *Math.max(
+                    1,
+                    100*Math.random()
+                )
+            )
+        );
+        ent.dimension
+            .spawnItem(
+                new Minecraft.ItemStack(Minecraft.MinecraftItemTypes.obsidian, 1, 0),
+                ent.location
+            );
     }
 });
 
 let itemUseCondition = (event)=> {
-    if (!YoniEntity.hasFamily(event.source, "guxi")) return;
+    if (event.source === undefined || !YoniEntity.hasFamily(event.source, "guxi")) return;
     if (event.item.id === "yonimc:energy"){
         event.cancel = true;
         let ent = event.source;
-        Command.execute(ent, "effect @s instant_health 1 20 false");
-        Energy.add(Energy.stack, ent, 30000000);
+        ent.addEffect(Minecraft.MinecraftEffectTypes["instantHealth"], 1, 20, false);
+        Obj.add("energy", ent, 30000000);
     } else if (event.item.id === "minecraft:firework_rocket" &&
-        SimpleScoreboard.getObjective("guxi:cre_ely").getScore(event.source) === 2 && event.source.selectedSlot === 8){
-            Energy.remove(Energy.stack, event.source, 262144);
+        Obj.get("cre_ely", event.source) === 2 &&
+        event.source.selectedSlot === 8){
+            Obj.remove("energy", event.source, 262144);
     }
 };
 
 EventListener.register("itemUse", itemUseCondition);
 EventListener.register("itemUseOn", itemUseCondition);
-
-Energy = new Energy();
 
 EventListener.register("entityHurt", (event)=> {
     if (!YoniEntity.hasFamily(event.hurtEntity, "guxi"))
@@ -258,37 +274,47 @@ EventListener.register("entityHurt", (event)=> {
     let lostHealth = maxHealth - currentHealth;
     
     if (type == "fatal"){
-        let i = Math.round(Math.max(0, damage**2*0.01*Energy.pool.getScore(ent)));
-        Energy.remove(Energy.pool, ent, i);
+        let i = Math.round(
+            Math.max(
+                0,
+                damage
+                    **2
+                    *0.01
+                    *Obj.get("energy_pool",ent)
+            )
+        );
+        Obj.remove("energy_pool", ent, i);
         
         
     } else if (type == "hot"){
-        Command.execute(ent, "effect @s instant_health 1 20 false");
-        Energy.add(Energy.pool, ent, Math.round(damage*Math.max(1, 100*Math.random())));
-        Energy.add(Energy.fireImmune, ent, Math.round(Math.max(4, Energy.fireImmune.getScore(ent)*3.1*Math.random())));
+        ent.addEffect(Minecraft.MinecraftEffectTypes["instantHealth"], 2, 20, false);
+        Obj.add("energy_pool", ent, Math.round(damage*Math.max(1, 100*Math.random())));
+        Obj.add("ef_fireimmu", ent, Math.round(Math.max(4, Obj.get("ef_fireimmu", ent)*3.1*Math.random())));
         if (Math.random()*1000<=1){
-            Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace lava 0");
-            Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 netherrack 0 replace magma -1");
-            Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace flowing_lava 0");
-            Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace lava -1");
-            Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace flowing_lava -1");
-            Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace fire -1");
+            Obj.add("energy_pool", ent, Math.round(damage*500));
+            Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace lava 0")
+            .next("fill ~-4 ~-4 ~-4 ~4 ~4 ~4 netherrack 0 replace magma -1")
+            .next("fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace flowing_lava 0")
+            .next("fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace lava -1")
+            .next("fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace flowing_lava -1")
+            .next("fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace fire -1");
         }
         
         
     } else if(type == "immune"){
     
+    //do nothing
     
     } else {
-        let resLevel = Energy.get(Energy.efRes, ent);
+        let resLevel = Obj.get("ef_res", ent);
         let lost = Math.max(0, Math.min(lostHealth, damage));
             
         if (resLevel > 0){ //防伤害
-            Energy.remove(Energy.pool, ent, Math.max(0,Math.round(Math.max(1, damage)/resLevel*1000)));
+            Obj.remove("energy_pool", ent, Math.max(0,Math.round(Math.max(1, damage)/resLevel*1000)));
             lost = lost - 16;
         }
         if (lost > 0){
-            Energy.remove(Energy.pool, ent, Math.round(Math.max(0, lost/maxHealth*Energy.pool.getScore(ent))));
+            Obj.remove("energy_pool", ent, Math.round(Math.max(0, lost/maxHealth*Obj.get("energy_pool", ent))));
         }
         //Command.execute(ent, `title @s title 损失血量 ${lostHealth}`);
         //Command.execute(ent, `title @s subtitle ${event.cause} ${event.damage}`);
@@ -297,10 +323,10 @@ EventListener.register("entityHurt", (event)=> {
     }
 });
 EventListener.register("entityHurt", (event)=> {
-    if (YoniEntity.hasFamily(event.damagingEntity, "guxi")){
-        let cost = Math.round(event.damage*722*(SimpleScoreboard.getObjective("guxi:ef_damage").getScore(event.damagingEntity)+1));
+    if (event.damagingEntity !== undefined && YoniEntity.hasFamily(event.damagingEntity, "guxi")){
+        let cost = Math.round(event.damage*722*(Scoreboard.getObjective("guxi:ef_damage").getScore(event.damagingEntity)+1));
         if (cost > 0){
-            Energy.stack.removeScore(event.damagingEntity, cost);
+            Obj.remove("energy", event.damagingEntity, cost);
         }
     }
 });

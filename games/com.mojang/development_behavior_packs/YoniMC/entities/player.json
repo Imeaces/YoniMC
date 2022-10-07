@@ -25,9 +25,6 @@
     }},
 
 "component_groups": {
-    "yonimc:despawn": {
-        "minecraft:instant_despawn": {}
-    },
     "minecraft:add_bad_omen": {
         "minecraft:spell_effects": {
             "add_effects": [
@@ -207,22 +204,22 @@
     "guxi:like_player": {
         "minecraft:type_family": { "family": [ "yoni_guxi","yonimc", "energy", "guxi", "player" ] }
     },
-    "guxi:env_seneor": {
-        "minecraft:environment_sensor": { "triggers": [
-            {
-                "filters": { "test": "is_mark_variant","value": 30 },
-                "event": "append:guxi_in_enough_energy"
-            },
-            {
-                "filters": { "test": "is_mark_variant","value": 20 },
-                "event": "append:guxi_in_low_energy"
-            }
-        ]}
-    },
     
     "guxi:in_plenty_energy": {"minecraft:health": {"max": 25,"min": 0}},
     "guxi:in_enough_energy": {"minecraft:health": {"max": 15,"min": 0}},
-    "guxi:in_low_energy": {"minecraft:health": {"max": 5,"min": 0}}
+    "guxi:in_low_energy": {"minecraft:health": {"max": 5,"min": 0}},
+    
+    "yonimc:as_spirit": {
+        "minecraft:health": {"max": 40,"min": 0},
+        "minecraft:scale": { "value": 1.1 },
+        "minecraft:type_family": {"family": [ "yoni_spirit","yonimc", "spirit", "nature" ]}
+        },
+        
+    "yonimc:as_invisibe_giant": {
+        "minecraft:health": {"max": 50,"min": 0},
+        "minecraft:scale": { "value": 10 },
+        "minecraft:type_family": {"family": [ "yoni_invisibe_giant","yonimc" ]}
+        }
 
 },
 "components": {
@@ -235,8 +232,12 @@
             "yonimc:as_guxi",
             "minecraft:as_player",
             "guxi:in_enough_energy",
+            "guxi:in_plenty_energy",
+            "guxi:like_player",
+            "guxi:default_family",
             "guxi:in_low_energy",
-            "guxi:env_seneor"
+            "yonimc:as_spirit",
+            "yonimc:as_invisibe_giant"
         ] }
         
     },
@@ -261,6 +262,16 @@
             
     },
     
+    "append:yonimc_as_spirit": {
+        "add": { "component_groups": [ "yonimc:as_spirit" ] }
+            
+    },
+    
+    "append:yonimc_as_invisibe_giant": {
+        "add": { "component_groups": [ "yonimc:as_invisibe_giant" ] }
+            
+    },
+
     "append:guxi_in_low_energy": {"add": { "component_groups": [ "guxi:in_low_energy" ] }},
     "append:guxi_in_enough_energy": {"add": { "component_groups": [ "guxi:in_enough_energy" ] }},
     "append:guxi_in_plenty_energy": {"add": { "component_groups": [ "guxi:in_plenty_energy" ] }},
@@ -271,13 +282,6 @@
     "setvalue:42:variant": {"add": { "component_groups": [ "setvalue:42:variant" ] }},
     "setvalue:2695:variant": {"add": { "component_groups": [ "setvalue:2695:variant" ] }},
     
-    "yonimc:despawn": {
-        "add": {
-            "component_groups": [
-                "yonimc:despawn"
-            ]
-        }
-    },
     "minecraft:gain_bad_omen": {
         "add": {
             "component_groups": [

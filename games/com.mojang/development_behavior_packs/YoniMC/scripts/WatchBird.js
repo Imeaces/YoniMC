@@ -1,9 +1,9 @@
-import { Minecraft } from "scripts/yoni/basis.js";
+import { SystemEvents } from "scripts/yoni/basis.js";
 import { EventListener } from "scripts/yoni/event.js";
 
 let interruptCount = 0;
 let lastTimeMS = 0;
-EventListener.register(Minecraft.system.events.beforeWatchdogTerminate, (event) => {
+EventListener.register(SystemEvents.beforeWatchdogTerminate, (event) => {
     let currentDateMS = Date.now();
     if (currentDateMS - lastTimeMS > 5000){
         console.warn("interruptCount: "+ (++interruptCount));

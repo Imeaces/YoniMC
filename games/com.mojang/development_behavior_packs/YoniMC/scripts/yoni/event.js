@@ -1,6 +1,8 @@
 import { VanillaEvents as MinecraftEvents, SystemEvents } from "scripts/yoni/basis.js";
 import { printError } from "scripts/yoni/util/console.js";
-import { say } from "scripts/yoni/util/yoni-lib.js";
+import { Logger } from "scripts/yoni/util/Logger.js";
+
+const logger = new Logger("Event");
 
 let eventRegisterMap = new Map();
 
@@ -9,6 +11,7 @@ let waitingEventRegisterMap = new Map();
 eventRegisterMap.set("minecraft", ()=>{
     let map = new Map();
     for (let s in MinecraftEvents){
+        logger.trace("注册了事件minecraft:{}", s);
         map.set(s, MinecraftEvents[s]);
     }
     return Object.freeze(map);
@@ -17,6 +20,7 @@ eventRegisterMap.set("minecraft", ()=>{
 eventRegisterMap.set("system", ()=>{
     let map = new Map();
     for (let s in SystemEvents){
+        logger.trace("注册了事件system:{}", s);
         map.set(s, SystemEvents[s]);
     }
     return Object.freeze(map);
@@ -89,11 +93,13 @@ export const Events = new Proxy({}, {
         if (prop in Events){
             throw new Error("event has been registered");
         }
-        setEventType(getNameSpace(prop).namespace, getNameSpace(prop).eventName, value);
+        let ns = getNameSpace(prop);
+        setEventType(ns.namespace, ns.eventName, value);
         if (prop in Events){
             waitingEventRegisterMap.get(prop).forEach(f=>f());
             waitingEventRegisterMap.delete(prop);
         }
+        logger.trace("注册了事件{}:{}", ns.namespace, ns.eventName);
         return true;
     },
     deleteProperty: (target, prop)=>{
@@ -257,8 +263,9 @@ export class EventListener {
             if (func instanceof Function){
                 try {
                     return func(...args);
+                    logger.trace("完成了ID为 {} 的事件回调", idx);
                 } catch(err){
-                    printError("尝试对事件进行ID为"+idx+"的回调时发生错误", err);
+                    logger.error("尝试对事件进行ID为 {} 的回调时发生错误 {}", idx, err);
                 }
             }
             return;
@@ -271,10 +278,10 @@ export class EventListener {
             try {
                 this.#callbacks[idx] = callback;
                 eventType.subscribe(fireCallback, ...eventFilters);
-                console.warn("已成功延迟注册id为"+idx+"的回调");
+                logger.debug("已成功延迟注册id为{}的回调", idx);
             } catch (e){
                 this.#callbacks[idx] = undefined;
-                printError("在延迟注册id为"+idx+"的回调时发生错误", e);
+                logger.error("在延迟注册id为{}的回调时发生错误 {}", idx, e);
             }
         });
         return idx - 1;
@@ -298,7 +305,7 @@ export class EventListener {
             if (eventType in Events){
                 eventType = Events[eventType];
             } else {
-                console.warn(`延迟id为${this.#index}的${eventType}事件注册`);
+                logger.debug("延迟id为{}的{}事件注册", this.#index, eventType);
                 this.#delayRegister(this.#index, eventType, callback, ...eventFilters);
                 return this.#index ++;
             }
@@ -314,7 +321,7 @@ export class EventListener {
                 try {
                     return func(...args);
                 } catch(err){
-                    printError("尝试对事件进行ID为"+idx+"的回调时发生错误", err);
+                    logger.error("尝试对事件进行ID为{}的回调时发生错误 {} ", idx, err);
                 }
             }
             return;
@@ -326,7 +333,7 @@ export class EventListener {
             return this.#index ++;
         } catch (e){
             this.#callbacks[this.#index] = undefined;
-            printError("无法注册事件", e);
+            logger.error("无法注册事件 {}", e);
             return;
         }
         
@@ -335,12 +342,12 @@ export class EventListener {
     static unregister(id){
         if (this.#callbacks[id] != null){
             this.#callbacks[id] = null;
-            console.warn("移除了ID为"+id+"的回调");
+            logger.debug("移除了ID为{}的回调", id);
         } else {
             for (let idx = 0; idx < this.#callbacks.length; idx++){
                 if (this.#callbacks[idx] === id){
                     this.#callbacks[idx] = null;
-                    console.warn("移除了ID为"+idx+"的回调");
+                    logger.debug("移除了ID为{}的回调", idx);
                 }
             }
         }

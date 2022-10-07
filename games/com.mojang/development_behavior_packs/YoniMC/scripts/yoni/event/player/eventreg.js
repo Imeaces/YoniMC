@@ -1,6 +1,6 @@
 const importList = [
-    "./player/eventreg.js",
-    "./entity/eventreg.js"
+    "./playerDead.js",
+    "./playerJoined.js"
 ];
 for (let path of importList){
     import(path);

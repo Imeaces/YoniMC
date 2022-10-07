@@ -1,6 +1,28 @@
-import { Minecraft, Gametest, dim, StatusCode } from "scripts/yoni/basis.js";
+import { Minecraft, Gametest, dim, StatusCode, VanillaEvents } from "scripts/yoni/basis.js";
 import Entry from "scripts/yoni/scoreboard/Entry.js";
 import Command from "scripts/yoni/command.js";
+const { EntityTypes } = Minecraft;
+/* 动态注册属性想都不要想
+function registerProp(entityType, property){
+    entityType = EntityTypes.get(entityType);
+    value.propertyRegistry.registerEntityTypeDynamicProperties(property, entityType);
+}
+function registerProp(entityType, property){
+    entityType = EntityTypes.get(entityType);
+    const registerPropFunc = (event)=>{
+        try {
+        event.propertyRegistry.registerEntityTypeDynamicProperties(property, entityType);
+        VanillaEvents.worldInitialize.unsubscribe(registerPropFunc);
+        console.warn("register");
+        } catch(e) {
+            console.error(e);
+            console.error(e.message);
+            console.error(e.stack);
+        }
+    };
+    VanillaEvents.worldInitialize.subscribe(registerPropFunc);
+}
+*/
 
 let entityMap = new WeakMap();
 
@@ -25,6 +47,10 @@ function getLoadedEntities(option){
 
 export class Entity {
     
+    get entityType(){
+        return EntityTypes.get(this.id);
+    }
+    
     #vanillaEntity;
     
     get vanillaEntity(){
@@ -32,6 +58,7 @@ export class Entity {
     }
     
     getMinecraftEntity(){
+        //我该说这是历史遗留问题吗
         return this.#vanillaEntity;
     }
     
@@ -70,6 +97,9 @@ export class Entity {
         
     }
     
+    get uniqueId(){
+    }
+    
     get scoreboard(){
         return Entry.getEntry(this);
     }
@@ -85,9 +115,21 @@ export class Entity {
     getCurrentHealth(){
         return Entity.getCurrentHealth(this);
     }
-    
+    /*
+    getProperty(id){
+        let rt;
+        try {
+            rt = this.getDynamicProperty(id);
+        } catch {}
+        return rt;
+    }
+    */
     getHealthComponent(){
         return Entity.getHealthComponent(this);
+    }
+    
+    getInventory(){
+        return Entity.getInventory(this);
     }
     
     getMaxHealth(){
@@ -101,11 +143,39 @@ export class Entity {
     hasAnyFamily(...families){
         return Entity.hasAnyFamily(this, ...families);
     }
-    
+    /*
+    removeProperty(id){
+        return this.removeDynamicProperty(id);
+    }
+    */
     say(message){
         let command = "say " + message;
         return Command.execute(this, command);
     }
+    /*
+    setProperty(id, value){
+        let oldType = typeof this.getProperty(id);
+        let newType = typeof value;
+        if (newType === "number" || newType === "boolean"){
+            if (newType !== oldType){
+                let newProp = new DynamicPropertiesDefinition();
+                if (newType === "number"){
+                    newProp.defineBoolean(id);
+                } else {
+                    newProp.defineNumber(id);
+                }
+                registerProp(this.id, newProp);
+            }
+        } else if (newType === "string"){
+            let newProp = new DynamicPropertiesDefinition()
+                .defineString(id, value.length);
+            registerProp(this.id, newProp);
+        } else {
+            throw new TypeError("The Dynamic Property only accept string, number or boolean");
+        }
+        return this.setDynamicProperty(id, value);
+    }
+    */
     
     /**
      * 检查一个东西是否为实体
@@ -173,6 +243,11 @@ export class Entity {
     static getHealthComponent(entity){
         Entity.checkIsEntity(entity);
         return entity.getComponent("minecraft:health");
+    }
+    
+    static getInventory(entity){
+        Entity.checkIsEntity(entity);
+        return entity.getComponent("minecraft:inventory").container;
     }
     
     /**
@@ -315,7 +390,7 @@ export class Player extends Entity {
      * 踢出玩家
      */
     kick(msg=""){
-        let rt = Command.run(`kick ${this.name} ${msg}`);
+        let rt = Command.run(`kick "${this.name}" ${msg}`);
         if (rt.statusCode !== StatusCode.success){
             throw new Error(rt.statusMessage);
         }
