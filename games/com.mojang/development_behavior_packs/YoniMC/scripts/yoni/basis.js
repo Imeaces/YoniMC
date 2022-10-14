@@ -61,16 +61,16 @@ export function dim(dimid = Minecraft.MinecraftDimensionTypes.overworld){
  * @param {RunnableObject} - 
  * @return {JSON}
  */
-export function runCmd(command = "", commandRunner){
+export async function runCmd(command = "", commandRunner){
   if (typeof commandRunner == "undefined"){
     try {
-      return dim(0).runCommand(command);
+      return await dim(0).runCommandAsync(command);
     } catch(err) {
       return err;
     };
   } else {
     try {
-      return commandRunner.runCommand(command);
+      return await commandRunner.runCommandAsync(command);
     } catch(err) {
       return err;
     };
@@ -84,8 +84,8 @@ export function runCmd(command = "", commandRunner){
  * @params {String[]} - 
  * @return {JSON}
  */
-export function execCmd(runner, command, ...args){
-  if (runner == null || typeof runner.runCommand != "function")
+export async function execCmd(runner, command, ...args){
+  if (runner == null || typeof runner.runCommandAsync != "function")
     return { StatusCode: StatusCode.error };
 
   args.forEach((arg) => {
@@ -97,7 +97,7 @@ export function execCmd(runner, command, ...args){
     command += "\u0020"+arg;
   });
   try {
-    return runner.runCommand(command);
+    return await runner.runCommandAsync(command);
   } catch(err) {
     return JSON.parse(err);
   }

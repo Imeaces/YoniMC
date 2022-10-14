@@ -1,6 +1,7 @@
-import { StatusCode, execCmd, dim, VanillaScoreboard, Minecraft } from "yoni/basis.js";
-import Objective from "yoni/scoreboard/Objective.js";
-import Entry from "yoni/scoreboard/Entry.js";
+import { StatusCode, execCmd, dim, VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
+
+import Objective from "./Objective.js";
+import Entry from "./Entry.js";
 
 /**
  * enum of alive display slot
@@ -134,7 +135,7 @@ export default class SimpleScoreboard {
         return this.getObjective(VanillaScoreboard.getObjectiveAtDisplaySlot(slot).id);
     }
     
-    static setDisplaySlot(slot, objective, sequence="descending"){
+    static async setDisplaySlot(slot, objective, sequence="descending"){
         if (!Array.from(DisplaySlotType).includes(slot))
             throw new TypeError("Not a DisplaySlot type");
         if (!(objective instanceof Objective))
@@ -143,9 +144,9 @@ export default class SimpleScoreboard {
             throw new TypeError("Not a Objective or a objective name");
         
         if (slot == DisplaySlotType.BELOW_NAME){
-            execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id);
+            await execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id);
         } else {
-            execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id, sequence);
+            await execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id, sequence);
         }
 
     }
@@ -182,9 +183,9 @@ export default class SimpleScoreboard {
      * reset scores of all participants
      * @param particular filter function, the function will be call for every participants, if return true, then reset the scores of participants
      */
-    static resetAllScore(filter){
+    static async resetAllScore(filter){
         if (filter === undefined){
-            execCommand(dim(0), "scoreboard", "players", "reset", "*");
+            await execCmd(dim(0), "scoreboard", "players", "reset", "*");
             return;
         }
         
@@ -199,7 +200,7 @@ export default class SimpleScoreboard {
      * reset scores of a participant
      * @param entry
      */
-    static resetScore(entry){
+    static async resetScore(entry){
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
         
@@ -207,11 +208,11 @@ export default class SimpleScoreboard {
             let ent = entry.getEntity();
             if (ent === undefined){
                 throw new InternalError("Could not find the entity");
-            } else if (execCmd(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
+            } else if (await execCmd(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
                 throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
         } else if ([...VanillaWorld.getPlayers()].length === 0){
-            execCmd(dim(0), "scoreboard", "players", "reset", entry.displayName);
+            await execCmd(dim(0), "scoreboard", "players", "reset", entry.displayName);
         } else {
             throw new NameConflictError(entry.displayName);
         }

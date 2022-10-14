@@ -1,6 +1,6 @@
 export class ScoreRangeError extends Error {
     name = "ScoreRangeError";
-    message = "Score can only range -2147483648 to 2147483647";
+    message = "Score must be an integer and can only range -2147483648 to 2147483647";
 }
 export class ObjectiveUnregisteredError extends Error {
     name = "ObjectiveUnregisteredError";
