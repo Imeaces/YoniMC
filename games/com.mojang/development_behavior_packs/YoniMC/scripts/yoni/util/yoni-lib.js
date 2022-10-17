@@ -3,7 +3,7 @@
  * 此文件包含某些功能类函数
  * 但是我懒得再写这个了
  */
-import * as mc from "@minecraft/server";
+import * as mc from "mojang-minecraft";
 import * as text from "./text.js";
 
 const world = mc.world;

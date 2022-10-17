@@ -4,23 +4,23 @@
         "name": "YoniMC",
         "description": "YoniMC 可能的不一样的世界",
         "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-        "version": [0, 6, 0],
-        "min_engine_version": [1, 19, 40]
+        "version": [0, 8, 0],
+        "min_engine_version": [1, 19, 30]
     },
     "modules": [
         {
             "description": "data:yoni",
             "type": "data",
             "uuid": "6e360e97-62a7-4515-a052-3813e306488e",
-            "version": [0, 7, 0]
+            "version": [0, 6, 11930]
         },
         {
             "description": "scripts:yoni",
             "type": "script",
             "language": "javascript",
             "uuid": "7537ab86-a509-4029-87bb-2a63e817e798",
-            "version": [0, 4, 0],
-            "entry": "scripts/main.js"
+            "version": [0, 4, 11930],
+            "entry": "scripts/index.js"
         }
     ],
     "dependencies": [
@@ -36,9 +36,14 @@
             "uuid": "2bd50a27-ab5f-4f40-a596-3641627c635e",
             "version": "1.0.0-beta"
         },
+        {
+            // mojang-net
+            "uuid": "777b1798-13a6-401c-9cba-0cf17e31a81b",
+            "version": "1.0.0-beta"
+        },
         { //YoniMC资源包
             "uuid": "86e4face-ed0c-4945-bd61-f648424cd056",
-            "version": [0, 1, 3]
+            "version": [0, 1, 5]
         }
     ],
     "metadata": {

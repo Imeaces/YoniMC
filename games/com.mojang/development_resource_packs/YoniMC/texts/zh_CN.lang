@@ -2,6 +2,7 @@ item.yonimc:energy=能量晶体
 item.guxi:enter=#
 item.guxi:enter_attack=#=>
 item.guxi:enter_shield=#=#
+item.yonimc:apple_diamond=苹果钻
 
 tile.yonimc:energy_block.name=能量块
 

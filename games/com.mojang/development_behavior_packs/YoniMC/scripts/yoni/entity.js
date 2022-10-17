@@ -1,93 +1,307 @@
-import { Minecraft, Gametest, dim } from "yoni/basis.js";
-import Entry from "yoni/scoreboard/Entry.js";
-import Command from "yoni/command.js";
+import { Minecraft, Gametest, dim, StatusCode, VanillaEvents } from "scripts/yoni/basis.js";
+import Entry from "scripts/yoni/scoreboard/Entry.js";
+import Command from "scripts/yoni/command.js";
+const { EntityTypes } = Minecraft;
+/* 动态注册属性想都不要想
+function registerProp(entityType, property){
+    entityType = EntityTypes.get(entityType);
+    value.propertyRegistry.registerEntityTypeDynamicProperties(property, entityType);
+}
+function registerProp(entityType, property){
+    entityType = EntityTypes.get(entityType);
+    const registerPropFunc = (event)=>{
+        try {
+        event.propertyRegistry.registerEntityTypeDynamicProperties(property, entityType);
+        VanillaEvents.worldInitialize.unsubscribe(registerPropFunc);
+        console.warn("register");
+        } catch(e) {
+            console.error(e);
+            console.error(e.message);
+            console.error(e.stack);
+        }
+    };
+    VanillaEvents.worldInitialize.subscribe(registerPropFunc);
+}
+*/
 
-//need more info
 let entityMap = new WeakMap();
 
-export default class YoniEntity {
+function getAliveEntities(option){
+    let entities = [];
+    
+    for (let dimid in Minecraft.MinecraftDimensionTypes){
+        entities.push(...dim(dimid).getEntities(option));
+    }
+    return entities;
+}
+
+function getLoadedEntities(option){
+    let entities = getAliveEntities(option);
+    [...VanillaWorld.getPlayers(option)].forEach((_)=>{
+        if (!entities.includes(_)){
+            entities.push(_);
+        }
+    });
+    return entities;
+}
+
+export class Entity {
+    
+    get entityType(){
+        return EntityTypes.get(this.id);
+    }
+    
     #vanillaEntity;
+    
     get vanillaEntity(){
         return this.#vanillaEntity;
     }
+    
+    getMinecraftEntity(){
+        //我该说这是历史遗留问题吗
+        return this.#vanillaEntity;
+    }
+    
     constructor(entity, symbol){
-        // 如果有记录，直接返回对应实体
-        if (entityMap.has(entity)) return entityMap.get(entity);
+    
+        if (entity !== symbol){
+            return Entity.from(entity);
+        }
         
-        if (entity instanceof YoniEntity) //如果已经封装为YoniEntity，则直接返回原实体
-            return entity;
-        
-        //为了兼容，不得不这么做
-        if (symbol !== entity) return YoniEntity.getEntity(entity);
-        
-        if (!YoniEntity.isMinecraftEntity(entity)) //如果不是MCEntity则报错
+        //如果不是MCEntity则报错
+        if (!Entity.isMinecraftEntity(entity))
             throw new TypeError("There is not a Minecraft Entity type");
         
-        this.#vanillaEntity = entity; //如果是MCEntity则保存
+        this.#vanillaEntity = entity; //保存MCEntity
         
         for (let s in this.#vanillaEntity){ //建立变量,函数
             if (s in this)
                 continue;
             if (this.#vanillaEntity[s] instanceof Function)
-                this[s] = (...args)=>{ return this.#vanillaEntity[s](...args); };
+                Object.defineProperty(this, s, {
+                    enumerable: true,
+                    writable: false,
+                    value: (...args)=>{ return this.#vanillaEntity[s](...args); }
+                });
             else 
-                Object.defineProperties(this, {
-                    [s]: {
-                        get(){
-                            return this.#vanillaEntity[s];
-                        },
-                        set(t){
-                            return this.#vanillaEntity[s] = t;
-                        }
+                Object.defineProperty(this, s, {
+                    enumerable: true,
+                    get: ()=>{
+                        return this.#vanillaEntity[s];
+                    },
+                    set: (t)=>{
+                        this.#vanillaEntity[s] = t;
                     }
                 });
         }
         
-        entityMap.set(entity, this);
     }
     
-    static getEntity(entity){
-        if (entity instanceof Minecraft.Player)
-            return new Player(entity, entity);
-        if (entity instanceof Minecraft.Entity)
-            return new Entity(entity, entity);
-        if (entity instanceof Gametest.SimulatedPlayer)
-            return new SimulatedPlayer(entity, entity);
+    get uniqueId(){
+    }
+    
+    get scoreboard(){
+        return Entry.getEntry(this);
+    }
+    
+    isAliveEntity(){
+        return Entity.isAliveEntity(this);
+    }
+    
+    isAlive(){
+        return Entity.isAlive(this);
+    }
+    
+    getCurrentHealth(){
+        return Entity.getCurrentHealth(this);
+    }
+    /*
+    getProperty(id){
+        let rt;
+        try {
+            rt = this.getDynamicProperty(id);
+        } catch {}
+        return rt;
+    }
+    */
+    getHealthComponent(){
+        return Entity.getHealthComponent(this);
+    }
+    
+    getInventory(){
+        return Entity.getInventory(this);
+    }
+    
+    getMaxHealth(){
+        return Entity.getMaxHealth(this);
+    }
+    
+    hasFamily(family){
+        return Entity.hasAnyFamily(this, familiy);
+    }
+    
+    hasAnyFamily(...families){
+        return Entity.hasAnyFamily(this, ...families);
+    }
+    /*
+    removeProperty(id){
+        return this.removeDynamicProperty(id);
+    }
+    */
+    say(message){
+        let command = "say " + message;
+        return Command.execute(this, command);
+    }
+    /*
+    setProperty(id, value){
+        let oldType = typeof this.getProperty(id);
+        let newType = typeof value;
+        if (newType === "number" || newType === "boolean"){
+            if (newType !== oldType){
+                let newProp = new DynamicPropertiesDefinition();
+                if (newType === "number"){
+                    newProp.defineBoolean(id);
+                } else {
+                    newProp.defineNumber(id);
+                }
+                registerProp(this.id, newProp);
+            }
+        } else if (newType === "string"){
+            let newProp = new DynamicPropertiesDefinition()
+                .defineString(id, value.length);
+            registerProp(this.id, newProp);
+        } else {
+            throw new TypeError("The Dynamic Property only accept string, number or boolean");
+        }
+        return this.setDynamicProperty(id, value);
+    }
+    */
+    
+    /**
+     * 检查一个东西是否为实体
+     * @param 任意
+     * @throws 当不是实体的时候抛出错误
+     */
+    static checkIsEntity(obj){
+        if (!Entity.isEntity(obj))
+            throw new TypeError("Not a Entity type");
     }
     
     /**
-     * 获取所有存在的实体
+     * 从一个实体中获得YoniEntity
+     * @param 可以被认为是实体的东西
+     * @return {Entity} 如果无法获得，返回null
      */
-    static getLoadedEntities(...args){
-        let entities = this.getAliveEntities(...args);
-        Array.from(VanillaWorld.getPlayers(...args)).forEach((_)=>{
-            if (!entities.includes(_)){
-                entities.push(_);
-            }
-        });
-        return entities;
-    }
-    
-    static getMaxHealth(entity){
-        entity = new YoniEntity(entity);
-        let component = entity.getHealthComponent();
+    static from(entity){
+        // 如果有记录，直接返回对应实体
+        if (entityMap.has(entity))
+            return entityMap.get(entity);
         
-        return component.value;
+        //如果已经封装为YoniEntity，则直接返回原实体
+        if (entity instanceof Entity)
+            return entity;
+        
+        let rt = null;
+        if (entity instanceof Minecraft.Entity)
+            rt = new Entity(entity, entity);
+        else if (entity instanceof Minecraft.Player)
+            rt = new Player(entity, entity);
+        else if (entity instanceof Gametest.SimulatedPlayer)
+            rt = new SimulatedPlayer(entity, entity);
+        
+        if (rt !== null)
+            entityMap.set(entity, rt);
+        
+        return rt;
+
     }
     
-    static getMinecraftEntity(object, verbose=true){
-        if (YoniEntity.isMinecraftEntity(object))
-            return object;
-        else if (YoniEntity.isYoniEntity(object))
-            return object.getVanillaEntity();
-        else if (verbose)
-            throw new TypeError("Not a entity");
-        return null;
+    /**
+     * 检测某个实体是否为
+     * @param 要检测的实体
+     * @return {Boolean}
+     * @throws 当参数不是实体时抛出错误
+     */
+    static entityIsPlayer(entity){
+        entity = Entity.getMinecraftEntity(entity);
+        if (entity instanceof Minecraft.Player)
+            return true;
+        return false;
     }
 
+    /**
+     * 获取所有存活的实体
+     * @param {Minecraft.EntityQueryOptions}
+     * @return {Entity[]}
+     */
+    static getAliveEntities(...args){
+        return getAliveEntities().map((_)=>{
+            return Entity.from(_);
+        });
+    }
+    
+    static getHealthComponent(entity){
+        Entity.checkIsEntity(entity);
+        return entity.getComponent("minecraft:health");
+    }
+    
+    static getInventory(entity){
+        Entity.checkIsEntity(entity);
+        return entity.getComponent("minecraft:inventory").container;
+    }
+    
+    /**
+     * 获取实体的血量
+     */
+    static getCurrentHealth(entity){
+        let component = Entity.getHealthComponent(entity);
+        return (component === undefined) ? 0 : component.current;
+    }
+    
+    /**
+     * 获取所有存在的实体（包括死亡的玩家）
+     * @param {Minecraft.EntityQueryOptions}
+     * @return {Entity[]}
+     */
+    static getLoadedEntities(...args){
+        return getLoadedEntities().map((_)=>{
+            Entity.from(_);
+        });
+    }
+    
+    /**
+     * 获取实体最大血量
+     */
+    static getMaxHealth(entity){
+        let component = Entity.getHealthComponent(entity);
+        return (component === undefined) ? 0 : component.value;
+    }
+    
+    /**
+     * 得到一个Minecraft.Entity
+     */
+    static getMinecraftEntity(object){
+        Entity.checkIsEntity(entity);
+        if (Entity.isMinecraftEntity(object))
+            return object;
+        else if (Entity.isYoniEntity(object))
+            return object.vanillaEntity;
+        return null;
+    }
+    
+    /**
+     * 得到一个Entity
+     */
+    static getYoniEntity(ent){
+        Entity.checkIsEntity(entity);
+        return Entity.from(ent);
+    }
+    
+    /**
+     * 检测一个实体是否有某个种族
+     */
     static hasAnyFamily(entity, ...families){
-        entity = YoniEntity.getMinecraftEntity(entity, false);
-        if (entity == null) return false;
+        Entity.checkIsEntity(entity);
         for (let fam of families){
             fam = String(fam);
             let command = "execute if entity @s[family="+fam+"]";
@@ -97,144 +311,108 @@ export default class YoniEntity {
         return false;
     }
 
+    /**
+     * 检测一个实体是否有某个种族
+     */
     static hasFamily(entity, family){
-        return YoniEntity.hasAnyFamily(entity, family);
+        return Entity.hasAnyFamily(entity, family);
     }
     
+    /**
+     * 检测一个实体是否存在于世界上
+     */
     static isAliveEntity(entity){
-        if (!YoniEntity.isEntity(object))
-            return false;
-        entity = YoniEntity.getMinecraftEntity(entity);
-        for (let ent of YoniEntity.getLoadedEntities()){
+        entity = Entity.getMinecraftEntity(entity);
+        for (let ent of Entity.getLoadedEntities()){
             if (entity.getMinecraftEntity() === ent)
                 return true;
         }
         return false;
     }
-
+    
+    /**
+     * 检测一个实体是否活着
+     * 物品、箭、烟花等不是活的
+     * 死了的实体也不是活的
+     */
     static isAlive(entity){
-        return YoniEntity.getCurrentHealth(entity) > 0;
+        return Entity.getCurrentHealth(entity) > 0;
     }
     
+    /**
+     * 检测参数是否为实体
+     */
+    static isEntity(obj){
+        if (Entity.isYoniEntity(obj))
+            return true;
+        if (Entity.isMinecraftEntity(obj))
+            return true;
+         return false;
+    }
+    
+    /**
+     * 检测参数是否为原版实体
+     */
     static isMinecraftEntity(object){
         if (object instanceof Minecraft.Entity)
             return true;
         if (object instanceof Minecraft.Player)
             return true;
-        return false
-    }
-    
-    static isPlayer(object){
-        if (object == null)
-            return false;
-        if (object instanceof Minecraft.Player)
-            return true;
-        if (object instanceof Player)
+        if (object instanceof Gametest.SimulatedPlayer)
             return true;
         return false;
-    }
-    
-    static isSameEntity(ent1, ent2){
-        try {
-            let ent1 = YoniEntity.getMinecraftEntity(ent1);
-            let ent2 = YoniEntity.getMinecraftEntity(ent2);
-        } catch (err){
-            return false;
-        }
-        if (ent1 === ent2)
-            return true;
-        return false;
-    }
-
-    static isYoniEntity(object){
-        if (object instanceof YoniEntity)
-            return true;
-    }
-    
-    static entityIsPlayer(entity){
-        entity = YoniEntity.getMinecraftEntity(entity);
-        if (entity instanceof Minecraft.Player)
-            return true;
-        return false;
-    }
-
-    static getCurrentHealth(entity){
-        entity = new YoniEntity(entity);
-        let component = entity.getHealthComponent();
-        if (component !== null)
-            return component.current;
-        else 
-            return 0;
     }
     
     /**
-     * 获取所有存活的实体
+     * 检测两个参数是否为同一实体
      */
-    static getAliveEntities(...args){
-        let entities = [];
-        
-        for (let dimid in Minecraft.MinecraftDimensionTypes){
-            entities.push(...Array.from(dim(dimid).getEntities(...args)));
-        }
-        return entities;
+    static isSameEntity(ent1, ent2){
+        if (Entity.isYoniEntity(ent1))
+            ent1 = ent1.vanillaEntity;
+        if (Entity.isYoniEntity(ent2))
+            ent2 = ent2.vanillaEntity;
+        return ent1 === ent2;
+    }
+
+    /**
+     * 检测两个参数是否为YoniEntity
+     */
+    static isYoniEntity(object){
+        if (object instanceof Entity)
+            return true;
     }
     
-}
-
-export { YoniEntity }
-
-export class Entity extends YoniEntity {
-    
-    getMinecraftEntity(){
-        return this.vanillaEntity;
-    }
-    get scoreboard(){
-        return Entry.getEntry(this);
-    }
-    isAliveEntity(){
-        return YoniEntity.isAliveEntity(this.vanillaEntity);
-    }
-    getCurrentHealth(){
-        let comp = this.getHealthComponent();
-        if (comp != null){
-            return comp.current;
-        } else {
-            return null;
-        }
-    }
-    getHealthComponent(){
-        try {
-            return this.vanillaEntity.getComponent("minecraft:health");
-        } catch {
-            return null;
-        }
-    }
-    hasFamily(family){
-        return YoniEntity.hasFamily(this.vanillaEntity, familiy);
-    }
-    hasAnyFamily(...families){
-        return YoniEntity.hasAnyFamily(this.vanillaEntity, ...families);
-    }
-    say(message){
-        let command = "say +" + message;
-        return Command.execute(this, command);
-    }
 }
 
 export class Player extends Entity {
+    
+    /**
+     * 踢出玩家
+     */
+    kick(msg=""){
+        let rt = Command.run(`kick "${this.name}" ${msg}`);
+        if (rt.statusCode !== StatusCode.success){
+            throw new Error(rt.statusMessage);
+        }
+    }
+    
+    
     sendMessage(message){
-        let rawtext = JSON.stringify({ rawtext: [ { text: String(message) } ]});
+        let rawtext = { rawtext: [{ text: String(message) }] };
         return this.sendRawMessage(rawtext);
     }
-    sendRawMessage(messageJson){
-        let command = "tellraw @s " + messageJson;
-        try {
-            if (Command.execute(this, command).statusCode == 0)
-                return true;
-            else return false;
-        } catch { return false; }
-        return false;
+    
+    
+    sendRawMessage(rawtext){
+        let command = "tellraw @s " + JSON.stringify(rawtext);
+        if (Command.execute(this, command).statusCode == 0)
+            return true;
+        else return false;
     }
 }
 
-export class SimulatedPlayer extends Player {}
+export class SimulatedPlayer extends Player {
+}
+
+export { Entity as YoniEntity }
+export default Entity;

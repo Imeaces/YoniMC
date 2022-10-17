@@ -1,5 +1,11 @@
-import { MinecraftSystem, dim } from "yoni/basis.js";
-import { EventSignal } from "yoni/events.js";
+import { MinecraftSystem, dim } from "scripts/yoni/basis.js";
+import { EventSignal } from "scripts/yoni/event.js";
+
+const overworld = dim(0);
+
+const getCurrentTick = ()=>{
+    return overworld.runCommand("time query gametime").data;
+};
 
 export class TickEvent {
     constructor(c, d){
@@ -9,19 +15,13 @@ export class TickEvent {
     } 
 }
 
-let signal = new EventSignal("yonimc:tick", TickEvent);
-
-const overworld = dim(0);
-
-const getCurrentTick = ()=>{
-    return overworld.runCommand("time query gametime").data;
-};
+const signal = new EventSignal("yonimc:tick", TickEvent);
 
 let lastTickTimeMs;
 
 const triggerEvent = ()=>{
     if (signal.registered)
-        system.run(triggerEvent);
+        MinecraftSystem.run(triggerEvent);
     else return;
     
     let currentTimeMs = Date.now();
@@ -31,9 +31,10 @@ const triggerEvent = ()=>{
     
     signal.triggerEvent(currentTick, deltaTime);
 };
-
+/*
 signal.register(()=>{
         system.run(triggerEvent);
     })
     .registerEvent();
+*/
     

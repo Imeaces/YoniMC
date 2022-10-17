@@ -1,21 +1,23 @@
-import { world } from "mojang-minecraft";
+//先导入防止看门狗咬人的脚本
+import "scripts/WatchBird.js";
+import { Logger } from "scripts/yoni/util/Logger.js";
 
-let playerJoining = new Set();
+let logger = new Logger("Main");
 
-world.events.playerJoin.subscribe((event)=>{
-    let player = event.player;
-    console.warn(`Player ${player.name} joining the game.`);
-    playerJoining.add(player);
-    player.runCommand("give @s barrier 190");
+//再导入主函数
+
+import('scripts/main.js')
+.catch(e=>{
+    logger.fatal("在加载主函数的时候出现错误 {}", e);
 });
 
-world.events.tick.subscribe(()=>{
-    if (playerJoining.size < 1) return;
-    for (let player of world.getPlayers()){
-        if (playerJoining.has(player)){
-            console.warn(`Player ${player.name} joined the game.`);
-            player.runCommand("give @s bedrock 190");
-            playerJoining.delete(player);
-        }
-    }
-});
+/*
+import('scripts/test.js')
+    .then(()=>{
+        console.error("已经导入测试");
+    })
+    .catch((e)=>{
+        printError("未能导入测试", e);
+    });
+    
+*/

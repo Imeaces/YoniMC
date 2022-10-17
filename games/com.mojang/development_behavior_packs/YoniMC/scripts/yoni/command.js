@@ -1,5 +1,41 @@
-import { dim } from "yoni/basis.js";
-import { MinecraftMeta } from "yoni/minecraft.js";
+import { dim } from "scripts/yoni/basis.js";
+
+export default class Command {
+    
+    static asyncRun(cmd){
+        return asyncExecute(dim(0), cmd);
+    }
+    
+    static asyncExecute(runner, command){
+        return runner.runCommandAsync(command);
+    }
+    
+    static run(cmd){
+        return Command.execute(dim(0), cmd);
+    }
+    static execute(runner, command){
+        let result;
+        try {
+            result = runner.runCommand(command);
+        } catch(errorJSON){
+            result = JSON.parse(errorJSON);
+        }
+        Object.defineProperty(result, "next", {
+            value: (nextCmd)=>{
+                return Command.execute(runner, nextCmd);
+            }
+        });
+        return result;
+    }
+}
+
+export { Command };
+
+/*
+
+function isEducationEdition(){
+    return false;
+}
 
 //need more ideas
 
@@ -10,7 +46,7 @@ export class TargetSelector {
         switch(selector){
             case "@c":
             case "@v":
-                if (!MinecraftMeta.isEducationEdition()){
+                if (!isEducationEdition()){
                     throw new Error(); 
                 }
             case "@s":
@@ -41,33 +77,6 @@ export class TargetSelector {
     }
 }
 
-export default class Command {
-    #command;
-    constructor(command){
-        if (Command.runCommand("help "+command).statusCode != 0)
-            throw new SyntaxError("Unknown command: "+command);
-        this.#command = command;
-    }
-    
-    static asyncRun(cmd){
-        return asyncExecute(dim(0), cmd);
-    }
-    
-    static asyncExecute(runner, command){
-        return runner.runCommandAsync(command);
-    }
-    
-    static run(cmd){
-        return Command.execute(dim(0), cmd);
-    }
-    static execute(runner, command){
-        try {
-            return runner.runCommand(command);
-        } catch(errorJSON){
-            return JSON.parse(errorJSON);
-        }
-    }
-}
 
 export { Command }
 
@@ -99,3 +108,4 @@ function resolveTargetSelector(selector){
 
     return selectedEntities;
 }
+*/

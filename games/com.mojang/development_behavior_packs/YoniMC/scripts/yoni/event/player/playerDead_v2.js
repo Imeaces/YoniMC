@@ -1,6 +1,7 @@
-import { VanillaWorld } from "yoni/basis.js";
-import { YoniEntity } from "yoni/entity.js";
-import { EventListener } from "yoni/event.js";
+import { VanillaWorld, dim } from "scripts/yoni/basis.js";
+import { YoniEntity } from "scripts/yoni/entity.js";
+import { EventListener, EventSignal,  Events } from "scripts/yoni/event.js";
+import { printError } from "scripts/yoni/util/console.js";
 
 let eventId;
 export class PlayerDeadEvent {
@@ -10,10 +11,10 @@ export class PlayerDeadEvent {
     }
 }
 
-const signal = new EventSignal("yonimc:playerDead", PlayerDeadEvent);
-
-signal.register(()={
+const signal = new EventSignal("yonimc:playerDead", PlayerDeadEvent)
+    .register(()=>{
         eventId = EventListener.register("minecraft:entityHurt", (event)=>{
+        console.warn("判定事件中");
             if (event.hurtEntity.getComponent("minecraft:health").current === 0)
                 signal.triggerEvent(event.hurtingEntity);
         }, {type:"minecraft:player"});

@@ -1,29 +1,29 @@
 {
-  "format_version": "1.16.100",
-  "minecraft:item": {
-    "description": {
-      "identifier": "guxi:enter_attack",
-      "category": "items"
-    },
-    "components": {
-      "minecraft:icon": {
-        "texture": "arrow"
-      },
-      "minecraft:use_duration": 20,
-      "minecraft:on_use": {
-        "on_use": {
-          "event": "guxi:enter_attack",
-          "target": "self"
+    "format_version": "1.16.100",
+    "minecraft:item": {
+        "description": {
+            "identifier": "guxi:enter_attack",
+            "category": "items"
+        },
+        "components": {
+            "minecraft:icon": {
+                "texture": "arrow"
+            },
+            "minecraft:use_duration": 20,
+            "minecraft:on_use": {
+                "on_use": {
+                    "event": "guxi:enter_attack",
+                    "target": "self"
+                }
+            }
+        },
+        "events": {
+            "guxi:enter_attack": {
+                "shoot": {
+                    "projectile": "guxi:flow_energy",
+                    "launch_power": 2
+                }
+            }
         }
-      }
-    },
-    "events": {
-      "guxi:enter_attack": {
-        "shoot": {
-          "projectile": "guxi:flow_energy",
-          "launch_power": 2
-        }
-      }
     }
-  }
 }

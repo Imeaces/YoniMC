@@ -1,50 +1,55 @@
-import { VanillaEvents as MinecraftEvents, SystemEvents } from "yoni/basis.js";
-import { printError } from "yoni/util/console.js";
+import { VanillaEvents as MinecraftEvents, SystemEvents } from "scripts/yoni/basis.js";
+import { printError } from "scripts/yoni/util/console.js";
+import { Logger } from "scripts/yoni/util/Logger.js";
 
-//动态导入，防止出什么奇怪的问题
-let Debug;
-import("yoni/debug.js")
-    .then((m)=>{Debug=m})
-    .catch();
-    
+const logger = new Logger("Event");
+
 let eventRegisterMap = new Map();
+
+let waitingEventRegisterMap = new Map();
+
 eventRegisterMap.set("minecraft", ()=>{
     let map = new Map();
     for (let s in MinecraftEvents){
+        logger.trace("注册了事件minecraft:{}", s);
         map.set(s, MinecraftEvents[s]);
     }
     return Object.freeze(map);
 }());
+
 eventRegisterMap.set("system", ()=>{
     let map = new Map();
     for (let s in SystemEvents){
+        logger.trace("注册了事件system:{}", s);
         map.set(s, SystemEvents[s]);
     }
     return Object.freeze(map);
 }());
-eventRegisterMap.set("custom", new Map());
 
 function getEventType(namespace, type){
-    if (!eventRegisterMap.has(namespace)) return;
-
     if (namespace === "custom"){
         for (let pM of [...eventRegisterMap.values()].reverse()){
-            if (pM.has(type))
+            if (pM.has(type)){
                 return pM.get(type);
+            }
         }
     }
+    if (!eventRegisterMap.has(namespace)) return;
     return eventRegisterMap.get(namespace).get(type);
 }
+
 function setEventType(namespace, type, signal){
     if (!eventRegisterMap.has(namespace))
         eventRegisterMap.set(namespace, new Map());
         
     eventRegisterMap.get(namespace).set(type, signal);
 }
+
 function getNameSpace(eventType){
     let eventName;
     let prefix;
-    if (eventType.indexOf(":") !== -1){
+    let idx = eventType.indexOf(":");
+    if (idx !== -1){
         eventName = eventType.slice(idx+1, eventType.length);
         prefix = eventType.slice(0, idx);
     } else {
@@ -55,20 +60,47 @@ function getNameSpace(eventType){
     
 }
 
-const Events = new Proxy({}, {
+export const Events = new Proxy({}, {
     has: (target, prop)=>{
-        if (eventRegisterMap.has(getNameSpace(prop).namespace) 
-        && eventRegisterMap.get(getNameSpace(prop).namespace).has(getNameSpace(prop).eventName)) return true;
+        let ns = getNameSpace(prop);
+        if (ns.namespace === "custom"){
+            if (getEventType(ns.namespace, ns.eventName) !== undefined) return true;
+        }
+        if (eventRegisterMap.has(ns.namespace)
+        && eventRegisterMap.get(ns.namespace).has(ns.eventName)) return true;
         return false;
     },
     get: (target, prop)=>{
-        return getEventType(getNameSpace(prop).namespace, getNameSpace(prop).namespace);
+        if (prop === Symbol.iterator || prop === "values"){
+            let vals = [];
+            for (let pM of [...eventRegisterMap.values()].reverse()){
+                vals.push(...pM.values());
+            }
+            return vals[Symbol.iterator];
+        } else if (prop === "keys"){
+            let keys = [];
+            for (let pM of [...eventRegisterMap.values()].reverse()){
+                keys.push(...pM.keys());
+            }
+            return keys[Symbol.iterator];
+        } else {
+            return getEventType(
+                getNameSpace(prop).namespace,
+                getNameSpace(prop).eventName);
+        }
     },
     set: (target, prop, value)=>{
         if (prop in Events){
             throw new Error("event has been registered");
         }
-        setEventType(getNameSpace(prop).namespace, getNameSpace(prop).namespace, value);
+        let ns = getNameSpace(prop);
+        setEventType(ns.namespace, ns.eventName, value);
+        if (prop in Events){
+            waitingEventRegisterMap.get(prop).forEach(f=>f());
+            waitingEventRegisterMap.delete(prop);
+        }
+        logger.trace("注册了事件{}:{}", ns.namespace, ns.eventName);
+        return true;
     },
     deleteProperty: (target, prop)=>{
         return false;
@@ -76,22 +108,22 @@ const Events = new Proxy({}, {
 });
 
 export class EventSignal {
-    #callbacks;
+    #callbacks = [];
     #eventClass;
     #registered = false;
-    #register(){
-    }
-    #unregister(){
-    }
+    #registerFuncs = {
+        register: ()=>{},
+        unregister: ()=>{}
+    };
     set registered(t){
         if (t !== true || t !== false){
             t = (t) ? true : false;
         }
         if (this.#registered !== t){
             if (t === true)
-                this.#register();
+                this.#registerFuncs.register();
             else if (t === false)
-                this.#unregister();
+                this.#registerFuncs.unregister();
         }
         this.#registered = t;
     }
@@ -138,11 +170,11 @@ export class EventSignal {
             eventSignal: eventSignal,
             eventClass: eventClass,
             register: (f) => {
-                this.#register = f;
+                this.#registerFuncs.register = f;
                 return rt;
             },
             unregister: (f) => {
-                this.#unregister = f;
+                this.#registerFuncs.unregister = f;
                 return rt;
             },
             triggerEvent: (...args) => {
@@ -150,9 +182,6 @@ export class EventSignal {
                 return rt;
             },
             registerEvent(){
-                //TODO
-                if (prefix in Events && name in Events[prefix])
-                    
                 if (eventSignal.eventName in Events)
                     throw new Error("event registered");
                     
@@ -172,14 +201,18 @@ export class EventSignal {
         });
         return rt;
     }
-    subscribe(f){
-        this.#callbacks.push(f);
+    subscribe(f, ...filters){
+        if (filters.length > 0){
+            this.#callbacks.push({callback: f, filters: filters});
+        } else {
+            this.#callbacks.push(f);
+        }
         if (this.#callbacks.length > 0)
             this.registered = true;
     }
     unsubscribe(callback){
         this.#callbacks = this.#callbacks.filter((f)=>{
-            if (f === callback){
+            if (f === callback || f?.callback === callback){
                 return;
             } else {
                 return f;
@@ -189,19 +222,69 @@ export class EventSignal {
             this.registered = false;
     }
     #triggerEvent(...args){
-        this.#callbacks.forEach(f=>{
-            let event = new this.#eventClass(...args);
-            f(event);
-        });
+        if (this.registered){
+            this.#callbacks.forEach(f=>{
+                if (f?.callback instanceof Function)
+                    f.callback(new this.#eventClass(...args, ...f.filters));
+                else
+                    f(new this.#eventClass(...args));
+            });
+        }
     }
 }
 
 export class EventListener {
     static #callbacks = [];
+    static #index = 0;
     
     //这个方法不推荐使用，但是调试用起来是很方便
     static _getCallback(id){
         return this.#callbacks[id];
+    }
+    
+    static delayRegister(...args){
+        if (args[0]?.constructor !== String)
+            throw new Error("无法对已实例化的事件进行延迟注册");
+        
+        if (args[0] in Events)
+            return this.register(...args);
+        
+        this.#delayRegister(this.#index++, ...args)
+    }
+    
+    static #delayRegister(idx, eventType, callback, ...eventFilters){
+        let ns = getNameSpace(eventType);
+        let eventName = ns.namespace + ":" + ns.eventName;
+        if (!waitingEventRegisterMap.has(eventName)){
+            waitingEventRegisterMap.set(eventName, []);
+        }
+        let fireCallback = (...args) => {
+            let func = this.#callbacks[idx];
+            if (func instanceof Function){
+                try {
+                    return func(...args);
+                    logger.trace("完成了ID为 {} 的事件回调", idx);
+                } catch(err){
+                    logger.error("尝试对事件进行ID为 {} 的回调时发生错误 {}", idx, err);
+                }
+            }
+            return;
+        };
+        waitingEventRegisterMap.get(eventName).push(()=>{
+            eventType = Events[eventType];
+            if (!eventType?.subscribe instanceof Function){
+                throw new TypeError("require a subscribe() to register event");
+        }
+            try {
+                this.#callbacks[idx] = callback;
+                eventType.subscribe(fireCallback, ...eventFilters);
+                logger.debug("已成功延迟注册id为{}的回调", idx);
+            } catch (e){
+                this.#callbacks[idx] = undefined;
+                logger.error("在延迟注册id为{}的回调时发生错误 {}", idx, e);
+            }
+        });
+        return idx - 1;
     }
     
     /**
@@ -212,50 +295,65 @@ export class EventListener {
      * @return {number} - id of the callback
      */
     static register(eventType, callback, ...eventFilters){
-        let idx = this.#callbacks.push(callback);
+        let idx = this.#index;
         
-        if (eventType.constructor === String){
-            let namespaces = getNameSpace(eventType);
-            let registeredEvent = getEventType(namespaces.namespace, namespaces.eventName);
-            if (registeredEvent !== undefined) eventType = registeredEvent;
+        if (!(callback instanceof Function)){
+            throw new TypeError("回调得是个函数");
         }
-        try {
-            eventType.subscribe((...args) => {
-                let func = this.#callbacks[idx-1];
-                if (func !== null || func !== undefined){
-                    try {
-                        return func(...args);
-                    } catch(err){
-                        printError("尝试对事件进行ID为"+idx+"的回调时发生错误", err);
-                    }
+        
+        if (eventType?.constructor === String){
+            if (eventType in Events){
+                eventType = Events[eventType];
+            } else {
+                logger.debug("延迟id为{}的{}事件注册", this.#index, eventType);
+                this.#delayRegister(this.#index, eventType, callback, ...eventFilters);
+                return this.#index ++;
+            }
+        }
+        
+        if (!(eventType?.subscribe instanceof Function)){
+            throw new TypeError("require a subscribe() to register event");
+        }
+        
+        let fireCallback = (...args) => {
+            let func = this.#callbacks[idx];
+            if (func instanceof Function){
+                try {
+                    return func(...args);
+                } catch(err){
+                    logger.error("尝试对事件进行ID为{}的回调时发生错误 {} ", idx, err);
                 }
-                return;
-            }, ...eventFilters);
+            }
+            return;
+        };
+        
+        try {
+            this.#callbacks[this.#index] = callback;
+            eventType.subscribe(fireCallback, ...eventFilters);
+            return this.#index ++;
         } catch (e){
-            printError("无法注册事件", e);
-            this.#callbacks.pop();
+            this.#callbacks[this.#index] = undefined;
+            logger.error("无法注册事件 {}", e);
+            return;
         }
-        return idx - 1;
+        
     }
     
     static unregister(id){
         if (this.#callbacks[id] != null){
             this.#callbacks[id] = null;
-            console.warn("移除了ID为"+(id+1)+"的回调");
+            logger.debug("移除了ID为{}的回调", id);
         } else {
             for (let idx = 0; idx < this.#callbacks.length; idx++){
                 if (this.#callbacks[idx] === id){
                     this.#callbacks[idx] = null;
-                    console.warn("移除了ID为"+(idx+1)+"的回调");
-                    break;
+                    logger.debug("移除了ID为{}的回调", idx);
                 }
             }
         }
     }
 }
 
-//防止被覆盖
-eventRegisterMap.set("yonimc", new Map());
-//导入事件
-import("yoni/events/TickEvent.js");
-import("yoni/events/PlayerDeadEvent.js");
+export default Events;
+
+import('scripts/yoni/event/eventreg.js');

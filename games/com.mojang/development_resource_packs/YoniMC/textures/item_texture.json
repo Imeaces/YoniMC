@@ -12,6 +12,11 @@
                 "textures/items/energy"
             ]
         },
+        "apple_diamond": {
+            "textures": [
+                "textures/items/yonimc_apple_diamond"
+            ]
+        },
         "pack_icon": {
             "textures": [
                 "pack_icon"

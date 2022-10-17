@@ -1,6 +1,10 @@
-import { VanillaEvents }  from "yoni/basis.js";
-import { EventListener } from "yoni/event.js";
-import { printError } from "yoni/util/console.js";
+import { VanillaEvents }  from "scripts/yoni/basis.js";
+import { EventListener } from "scripts/yoni/event.js";
+import { printError, getErrorMsg } from "scripts/yoni/util/console.js";
+import YoniEntity from "scripts/yoni/entity.js";
+import { Logger } from "scripts/yoni/util/Logger.js";
+
+const logger = new Logger("ChatCommand");
 
 export default class ChatCommand {
     static #prefixCmds = new Map();
@@ -33,9 +37,10 @@ export default class ChatCommand {
     }
     
     static registerPrefixCommand(prefix, command, commandExecutor){
+        logger.debug("正在注册指令 prefix: {}, command: {}", prefix, command);
         if (this.#prefixCmds.get(prefix) === undefined){
             if (prefix === "")
-                console.warn("registering non-prefix command, the message that like command without prefix won't be cancel");
+                logger.warn("registering non-prefix command, the message that like command without prefix won't be cancel");
             this.#prefixCmds.set(prefix, new Map());
         }
         this.#prefixCmds.get(prefix).set(command, commandExecutor);
@@ -57,7 +62,8 @@ export default class ChatCommand {
         this.unregisterPrefixCommand('!', ...args);
     }
     
-    static #invokeCommand(sender, prefix, command, label, args){
+    static #invokeCommand(sender, prefix, command, label="", args){
+        sender = new YoniEntity(sender);
         let commandExecutor = this.#prefixCmds.get(prefix).get(label);
         try {
             if (commandExecutor?.onCommand instanceof Function){
@@ -67,10 +73,13 @@ export default class ChatCommand {
                 commandExecutor(sender, command, label, args);
                 return;
             } else if (prefix !== ""){
-                console.error("[ChatCommand]: 无法找到命令" + label);
+                logger.debug("无法找到命令 {}", label);
+                sender.sendMessage("[ChatCommand]: 无法找到命令" + label);
             }
         } catch(err) {
-            printError(`[ChatCommand]: 运行命令${label}时发生错误`, err);
+            logger.error("运行命令{}时发生错误 {}", label, getErrorMsg("", err).errMsg);
+            //sender.sendMessage(`[ChatCommand]: 运行命令${label}时发生错误 ${getErrorMsg("", err).errMsg}`);
+            sender.sendMessage(`[ChatCommand]: 运行命令${label}时发生错误，请查看控制台或寻求管理员的帮助`);
         }
     }
     
@@ -156,10 +165,9 @@ export default class ChatCommand {
     }
 }
 
-
 export { ChatCommand }
 
-EventListener.register("beforeChat", (event) => {
+EventListener.register(VanillaEvents.beforeChat, (event) => {
     if (event.cancel) return;
     ChatCommand.receiveBeforeChatEvent(event);
 });

@@ -1,13 +1,12 @@
-import * as Gametest from "@minecraft/server-gametest";
-import * as MinecraftGui from "@minecraft/server-ui";
-import * as Minecraft from "@minecraft/server";
+import * as Gametest from "mojang-gametest";
+import * as MinecraftGui from "mojang-minecraft-ui";
+import * as Minecraft from "mojang-minecraft";
 
 //import * as yoni from "scripts/yoni/util/yoni-lib.js";//仅用作调试
 
 export { Gametest }
 export { MinecraftGui }
 export { Minecraft }
-
 /*
 let ServerAdmin;
 let MojangNet;
@@ -28,8 +27,8 @@ export const MinecraftSystem = Minecraft.system;
 export const SystemEvents = MinecraftSystem.events;
 
 export class StatusCode {
-    static fail = -1;
-    static error = 2;
+    static fail = -2147483648;
+    static error = -2147483646;
     static success = 0;
 }
 
@@ -41,6 +40,7 @@ export function dim(dimid = Minecraft.MinecraftDimensionTypes.overworld){
     case 1:
     case "the end":
     case "the_end":
+    case "theEnd":
       return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.theEnd);
     case 0:
     case "overworld":
@@ -79,7 +79,6 @@ export async function runCmd(command = "", commandRunner){
 
 /**
  * a simple function to execute command
- * @deprecated - use Command.execute() instead
  * @param {Runner} - a command runner
  * @params {String[]} - 
  * @return {JSON}
@@ -90,11 +89,12 @@ export async function execCmd(runner, command, ...args){
 
   args.forEach((arg) => {
     arg = String(arg);
+    //arg.replace(/("|\\|\s)/g, "\\$1");
     if (arg.replace(/\"/g, "") != arg)
       arg = arg.replace(/\"/g, "\\\"");
     if (arg.replace(/\s/g, "") != arg)
       arg = "\""+arg+"\"";
-    command += "\u0020"+arg;
+    command += "\x20"+arg;
   });
   try {
     return await runner.runCommandAsync(command);

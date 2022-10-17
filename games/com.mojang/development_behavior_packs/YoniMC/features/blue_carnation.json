@@ -19,7 +19,7 @@
     "description": {
       "identifier": "yonimc:flowers_feature_scatter"
     },
-    "scatter_chance": 100,
+    "scatter_chance": 40,
     "iterations": "1",
     "places_feature": "yonimc:flowers_feature"
   }
