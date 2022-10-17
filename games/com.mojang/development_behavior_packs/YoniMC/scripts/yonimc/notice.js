@@ -22,7 +22,7 @@ EventListener.register("yonimc:playerJoined", (event)=>{
 EventListener.register("entityHurt", (event)=> {
     if (event.damagingEntity?.id === "minecraft:player"){
         Command.execute(event.damagingEntity, "title @s title §r")
-        .next("title @s subtile §c伤害: " + event.damage);
+        .next("title @s subtitle §c伤害: " + event.damage);
     }
     if (event.hurtEntity.id === "minecraft:player"){
         let ent = event.hurtEntity;

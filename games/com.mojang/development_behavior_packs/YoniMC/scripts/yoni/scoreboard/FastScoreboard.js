@@ -26,13 +26,16 @@ import Scoreboard from "./SimpleScoreboard.js";
  
 function getObjective(id){
     return new Proxy(Scoreboard.getObjective(id, true), {
-        get(object, prop){
-            if (prop in object)
-                return (...args)=>{object[prop](...args);};
-            
+        get: (object, prop)=>{
+            if (prop in object){
+                if (typeof object[prop] === "function")
+                    return (...args)=>{ object[prop].bind(object, ...args); };
+                else
+                    return object[prop];
+            }
             return object.getScore(prop);
         },
-        set(object, prop, score){
+        set: (object, prop, score)=>{
             if (String(score).startsWith("+"))
                 object.addScore(prop, Number(String(score).substring(1)));
             else

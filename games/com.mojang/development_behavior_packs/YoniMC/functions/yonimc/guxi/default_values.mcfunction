@@ -83,6 +83,7 @@ scoreboard objectives add guxi:health_stat dummy
 scoreboard players set @s guxi:health_stat 0
 
 #var guxi:health_stat default 0
+#: 在能量少的时候是否试着从经验里获得能量
 scoreboard objectives add guxi:auto_energy dummy
 scoreboard players set @s guxi:auto_energy 1
 

@@ -1,6 +1,6 @@
-import { Minecraft, Gametest, dim, StatusCode, VanillaEvents } from "scripts/yoni/basis.js";
+import { execCmd, runCmd, Minecraft, Gametest, dim, StatusCode, VanillaEvents } from "scripts/yoni/basis.js";
 import Entry from "scripts/yoni/scoreboard/Entry.js";
-import Command from "scripts/yoni/command.js";
+
 const { EntityTypes } = Minecraft;
 /* 动态注册属性想都不要想
 function registerProp(entityType, property){
@@ -137,7 +137,7 @@ export class Entity {
     }
     
     hasFamily(family){
-        return Entity.hasAnyFamily(this, familiy);
+        return Entity.hasAnyFamily(this, family);
     }
     
     hasAnyFamily(...families){
@@ -148,9 +148,20 @@ export class Entity {
         return this.removeDynamicProperty(id);
     }
     */
+    runCommand(cmd){
+        try {
+            return this.#vanillaEntity.runCommand(cmd);
+        } catch (e){
+            try {
+                return JSON.parse(e);
+            } catch {
+                return e;
+            }
+        }
+    }
     say(message){
         let command = "say " + message;
-        return Command.execute(this, command);
+        return this.runCommand(command);
     }
     /*
     setProperty(id, value){
@@ -304,8 +315,7 @@ export class Entity {
         Entity.checkIsEntity(entity);
         for (let fam of families){
             fam = String(fam);
-            let command = "execute if entity @s[family="+fam+"]";
-            if (Command.execute(entity, command).statusCode == 0)
+            if (execCmd(entity, "execute", "if", "entity", `@s[family=${fam}]`).statusCode == 0)
                 return true;
         }
         return false;
@@ -390,7 +400,7 @@ export class Player extends Entity {
      * 踢出玩家
      */
     kick(msg=""){
-        let rt = Command.run(`kick "${this.name}" ${msg}`);
+        let rt = (typeof msg === "string" && msg !== "") ? runCmd("kick", this.name, msg) : runCmd("kick", this.name);
         if (rt.statusCode !== StatusCode.success){
             throw new Error(rt.statusMessage);
         }
@@ -405,7 +415,7 @@ export class Player extends Entity {
     
     sendRawMessage(rawtext){
         let command = "tellraw @s " + JSON.stringify(rawtext);
-        if (Command.execute(this, command).statusCode == 0)
+        if (this.runCommand(command).statusCode == 0)
             return true;
         else return false;
     }

@@ -34,8 +34,9 @@ function executeSchedule(schedule, time){
                 //set result
                 isLastSuccessRecords.set(schedule, true);
                 lastSuccessTimeRecords.set(schedule, time);
-            } catch {
+            } catch(err) {
                 lastFailTimeRecords.set(schedule, true);
+                logger.trace(`async schedule {} 运行时出现错误 {}`, schedule.id, err);
             }
         }();
     } else {
@@ -47,16 +48,14 @@ function executeSchedule(schedule, time){
             //set result
             isLastSuccessRecords.set(schedule, true);
             lastSuccessTimeRecords.set(schedule, time);
-        } catch {
+        } catch(err) {
             lastFailTimeRecords.set(schedule, true);
+            logger.trace(`schedule {} 运行时出现错误 {}`, schedule.id, err);
         }
     }
 }
 
 function ticking(event){
-    let currentTick = event.currentTick;
-    let currentTimeMs = Date.now();
-    
     //首先，处理只执行一次的tick任务
     let tickDelaySchedules = schedulesTypedRecords[Schedule.tickDelaySchedule];
     if (tickDelaySchedules !== undefined){
@@ -67,7 +66,7 @@ function ticking(event){
             let delayLess = (scheduleTickDelayLessRecords.has(schedule)) ? scheduleTickDelayLessRecords.get(schedule) : schedule.delay;
             if (delayLess > 0){
                 scheduleTickDelayLessRecords.set(schedule, delayLess-1);
-                return;
+                continue;
             } else {
                 tickDelaySchedules.splice(idx, 1);
                 taskMap.delete(id);
@@ -86,7 +85,7 @@ function ticking(event){
             let passedTime = time - scheduleAddTimeRecords.get(schedule);
             let delay = schedule.delay;
             if (delay > passedTime){
-                return;
+                continue;
             } else {
                 timeDelaySchedules.splice(idx, 1);
                 taskMap.delete(id);
@@ -106,7 +105,7 @@ function ticking(event){
             let delayLess = (scheduleTickDelayLessRecords.has(schedule)) ? scheduleTickDelayLessRecords.get(schedule) : schedule.delay;
             if (delayLess > 0){
                 scheduleTickDelayLessRecords.set(schedule, delayLess-1);
-                return;
+                continue;
             } else {
                 scheduleTickDelayLessRecords.set(schedule, schedule.period);
             }
@@ -124,7 +123,7 @@ function ticking(event){
             let passedTime = time - scheduleAddTimeRecords.get(schedule);
             let delay = schedule.delay;
             if (delay > passedTime){
-                return;
+                continue;
             } else {
                 let lastExecuteTime = schedule.lastExecuteTime;
                 if (lastExecuteTime !== null || time - lastExecuteTime < schedule.period){
@@ -250,7 +249,7 @@ export default class YoniScheduler {
             type: Schedule.tickDelaySchedule,
             callback: callback
         });
-        Scheduler.addSchedule(schedule);
+        YoniScheduler.addSchedule(schedule);
     }
     static runTask(callback, delay=0){
         let schedule = new Schedule({
@@ -259,7 +258,7 @@ export default class YoniScheduler {
             type: Schedule.tickDelaySchedule,
             callback: callback
         });
-        Scheduler.addSchedule(schedule);
+        YoniScheduler.addSchedule(schedule);
     }
 }
 

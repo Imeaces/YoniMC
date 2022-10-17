@@ -1,11 +1,11 @@
 import { http, HttpRequest, HttpHeader } from "mojang-net";
 import { EventListener, Events, EventSignal } from "scripts/yoni/event.js";
-import { ChatCommand } from "scripts/yoni/command/ChatCommand.js";
 import { Command } from "scripts/yoni/command.js";
 import { World } from "scripts/yoni/world.js";
 import { getErrorMsg } from "scripts/yoni/util/console.js";
 import { say } from "scripts/yoni/util/utils.js";
 import { Logger } from "scripts/yoni/util/Logger.js";
+import { ChatCommand } from "scripts/yoni/command/ChatCommand.js";
 
 const logger = new Logger("Server");
 
@@ -93,7 +93,10 @@ async function getSession(retry=true, force=false){
     try {
         if (session === null) session = await newSessionKey(retry);
     } catch {
-        return await getSession(false, true);
+        if (retry)
+            return await getSession(false, true);
+        else
+            throw new Error();
     }
     if (!force && Date.now() - lastSessionUpdateTime < 240000){
         log(`use last cached session: ${session}`);
@@ -149,7 +152,12 @@ async function newSessionKey(retry=true){
         else
             throw new Error();
     }
-    let sK = JSON.parse(rt.body).session;
+    let rtBody = JSON.parse(rt.body);
+    let sK = rtBody.session;
+    if (sK === undefined){
+        log("未能获取到sessionkey");
+        throw new Error("未能获取到sessionkey");
+    }
     if (await bindSession(sK)){
         log(`newSessionKey ${sK}`);
         return sK;
@@ -185,6 +193,7 @@ async function doSendQQGroupMessage(currentDateMs){
         .sort((a,b)=>{
             return a - b;
         });
+    log(msgSequeneList.length)
     for (let key of msgSequeneList){
         let func = sendMessageSchedules.get(key);
         sendMessageSchedules.delete(key);
@@ -277,12 +286,18 @@ let signal = new EventSignal("yonimc:serverReceiveQQMsg", QQGroupChatEvent)
                 
             if (fetchDelay < 20000)
                 fetchDelay += 1000;
-        
-            let rt = await get("/fetchLatestMessage", {
-                count: 10
-            });
-            let body = JSON.parse(rt.body);
-            if (body.code !== 0) return;
+             
+            let rt;
+            let body;
+            try {
+                rt = await get("/fetchMessage", {
+                    count: 40
+                });
+                body = JSON.parse(rt.body);
+                if (body.code !== 0) return;
+            } catch {
+                
+            }
             
             for (let d of body.data){
                 if (d.type !== "GroupMessage")
