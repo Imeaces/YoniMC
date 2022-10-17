@@ -135,7 +135,7 @@ export default class SimpleScoreboard {
         return this.getObjective(VanillaScoreboard.getObjectiveAtDisplaySlot(slot).id);
     }
     
-    static setDisplaySlot(slot, objective, sequence="descending"){
+    static async postSetDisplaySlot(slot, objective, sequence="descending"){
         if (!Array.from(DisplaySlotType).includes(slot))
             throw new TypeError("Not a DisplaySlot type");
         if (!(objective instanceof Objective))
@@ -183,24 +183,24 @@ export default class SimpleScoreboard {
      * reset scores of all participants
      * @param particular filter function, the function will be call for every participants, if return true, then reset the scores of participants
      */
-    static async resetAllScore(filter){
+    static async postResetAllScore(filter){
         if (filter === undefined){
             await fetchCmdParams(dim(0), "scoreboard", "players", "reset", "*");
             return;
         }
         
-        [...SimpleScoreboard.getEntries()].forEach(id=>{
+        for (let id of SimpleScoreboard.getEntries()){
             if (filter(id)){
-                await SimpleScoreboard.resetScore(id);
+                await SimpleScoreboard.postResetScore(id);
             }
-        });
+        }
     }
     
     /**
      * reset scores of a participant
      * @param entry
      */
-    static async resetScore(entry){
+    static async postResetScore(entry){
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
         

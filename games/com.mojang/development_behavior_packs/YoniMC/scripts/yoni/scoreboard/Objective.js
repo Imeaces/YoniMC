@@ -144,7 +144,7 @@ class Objective {
         
     }
     
-    await postAddScore(entry, score){
+    async postAddScore(entry, score){
         this.checkUnregistered();
 
         if (!Number.isInteger(score))

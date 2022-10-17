@@ -56,7 +56,7 @@ const levels = {
 function getLevelName(level=4){
     let c = 0;
     let o = level;
-    while (level in levels && !isNaN(Number(level))){
+    while (level in levels && isFinite(Number(level))){
         if (c++ > 5){
             return o;
         }
@@ -67,7 +67,7 @@ function getLevelName(level=4){
 
 function getLevelCode(level="debug"){
     let c = 0;
-    while (isFinite(level)){
+    while (!isFinite(level)){
         if (c++ > 5){
             return 6;
         }
@@ -83,6 +83,30 @@ function transferHolder(msg, ...replacer){
     return msg;
 }
 
+async function printLog(time, name, level, msg, ...rps){
+    let consoles = [...VanillaWorld.getPlayers({tags:[specificTag]})];
+        
+    //没人接收的话干嘛要输出
+    if (consoles.length === 0 && !outputContentLog){
+        if (!isNoticeLoggerUsage){
+            isNoticeLoggerUsage = true;
+            say(`添加标签 ${specificTag} 以获得日志输出`);
+        }
+        return;
+    }
+    let levelName = getLevelName(level);
+    
+    msg = transferHolder(msg, ...rps);
+    let outputText = "[{} {}][{}]: {}";
+    outputText = transferHolder(outputText, time, levelName, name, msg);
+    
+    if (outputContentLog){
+        console.warn(outputText);
+    }
+    consoles.forEach(pl=>send(pl, outputText));
+    
+}
+    
 export class Logger {
     static LEVEL_FATAL = 0;
     static LEVEL_ERROR = 1;
@@ -91,29 +115,9 @@ export class Logger {
     static LEVEL_DEBUG = 4;
     static LEVEL_TRACE = 5;
     
-    static async log(name, level, msg, ...rps){
-        let consoles = [...VanillaWorld.getPlayers({tags:[specificTag]})];
-            
-        //没人接收的话干嘛要输出
-        if (consoles.length === 0 && !outputContentLog){
-            if (!isNoticeLoggerUsage){
-                isNoticeLoggerUsage = true;
-                say(`添加标签 ${specificTag} 以获得日志输出`);
-            }
-            return;
-        }
+    static log(...args){
         let time = getTimeString();
-        let levelName = getLevelName(level);
-        
-        msg = transferHolder(msg, ...rps);
-        let outputText = "[{} {}][{}]: {}";
-        outputText = transferHolder(outputText, time, levelName, name, msg);
-        
-        if (outputContentLog){
-            console.warn(outputText);
-        }
-        consoles.forEach(pl=>send(pl, outputText));
-        
+        printLog(time, ...args);
     }
     
     constructor(name){

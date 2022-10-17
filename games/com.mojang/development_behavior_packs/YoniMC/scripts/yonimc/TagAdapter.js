@@ -34,8 +34,8 @@ YoniScheduler.addSchedule(new Schedule ({
         World.getPlayers().forEach((player) => {
             let component = player.getHealthComponent();
             
-            healthO.setScore(player, Math.floor(component.current));
-            maxHealthO.setScore(player, Math.floor(component.value));
+            healthO.postSetScore(player, Math.floor(component.current));
+            maxHealthO.postSetScore(player, Math.floor(component.value));
         });
     }
 }));

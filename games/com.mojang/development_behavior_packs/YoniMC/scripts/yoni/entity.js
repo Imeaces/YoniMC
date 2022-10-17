@@ -1,4 +1,4 @@
-import { fetchCmd, Minecraft, Gametest, dim, overworld, StatusCode, VanillaEvents } from "yoni/basis.js";
+import { fetchCmd, Minecraft, Gametest, dim, overworld, StatusCode, VanillaEvents, VanillaWorld } from "yoni/basis.js";
 import Entry from "yoni/scoreboard/Entry.js";
 
 const { EntityTypes } = Minecraft;
@@ -96,7 +96,6 @@ export class Entity {
     isAlive(){
         return Entity.isAlive(this);
     }
-    
     getCurrentHealth(){
         return Entity.getCurrentHealth(this);
     }
@@ -185,9 +184,7 @@ export class Entity {
      * @return {Entity[]}
      */
     static getAliveEntities(...args){
-        return getAliveEntities().map((_)=>{
-            return Entity.from(_);
-        });
+        return getAliveEntities().map(_=>Entity.from(_));
     }
     
     static getHealthComponent(entity){
@@ -214,9 +211,7 @@ export class Entity {
      * @return {Entity[]}
      */
     static getLoadedEntities(...args){
-        return getLoadedEntities().map((_)=>{
-            Entity.from(_);
-        });
+        return getLoadedEntities().map(_=> Entity.from(_));
     }
     
     /**
@@ -230,34 +225,36 @@ export class Entity {
     /**
      * 得到一个Minecraft.Entity
      */
-    static getMinecraftEntity(object){
+    static getMinecraftEntity(entity){
         Entity.checkIsEntity(entity);
-        if (Entity.isMinecraftEntity(object))
-            return object;
-        else if (Entity.isYoniEntity(object))
-            return object.vanillaEntity;
+        if (Entity.isMinecraftEntity(entity))
+            return entity;
+        else if (Entity.isYoniEntity(entity))
+            return entity.vanillaEntity;
         return null;
     }
     
     /**
      * 得到一个Entity
      */
-    static getYoniEntity(ent){
+    static getYoniEntity(entity){
         Entity.checkIsEntity(entity);
-        return Entity.from(ent);
+        return Entity.from(entity);
     }
     
     /**
      * 检测一个实体是否有某个种族
+     * 由于无法同步执行命令，只能用其他方法来检测了
+     * 性能不确定
      */
     static hasAnyFamily(entity, ...families){
-        Entity.checkIsEntity(entity);
-        for (let fam of families){
-            fam = String(fam);
-            if (execCmd(entity, "execute", "if", "entity", `@s[family=${fam}]`).statusCode == 0)
-                return true;
+        entity = Entity.getMinecraftEntity(entity);
+        let ents = getLoadedEntities({ families: families });
+        if (ents.includes(entity)){
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**

@@ -169,7 +169,7 @@ export default class ChatCommand {
                 executor(sender, rawCommand, label, args);
             }
         } catch(err) {
-            logger.error("运行命令{}时发生错误 {}", err);
+            logger.error("运行命令{}时发生错误 {}", label, err);
             sender.sendMessage(`[ChatCommand]: 运行命令${label}时发生错误，请查看控制台或寻求管理员的帮助`);
         }
     }

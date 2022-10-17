@@ -1,5 +1,5 @@
-export const debug = false;
-export const logLevel = 3;
+export const debug = true;
+export const logLevel = 5;
 //是否输出到ContentLog
 export const outputContentLog = true;
 

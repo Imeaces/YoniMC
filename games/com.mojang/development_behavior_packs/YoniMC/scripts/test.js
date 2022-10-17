@@ -13,3 +13,8 @@ if (isDebug())
 ChatCommand.registerCommand("test", (sender, rawCommand, label, args)=>{
         say(`欢迎${sender.name}游玩本服务器`, "服务器");
 });
+
+if (isDebug())
+EventListener.register("minecraft:tick", (event)=>{
+    say(event.currentTick);
+});

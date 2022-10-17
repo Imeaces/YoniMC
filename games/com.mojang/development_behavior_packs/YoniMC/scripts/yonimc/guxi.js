@@ -14,23 +14,19 @@ const energyO = Scoreboard.getObjective("guxi:energy");
 const energylO = Scoreboard.getObjective("guxi:energy_pool");
 const valuesO = Scoreboard.getObjective("guxi:values");
 
-const includeGuxiScoreOpt = ()=>{
-    let rt = new EntityQueryScoreOptions();
-    rt.objective = "species";
-    rt.minScore = 2695;
-    rt.maxScore = 2695;
-    rt.exclude = false;
-    return rt;
-}();
+const includeGuxiScoreOpt = {
+    objective: "species",
+    minScore: 2695,
+    maxScore: 2695,
+    exclude: false
+}
 
-const excludeGuxiScoreOpt = ()=>{
-    let rt = new EntityQueryScoreOptions();
-    rt.objective = "species";
-    rt.minScore = 2695;
-    rt.maxScore = 2695;
-    rt.exclude = true;
-    return rt;
-}();
+const excludeGuxiScoreOpt = {
+    objective: "species",
+    minScore: 2695,
+    maxScore: 2695,
+    exclude: true
+}
 
 const cycleTick = ()=>{
 /*
