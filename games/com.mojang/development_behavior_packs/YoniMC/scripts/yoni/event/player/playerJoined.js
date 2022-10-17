@@ -1,6 +1,6 @@
-import { Player } from "scripts/yoni/entity.js";
-import { EventListener, EventSignal } from "scripts/yoni/event.js";
-import { dim, VanillaWorld } from "scripts/yoni/basis.js";
+import { Player } from "yoni/entity.js";
+import { EventListener, EventSignal } from "yoni/event.js";
+import { dim, VanillaWorld } from "yoni/basis.js";
 
 class PlayerJoinedEvent {
     constructor (player){

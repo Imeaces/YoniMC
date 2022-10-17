@@ -1,6 +1,6 @@
-import { VanillaEvents as MinecraftEvents, SystemEvents } from "scripts/yoni/basis.js";
-import { printError } from "scripts/yoni/util/console.js";
-import { Logger } from "scripts/yoni/util/Logger.js";
+import { VanillaEvents as MinecraftEvents, SystemEvents } from "yoni/basis.js";
+import { printError } from "yoni/util/console.js";
+import { Logger } from "yoni/util/Logger.js";
 
 const logger = new Logger("Event");
 
@@ -356,4 +356,4 @@ export class EventListener {
 
 export default Events;
 
-import('scripts/yoni/event/eventreg.js');
+import('yoni/event/eventreg.js');

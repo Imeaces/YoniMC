@@ -1,145 +1,16 @@
 import { EventListener } from "./event.js";
 import { SystemEvents } from "./basis.js";
 import { Logger } from "./util/Logger.js";
+import { runTask } from "./basis.js";
 
 const logger = new Logger("Schedule");
 
-let isDoingASchedule = false;
-
-const newScheduleRecords = new Set();
-const schedulesTypedRecords = {};
-const nextTickTasks = [];
-const taskMap = new Map();
-
 let scheduleCurrentIndex = 0;
-let taskIdIndex = 0;
-
-const lastResultRecords = new WeakMap();
 const isLastSuccessRecords = new WeakMap();
 const lastSuccessTimeRecords = new WeakMap();
 const lastFailTimeRecords = new WeakMap();
 const lastExecuteTimeRecords = new WeakMap();
-const scheduleTickDelayLessRecords = new WeakMap();
-const scheduleAddTimeRecords = new WeakMap();
 
-function executeSchedule(schedule, time){
-    lastExecuteTimeRecords.set(schedule, time);
-    if (schedule.async){
-        async ()=>{
-            isLastSuccessRecords.set(schedule, false);
-            try {
-                //do task
-                await schedule.runAsync();
-                
-                //set result
-                isLastSuccessRecords.set(schedule, true);
-                lastSuccessTimeRecords.set(schedule, time);
-            } catch {
-                lastFailTimeRecords.set(schedule, true);
-            }
-        }();
-    } else {
-        isLastSuccessRecords.set(schedule, false);
-        try {
-           //do task
-            schedule.run();
-            
-            //set result
-            isLastSuccessRecords.set(schedule, true);
-            lastSuccessTimeRecords.set(schedule, time);
-        } catch {
-            lastFailTimeRecords.set(schedule, true);
-        }
-    }
-}
-
-function ticking(event){
-    let currentTick = event.currentTick;
-    let currentTimeMs = Date.now();
-    
-    //首先，处理只执行一次的tick任务
-    let tickDelaySchedules = schedulesTypedRecords[Schedule.tickDelaySchedule];
-    if (tickDelaySchedules !== undefined){
-        for (let idx = tickDelaySchedules.length - 1; idx >= 0; idx--){
-            let time = Date.now();
-            let id = tickDelaySchedules[idx];
-            let schedule = taskMap.get(id);
-            let delayLess = (scheduleTickDelayLessRecords.has(schedule)) ? scheduleTickDelayLessRecords.get(schedule) : schedule.delay;
-            if (delayLess > 0){
-                scheduleTickDelayLessRecords.set(schedule, delayLess-1);
-                return;
-            } else {
-                tickDelaySchedules.splice(idx, 1);
-                taskMap.delete(id);
-            }
-            executeSchedule(schedule, time);
-        }
-    }
-    
-    //接着，处理只执行一次的时间延时任务
-    let timeDelaySchedules = schedulesTypedRecords[Schedule.timeDelaySchedule];
-    if (timeDelaySchedules !== undefined){
-        for (let idx = timeDelaySchedules.length - 1; idx >= 0; idx--){
-            let time = Date.now();
-            let id = timeDelaySchedules[idx];
-            let schedule = taskMap.get(id);
-            let passedTime = time - scheduleAddTimeRecords.get(schedule);
-            let delay = schedule.delay;
-            if (delay > passedTime){
-                return;
-            } else {
-                timeDelaySchedules.splice(idx, 1);
-                taskMap.delete(id);
-            }
-            lastExecuteTimeRecords.set(schedule, time);
-            executeSchedule(schedule, time);
-        }
-    }
-    
-    //然后，处理循环执行的tick任务
-    let tickCycleSchedules = schedulesTypedRecords[Schedule.tickCycleSchedule];
-    if (tickCycleSchedules !== undefined){
-        for (let idx = tickCycleSchedules.length - 1; idx >= 0; idx--){
-            let time = Date.now();
-            let id = tickCycleSchedules[idx];
-            let schedule = taskMap.get(id);
-            let delayLess = (scheduleTickDelayLessRecords.has(schedule)) ? scheduleTickDelayLessRecords.get(schedule) : schedule.delay;
-            if (delayLess > 0){
-                scheduleTickDelayLessRecords.set(schedule, delayLess-1);
-                return;
-            } else {
-                scheduleTickDelayLessRecords.set(schedule, schedule.period);
-            }
-            executeSchedule(schedule, time);
-        }
-    }
-    
-    //最后，处理循环的时间延时任务
-    let timeCycleSchedules = schedulesTypedRecords[Schedule.timeCycleSchedule];
-    if (timeCycleSchedules !== undefined){
-        for (let idx = timeCycleSchedules.length - 1; idx >= 0; idx--){
-            let time = Date.now();
-            let id = timeCycleSchedules[idx];
-            let schedule = taskMap.get(id);
-            let passedTime = time - scheduleAddTimeRecords.get(schedule);
-            let delay = schedule.delay;
-            if (delay > passedTime){
-                return;
-            } else {
-                let lastExecuteTime = schedule.lastExecuteTime;
-                if (lastExecuteTime !== null || time - lastExecuteTime < schedule.period){
-                    return;
-                }
-            }
-            executeSchedule(schedule, time);
-            
-        }
-    }
-    
-}
-
-function beforeTerminate(event){
-}
 export class Schedule {
     static timeCycleSchedule = Symbol("Schedule.timerCycleSchedule");
     static timeDelaySchedule = Symbol("Schedule.timerDelaySchedule");
@@ -201,6 +72,130 @@ export class Schedule {
     }
 }
 
+function executeSchedule(schedule, time){
+    lastExecuteTimeRecords.set(schedule, time);
+    if (schedule.async){
+        async ()=>{
+            isLastSuccessRecords.set(schedule, false);
+            try {
+                //do task
+                await schedule.runAsync();
+                
+                //set result
+                isLastSuccessRecords.set(schedule, true);
+                lastSuccessTimeRecords.set(schedule, time);
+            } catch(err) {
+                lastFailTimeRecords.set(schedule, true);
+                logger.trace(`async schedule {} 运行时出现错误 {}`, schedule.id, err);
+            }
+        }();
+    } else {
+        isLastSuccessRecords.set(schedule, false);
+        try {
+           //do task
+            schedule.run();
+            
+            //set result
+            isLastSuccessRecords.set(schedule, true);
+            lastSuccessTimeRecords.set(schedule, time);
+        } catch(err) {
+            lastFailTimeRecords.set(schedule, true);
+            logger.trace(`schedule {} 运行时出现错误 {}`, schedule.id, err);
+        }
+    }
+}
+
+const scheduleTickDelayLessRecords = new WeakMap();
+const scheduleAddTimeRecords = new WeakMap();
+
+const schedulesTypedRecords = {};
+const taskMap = new Map();
+
+function ticking(event){
+    runTask(ticking);
+    //首先，处理只执行一次的tick任务
+    let tickDelaySchedules = schedulesTypedRecords[Schedule.tickDelaySchedule];
+    if (tickDelaySchedules !== undefined){
+        for (let idx = tickDelaySchedules.length - 1; idx >= 0; idx--){
+            let time = Date.now();
+            let id = tickDelaySchedules[idx];
+            let schedule = taskMap.get(id);
+            let delayLess = (scheduleTickDelayLessRecords.has(schedule)) ? scheduleTickDelayLessRecords.get(schedule) : schedule.delay;
+            if (delayLess > 0){
+                scheduleTickDelayLessRecords.set(schedule, delayLess-1);
+                continue;
+            } else {
+                tickDelaySchedules.splice(idx, 1);
+                taskMap.delete(id);
+            }
+            executeSchedule(schedule, time);
+        }
+    }
+    
+    //接着，处理只执行一次的时间延时任务
+    let timeDelaySchedules = schedulesTypedRecords[Schedule.timeDelaySchedule];
+    if (timeDelaySchedules !== undefined){
+        for (let idx = timeDelaySchedules.length - 1; idx >= 0; idx--){
+            let time = Date.now();
+            let id = timeDelaySchedules[idx];
+            let schedule = taskMap.get(id);
+            let passedTime = time - scheduleAddTimeRecords.get(schedule);
+            let delay = schedule.delay;
+            if (delay > passedTime){
+                continue;
+            } else {
+                timeDelaySchedules.splice(idx, 1);
+                taskMap.delete(id);
+            }
+            lastExecuteTimeRecords.set(schedule, time);
+            executeSchedule(schedule, time);
+        }
+    }
+    
+    //然后，处理循环执行的tick任务
+    let tickCycleSchedules = schedulesTypedRecords[Schedule.tickCycleSchedule];
+    if (tickCycleSchedules !== undefined){
+        for (let idx = tickCycleSchedules.length - 1; idx >= 0; idx--){
+            let time = Date.now();
+            let id = tickCycleSchedules[idx];
+            let schedule = taskMap.get(id);
+            let delayLess = (scheduleTickDelayLessRecords.has(schedule)) ? scheduleTickDelayLessRecords.get(schedule) : schedule.delay;
+            if (delayLess > 0){
+                scheduleTickDelayLessRecords.set(schedule, delayLess-1);
+                continue;
+            } else {
+                scheduleTickDelayLessRecords.set(schedule, schedule.period);
+            }
+            executeSchedule(schedule, time);
+        }
+    }
+    
+    //最后，处理循环的时间延时任务
+    let timeCycleSchedules = schedulesTypedRecords[Schedule.timeCycleSchedule];
+    if (timeCycleSchedules !== undefined){
+        for (let idx = timeCycleSchedules.length - 1; idx >= 0; idx--){
+            let time = Date.now();
+            let id = timeCycleSchedules[idx];
+            let schedule = taskMap.get(id);
+            let passedTime = time - scheduleAddTimeRecords.get(schedule);
+            let delay = schedule.delay;
+            if (delay > passedTime){
+                continue;
+            } else {
+                let lastExecuteTime = schedule.lastExecuteTime;
+                if (lastExecuteTime !== null || time - lastExecuteTime < schedule.period){
+                    return;
+                }
+            }
+            executeSchedule(schedule, time);
+            
+        }
+    }
+    
+}
+
+function beforeTerminate(event){
+}
 export default class YoniScheduler {
     static addSchedule(schedule){
         if (!(schedule instanceof Schedule))
@@ -250,7 +245,7 @@ export default class YoniScheduler {
             type: Schedule.tickDelaySchedule,
             callback: callback
         });
-        Scheduler.addSchedule(schedule);
+        YoniScheduler.addSchedule(schedule);
     }
     static runTask(callback, delay=0){
         let schedule = new Schedule({
@@ -259,16 +254,16 @@ export default class YoniScheduler {
             type: Schedule.tickDelaySchedule,
             callback: callback
         });
-        Scheduler.addSchedule(schedule);
+        YoniScheduler.addSchedule(schedule);
     }
 }
 
 export { YoniScheduler };
 
 EventListener.register(SystemEvents.beforeWatchdogTerminate, beforeTerminate);
-EventListener.register("tick", ticking);
+runTask(ticking);
 
-class TaskInfo {
+class TaskInfo { //还没弄
     isLastSuccess; //上次执行时是否成功
     
     schedule; //由什么计划任务而执行的任务

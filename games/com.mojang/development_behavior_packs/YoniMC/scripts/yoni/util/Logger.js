@@ -1,9 +1,8 @@
-import { VanillaWorld } from "scripts/yoni/basis.js";
+import { VanillaWorld, fetchCmd } from "yoni/basis.js";
 import { getErrorMsg } from "./console.js";
-import { say } from "./utils.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
+import { send } from "./utils.js";
 
-import { outputContentLog, debug, logLevel as configLogLevel } from "scripts/yoni/config.js";
+import { outputContentLog, debug, logLevel as configLogLevel } from "yoni/config.js";
 
 let isNoticeLoggerUsage = false;
 
@@ -68,7 +67,7 @@ function getLevelName(level=4){
 
 function getLevelCode(level="debug"){
     let c = 0;
-    while (isNaN(Number(level))){
+    while (isFinite(level)){
         if (c++ > 5){
             return 6;
         }
@@ -92,9 +91,8 @@ export class Logger {
     static LEVEL_DEBUG = 4;
     static LEVEL_TRACE = 5;
     
-    static log(name, level, msg, ...rps){
-        let consoles = [...VanillaWorld.getPlayers({tags:[specificTag]})]
-            .map(e=>new YoniEntity(e));
+    static async log(name, level, msg, ...rps){
+        let consoles = [...VanillaWorld.getPlayers({tags:[specificTag]})];
             
         //没人接收的话干嘛要输出
         if (consoles.length === 0 && !outputContentLog){
@@ -114,7 +112,7 @@ export class Logger {
         if (outputContentLog){
             console.warn(outputText);
         }
-        consoles.forEach(pl=>pl.sendMessage(outputText));
+        consoles.forEach(pl=>send(pl, outputText));
         
     }
     
@@ -149,7 +147,7 @@ export function log(...args){
 }
 
 if (debug)
-import("scripts/yoni/command/ChatCommand.js")
+import("yoni/command/ChatCommand.js")
 .then(m=>{
     m.ChatCommand.registerPrefixCommand("$", "log", (sender, rawCommand, label, args)=>{
         if (!debug) return;

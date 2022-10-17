@@ -8,8 +8,8 @@
     "scripts": {
         "animate": [
             "entity.status.alive",
-            "entity.yonimc.effect",
-            "player.yonimc.species.guxi",
+            //"entity.yonimc.effect",  //没啥用，还导致bug
+            "player.yonimc.species.guxi", //准备混合脚本控制，其中，几乎不变的东西由指令控制
             //{ "condition.guxi.val": "query.variant == 2695" },
             //{ "status.guxi.health_by_energy_state": "query.variant == 2695" },
             "player.yonimc.species.vanilla.player"

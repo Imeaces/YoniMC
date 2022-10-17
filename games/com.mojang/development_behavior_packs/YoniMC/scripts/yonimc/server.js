@@ -1,4 +1,4 @@
-import { Logger } from "scripts/yoni/util/Logger.js";
+import { Logger } from "yoni/util/Logger.js";
 let logger = new Logger("Main");
 
 let serverMode = false;

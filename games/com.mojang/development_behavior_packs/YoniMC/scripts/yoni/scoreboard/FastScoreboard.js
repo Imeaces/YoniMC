@@ -25,18 +25,22 @@ import Scoreboard from "./SimpleScoreboard.js";
  
  
 function getObjective(id){
-    return new Proxy(Scoreboard.getObjective(id, true), {
-        get(object, prop){
-            if (prop in object)
-                return (...args)=>{object[prop](...args);};
-            
-            return object.getScore(prop);
+    let object = { source: Scoreboard.getObjective(id, true) };
+    return new Proxy(object, {
+        get: (object, prop)=>{
+            if (prop in object.source){
+                if (typeof object.source[prop] === "function")
+                    return (...args)=>{ object.source[prop](...args); };
+                else
+                    return object.source[prop];
+            }
+            return object.source.getScore(prop);
         },
-        set(object, prop, score){
+        set: (object, prop, score)=>{
             if (String(score).startsWith("+"))
-                object.addScore(prop, Number(String(score).substring(1)));
+                object.source.addScore(prop, Number(String(score).substring(1)));
             else
-                object.setScore(prop, Number(score));
+                object.source.setScore(prop, Number(score));
             return true;
         }
     });

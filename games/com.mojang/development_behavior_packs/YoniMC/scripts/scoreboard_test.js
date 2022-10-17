@@ -1,7 +1,7 @@
-import { VanillaWorld, execCmd, dim } from "scripts/yoni/basis.js";
-import Scoreboard from "scripts/yoni/scoreboard.js";
-import { printError } from "scripts/yoni/util/console.js";
-import { Entry, EntryType } from "scripts/yoni/scoreboard/Entry.js";
+import { VanillaWorld, execCmd, dim } from "yoni/basis.js";
+import Scoreboard from "yoni/scoreboard.js";
+import { printError } from "yoni/util/console.js";
+import { Entry, EntryType } from "yoni/scoreboard/Entry.js";
 
 function print(...args){
     let text = "";

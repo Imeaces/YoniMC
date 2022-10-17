@@ -1,13 +1,13 @@
-import { dim } from "scripts/yoni/basis.js";
+import { dim } from "yoni/basis.js";
 
 export default class Command {
     
-    static asyncRun(cmd){
-        return asyncExecute(dim(0), cmd);
+    static async asyncRun(cmd){
+        return await asyncExecute(dim(0), cmd);
     }
     
-    static asyncExecute(runner, command){
-        return runner.runCommandAsync(command);
+    static async asyncExecute(runner, command){
+        return await runner.runCommandAsync(command);
     }
     
     static run(cmd){

@@ -1,7 +1,7 @@
-import { YoniScheduler, Schedule } from "scripts/yoni/schedule.js";
-import { World } from "scripts/yoni/world.js";
-import { Minecraft } from "scripts/yoni/basis.js";
-import { log } from "scripts/yoni/util/Logger.js";
+import { YoniScheduler, Schedule } from "yoni/schedule.js";
+import { World } from "yoni/world.js";
+import { Minecraft } from "yoni/basis.js";
+import { log } from "yoni/util/Logger.js";
 const { MinecraftEffectTypes } = Minecraft;
 
 YoniScheduler.addSchedule(new Schedule ({

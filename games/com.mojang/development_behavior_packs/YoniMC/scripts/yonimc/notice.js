@@ -1,9 +1,9 @@
-import { EventListener } from "scripts/yoni/event.js";
-import Scoreboard from "scripts/yoni/scoreboard.js";
-import { say } from "scripts/yoni/util/utils.js";
-import { Logger } from "scripts/yoni/util/Logger.js";
+import { EventListener } from "yoni/event.js";
+import Scoreboard from "yoni/scoreboard.js";
+import { say } from "yoni/util/utils.js";
+import { Logger } from "yoni/util/Logger.js";
 import { isServerMode } from "./server.js";
-import Command from "scripts/yoni/command.js";
+import Command from "yoni/command.js";
 
 const logger = new Logger("LOG");
 
@@ -22,7 +22,7 @@ EventListener.register("yonimc:playerJoined", (event)=>{
 EventListener.register("entityHurt", (event)=> {
     if (event.damagingEntity?.id === "minecraft:player"){
         Command.execute(event.damagingEntity, "title @s title §r")
-        .next("title @s subtile §c伤害: " + event.damage);
+        .next("title @s subtitle §c伤害: " + event.damage);
     }
     if (event.hurtEntity.id === "minecraft:player"){
         let ent = event.hurtEntity;

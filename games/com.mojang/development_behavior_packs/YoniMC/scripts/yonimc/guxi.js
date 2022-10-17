@@ -1,13 +1,69 @@
-import ChatCommand from "scripts/yoni/command/ChatCommand.js";
-import { Minecraft, dim } from "scripts/yoni/basis.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
-import Command from "scripts/yoni/command.js";
-import { Scoreboard, FastScoreboard as Object } from "scripts/yoni/scoreboard.js";
-import { EventListener } from "scripts/yoni/event.js";
-const { EntityDamageCause } = Minecraft;
-const energyO = Object("guxi:energy");
-const energylO = Object("guxi:energy_pool");
-const valuesO = Object("guxi:values");
+import { ChatCommand } from "yoni/command/ChatCommand.js";
+import { Minecraft, dim } from "yoni/basis.js";
+import { YoniEntity } from "yoni/entity.js";
+import Command from "yoni/command.js";
+import { Scoreboard } from "yoni/scoreboard.js";
+import { EventListener } from "yoni/event.js";
+import { YoniScheduler, Schedule } from "yoni/schedule.js";
+import { World } from "yoni/world.js";
+import { log } from "yoni/util/Logger.js";
+const { MinecraftEffectTypes, EntityDamageCause, EntityQueryScoreOptions } = Minecraft;
+
+Scoreboard.getObjective("species", true);
+const energyO = Scoreboard.getObjective("guxi:energy");
+const energylO = Scoreboard.getObjective("guxi:energy_pool");
+const valuesO = Scoreboard.getObjective("guxi:values");
+
+const includeGuxiScoreOpt = ()=>{
+    let rt = new EntityQueryScoreOptions();
+    rt.objective = "species";
+    rt.minScore = 2695;
+    rt.maxScore = 2695;
+    rt.exclude = false;
+    return rt;
+}();
+
+const excludeGuxiScoreOpt = ()=>{
+    let rt = new EntityQueryScoreOptions();
+    rt.objective = "species";
+    rt.minScore = 2695;
+    rt.maxScore = 2695;
+    rt.exclude = true;
+    return rt;
+}();
+
+const cycleTick = ()=>{
+/*
+    //切换到此种族
+    World.getPlayers({
+        excludeFamilies: [ "yoni_guxi" ],
+        scoreOptions: [ includeGuxiScoreOpt ]
+    }).forEach(player=>initiateGuxi(player));
+    
+    //离开此种族
+    World.getPlayers({
+        families: [ "yoni_guxi" ],
+        scoreOptions: [ excludeGuxiScoreOpt ]
+    }).forEach(player=>despawnGuxi(player));
+*/
+    let guxis = World.getPlayers({
+        families: [ "yoni_guxi" ]
+    })
+    guxis.forEach((pl)=>{
+        let out = pl.onScreenDisplay;
+        let text = "§r§f"+energylO.getScore(pl)+"§7|"+energyO.getScore(pl);
+        out.setActionBar(text);
+    });
+    guxis.forEach(pl=>{
+      try{
+        pl.addEffect(MinecraftEffectTypes["fireResistance"], -200);
+}catch(e){
+log("{}", e);
+}
+    });
+
+};
+
 
 class Obj {
     static get(object, part){
@@ -52,7 +108,11 @@ let valueList = {
     "guxi:keep_res": "保持防御",
     "guxi:keep_ef": "保持状态",
     "guxi:like_player": "伪装玩家",
-    "guxi:auto_player": "自行伪装玩家"
+    "guxi:auto_player": "自行伪装玩家",
+    "guxi:hotbar_ctrl": "热键控制",
+    
+    "guxi:cre_ely": "伪鞘翅"
+    
 };
 
 let setList = {
@@ -68,13 +128,15 @@ let setList = {
     "guxi:auto_player": "自行伪装玩家"
 };
 
-function createBoom(runner, r){
+
+export function createExplosion(runner, radius){
     
-    let radius = Number(r);
+    radius = Number(radius);
     if (!isFinate(radius)){
         sender.sendMessage("范围得是数字");
         return;
     }
+    
     let location = runner.location;
     
     let opts = {
@@ -84,6 +146,7 @@ function createBoom(runner, r){
     
     runner.say("boom!");
     runner.dimension.createExplosion(location, radius, opts);
+    
 }
 
 function valueCtrl(sender, args){
@@ -148,7 +211,7 @@ function elytraManage(sender, args){
     }
 }
 
-ChatCommand.registerPrefixCommand("#", "guxi", (sender, command, label, args) => {
+ChatCommand.registerNonPrefixCommand("#guxi", (sender, command, label, args) => {
     if (!sender.hasFamily("guxi")){
         sender.sendMessage("抱歉，非本族群不可使用");
         return;
@@ -322,6 +385,7 @@ EventListener.register("entityHurt", (event)=> {
         
     }
 });
+
 EventListener.register("entityHurt", (event)=> {
     if (event.damagingEntity !== undefined && YoniEntity.hasFamily(event.damagingEntity, "guxi")){
         let cost = Math.round(event.damage*722*(Scoreboard.getObjective("guxi:ef_damage").getScore(event.damagingEntity)+1));
@@ -330,9 +394,11 @@ EventListener.register("entityHurt", (event)=> {
         }
     }
 });
-EventListener.register("tick", (event)=>{
-    if (event.currentTick % 30 != 6) return;
-    
-    Command.run("execute if entity @e[type=guxi:energy] as @e[type=guxi:energy] at @s run particle minecraft:endrod ~ ~ ~");
-    
-});
+
+YoniScheduler.addSchedule(new Schedule ({
+    async: false,
+    type: Schedule.tickCycleSchedule,
+    delay: 2,
+    period: 5,
+    callback: cycleTick
+}));

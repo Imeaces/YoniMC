@@ -1,4 +1,4 @@
-import { Minecraft, VanillaWorld, execCmd, StatusCode, dim, VanillaScoreboard } from "scripts/yoni/basis.js";
+import { Minecraft, VanillaWorld, overworld, fetchCmdParams, StatusCode, dim, VanillaScoreboard } from "yoni/basis.js";
 
 import { Entry, EntryType } from "./Entry.js";
 import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "./ScoreboardError.js"
@@ -144,38 +144,38 @@ class Objective {
         
     }
     
-    addScore(entry, score){
+    await postAddScore(entry, score){
         this.checkUnregistered();
 
         if (!Number.isInteger(score))
             throw new ScoreRangeError();
 
         let newScore = (this.getScore(entry) + score + 1) % (2**31) - 1;
-        this.setScore(entry, newScore);
+        await this.postSetScore(entry, newScore);
     }
     
-    randomScore(entry, min=-2147483648, max=2147483647){
+    async postRandomScore(entry, min=-2147483648, max=2147483647){
         this.checkUnregistered();
 
         if (!Number.isInteger(min) || !Number.isInteger(max))
             throw new ScoreRangeError();
         
         let newScore = Math.round((max - min) * Math.random() + min);
-        this.setScore(entry, newScore);
+        await this.postSetScore(entry, newScore);
         return newScore;
     }
     
-    removeScore(entry, score){
+    async postRemoveScore(entry, score){
         this.checkUnregistered();
 
         if (!Number.isInteger(score))
             throw new ScoreRangeError();
         
         let newScore = (this.getScore(entry) - score + 1) % (2**31) - 1;
-        this.setScore(entry, newScore);
+        await this.postSetScore(entry, newScore);
     }
     
-    async resetScore(entry){
+    async postResetScore(entry){
         this.checkUnregistered();
 
         if (!(entry instanceof Entry))
@@ -185,21 +185,21 @@ class Objective {
             let ent = entry.getEntity();
             if (ent == null){
                 throw new InternalError("Could not find the entity");
-            } else if (await execCmd(ent, "scoreboard", "players", "reset", "@s", this.#id).statusCode != StatusCode.success){
+            } else if (await fetchCmdParams(ent, "scoreboard", "players", "reset", "@s", this.#id).statusCode != StatusCode.success){
                 throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
         } else if ([...VanillaWorld.getPlayers()].length === 0){
-            await execCmd(dim(0), "scoreboard", "players", "reset", entry.displayName, this.#id);
+            await fetchCmdParams(overworld, "scoreboard", "players", "reset", entry.displayName, this.#id);
         } else {
             throw new NameConflictError(entry.displayName);
         }
         
     }
     
-    async resetScores(){
+    async postResetScores(){
         this.checkUnregistered();
 
-        await execCmd(dim(0), "scoreboard", "players", "reset", "*", this.#id);
+        await fetchCmdParams(overworld, "scoreboard", "players", "reset", "*", this.#id);
     }
     
     /**
@@ -209,7 +209,7 @@ class Objective {
      * @param {Number} an integer number
      * @throws This function can throw errors.
      */
-    async setScore(entry, score){
+    async postSetScore(entry, score){
         this.checkUnregistered();
         
         if (!(entry instanceof Entry))
@@ -222,11 +222,11 @@ class Objective {
             let ent = entry.getEntity();
             if (ent == null){
                 throw new InternalError("Could not find the entity");
-            } else if (await execCmd(ent, "scoreboard", "players", "set", "@s", this.#id, score).statusCode != StatusCode.success){
+            } else if (await fetchCmdParams(ent, "scoreboard", "players", "set", "@s", this.#id, score).statusCode != StatusCode.success){
                 throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
         } else if ([...VanillaWorld.getPlayers({name: entry.displayName})].length === 0){
-            await execCmd(dim(0), "scoreboard", "players", "set", entry.displayName, this.#id, score);
+            await fetchCmdParams(overwolrd, "scoreboard", "players", "set", entry.displayName, this.#id, score);
         } else {
             throw new NameConflictError(entry.displayName);
         }

@@ -1,3 +1,4 @@
+#根据当前拥有的能量决定血量
 
 scoreboard players set @s var_0 0
 

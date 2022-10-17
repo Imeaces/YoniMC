@@ -1,24 +1,10 @@
-import * as Gametest from "mojang-gametest";
-import * as MinecraftGui from "mojang-minecraft-ui";
-import * as Minecraft from "mojang-minecraft";
-
-//import * as yoni from "scripts/yoni/util/yoni-lib.js";//仅用作调试
+import * as Gametest from "@minecraft/server-gametest";
+import * as MinecraftGui from "@minecraft/server-ui";
+import * as Minecraft from "@minecraft/server";
 
 export { Gametest }
 export { MinecraftGui }
 export { Minecraft }
-/*
-let ServerAdmin;
-let MojangNet;
-import("mojang-server-admin")
-    .then((m)=>{ ServerAdmin = m })
-    .catch();
-import("mojang-net")
-    .then((m)=>{ MojangNet = m })
-    .catch();
-export { ServerAdmin }
-export { MojangNet }
-*/
 
 export const VanillaWorld = Minecraft.world;
 export const VanillaEvents = VanillaWorld.events;
@@ -26,13 +12,16 @@ export const VanillaScoreboard = VanillaWorld.scoreboard;
 export const MinecraftSystem = Minecraft.system;
 export const SystemEvents = MinecraftSystem.events;
 
+export const runTask = (callback)=>{ MinecraftSystem.run(callback); }
+export const overworld = VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.overworld);
+
 export class StatusCode {
     static fail = -2147483648;
     static error = -2147483646;
     static success = 0;
 }
 
-export function dim(dimid = Minecraft.MinecraftDimensionTypes.overworld){
+function dim(dimid = Minecraft.MinecraftDimensionTypes.overworld){
   switch (dimid) {
     case -1:
     case "nether":
@@ -47,59 +36,94 @@ export function dim(dimid = Minecraft.MinecraftDimensionTypes.overworld){
        return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.overworld);
     default:
       try {
-          return VanillaWorld.getDimension(dimid);
+          return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes[dimid]);
       } catch {
           return dim(0);
       }
   }
 }
+dim.overworld = dim(0);
+dim.theEnd = dim(1);
+dim.nether = dim(-1);
+export { dim };
 
-/**
- * 
- * @deprecated - use Command.run() instead
- * @param {String} - command
- * @param {RunnableObject} - 
- * @return {JSON}
- */
-export async function runCmd(command = "", commandRunner){
-  if (typeof commandRunner == "undefined"){
+const testIfHasSpecificChar = /(["'])/g;
+const testIfHasSpaceChar = /(\s)/g;
+
+export const fetchCmd = async (runner, command)=>{
+    if (typeof runner?.runCommandAsync !== "function"){
+        return {
+            statusCode: StatusCode.error,
+            statusMessage: "cannot runCommandAsync"
+        };
+    }
+    let rt;
     try {
-      return await dim(0).runCommandAsync(command);
+        rt = await runner.runCommandAsync(command);
     } catch(err) {
-      return err;
-    };
-  } else {
-    try {
-      return await commandRunner.runCommandAsync(command);
-    } catch(err) {
-      return err;
-    };
-  }
+        try {
+            rt = JSON.parse(err);
+        } catch {
+            rt = {
+                statusCode: StatusCode.fail,
+                statusMessage: String(err)
+            }
+        }
+    }
+    return rt;
 }
 
 /**
  * a simple function to execute command
- * @param {Runner} - a command runner
- * @params {String[]} - 
- * @return {JSON}
+ * @param {CommandRunner} - a command runner
+ * @param {String} - command
+ * @param {String[]} - args
+ * @returns {Promise<CommandResult>}
  */
-export async function execCmd(runner, command, ...args){
-  if (runner == null || typeof runner.runCommandAsync != "function")
-    return { StatusCode: StatusCode.error };
-
-  args.forEach((arg) => {
-    arg = String(arg);
-    //arg.replace(/("|\\|\s)/g, "\\$1");
-    if (arg.replace(/\"/g, "") != arg)
-      arg = arg.replace(/\"/g, "\\\"");
-    if (arg.replace(/\s/g, "") != arg)
-      arg = "\""+arg+"\"";
-    command += "\x20"+arg;
-  });
-  try {
-    return await runner.runCommandAsync(command);
-  } catch(err) {
-    return JSON.parse(err);
-  }
+export const fetchCmdParams = async (runner, command, ...args)=>{
+    if (args?.length === 1 && Array.isArray(args[0])){
+        args = args[0];
+    }
+    if (args.length !== 0){
+        args.forEach((arg) => {
+            arg = String(arg);
+            if (testIfHasSpecificChar.test(arg)){
+                arg = arg.replaceAll(testIfHasSpecificChar, "\\$1");
+            }
+            if (testIfHasSpaceChar.test(arg)){
+                arg = `"${arg}"`;
+            }
+            command += ` ${arg}`;
+        });
+    }
+    return await fetchCmd(runner, command);
 }
 
+/* 测试用代码，可以忽略
+class StatusCode {
+    static fail = -2147483648;
+    static error = -2147483646;
+    static success = 0;
+}
+
+function logExecCmd(command, ...args){
+    const testIfHasSpecificChar = /(["'])/g;
+    const testIfHasSpaceChar = /(\s)/g;
+    if (args?.length === 1 && Array.isArray(args[0])){
+        args = args[0];
+    }
+    if (args !== undefined){
+        args.forEach((arg) => {
+            arg = String(arg);
+            if (testIfHasSpecificChar.test(arg)){
+                arg = arg.replaceAll(testIfHasSpecificChar, "\\$1");
+            }
+            if (testIfHasSpaceChar.test(arg)){
+                arg = `"${arg}"`;
+            }
+            command += ` ${arg}`;
+        });
+    }
+    console.log(command);
+}
+*/

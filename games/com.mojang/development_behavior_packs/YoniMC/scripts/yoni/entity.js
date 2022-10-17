@@ -1,28 +1,7 @@
-import { Minecraft, Gametest, dim, StatusCode, VanillaEvents } from "scripts/yoni/basis.js";
-import Entry from "scripts/yoni/scoreboard/Entry.js";
-import Command from "scripts/yoni/command.js";
+import { fetchCmd, Minecraft, Gametest, dim, overworld, StatusCode, VanillaEvents } from "yoni/basis.js";
+import Entry from "yoni/scoreboard/Entry.js";
+
 const { EntityTypes } = Minecraft;
-/* 动态注册属性想都不要想
-function registerProp(entityType, property){
-    entityType = EntityTypes.get(entityType);
-    value.propertyRegistry.registerEntityTypeDynamicProperties(property, entityType);
-}
-function registerProp(entityType, property){
-    entityType = EntityTypes.get(entityType);
-    const registerPropFunc = (event)=>{
-        try {
-        event.propertyRegistry.registerEntityTypeDynamicProperties(property, entityType);
-        VanillaEvents.worldInitialize.unsubscribe(registerPropFunc);
-        console.warn("register");
-        } catch(e) {
-            console.error(e);
-            console.error(e.message);
-            console.error(e.stack);
-        }
-    };
-    VanillaEvents.worldInitialize.subscribe(registerPropFunc);
-}
-*/
 
 let entityMap = new WeakMap();
 
@@ -48,7 +27,12 @@ function getLoadedEntities(option){
 export class Entity {
     
     get entityType(){
-        return EntityTypes.get(this.id);
+        return EntityTypes.get(this.typeid);
+    }
+    
+    get typeid(){
+        //我就喜欢你这种不区分大小写的人（请忽略上方的代码）
+        return this.typeId;
     }
     
     #vanillaEntity;
@@ -98,6 +82,7 @@ export class Entity {
     }
     
     get uniqueId(){
+        return this.id;
     }
     
     get scoreboard(){
@@ -115,15 +100,6 @@ export class Entity {
     getCurrentHealth(){
         return Entity.getCurrentHealth(this);
     }
-    /*
-    getProperty(id){
-        let rt;
-        try {
-            rt = this.getDynamicProperty(id);
-        } catch {}
-        return rt;
-    }
-    */
     getHealthComponent(){
         return Entity.getHealthComponent(this);
     }
@@ -137,45 +113,19 @@ export class Entity {
     }
     
     hasFamily(family){
-        return Entity.hasAnyFamily(this, familiy);
+        return Entity.hasAnyFamily(this, family);
     }
     
     hasAnyFamily(...families){
         return Entity.hasAnyFamily(this, ...families);
     }
-    /*
-    removeProperty(id){
-        return this.removeDynamicProperty(id);
+    async fetchCommand(cmd){
+        return await fetchCmd(this, cmd);
     }
-    */
-    say(message){
+    async say(message){
         let command = "say " + message;
-        return Command.execute(this, command);
+        return await this.fetchCommand(command);
     }
-    /*
-    setProperty(id, value){
-        let oldType = typeof this.getProperty(id);
-        let newType = typeof value;
-        if (newType === "number" || newType === "boolean"){
-            if (newType !== oldType){
-                let newProp = new DynamicPropertiesDefinition();
-                if (newType === "number"){
-                    newProp.defineBoolean(id);
-                } else {
-                    newProp.defineNumber(id);
-                }
-                registerProp(this.id, newProp);
-            }
-        } else if (newType === "string"){
-            let newProp = new DynamicPropertiesDefinition()
-                .defineString(id, value.length);
-            registerProp(this.id, newProp);
-        } else {
-            throw new TypeError("The Dynamic Property only accept string, number or boolean");
-        }
-        return this.setDynamicProperty(id, value);
-    }
-    */
     
     /**
      * 检查一个东西是否为实体
@@ -304,8 +254,7 @@ export class Entity {
         Entity.checkIsEntity(entity);
         for (let fam of families){
             fam = String(fam);
-            let command = "execute if entity @s[family="+fam+"]";
-            if (Command.execute(entity, command).statusCode == 0)
+            if (execCmd(entity, "execute", "if", "entity", `@s[family=${fam}]`).statusCode == 0)
                 return true;
         }
         return false;
@@ -389,23 +338,23 @@ export class Player extends Entity {
     /**
      * 踢出玩家
      */
-    kick(msg=""){
-        let rt = Command.run(`kick "${this.name}" ${msg}`);
+    async postKick(msg){
+        let rt = (typeof msg === "string" && msg !== "") ? await fetchCmd(overworld, "kick", this.name, msg) : await fetchCmd(overworld, "kick", this.name);
         if (rt.statusCode !== StatusCode.success){
             throw new Error(rt.statusMessage);
         }
     }
     
     
-    sendMessage(message){
+    async sendMessage(message){
         let rawtext = { rawtext: [{ text: String(message) }] };
-        return this.sendRawMessage(rawtext);
+        return await this.sendRawMessage(rawtext);
     }
     
     
-    sendRawMessage(rawtext){
+    async sendRawMessage(rawtext){
         let command = "tellraw @s " + JSON.stringify(rawtext);
-        if (Command.execute(this, command).statusCode == 0)
+        if (await this.fetchCommand(command).statusCode == 0)
             return true;
         else return false;
     }

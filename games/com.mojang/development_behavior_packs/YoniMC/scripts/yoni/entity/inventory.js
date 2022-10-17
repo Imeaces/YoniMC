@@ -1,4 +1,4 @@
-import { Minecraft } from "scripts/yoni/basis.js";
+import { Minecraft } from "yoni/basis.js";
 const { EntityInventoryComponent } = Minecraft;
 
 const inventoryMap = new WeakMap();

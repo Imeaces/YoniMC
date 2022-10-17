@@ -1,10 +1,10 @@
-import { Minecraft, VanillaWorld, dim } from "scripts/yoni/basis.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
-import Command from "scripts/yoni/command.js";
-import { FastScoreboard as Fscb } from "scripts/yoni/scoreboard.js";
-import { EventListener } from "scripts/yoni/event.js";
-import { World } from "scripts/yoni/world.js";
-import { YoniScheduler, Schedule } from "scripts/yoni/schedule.js";
+import { Minecraft, VanillaWorld, dim } from "yoni/basis.js";
+import { YoniEntity } from "yoni/entity.js";
+import Command from "yoni/command.js";
+import { Scoreboard } from "yoni/scoreboard.js";
+import { EventListener } from "yoni/event.js";
+import { World } from "yoni/world.js";
+import { YoniScheduler, Schedule } from "yoni/schedule.js";
 
 YoniScheduler.addSchedule(new Schedule ({
     async: false,
@@ -29,8 +29,8 @@ YoniScheduler.addSchedule(new Schedule ({
     delay: 0,
     period: 20,
     callback: () => {
-        let healthO = Fscb("health");
-        let maxHealthO = Fscb("max_health");
+        let healthO = Scoreboard.getObjective("health");
+        let maxHealthO = Scoreboard.getObjective("max_health");
         World.getPlayers().forEach((player) => {
             let component = player.getHealthComponent();
             

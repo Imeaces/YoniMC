@@ -1,6 +1,6 @@
-import ChatCommand from "scripts/yoni/command/ChatCommand.js";
-import Scoreboard from "scripts/yoni/scoreboard.js";
-import { EventListener } from "scripts/yoni/event.js";
+import ChatCommand from "yoni/command/ChatCommand.js";
+import Scoreboard from "yoni/scoreboard.js";
+import { EventListener } from "yoni/event.js";
 import { isDebug } from "./config.js";
 
 if (isDebug()){

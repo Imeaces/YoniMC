@@ -4,6 +4,7 @@ scoreboard players set @s var_0 0
 scoreboard objectives add yoni:guxi dummy "咕西"
 scoreboard players add @s yoni:guxi 0
 
+#: yoni:guxi_1 负责传递状态
 scoreboard objectives add yoni:guxi_1 dummy
 scoreboard players set @s yoni:guxi_1 0
 
@@ -34,5 +35,4 @@ execute if score @s yoni:guxi_1 matches 0 run tell @s 意料之外的情况
 execute if score @s yoni:guxi_1 matches 0 run tellraw @s {"rawtext":[{"score":{"objective":"yoni:guxi", "name":"@s"}}]}
 execute if score @s yoni:guxi_1 matches 0 run tellraw @s {"rawtext":[{"score":{"objective":"alive", "name":"@s"}}]}
 execute if score @s yoni:guxi_1 matches 0 run tellraw @s {"rawtext":[{"score":{"objective":"yoni:guxi_1", "name":"@s"}}]}
-execute if score @s yoni:guxi_1 matches 0 run kill @s
 execute if score @s yoni:guxi_1 matches 0 run kill @s

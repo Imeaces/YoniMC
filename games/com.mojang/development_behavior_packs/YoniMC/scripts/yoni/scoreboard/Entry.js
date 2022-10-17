@@ -1,10 +1,11 @@
-import { VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
+import { VanillaScoreboard, Minecraft } from "yoni/basis.js";
+import { YoniEntity } from "yoni/entity.js";
 
+let entityIdRecords = new Map();
 let idRecords = new Map();
-let entityRecords = new Map();
+let entityRecords = new WeakMap();
 let nameRecords = new Map();
-let scbidRecords = new Map();
+let scbidRecords = new WeakMap();
 
 class EntryType {
     static PLAYER = Minecraft.ScoreboardIdentityType.player;

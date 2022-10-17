@@ -110,3 +110,20 @@ String.prototype.byteLength = function() {  //获取字符串的字节数，扩�
 }
 */
 export { string2Byte, encodeUnicode, isNullString };
+/*
+Object.defineProperty(String.prototype, "byteLength", {
+    get() {  //获取字符串的字节数，扩展string类型方法
+        let byteLength = 0;
+        if (this.length){  //如果存在字符串，则执行计划
+            for(let i = 0; i < this.length; i ++) {  //遍历字符串，枚举每个字符
+                if(this.charCodeAt(i) > 255) {  //字符编码大于255，说明是双字节字符
+                    byteLength += 2;  //则累加2个
+                }else {
+                    byteLength ++;  //否则递加一次
+                }
+            }
+        }
+        return byteLength;
+    }
+});
+*/

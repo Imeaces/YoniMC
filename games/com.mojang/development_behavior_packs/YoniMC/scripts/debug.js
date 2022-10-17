@@ -1,12 +1,12 @@
-import ChatCommand from "scripts/yoni/command/ChatCommand.js";
-import { Minecraft, dim, VanillaWorld, Gametest } from "scripts/yoni/basis.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
-import { send, say } from "scripts/yoni/util/utils.js";
-import { isDebug } from "scripts/yoni/config.js";
-import Command from "scripts/yoni/command.js";
-import Scoreboard from "scripts/yoni/scoreboard.js";
-import { EventListener } from "scripts/yoni/event.js";
-import { getErrorMsg } from "scripts/yoni/util/console.js";
+import { ChatCommand } from "yoni/command/ChatCommand.js";
+import { Command } from "yoni/command.js";
+import { Minecraft, dim, VanillaWorld, Gametest } from "yoni/basis.js";
+import { YoniEntity } from "yoni/entity.js";
+import { send, say } from "yoni/util/utils.js";
+import { isDebug } from "yoni/config.js";
+import Scoreboard from "yoni/scoreboard.js";
+import { EventListener } from "yoni/event.js";
+import { getErrorMsg } from "yoni/util/console.js";
 
 if (isDebug()){
 

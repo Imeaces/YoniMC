@@ -4,8 +4,8 @@
         "name": "YoniMC",
         "description": "YoniMC 可能的不一样的世界",
         "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-        "version": [0, 8, 0],
-        "min_engine_version": [1, 19, 30]
+        "version": [0, 8, 1195020],
+        "min_engine_version": [1, 19, 50]
     },
     "modules": [
         {
@@ -19,7 +19,7 @@
             "type": "script",
             "language": "javascript",
             "uuid": "7537ab86-a509-4029-87bb-2a63e817e798",
-            "version": [0, 4, 11930],
+            "version": [0, 5, 11930],
             "entry": "scripts/index.js"
         }
     ],

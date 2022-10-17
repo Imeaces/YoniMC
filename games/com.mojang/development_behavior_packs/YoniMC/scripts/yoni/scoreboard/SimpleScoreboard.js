@@ -1,4 +1,4 @@
-import { StatusCode, execCmd, dim, VanillaScoreboard, Minecraft } from "scripts/yoni/basis.js";
+import { StatusCode, fetchCmdParams, overworld, dim, VanillaScoreboard, Minecraft } from "yoni/basis.js";
 
 import Objective from "./Objective.js";
 import Entry from "./Entry.js";
@@ -93,11 +93,11 @@ export default class SimpleScoreboard {
             return objective;
         }
         
-        let vanillaObjective = ()=>{
+        let vanillaObjective = (()=>{
             try {
                 return VanillaScoreboard.getObjective(name);
             } catch {}
-        }();
+        })();
         if (objective === null && vanillaObjective != null){
             let newObjective = new Objective(this, vanillaObjective);
             this.#objectives.set(name, newObjective);
@@ -135,7 +135,7 @@ export default class SimpleScoreboard {
         return this.getObjective(VanillaScoreboard.getObjectiveAtDisplaySlot(slot).id);
     }
     
-    static async setDisplaySlot(slot, objective, sequence="descending"){
+    static setDisplaySlot(slot, objective, sequence="descending"){
         if (!Array.from(DisplaySlotType).includes(slot))
             throw new TypeError("Not a DisplaySlot type");
         if (!(objective instanceof Objective))
@@ -144,9 +144,9 @@ export default class SimpleScoreboard {
             throw new TypeError("Not a Objective or a objective name");
         
         if (slot == DisplaySlotType.BELOW_NAME){
-            await execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id);
+            await fetchCmdParams(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id);
         } else {
-            await execCmd(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id, sequence);
+            await fetchCmdParams(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id, sequence);
         }
 
     }
@@ -185,13 +185,13 @@ export default class SimpleScoreboard {
      */
     static async resetAllScore(filter){
         if (filter === undefined){
-            await execCmd(dim(0), "scoreboard", "players", "reset", "*");
+            await fetchCmdParams(dim(0), "scoreboard", "players", "reset", "*");
             return;
         }
         
         [...SimpleScoreboard.getEntries()].forEach(id=>{
             if (filter(id)){
-                SimpleScoreboard.resetScore(id);
+                await SimpleScoreboard.resetScore(id);
             }
         });
     }
@@ -208,11 +208,11 @@ export default class SimpleScoreboard {
             let ent = entry.getEntity();
             if (ent === undefined){
                 throw new InternalError("Could not find the entity");
-            } else if (await execCmd(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
+            } else if (await fetchCmdParams(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
                 throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
         } else if ([...VanillaWorld.getPlayers()].length === 0){
-            await execCmd(dim(0), "scoreboard", "players", "reset", entry.displayName);
+            await fetchCmdParams(dim(0), "scoreboard", "players", "reset", entry.displayName);
         } else {
             throw new NameConflictError(entry.displayName);
         }

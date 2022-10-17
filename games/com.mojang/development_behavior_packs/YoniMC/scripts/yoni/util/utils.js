@@ -1,12 +1,7 @@
-import { Command } from "scripts/yoni/command.js";
-import { dim, VanillaWorld } from "scripts/yoni/basis.js";
-import { YoniEntity } from "scripts/yoni/entity.js";
-import { getErrorMsg } from "./console.js";
-import { log } from "./Logger.js";
+import { dim, VanillaWorld, overworld, fetchCmd, fetchCmdParams } from "yoni/basis.js";
 
-import { debug } from "scripts/yoni/config.js";
 
-export function say(msg = "", displayNameOrSender="commands.origin.script"){
+export async function say(msg = "", displayNameOrSender="commands.origin.script"){
     let runner;
     let senderDisplayName;
     
@@ -28,9 +23,10 @@ export function say(msg = "", displayNameOrSender="commands.origin.script"){
             }
         }
     ]
-    Command.execute(runner, `tellraw @a ${JSON.stringify({rawtext})}`);
+    return await fetchCmd(runner, `tellraw @a ${JSON.stringify({rawtext})}`);
 }
 
-export function send(receiver, message){
-     return YoniEntity.from(receiver).sendMessage(message);
+export async function send(receiver, message){
+    let rawtext = JSON.stringify({rawtext:[{translate: String(message)}]})
+    return await fetchCmd(receiver, `tellraw @s ${rawtext}`);
 }

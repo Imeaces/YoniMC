@@ -1,4 +1,4 @@
-import { Minecraft } from "scripts/lib/yoni/basis.js";
+import { Minecraft } from "./basis.js";
 
 export default class ItemStack {
     constructor(item){

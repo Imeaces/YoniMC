@@ -1,4 +1,4 @@
-import { dim } from "scripts/lib/yoni/basis.js";
+import { dim } from "./basis.js";
 
 function log(){
   return
