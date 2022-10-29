@@ -4,7 +4,7 @@
     "name": "GuxiInMinecraft",
     "description": "咕西",
     "uuid": "36dba2f9-9f68-439e-b290-080296aa5729",
-    "version": [0, 1, 0],
+    "version": [0, 1, 1],
     "min_engine_version": [1, 19, 0]
   },
   "modules": [
@@ -12,14 +12,14 @@
       "description": "data:yoni",
       "type": "data",
       "uuid": "6e360e97-62a7-4515-a052-3813e306488e",
-      "version": [0, 4, 1]
+      "version": [0, 4, 2]
     },
     {
       "description": "guxi",
       "type": "script",
       "language": "javascript",
       "uuid": "7537ab86-a509-4029-87bb-2a63e817e798",
-      "version": [0, 1, 0],
+      "version": [0, 1, 1],
       "entry": "scripts/yoni/guxi.js"
     }
   ],
@@ -39,7 +39,7 @@
     "authors": [
       "Silvigarabis"
     ],
-    "license": "CC BY-SA 4.0",
+    "license": "CC BY-NC-SA 4.0",
     "url": "https://github.com/Silvigarabis/YoniMC"
   }
 }

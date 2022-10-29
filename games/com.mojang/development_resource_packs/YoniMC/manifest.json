@@ -4,7 +4,7 @@
         "name": "YoniMC",
         "description": "是的\n这是一个美丽的世界",
         "uuid": "86e4face-ed0c-4945-bd61-f648424cd056",
-        "version": [0, 1, 5],
+        "version": [0, 1, 6],
         "min_engine_version": [1, 18, 30]
     },
     "modules": [
@@ -17,13 +17,13 @@
     ],
     "dependencies": [{
         "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-        "version": [0, 8, 0]
+        "version": [0, 8, 2]
     }],
     "metadata": {
       "authors": [
         "Silvigarabis"
       ],
-      "license": "CC BY-SA 4.0",
+      "license": "CC BY-NC-SA 4.0",
       "url": "https://github.com/Silvigarabis/YoniMC"
     }
 }
