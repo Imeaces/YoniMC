@@ -1,7 +1,6 @@
 import { VanillaScoreboard, Minecraft } from "yoni/basis.js";
 import { YoniEntity } from "yoni/entity.js";
 
-let entityIdRecords = new Map();
 let idRecords = new Map();
 let entityRecords = new WeakMap();
 let nameRecords = new Map();
@@ -13,6 +12,9 @@ class EntryType {
     static FAKE_PLAYER = Minecraft.ScoreboardIdentityType.fakePlayer;
 }
 
+/**
+ * interface
+ */
 class EntryOption {
     name;
     id;
@@ -22,10 +24,6 @@ class EntryOption {
 }
 
 class Entry {
-    static #fakePlayerEntity = Symbol("fakePlayerEntity");
-    static get fakePlayerEntity(){
-        return this.#fakePlayerEntity;
-    }
     
     static guessEntry(any){
         if (any instanceof Minecraft.ScoreboardIdentity)
@@ -127,6 +125,7 @@ class Entry {
                 }
             }
         } else {
+            //使用getter重新初始化变量
             let i = this.vanillaScbid;
         }
         return this;

@@ -6,8 +6,10 @@ import { Scoreboard } from "yoni/scoreboard.js";
 import { EventListener } from "yoni/event.js";
 import { YoniScheduler, Schedule } from "yoni/schedule.js";
 import { World } from "yoni/world.js";
-import { log } from "yoni/util/Logger.js";
+import { Logger } from "yoni/util/Logger.js";
 const { MinecraftEffectTypes, EntityDamageCause, EntityQueryScoreOptions } = Minecraft;
+
+const logger = new Logger("Species.guxi");
 
 Scoreboard.getObjective("species", true);
 const energyO = Scoreboard.getObjective("guxi:energy");
@@ -45,19 +47,6 @@ const cycleTick = ()=>{
     let guxis = World.getPlayers({
         families: [ "yoni_guxi" ]
     })
-    guxis.forEach((pl)=>{
-        let out = pl.onScreenDisplay;
-        let text = "§r§f"+energylO.getScore(pl)+"§7|"+energyO.getScore(pl);
-        out.setActionBar(text);
-    });
-    guxis.forEach(pl=>{
-      try{
-        pl.addEffect(MinecraftEffectTypes["fireResistance"], -200);
-}catch(e){
-log("{}", e);
-}
-    });
-
 };
 
 
@@ -391,10 +380,4 @@ EventListener.register("entityHurt", (event)=> {
     }
 });
 
-YoniScheduler.addSchedule(new Schedule ({
-    async: false,
-    type: Schedule.tickCycleSchedule,
-    delay: 2,
-    period: 5,
-    callback: cycleTick
-}));
+YoniScheduler.runCycleTickTask(cycleTick, 2, 5, false);

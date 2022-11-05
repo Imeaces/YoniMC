@@ -236,7 +236,7 @@ EventListener.register("minecraft:playerLeave", (event)=>{
     sendQQGroupMessage(`玩家 ${event.playerName} 离开了游戏`);
 });
 
-EventListener.register("yonimc:playerJoined", (event)=>{
+EventListener.register("yoni:playerJoined", (event)=>{
     sendQQGroupMessage(`玩家 ${event.player.name} 加入了游戏`);
 });
 
@@ -271,8 +271,10 @@ class QQGroupChatEvent {
 
 let lastFetchTimeMs = 0;
 let seid;
-let signal = new EventSignal("yonimc:serverReceiveQQMsg", QQGroupChatEvent)
-    .register(()=>{
+let signal = EventSignal.builder("yonimc:serverReceiveQQMsg")
+    .eventClass(QQGroupChatEvent)
+    .build()
+    .whenFirstSubscribe(()=>{
         seid = EventListener.register("tick", async (event)=>{
             
             let currentDateMs = Date.now();
@@ -326,7 +328,7 @@ let signal = new EventSignal("yonimc:serverReceiveQQMsg", QQGroupChatEvent)
         
         });
     })
-    .unregister(()=>{
+    .whenLastUnsubscribe(()=>{
         EventListener.unregister(seid);
     })
     .registerEvent();

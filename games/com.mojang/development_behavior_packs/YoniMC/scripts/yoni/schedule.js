@@ -1,7 +1,7 @@
-import { EventListener } from "./event.js";
 import { SystemEvents } from "./basis.js";
 import { Logger } from "./util/Logger.js";
 import { runTask } from "./basis.js";
+import { debug } from "./config.js";
 
 const logger = new Logger("Schedule");
 
@@ -10,6 +10,7 @@ const isLastSuccessRecords = new WeakMap();
 const lastSuccessTimeRecords = new WeakMap();
 const lastFailTimeRecords = new WeakMap();
 const lastExecuteTimeRecords = new WeakMap();
+const scheduleCallbacks = new WeakMap();
 
 export class Schedule {
     static timeCycleSchedule = Symbol("Schedule.timerCycleSchedule");
@@ -41,10 +42,8 @@ export class Schedule {
             rt = lastExecuteTimeRecords.get(this);
         return rt;
     }
-    constructor(props){
-        let { callback, async, period, delay, type } = props;
-        logger.trace("adding new schedule:\n async: {}\n period: {}\n delay: {}\n type: {}", async, period, delay,type.toString());
-        this.#callback = callback;
+    constructor(callback, props){
+        let { async, period, delay, type } = props;
         this.async = (!!async)?true:false;
         
         if ((type === Schedule.tickCycleSchedule
@@ -61,18 +60,22 @@ export class Schedule {
         this.type = type;
         
         this.id = scheduleCurrentIndex++;
+        scheduleCallbacks.set(this, callback);
         Object.freeze(this);
     }
-    #callback;
     run(...args){
-        return this.#callback(...args);
+        let callback = scheduleCallbacks.get(this);
+        callback(...args);
     }
     async runAsync(...args){
-        return await this.#callback(...args);
+        let callback = scheduleCallbacks.get(this);
+        await callback(...args);
     }
 }
 
+let executingSchedule = null;
 function executeSchedule(schedule, time){
+    executingSchedule = schedule;
     lastExecuteTimeRecords.set(schedule, time);
     if (schedule.async){
         async ()=>{
@@ -86,7 +89,7 @@ function executeSchedule(schedule, time){
                 lastSuccessTimeRecords.set(schedule, time);
             } catch(err) {
                 lastFailTimeRecords.set(schedule, true);
-                logger.trace(`async schedule {} 运行时出现错误 {}`, schedule.id, err);
+                logger.error(`async schedule {} 运行时出现错误 {}`, schedule.id, err);
             }
         }();
     } else {
@@ -100,9 +103,10 @@ function executeSchedule(schedule, time){
             lastSuccessTimeRecords.set(schedule, time);
         } catch(err) {
             lastFailTimeRecords.set(schedule, true);
-            logger.trace(`schedule {} 运行时出现错误 {}`, schedule.id, err);
+            logger.error(`schedule {} 运行时出现错误 {}`, schedule.id, err);
         }
     }
+    executingSchedule = null;
 }
 
 const scheduleTickDelayLessRecords = new WeakMap();
@@ -111,8 +115,8 @@ const scheduleAddTimeRecords = new WeakMap();
 const schedulesTypedRecords = {};
 const taskMap = new Map();
 
-function ticking(event){
-    runTask(ticking);
+function doTickDelaySchedule(event){
+    runTask(doTickDelaySchedule);
     //首先，处理只执行一次的tick任务
     let tickDelaySchedules = schedulesTypedRecords[Schedule.tickDelaySchedule];
     if (tickDelaySchedules !== undefined){
@@ -131,7 +135,9 @@ function ticking(event){
             executeSchedule(schedule, time);
         }
     }
-    
+}
+function doTimeDelaySchedule(event){
+    runTask(doTimeDelaySchedule);
     //接着，处理只执行一次的时间延时任务
     let timeDelaySchedules = schedulesTypedRecords[Schedule.timeDelaySchedule];
     if (timeDelaySchedules !== undefined){
@@ -151,7 +157,9 @@ function ticking(event){
             executeSchedule(schedule, time);
         }
     }
-    
+}
+function doTickCycleSchedule(event){
+    runTask(doTickCycleSchedule);
     //然后，处理循环执行的tick任务
     let tickCycleSchedules = schedulesTypedRecords[Schedule.tickCycleSchedule];
     if (tickCycleSchedules !== undefined){
@@ -169,7 +177,9 @@ function ticking(event){
             executeSchedule(schedule, time);
         }
     }
-    
+}
+function doTimeCycleSchedule(event){
+    runTask(doTimeCycleSchedule);
     //最后，处理循环的时间延时任务
     let timeCycleSchedules = schedulesTypedRecords[Schedule.timeCycleSchedule];
     if (timeCycleSchedules !== undefined){
@@ -191,11 +201,11 @@ function ticking(event){
             
         }
     }
-    
 }
 
-function beforeTerminate(event){
-}
+/**
+ * 你可以使用它创建任务
+ */
 export default class YoniScheduler {
     static addSchedule(schedule){
         if (!(schedule instanceof Schedule))
@@ -208,7 +218,7 @@ export default class YoniScheduler {
         taskMap.set(schedule.id, schedule);
         
         scheduleAddTimeRecords.set(schedule, Date.now());
-        
+        logger.trace("增加了新的任务, id: {}, async: {}, type: {}, period: {}, delay: {}", schedule.id, schedule.async, schedule.type.toString(), schedule.period, schedule.delay);
         return schedule.id;
     }
     
@@ -228,6 +238,7 @@ export default class YoniScheduler {
             let i = list.indexOf(id);
             list.splice(i, 1);
             taskMap.delete(id);
+            logger.trace("移除了任务, id: {}", id);
             return true;
         } else {
             return false;
@@ -235,33 +246,109 @@ export default class YoniScheduler {
     }
     
     /**
+     * 执行一个任务
+     * @param {Function} 需要执行的任务
+     * @param {Boolean} 是否异步执行
      * @returns {Number} taskId
      */
-    static runTaskTimer(callback, delay, period){
-        let schedule = new Schedule({
-            async: false,
-            delay: delay,
-            period: period,
-            type: Schedule.tickDelaySchedule,
-            callback: callback
+    static runTask(callback, async = false){
+        let schedule = new Schedule(callback, {
+            async,
+            delay: 0,
+            type: Schedule.tickDelaySchedule
         });
         YoniScheduler.addSchedule(schedule);
+        return schedule.id;
     }
-    static runTask(callback, delay=0){
-        let schedule = new Schedule({
-            async: false,
-            delay: delay,
-            type: Schedule.tickDelaySchedule,
-            callback: callback
+    
+    /**
+     * 在delay毫秒之后，执行一个任务
+     * @param {Function} 需要执行的任务
+     * @param {Number} 延时多少毫秒后开始执行
+     * @param {Boolean} 是否异步执行
+     * @returns {Number} taskId
+     */
+    static runDelayTimerTask(callback, delay=0, async = false){
+        let schedule = new Schedule(callback, { async, delay,
+            type: Schedule.timeDelaySchedule
         });
         YoniScheduler.addSchedule(schedule);
+        return schedule.id;
+    }
+    
+    /**
+     * 在delay刻之后，执行一个任务
+     * @param {Function} 需要执行的任务
+     * @param {Number} 延时多少刻后开始执行
+     * @param {Boolean} 是否异步执行
+     * @returns {Number} taskId
+     */
+    static runDelayTickTask(callback, delay=0, async = false){
+        let schedule = new Schedule(callback, {
+            async,
+            delay,
+            type: Schedule.tickDelaySchedule
+        });
+        YoniScheduler.addSchedule(schedule);
+        return schedule.id;
+    }
+    
+    /**
+     * 在delay毫秒之后，以固定period执行一个任务
+     * @param {Function} 需要执行的任务
+     * @param {Number} 延时多少毫秒后开始执行
+     * @param {Number} 每隔多少毫秒触发一次
+     * @param {Boolean} 是否异步执行
+     * @returns {Number} taskId
+     */
+    static runCycleTimerTask(callback, delay, period=1, async = falsw){
+        let schedule = new Schedule(callback, {
+            async,
+            delay,
+            period,
+            type: Schedule.timeCycleSchedule
+        });
+        YoniScheduler.addSchedule(schedule);
+        return schedule.id;
+    }
+
+    /**
+     * 在delay刻之后，以固定period执行一个任务
+     * @param {Function} 需要执行的任务
+     * @param {Number} 延时多少刻后开始执行
+     * @param {Number} 每隔多少刻触发一次
+     * @param {Boolean} 是否异步执行
+     * @returns {Number} taskId
+     */
+    static runCycleTickTask(callback, delay=0, period, async = false){
+        let schedule = new Schedule(callback, {
+            async,
+            delay,
+            period,
+            type: Schedule.tickCycleSchedule
+        });
+        YoniScheduler.addSchedule(schedule);
+        return schedule.id;
     }
 }
 
 export { YoniScheduler };
 
-EventListener.register(SystemEvents.beforeWatchdogTerminate, beforeTerminate);
-runTask(ticking);
+//对于异常挂断的特殊处理，但是不知道有没有用
+SystemEvents.beforeWatchdogTerminate.subscribe((event)=>{
+    if (executingSchedule !== null){
+        logger.warn("在执行一个任务的过程中碰到了脚本挂断事件，事件id: {}, 类型: {}, 挂断原因: {}", executingSchedule.id, String(executingSchedule.type), event.terminateReason);
+        if (debug){
+            logger.warn("正在输出相关任务的回调代码，请在trace中查看");
+            logger.trace(String(scheduleCallbacks.get(executingSchedule)));
+        }
+    }
+});
+
+runTask(doTickDelaySchedule);
+runTask(doTimeDelaySchedule);
+runTask(doTickCycleSchedule);
+runTask(doTimeCycleSchedule);
 
 class TaskInfo { //还没弄
     isLastSuccess; //上次执行时是否成功

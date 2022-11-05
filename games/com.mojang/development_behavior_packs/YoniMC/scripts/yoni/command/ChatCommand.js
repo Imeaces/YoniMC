@@ -162,7 +162,7 @@ export default class ChatCommand {
         let { sender, rawCommand, label, args, executor } = options;
         sender = YoniEntity.from(sender);
         try {
-            logger.trace("正在执行命令{}", label);
+            logger.debug("正在执行命令{}", label);
             if (typeof executor.onCommand === "function"){
                 executor.onCommand(sender, rawCommand, label, args);
             } else {

@@ -6,39 +6,26 @@ import { EventListener } from "yoni/event.js";
 import { World } from "yoni/world.js";
 import { YoniScheduler, Schedule } from "yoni/schedule.js";
 
-YoniScheduler.addSchedule(new Schedule ({
-    async: false,
-    type: Schedule.tickCycleSchedule,
-    delay: 0,
-    period: 10,
-    callback: () => {
-        World.getPlayers().forEach((e)=>{
+YoniScheduler.runCycleTickTask(() => {
+    World.getPlayers().forEach((e)=>{
         if (e.isSneaking === true
         && !e.hasTag("stat:is_sneaking"))
             e.addTag("stat:is_sneaking");
         else if (e.isSneaking === false
         && e.hasTag("stat:is_sneaking"))
             e.removeTag("stat:is_sneaking");
-        });
-    }
-}));
-
-YoniScheduler.addSchedule(new Schedule ({
-    async: false,
-    type: Schedule.tickCycleSchedule,
-    delay: 0,
-    period: 20,
-    callback: () => {
-        let healthO = Scoreboard.getObjective("health");
-        let maxHealthO = Scoreboard.getObjective("max_health");
-        World.getPlayers().forEach((player) => {
-            let component = player.getHealthComponent();
-            
-            healthO.postSetScore(player, Math.floor(component.current));
-            maxHealthO.postSetScore(player, Math.floor(component.value));
-        });
-    }
-}));
+    })
+}, 4, 10, false);
+YoniScheduler.runCycleTickTask(() => {
+    let healthO = Scoreboard.getObjective("health", true);
+    let maxHealthO = Scoreboard.getObjective("max_health", true);
+    World.getPlayers().forEach((player) => {
+        let component = player.getHealthComponent();
+        
+        healthO.postSetScore(player, Math.floor(component.current));
+        maxHealthO.postSetScore(player, Math.floor(component.value));
+    });
+}, 7, 20, false);
 
 EventListener.register("itemUse", (event) => {
     let ent = event.source;

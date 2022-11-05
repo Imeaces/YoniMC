@@ -2,7 +2,7 @@ import { VanillaWorld, dim } from "./basis.js";
 import { YoniEntity } from "./entity.js";
 import Scoreboard from "./scoreboard.js";
 
-export const World = new Proxy(VanillaWorld, {
+export const World = new Proxy({src: VanillaWorld}, {
     get: (target, prop)=>{
         switch (prop){
             case "getLoadedEntities":
@@ -14,11 +14,11 @@ export const World = new Proxy(VanillaWorld, {
             case "getDimension":
                 return dim;
             default:
-                return target[prop];
+                return target.src[prop];
         }
     }
 });
 
 function getYoniPlayers(options){
-    return [...VanillaWorld.getPlayers(options)].map(pl=>new YoniEntity(pl));
+    return [...VanillaWorld.getPlayers(options)].map(pl=>YoniEntity.from(pl));
 }

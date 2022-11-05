@@ -1,17 +1,20 @@
 import { YoniEntity } from "yoni/entity.js";
-import { EventListener, EventSignal } from "yoni/event.js";
+import { EventListener, EventSignal, Event } from "yoni/event.js";
 
-let eventId;
-export class PlayerDeadEvent {
+export class PlayerDeadEvent extends Event {
     constructor(player){
-        this.player = YoniEntity.from(player);
+        super({ player: YoniEntity.from(player) });
         Object.freeze(this);
     }
     tryCancel(){}
 }
 
-const signal = new EventSignal("yonimc:playerDead", PlayerDeadEvent)
-    .register(()=>{
+let eventId;
+
+const signal = EventSignal.builder("yoni:playerDead")
+    .eventClass(PlayerDeadEvent)
+    .build()
+    .whenFirstSubscribe(()=>{
         eventId = EventListener.register("minecraft:entityHurt", (event)=>{
             if (event.hurtEntity.typeId !== "minecraft:player"){
                 return;
@@ -21,7 +24,7 @@ const signal = new EventSignal("yonimc:playerDead", PlayerDeadEvent)
             }
         }, {type:"minecraft:player"});
     })
-    .unregister(()=>{
+    .whenLastUnsubscribe(()=>{
         EventListener.unregister(eventId);
     })
-    .registerEvent();
+    .registerEvent()

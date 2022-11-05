@@ -1,68 +1,36 @@
-import { Minecraft, VanillaWorld, overworld, fetchCmdParams, StatusCode, dim, VanillaScoreboard } from "yoni/basis.js";
+import { Minecraft, VanillaWorld, overworld, StatusCode, VanillaScoreboard } from "yoni/basis.js";
 
+import { Command } from "yoni/command.js";
 import { Entry, EntryType } from "./Entry.js";
 import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "./ScoreboardError.js"
-
-const objectiveTypes = Object.create(null);
 
 /**
  * Contains objectives and participants for the scoreboard.
  */
 class Objective {
-    static hasCriteria(name){
-        return objectiveTypes[name] !== undefined;
-    }
-    static addCriteria(name, objectiveType){
-        if (this.hasCriteria(name))
-            throw new Error(`Criteria existed! (${name})`);
-        
-        objectiveTypes[name] = objectiveType;
-    }
-    
-    static create(scoreboard, nameOrObj, criteria, displayName){
-        let name;
-        if (nameOrObj instanceof Minecraft.ScoreboardObjective){
-            name = nameOrObj.id;
-            criteria = "dummy";
-            displayName = nameOrObj.displayName;
-        } else if (typeof nameOrObj === "string"){
-            name = nameOrObj;
-        } else {
-            throw new TypeError("argument [1] should be a string or Minecraft.ScoreboardObjective");
-        }
-        
-        if (this.hasCriteria(criteria)){
-            let objectiveType = objectiveTypes[criteria];
-            let newObjective = new objectiveType(scoreboard, name, criteria, displayName);
-            return newObjective;
-        } else {
-            throw new Error(`Unknown criteria: ${criteria}`);
-        }
-    }
-    
     #scoreboard;
+    #objectiveOptions;
+    #id;
+    #criteria;
+    #displayName;
+    #unregistered = false;
+    #vanillaObjective;
     
     /**
      * Identifier of the scoreboard objective.
      * @throws This property can throw when used.
      */
     get id(){
-        this.checkUnregistered();
-
         return this.#id;
     }
-    #id;
     
     /**
      * Returns the criteria of the objective
      * @throws This property can throw when used.
      */
     get criteria(){
-        this.checkUnregistered();
-
         return this.#criteria;
     }
-    #criteria;
     
     /**
      * Returns the player-visible name of this scoreboard
@@ -70,32 +38,33 @@ class Objective {
      * @throws This property can throw when used.
      */
     get displayName(){
-        this.checkUnregistered();
-        
         return this.#displayName;
     }
-    #displayName;
+    
+    isReadOnly(){
+        this.checkUnregistered();
+        return !!this.#objectiveOptions?.readonly;
+    }
     
     /**
      * Returns whether the objective has been removed.
      */
-    get isUnregistered(){
-        if (this.#isUnregistered){
-            return true;
-        } else if (this.#vanillaObjective !== VanillaScoreboard.getObjective(this.#id)){
-            this.#isUnregistered = true;
-            return true;
+    isUnregistered(){
+        if (!this.#unregistered){
+            let currentVanillaObjective = VanillaScoreboard.getObjective(this.#id);
+            if (currentVanillaObjective === undefined || currentVanillaObjective !== this.#vanillaObjective && currentVanillaObjective !== this.#vanillaObjective?.vanillaObjective){
+                this.#unregistered = true;
+            }
         }
-        return false;
+        return this.#unregistered;
     }
-    #isUnregistered = false;
 
     /**
      * Returns whether the objective has been removed.
      * @throws Throw when the objective has been removed.
      */
     checkUnregistered(){
-        if (this.isUnregistered)
+        if (this.isUnregistered())
             throw new ObjectiveUnregisteredError(this.#id);
     }
     
@@ -107,7 +76,6 @@ class Objective {
     get vanillaObjective(){
         return this.#vanillaObjective;
     }
-    #vanillaObjective;
     
     /**
      * @remarks
@@ -117,89 +85,68 @@ class Objective {
     unregister(){
         this.checkUnregistered();
         
-        if (this.vanillaObjective != null){
-            VanillaScoreboard.removeObjective(this.#id);
-        }
+        VanillaScoreboard.removeObjective(this.#id);
     }
     
-    constructor(scoreboard, name, criteria, displayName){
+    constructor(...args){
         
-        this.#scoreboard = scoreboard;
-        
-        if (name instanceof Minecraft.ScoreboardObjective){
-            this.#vanillaObjective = name;
-            name = this.#vanillaObjective.id;
-            criteria = "dummy";
-            displayName = this.#vanillaObjective.displayName;
+        if (args.length === 1){
+            let { scoreboard, vanillaObjective, name, displayName, criteria, objectiveOptions } = args[0];
+            this.#vanillaObjective = vanillaObjective;
+            this.#scoreboard = scoreboard;
+            this.#id = name;
+            this.#criteria = criteria;
+            this.#displayName = displayName;
+            this.#objectiveOptions = objectiveOptions;
         } else {
-            this.#vanillaObjective = VanillaScoreboard.getObjective(name);
+            let [ scoreboard, name, criteria, displayName, vanillaObjective, objectiveOptions ] = args;
+            this.#vanillaObjective = vanillaObjective;
+            this.#scoreboard = scoreboard;
+            this.#id = name;
+            this.#criteria = criteria;
+            this.#displayName = displayName;
+            this.#objectiveOptions = objectiveOptions;
         }
-        if (this.#vanillaObjective == null){
-            this.#vanillaObjective = VanillaScoreboard.addObjective(name, displayName);
-        }
-        
-        this.#id = name;
-        this.#criteria = criteria;
-        this.#displayName = displayName;
-        
     }
     
     async postAddScore(entry, score){
-        this.checkUnregistered();
-
         if (!Number.isInteger(score))
             throw new ScoreRangeError();
-
-        let newScore = (this.getScore(entry) + score + 1) % (2**31) - 1;
-        await this.postSetScore(entry, newScore);
+        if (!await this.#postPlayersCommand("add", entry, score)){
+            throw new InternalError("Could not add score, maybe entity or player disappeared?");
+        }
+        return this.getScore(entry);
     }
     
     async postRandomScore(entry, min=-2147483648, max=2147483647){
-        this.checkUnregistered();
-
         if (!Number.isInteger(min) || !Number.isInteger(max))
             throw new ScoreRangeError();
-        
-        let newScore = Math.round((max - min) * Math.random() + min);
-        await this.postSetScore(entry, newScore);
-        return newScore;
+        if (!await this.#postPlayersCommand("random", entry, min, max)){
+            throw new InternalError("Could not random score, maybe entity or player disappeared?");
+        }
+        return this.getScore(entry);
     }
     
     async postRemoveScore(entry, score){
-        this.checkUnregistered();
-
         if (!Number.isInteger(score))
             throw new ScoreRangeError();
-        
-        let newScore = (this.getScore(entry) - score + 1) % (2**31) - 1;
-        await this.postSetScore(entry, newScore);
+        if (!await this.#postPlayersCommand("remove", entry, score)){
+            throw new InternalError("Could not remove score, maybe entity or player disappeared?");
+        }
+        return this.getScore(entry);
     }
     
     async postResetScore(entry){
-        this.checkUnregistered();
-
-        if (!(entry instanceof Entry))
-            entry = Entry.guessEntry(entry);
-
-        if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
-            let ent = entry.getEntity();
-            if (ent == null){
-                throw new InternalError("Could not find the entity");
-            } else if (await fetchCmdParams(ent, "scoreboard", "players", "reset", "@s", this.#id).statusCode != StatusCode.success){
-                throw new InternalError("Could not set score, maybe entity or player disappeared?");
-            }
-        } else if ([...VanillaWorld.getPlayers()].length === 0){
-            await fetchCmdParams(overworld, "scoreboard", "players", "reset", entry.displayName, this.#id);
-        } else {
-            throw new NameConflictError(entry.displayName);
+        if (!await this.#postPlayersCommand("reset", entry)){
+            throw new InternalError("Could not reset score, maybe entity or player disappeared?");
         }
-        
     }
     
     async postResetScores(){
-        this.checkUnregistered();
-
-        await fetchCmdParams(overworld, "scoreboard", "players", "reset", "*", this.#id);
+        let rt = await Command.fetchParams("scoreboard", "players", "reset", "*", this.#id);
+        if (!rt.statusCode){
+            throw new Error(rt.statusMessage);
+        }
     }
     
     /**
@@ -210,23 +157,30 @@ class Objective {
      * @throws This function can throw errors.
      */
     async postSetScore(entry, score){
+        if (!Number.isInteger(score))
+            throw new ScoreRangeError();
+        if (!await this.#postPlayersCommand("set", entry, score)){
+            throw new InternalError("Could not set score, maybe entity or player disappeared?");
+        }
+        return score;
+    }
+    
+    async #postPlayersCommand(option, entry, ...args){
         this.checkUnregistered();
         
         if (!(entry instanceof Entry))
             entry = Entry.guessEntry(entry);
-
-        if (!Number.isInteger(score))
-            throw new ScoreRangeError();
-
+        
         if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
+            let params = ["scoreboard", "players", option, "@s", this.#id, ...args];
             let ent = entry.getEntity();
-            if (ent == null){
+            if (ent === undefined){
                 throw new InternalError("Could not find the entity");
-            } else if (await fetchCmdParams(ent, "scoreboard", "players", "set", "@s", this.#id, score).statusCode != StatusCode.success){
-                throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
+            return !(await Command.addExecuteParams(Command.PRIORITY_HIGHEST, ent, ...params)).statusCode;
         } else if ([...VanillaWorld.getPlayers({name: entry.displayName})].length === 0){
-            await fetchCmdParams(overwolrd, "scoreboard", "players", "set", entry.displayName, this.#id, score);
+            let params = ["scoreboard", "players", option, entry.displayName, this.#id, ...args];
+            return !(await Command.addParams(Command.PRIORITY_HIGHEST, ...params)).statusCode;
         } else {
             throw new NameConflictError(entry.displayName);
         }
@@ -295,9 +249,24 @@ class Objective {
             scoreInfo.score = 0;
         return scoreInfo;
     }
+    
+    //以下为兼容函数，主要是不这样做要改的东西比较多
+    setScore(...args){
+        return this.postSetScore(...args);
+    }
+    removeScore(...args){
+        return this.postRemoveScore(...args);
+    }
+    randomScore(...args){
+        return this.postRandomScore(...args);
+    }
+    resetScore(...args){
+        return this.postResetScore(...args);
+    }
+    addScore(...args){
+        return this.postAddScore(...args);
+    }
 }
-
-Objective.addCriteria("dummy", Objective);
 
 class ScoreInfo {
     #entry;
@@ -338,5 +307,5 @@ class ScoreInfo {
     
 }
 
-export { Objective, ScoreInfo, objectiveTypes as ObjectTypes };
+export { Objective, ScoreInfo };
 export default Objective;

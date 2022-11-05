@@ -7,7 +7,7 @@ import Command from "yoni/command.js";
 
 const logger = new Logger("LOG");
 
-EventListener.register("yonimc:playerJoined", (event)=>{
+EventListener.register("yoni:playerJoined", (event)=>{
     if (Scoreboard.getObjective("species",true).getScore(event.player) === undefined){
         logger.info("正在设置玩家{}", event.player.name);
         Scoreboard.getObjective("species").setScore(event.player, 42);
@@ -20,18 +20,18 @@ EventListener.register("yonimc:playerJoined", (event)=>{
 });
 
 EventListener.register("entityHurt", (event)=> {
-    if (event.damagingEntity?.id === "minecraft:player"){
-        Command.execute(event.damagingEntity, "title @s title §r")
-        .next("title @s subtitle §c伤害: " + event.damage);
+    if (event.damagingEntity?.typeId === "minecraft:player"){
+        let o = event.damagingEntity.onScreenDisplay;
+        o.setTitle("§r");
+        o.updateSubtitle("§c伤害: " + event.damage);
     }
-    if (event.hurtEntity.id === "minecraft:player"){
-        let ent = event.hurtEntity;
-        Command.execute(ent, "title @s title §r")
-        .next("title @s subtitle "+event.cause+": "+event.damage);
+    if (event.hurtEntity.typeId === "minecraft:player"){
+        let o = event.hurtEntity.onScreenDisplay;
+        o.setTitle("§r");
+        o.updateSubtitle(""+event.cause+": "+event.damage);
     }
 });
-
-EventListener.register("yonimc:playerDead", (event)=>{
+EventListener.register("yoni:playerDead", (event)=>{
     let pl = event.player;
     let {x, y, z} = pl.location;
     let dim = pl.dimension;

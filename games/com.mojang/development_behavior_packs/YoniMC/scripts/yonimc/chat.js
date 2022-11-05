@@ -10,8 +10,8 @@ const regex = /@(?:all|here)\b/m;
 EventListener.register("chat", (event) => {
     let runner = YoniEntity.from(event.sender);
     if (regex.test(event.message)){
-        Command.execute(runner, "title @a title @s")
-        .next("title @a subtitle @了所有人");
+        Command.fetchExecute(runner, "title @a title @s");
+        Command.fetchExecute(runner, "title @a subtitle @了所有人");
         runner.addEffect(MinecraftEffectTypes["darkness"], 1000, 3, true);
         runner.sendMessage("§7你@了所有人");
     }

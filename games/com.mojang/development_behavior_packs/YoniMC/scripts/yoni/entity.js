@@ -1,5 +1,7 @@
-import { fetchCmd, Minecraft, Gametest, dim, overworld, StatusCode, VanillaEvents, VanillaWorld } from "yoni/basis.js";
+import { Minecraft, dim, Gametest, VanillaWorld, StatusCode } from "yoni/basis.js";
+import { Command } from "yoni/command.js";
 import Entry from "yoni/scoreboard/Entry.js";
+import { dealWithCmd } from "yoni/lib/utils.js";
 
 const { EntityTypes } = Minecraft;
 
@@ -24,7 +26,7 @@ function getLoadedEntities(option){
     return entities;
 }
 
-export class Entity {
+class Entity {
     
     get entityType(){
         return EntityTypes.get(this.typeid);
@@ -35,15 +37,11 @@ export class Entity {
         return this.typeId;
     }
     
-    #vanillaEntity;
-    
-    get vanillaEntity(){
-        return this.#vanillaEntity;
-    }
+    vanillaEntity;
     
     getMinecraftEntity(){
         //我该说这是历史遗留问题吗
-        return this.#vanillaEntity;
+        return this.vanillaEntity;
     }
     
     constructor(entity, symbol){
@@ -56,29 +54,12 @@ export class Entity {
         if (!Entity.isMinecraftEntity(entity))
             throw new TypeError("There is not a Minecraft Entity type");
         
-        this.#vanillaEntity = entity; //保存MCEntity
-        
-        for (let s in this.#vanillaEntity){ //建立变量,函数
-            if (s in this)
-                continue;
-            if (this.#vanillaEntity[s] instanceof Function)
-                Object.defineProperty(this, s, {
-                    enumerable: true,
-                    writable: false,
-                    value: (...args)=>{ return this.#vanillaEntity[s](...args); }
-                });
-            else 
-                Object.defineProperty(this, s, {
-                    enumerable: true,
-                    get: ()=>{
-                        return this.#vanillaEntity[s];
-                    },
-                    set: (t)=>{
-                        this.#vanillaEntity[s] = t;
-                    }
-                });
-        }
-        
+        Object.defineProperty(this, "vanillaEntity", {
+            configurable: false,
+            enumerable: false,
+            writable: false,
+            value: entity
+        });
     }
     
     get uniqueId(){
@@ -86,7 +67,7 @@ export class Entity {
     }
     
     get scoreboard(){
-        return Entry.getEntry(this);
+        return Entry.getEntry({entity: this});
     }
     
     isAliveEntity(){
@@ -118,12 +99,12 @@ export class Entity {
     hasAnyFamily(...families){
         return Entity.hasAnyFamily(this, ...families);
     }
-    async fetchCommand(cmd){
-        return await fetchCmd(this, cmd);
+    fetchCommand(cmd){
+        return Command.fetchExecute(this, cmd);
     }
-    async say(message){
+    say(message){
         let command = "say " + message;
-        return await this.fetchCommand(command);
+        return Command.fetchExecute(this, command);
     }
     
     /**
@@ -330,35 +311,83 @@ export class Entity {
     
 }
 
-export class Player extends Entity {
+class Player extends Entity {
     
     /**
      * 踢出玩家
      */
-    async postKick(msg){
-        let rt = (typeof msg === "string" && msg !== "") ? await fetchCmd(overworld, "kick", this.name, msg) : await fetchCmd(overworld, "kick", this.name);
+    async kick(msg){
+        let rt = await Command.addParams(Command.PRIORITY_HIGHEST, "kick", this.name, msg);
         if (rt.statusCode !== StatusCode.success){
             throw new Error(rt.statusMessage);
         }
     }
     
-    
-    async sendMessage(message){
+    sendMessage(message){
         let rawtext = { rawtext: [{ text: String(message) }] };
-        return await this.sendRawMessage(rawtext);
+        return this.sendRawMessage(rawtext);
     }
     
-    
-    async sendRawMessage(rawtext){
-        let command = "tellraw @s " + JSON.stringify(rawtext);
-        if (await this.fetchCommand(command).statusCode == 0)
-            return true;
-        else return false;
+    sendRawMessage(rawtext){
+        let command = "tellraw @s " + JSON.stringify(rawtext, dealWithCmd);
+        return Command.addExecute(Command.PRIORITY_HIGH, this, command);
     }
 }
 
-export class SimulatedPlayer extends Player {
+class SimulatedPlayer extends Player {
 }
 
-export { Entity as YoniEntity }
+const defineEntityPrototypeFor = (targetPrototype, srcPrototype) => {
+    let definedKeys = (()=>{
+        let sa = targetPrototype;
+        let keys = [];
+        while (sa !== null){
+            keys.push(...Object.getOwnPropertyNames(sa));
+            sa = Object.getPrototypeOf(sa);
+        }
+        return keys;
+    })();
+    Object.getOwnPropertyNames(srcPrototype)
+        .filter(key=>{
+            return !definedKeys.includes(key);
+        })
+        .forEach((key)=>{
+            if (typeof Object.getOwnPropertyDescriptor(srcPrototype, key).value === "function"){
+                Object.defineProperty(targetPrototype, key, {
+                    configurable: true,
+                    enumerable: false,
+                    writable: false,
+                    value: function (){
+                        return this.vanillaEntity[key].apply(this.vanillaEntity, arguments);
+                    }
+                });
+            } else {
+                Object.defineProperty(targetPrototype, key, {
+                    configurable: true,
+                    enumerable: false,
+                    get: function (){
+                        return this.vanillaEntity[key];
+                    },
+                    set: function (value){
+                        this.vanillaEntity[key] = value;
+                    }
+                });
+            }
+        });
+}
+
+defineEntityPrototypeFor(Entity.prototype, Minecraft.Entity.prototype);
+defineEntityPrototypeFor(Player.prototype, Minecraft.Player.prototype);
+defineEntityPrototypeFor(SimulatedPlayer.prototype, Gametest.SimulatedPlayer.prototype);
+
+export {
+    SimulatedPlayer,
+    Player,
+    Entity
+};
+export {
+    SimulatedPlayer as YoniSimulatedPlayer,
+    Player as YoniPlayer,
+    Entity as YoniEntity
+};
 export default Entity;

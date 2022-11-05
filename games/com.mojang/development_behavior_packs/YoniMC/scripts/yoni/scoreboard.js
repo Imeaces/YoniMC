@@ -2,7 +2,6 @@ import { SimpleScoreboard, DisplaySlotType } from "./scoreboard/SimpleScoreboard
 import { Objective, ScoreInfo } from "./scoreboard/Objective.js";
 import { Entry, EntryType, EntryOption } from "./scoreboard/Entry.js";
 import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "./scoreboard/ScoreboardError.js"
-//import { FastScoreboard } from "scripts/yoni/scoreboard/FastScoreboard.js";
 
 export default SimpleScoreboard;
 export {
@@ -16,4 +15,3 @@ export {
 }
 export { SimpleScoreboard as Scoreboard };
 export { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError };
-//export { FastScoreboard };

@@ -1,12 +1,30 @@
-import { VanillaWorld, fetchCmd } from "yoni/basis.js";
+import { VanillaWorld } from "yoni/basis.js";
 import { getErrorMsg } from "./console.js";
-import { send } from "./utils.js";
+import { Command } from "yoni/command.js";
+import { dealWithCmd } from "yoni/lib/utils.js";
 
-import { outputContentLog, debug, logLevel as configLogLevel } from "yoni/config.js";
+import {
+    outputContentLog,
+    debug,
+    logLevel as configLogLevel,
+    overrideDefaultConsole
+} from "yoni/config.js";
+
+async function send(receiver, message){
+    let rawtext = JSON.stringify({rawtext:[{translate: String(message)}]}, dealWithCmd)
+    Command.addExecute(Command.PRIORITY_HIGH, receiver, `tellraw @s ${rawtext}`);
+}
 
 let isNoticeLoggerUsage = false;
 
-let specificTag = "yonimc:console";
+let specificTag = "yoni:console";
+
+let outputToConsole = (()=>{
+    const console = globalThis.console;
+    return function (...args){
+        console.warn(...args);
+    };
+})();
 
 export let logLevel = configLogLevel;
 
@@ -56,7 +74,7 @@ const levels = {
 function getLevelName(level=4){
     let c = 0;
     let o = level;
-    while (level in levels && isFinite(Number(level))){
+    while (level in levels || isFinite(level)){
         if (c++ > 5){
             return o;
         }
@@ -83,12 +101,12 @@ function transferHolder(msg, ...replacer){
     return msg;
 }
 
-async function printLog(time, name, level, msg, ...rps){
+async function printLog(time, level, msg, ...rps){
     let consoles = [...VanillaWorld.getPlayers({tags:[specificTag]})];
-        
     //没人接收的话干嘛要输出
-    if (consoles.length === 0 && !outputContentLog){
-        if (!isNoticeLoggerUsage){
+    //如果输出等级设置为LOG，则可能是通过console.log输出的日志，所以会输出到日志
+    if (consoles.length === 0 && !outputContentLog && level !== "LOG"){
+        if (debug && !isNoticeLoggerUsage){
             isNoticeLoggerUsage = true;
             say(`添加标签 ${specificTag} 以获得日志输出`);
         }
@@ -97,11 +115,11 @@ async function printLog(time, name, level, msg, ...rps){
     let levelName = getLevelName(level);
     
     msg = transferHolder(msg, ...rps);
-    let outputText = "[{} {}][{}]: {}";
-    outputText = transferHolder(outputText, time, levelName, name, msg);
+    let outputText = "[{} {}]{}";
+    outputText = transferHolder(outputText, time, levelName, msg);
     
-    if (outputContentLog){
-        console.warn(outputText);
+    if (outputContentLog || level === "LOG"){
+        outputToConsole(outputText);
     }
     consoles.forEach(pl=>send(pl, outputText));
     
@@ -117,37 +135,68 @@ export class Logger {
     
     static log(...args){
         let time = getTimeString();
-        printLog(time, ...args);
+        printLog(time, "LOG", ...args);
     }
     
+    name;
     constructor(name){
         this.name = name;
-        Object.freeze(this);
-        return new Proxy(this, {
-            get: (target, prop)=>{
-                if (prop === "log") return (...args)=>{this.log("LOG", ...args);};
+        const log = (lv, msg="", ...rps)=>{
+            let time = getTimeString();
+            if (msg !== "" && rps.length === 0){
+                msg = transferHolder("{}", msg);
+            }
+            msg = "[{}]: " + msg;
+            printLog(time, lv, msg, this.name, ...rps);
+        };
+        const levelOutputs = {};
+        const getOutput = (prop)=>{
+            
+            let lv = getLevelCode(prop);
                 
-                let lv = getLevelCode(prop);
+            if (lv > logLevel) return ()=>{};
+            
+            return (...args)=>{
+                log(lv, ...args);
+            };
+        };
+        Object.keys(levels).forEach((key)=>{
+            levelOutputs[key] = getOutput(key);
+        });
+        return new Proxy(levelOutputs, {
+            get: (levelOutputs, prop)=>{
+                if (typeof prop === "symbol"){
+                    if (prop === Symbol.iterator){
+                        return function*(){
+                            for (let key of Object.keys(levelOutputs)){
+                                yield levelOutputs[key];
+                            }
+                        };
+                    }
+                    return;
+                }
                 
-                if (lv > logLevel) return ()=>{};
+                if (Object.prototype.hasOwnProperty.call(levelOutputs, prop)){
+                    return levelOutputs[prop];
+                }
                 
-                let levelName = getLevelName(prop);
+                return getOutput(prop);
                 
-                return (...args)=>{
-                    target.log(lv, ...args);
-                };
             }
         });
-    }
-    log(...args){
-        Logger.log(this.name, ...args);
     }
 }
 
 export default Logger;
 
 export function log(...args){
-    Logger.log("LOG", "LOG", ...args);
+    Logger.log(...args);
+}
+
+if (overrideDefaultConsole){
+    //修改原本的console
+    globalThis.console = new Logger("LOG");
+    globalThis.print = log;
 }
 
 if (debug)

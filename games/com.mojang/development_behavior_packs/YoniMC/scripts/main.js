@@ -10,7 +10,10 @@ let importList = [
     "./yonimc/server.js",
     "./yonimc/notice.js",
     "./debug.js",
-    "./test.js"
+    "./test.js",
+    "yonimc/guxi/hotbarctrl.js",
+    "yonimc/ChainDestroy.js",
+    "./c.js"
 ];
 
 let logger = new Logger("Main");

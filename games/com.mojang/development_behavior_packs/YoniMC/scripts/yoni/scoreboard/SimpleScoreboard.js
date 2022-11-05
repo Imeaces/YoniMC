@@ -1,21 +1,19 @@
-import { StatusCode, fetchCmdParams, overworld, dim, VanillaScoreboard, Minecraft } from "yoni/basis.js";
+import { StatusCode, overworld, dim, VanillaScoreboard, Minecraft } from "yoni/basis.js";
 
 import Objective from "./Objective.js";
 import Entry from "./Entry.js";
 
+let log;
+import("yoni/util/Logger.js").then((m)=>{
+    log = m.log;
+});
 /**
  * enum of alive display slot
  */
-export class DisplaySlotType {
-    static list = "list";
-    static sidebar = "sidebar";
-    static belowname = "belowname";
-    
-    static *[Symbol.iterator](){
-        yield "sidebar";
-        yield "belowname";
-        yield "list";
-    }
+export const DisplaySlotType = {
+    list: "list",
+    sidebar: "sidebar",
+    belowname: "belowname"
 }
 
 /**
@@ -31,29 +29,23 @@ export default class SimpleScoreboard {
      * @param displayName
      * @throws This function can throw errors.
      */
-    static addObjective(name, criteria="dummy", displayName=null){
-        if (name == null)
-            throw new Error("Objective name not null!");
-        if (this.getObjective(name) != null)
+    static addObjective(name, criteria="dummy", displayName=name){
+        if (!name || typeof name !== "string")
+            throw new TypeError("Objective name not valid!");
+        if (this.getObjective(name) !== undefined)
             throw new Error("Objective "+name+" existed!");
-        if (!Objective.hasCriteria(criteria))
+        if (criteria !== "dummy")
             throw new Error("Unsupported criteria: " + criteria);
-        if (displayName === null)
-            displayName = name;
+        if (!name || typeof name !== "string")
+            throw new TypeError("Objective display name not valid!");
         
-        for (let char of name){
-            if (char.charCodeAt() < 32){
-                throw new Error("name contains Ascii Control Character");
-            }
-        }
-        if (name !== displayName){
-            for (let char of displayName){
-                if (char.charCodeAt() < 32){
-                    throw new Error("displayName contains Ascii Control Character");
-                }
-            }
-        }
-        let newObjective = Objective.create(this, name, criteria, displayName);
+        let vanillaObjective = VanillaScoreboard.addObjective(name, displayName);
+        
+        let newObjective = new Objective({
+            scoreboard: this,
+            name, criteria, displayName,
+            vanillaObjective
+        });
         this.#objectives.set(name, newObjective);
         
         return newObjective;
@@ -64,19 +56,25 @@ export default class SimpleScoreboard {
      * Removes an objective from the scoreboard.
      * @param objectiveId or Objective
      */
-    static removeObjective(name){
-        let objective;
-        if (name instanceof Objective){
-            objective = name;
-        } else if ( name instanceof Minecraft.ScoreboardObjective ){
-            objective = this.getObjective(name.id);
+    static removeObjective(nameOrObjective){
+        let objectiveId;
+        if (nameOrObjective instanceof Objective || nameOrObjective instanceof Minecraft.ScoreboardObjective){
+            objectiveId = nameOrObjective.id;
         } else {
-            objective = this.getObjective(name);
+            objectiveId = nameOrObjective;
         }
-        if (objective != null && !objective.isUnregistered){
-            objective.unregister();
+        if (objectiveId && typeof objectiveId === "string"){
+            try { VanillaScoreboard.removeObjective(objectiveId); } catch {}
+        } else {
+            throw new Error("unknown error while removing objective");
         }
-        this.#objectives.delete(name);
+        if (this.#objectives.has(objectiveId)){
+            let inMapObjective = this.getObjective(objectiveId);
+            if (!inMapObjective.isUnregister()){
+                inMapObjective.unregister();
+            }
+            this.#objectives.delete(objectiveId);
+        }
     }
     
     /**
@@ -87,27 +85,24 @@ export default class SimpleScoreboard {
      * @return return Objective if existed, else return null
      */
     static getObjective(name, autoCreateDummy=false){
-        let objective = this.#objectives.has(name) ? this.#objectives.get(name) : null;
-        
-        if (objective?.isUnregistered === false){
-            return objective;
-        }
-        
+        let result = null;
+        let objective = this.#objectives.get(name);
         let vanillaObjective = (()=>{
-            try {
-                return VanillaScoreboard.getObjective(name);
-            } catch {}
+            let rt = VanillaScoreboard.getObjective(name);
+            if (rt == null && autoCreateDummy){
+                rt = VanillaScoreboard.addObjective(name, name);
+            }
+            return rt;
         })();
-        if (objective === null && vanillaObjective != null){
-            let newObjective = new Objective(this, vanillaObjective);
-            this.#objectives.set(name, newObjective);
-            return newObjective;
-        } else if (vanillaObjective == null && autoCreateDummy === true){
-            let newObjective = this.addObjective(name, "dummy");
-            return newObjective;
+        if (objective === undefined || objective.isUnregistered()){
+            if (vanillaObjective != null){
+                result = new Objective(this, name, "dummy", vanillaObjective.displayName, vanillaObjective);
+                this.#objectives.set(name, result);
+            }
+        } else {
+            result = objective;
         }
-        
-        return null;
+        return result;
     }
     
     /**
@@ -129,26 +124,37 @@ export default class SimpleScoreboard {
      * @param displaySlotId
      * @throws This function can throw errors.
      */
-    static getObjectiveInSlot(slot){
-        if (!Array.from(DisplaySlotType).includes(slot))
-            throw new TypeError("Not a DisplaySlot type");
-        return this.getObjective(VanillaScoreboard.getObjectiveAtDisplaySlot(slot).id);
+    static getDisplayAtSlot(...args){
+        let rt = VanillaScoreboard.getObjectiveAtDisplaySlot(...args);
+        let result = {
+            objective: this.getObjective(rt.objective.id),
+        };
+        if (sortOrder in rt){
+            result.sortOrder = rt.sortOrder;
+        }
+        return result;
     }
     
-    static async postSetDisplaySlot(slot, objective, sequence="descending"){
-        if (!Array.from(DisplaySlotType).includes(slot))
-            throw new TypeError("Not a DisplaySlot type");
-        if (!(objective instanceof Objective))
-            objective = this.getObjective(objective);
-        if (objective == null)
-            throw new TypeError("Not a Objective or a objective name");
-        
-        if (slot == DisplaySlotType.BELOW_NAME){
-            await fetchCmdParams(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id);
-        } else {
-            await fetchCmdParams(dim(0), "scoreboard", "objectives", "setdisplay", slot, objective.id, sequence);
-        }
-
+    static #getIdOfObjective(any){
+         if (any instanceof Objective || any instanceof Minecraft.ScoreboardObjective){
+             return any.id
+         } else if (any && typeof any === "string"){
+             return any;
+         } else {
+             throw new Error();
+         }
+    }
+    
+    static setDisplayAtSlot(slot, settings){
+        let objId = this.#getIdOfObjective(settings.objective);
+        let rt = VanillaScoreboard.setObjectiveAtDisplaySlot(
+            slot,
+            new Minecraft.ScoreboardObjectiveDisplayOptions(
+                objId,
+                settings.sortOrder
+            )
+        );
+        return this.getObjective(rt.id);
     }
     
     /**
@@ -158,10 +164,10 @@ export default class SimpleScoreboard {
      * @throws TypeError when slot not a DisplaySlot.
      */
     static clearDisplaySlot(slot){
-        if (!Array.from(DisplaySlotType).includes(slot)){
-            throw new TypeError("Not a DisplaySlot type");
+        let rt = VanillaScoreboard.clearObjectiveAtDisplaySlot(slot);
+        if (rt?.id !== undefined){
+            return this.getObjective(rt.id);
         }
-        return VanillaScoreboard.clearObjectiveAtDisplaySlot(slot);
     }
     
     /**
@@ -176,24 +182,47 @@ export default class SimpleScoreboard {
     }
     
     static removeAllObjectives(){
-        this.getObjectives().forEach((obj) => obj.unregister());
+        Array.from(VanillaScoreboard.getObjectives())
+            .forEach(obj=>{
+                this.removeObjective(obj);
+            });
     }
     
     /**
      * reset scores of all participants
      * @param particular filter function, the function will be call for every participants, if return true, then reset the scores of participants
+     * @return Promise<Number> success count
      */
     static async postResetAllScore(filter){
         if (filter === undefined){
-            await fetchCmdParams(dim(0), "scoreboard", "players", "reset", "*");
-            return;
-        }
-        
-        for (let id of SimpleScoreboard.getEntries()){
-            if (filter(id)){
-                await SimpleScoreboard.postResetScore(id);
+            let rt = await Command.fetch("scoreboard players reset *");
+            if (rt.statusCode){
+                throw new Error(rt.statusMessage);
+            } else {
+                return;
             }
         }
+        let resolve;
+        let promise = new Promise((re)=>{
+            resolve = re;
+        });
+        let entries = this.getEntries();
+        let successCount = 0;
+        let doneCount = 0;
+        let successCountAdder = ()=>{
+            successCount++;
+        };
+        let resolveIfDone = ()=>{
+            if (++doneCount === entries.length){
+                resolve(successCount);
+            }
+        };
+        entries.filter(filter).forEach((id)=>{
+            this.postResetScore(id)
+                .then(successCountAdder)
+                .finally(resolveIfDone);
+        });
+        return promise;
     }
     
     /**
@@ -208,11 +237,14 @@ export default class SimpleScoreboard {
             let ent = entry.getEntity();
             if (ent === undefined){
                 throw new InternalError("Could not find the entity");
-            } else if (await fetchCmdParams(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
+            }
+            if (await Command.fetchExecuteParams(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
                 throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
         } else if ([...VanillaWorld.getPlayers()].length === 0){
-            await fetchCmdParams(dim(0), "scoreboard", "players", "reset", entry.displayName);
+            if (await Command.fetchParams("scoreboard", "players", "reset", entry.displayName).statusCode !== StatusCode.success){
+                throw new InternalError(rt.statusMessage);
+            }
         } else {
             throw new NameConflictError(entry.displayName);
         }

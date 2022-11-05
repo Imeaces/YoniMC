@@ -1,4 +1,4 @@
-import Scoreboard from "./SimpleScoreboard.js";
+import Scoreboard from "yoni/scoreboard/SimpleScoreboard.js";
 
 /**
  * 方便调用的，不完整的记分板操作类
@@ -23,24 +23,29 @@ import Scoreboard from "./SimpleScoreboard.js";
  * console.error(obj["playerOnline"]); //1
  */
  
- 
+function scbObj(id){
+    return Scoreboard.getObjective(id, true);
+}
 function getObjective(id){
-    let object = { source: Scoreboard.getObjective(id, true) };
-    return new Proxy(object, {
-        get: (object, prop)=>{
-            if (prop in object.source){
-                if (typeof object.source[prop] === "function")
-                    return (...args)=>{ object.source[prop](...args); };
+    return new Proxy({}, {
+        get: (_, prop)=>{
+            let obj = scbObj(id);
+            if (prop in obj){
+                if (typeof Object.getOwnPropertyDescriptor(obj, prop).value === "function")
+                    return (...args)=>{
+                        obj[prop].apply(obj, arguments);
+                    };
                 else
-                    return object.source[prop];
+                    return obj[prop];
             }
-            return object.source.getScore(prop);
+            return obj.getScore(prop);
         },
         set: (object, prop, score)=>{
+            let obj = scbObj(id);
             if (String(score).startsWith("+"))
-                object.source.addScore(prop, Number(String(score).substring(1)));
+                obj.addScore(prop, Number(String(score).substring(1)));
             else
-                object.source.setScore(prop, Number(score));
+                obj.setScore(prop, Number(score));
             return true;
         }
     });

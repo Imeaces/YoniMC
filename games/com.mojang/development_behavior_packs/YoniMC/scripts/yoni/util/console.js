@@ -5,7 +5,7 @@ export function getErrorMsg(msg="", err=msg){
         if (err.stack !== undefined)
             errMsg += `\n${err.stack}`;
     } else {
-        errMsg = err;
+        errMsg = String(err);
     }
     return { msg: msg, errMsg: errMsg };
 }

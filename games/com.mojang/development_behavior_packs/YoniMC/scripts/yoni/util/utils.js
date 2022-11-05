@@ -1,12 +1,13 @@
-import { dim, VanillaWorld, overworld, fetchCmd, fetchCmdParams } from "yoni/basis.js";
-
+import { VanillaWorld, overworld } from "yoni/basis.js";
+import { Command } from "yoni/command.js";
+import { dealWithCmd } from "yoni/lib/utils.js";
 
 export async function say(msg = "", displayNameOrSender="commands.origin.script"){
     let runner;
     let senderDisplayName;
     
-    if (displayNameOrSender?.constructor === String){
-        runner = dim(0);
+    if (typeof displayNameOrSender === "string"){
+        runner = overworld;
         senderDisplayName = { translate: displayNameOrSender };
     } else {
         runner = displayNameOrSender;
@@ -23,10 +24,10 @@ export async function say(msg = "", displayNameOrSender="commands.origin.script"
             }
         }
     ]
-    return await fetchCmd(runner, `tellraw @a ${JSON.stringify({rawtext})}`);
+    return await Command.fetchExecute(runner, `tellraw @a ${JSON.stringify({rawtext})}`);
 }
 
 export async function send(receiver, message){
-    let rawtext = JSON.stringify({rawtext:[{translate: String(message)}]})
-    return await fetchCmd(receiver, `tellraw @s ${rawtext}`);
+    let rawtext = JSON.stringify({rawtext:[{translate: String(message)}]}, dealWithCmd)
+    return await Command.fetchExecute(receiver, `tellraw @s ${rawtext}`);
 }

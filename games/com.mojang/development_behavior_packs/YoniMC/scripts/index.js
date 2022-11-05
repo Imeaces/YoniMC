@@ -1,5 +1,5 @@
 //先导入防止看门狗咬人的脚本
-import "./WatchBird.js";
+import "yoni/WatchBird.js";
 import { Logger } from "yoni/util/Logger.js";
 
 let logger = new Logger("Main");
