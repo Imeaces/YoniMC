@@ -2,3 +2,4 @@
 *.mcaddon
 *.mctemplate
 .txt
+/wd/
