@@ -83,3 +83,4 @@ export function coverBase(num, base, oldBase=10, numbers = addressNumbers){
     
     return getNum(newNumArr, base);
 }
+

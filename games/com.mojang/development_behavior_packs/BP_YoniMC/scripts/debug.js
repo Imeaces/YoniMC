@@ -8,10 +8,14 @@ import { isDebug } from "yoni/config.js";
 import { World } from "yoni/world.js";
 import Scoreboard from "yoni/scoreboard.js";
 import { EventListener, EventTypes } from "yoni/event.js";
-import { getErrorMsg } from "yoni/util/console.js";
+import { getErrorMsg, printError as printErrorToConsole } from "yoni/util/console.js";
 import { load } from "yoni/loader.js";
 import { getKeys } from "yoni/lib/utils.js";
 import "yoni/index.js";
+
+let printError = (...args)=>{
+    printErrorToConsole("", ...args);
+};
 
 if (isDebug()){
 

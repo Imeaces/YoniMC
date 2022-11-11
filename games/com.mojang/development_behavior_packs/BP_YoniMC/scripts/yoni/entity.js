@@ -106,6 +106,12 @@ class Entity {
         let command = "say " + message;
         return Command.fetchExecute(this, command);
     }
+    setCurrentHealth(){
+        return Entity.setCurrentHealth(this);
+    }
+    setMaxHealth(){
+        return Entity.setMaxHealth(this);
+    }
     
     /**
      * 检查一个东西是否为实体
@@ -309,6 +315,20 @@ class Entity {
             return true;
     }
     
+    /**
+     * 获取实体的血量
+     */
+    static setCurrentHealth(entity, val){
+        let component = Entity.getHealthComponent(entity);
+        component.setCurrent(val);
+    }
+    /**
+     * 获取实体最大血量
+     */
+    static setMaxHealth(entity, val){
+        let component = Entity.getHealthComponent(entity);
+        component.value = val;
+    }
 }
 
 class Player extends Entity {

@@ -1,5 +1,6 @@
-export class UUID {
+class UUID {
     static NIL_UUID_STR = "00000000-0000-0000-0000-000000000000";
+    static NIL_UUID = null;
     static UUID_CHARS = [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" ];
     static randomUUID(){
         let uuidStr = UUID.NIL_UUID_STR;
@@ -44,14 +45,14 @@ export class UUID {
     toLocaleString(){
         return "uuid:"+this.toString();
     }
-    constructor(targetUUID){
+    constructor(targetUUID, allowNil=false){
         if (typeof targetUUID === "string"){
             let matches = targetUUID.toUpperCase().match(/^([0-9A-F]{8})(?:-|[\s]*)?([0-9A-F]{4})(?:-|[\s]*)?([0-9A-F]{4})(?:-|[\s]*)?([0-9A-F]{4})(?:-|[\s]*)?([0-9A-F]{12})$/m);
             if (matches === null || matches.includes(undefined)){
-                throw new Error("uuid syntax error :"+targetUUID);
+                throw new Error("uuid syntax error: "+targetUUID);
             }
             this.#uuidSequene = matches.slice(1, 6);
-            if (this.toString() === UUID.NIL_UUID_STR){
+            if (!allowNil && this.toString() === UUID.NIL_UUID_STR){
                 throw new Error("Nil UUID not allowed");
             }
         } else if (targetUUID instanceof UUID){
@@ -62,7 +63,9 @@ export class UUID {
         }
     }
 }
-
+UUID.NIL_UUID = new UUID(UUID.NIL_UUID_STR, true);
+export default UUID;
+export { UUID };
 /*
 1 2089 2581 9614 6291 7470 6176n
 2^5^16

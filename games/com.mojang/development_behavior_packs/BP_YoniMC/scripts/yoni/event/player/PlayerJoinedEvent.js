@@ -1,22 +1,18 @@
 import { YoniEntity } from "yoni/entity.js";
-import { EventListener, EventSignal, Event } from "yoni/event.js";
-import { VanillaWorld, runTask } from "yoni/basis.js";
+import { EventListener, EventSignal, Event, EventTriggerBuilder } from "yoni/event.js";
+import { PlayerEvent } from "./PlayerEvent";
+import { VanillaWorld } from "yoni/basis.js";
+import { YoniScheduler } from "yoni/schedule.js";
 
-class PlayerJoinedEvent extends Event {
-    constructor (player){
-        super();
-        this.player = YoniEntity.from(player);
-        Object.freeze(this);
+class PlayerJoinedEvent extends PlayerEvent {
+    constructor(player){
+        super(player);
     }
-    get cancel(){
-        if (new Set(VanillaWorld.getPlayers()).has(this.player.vanillaEntity)) return true;
-        return false;
-    }
-    set cancel(bool){
-        if (bool)
-            this.player.postKick("加入游戏被取消");
+    kickPlayer(){
+        this.player.postKick("加入游戏被取消");
     }
 }
+class PlayerDeadEventSignal extends EventSignal {}
 
 let joiningPlayers = new Set();
 let 启用轮询 = false;
@@ -37,10 +33,12 @@ let ticking = ()=>{
         }
     });
 }
+let scheduleId = -1;
 
-const signal = EventSignal.builder("yoni:playerJoined")
+const trigger = new EventTriggerBuilder()
+    .id("yoni:playerJoined")
+    .eventSignalClass(PlayerDeadEventSignal)
     .eventClass(PlayerJoinedEvent)
-    .build()
     .whenFirstSubscribe(()=>{
         启用轮询 = true;
         runTask(ticking);
@@ -52,4 +50,5 @@ const signal = EventSignal.builder("yoni:playerJoined")
         启用轮询 = false;
         EventListener.unregister(eventId);
     })
+    .build()
     .registerEvent();

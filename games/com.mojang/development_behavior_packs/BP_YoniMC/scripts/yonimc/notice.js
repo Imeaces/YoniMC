@@ -4,6 +4,7 @@ import { say } from "yoni/util/utils.js";
 import { Logger } from "yoni/util/Logger.js";
 import { isServerMode } from "./server.js";
 import Command from "yoni/command.js";
+import { Entity } from "yoni/entity.js";
 
 const logger = new Logger("LOG");
 
@@ -19,11 +20,11 @@ EventListener.register("yoni:playerJoined", (event)=>{
     }
 });
 
-EventListener.register("entityHurt", (event)=> {
+EventListener.register("minecraft:entityHurt", (event)=> {
     if (event.damagingEntity?.typeId === "minecraft:player"){
         let o = event.damagingEntity.onScreenDisplay;
         o.setTitle("§r");
-        o.updateSubtitle("§c伤害: " + event.damage);
+        o.updateSubtitle(`§c伤害: ${event.damage}\n剩余: ${Entity.getCurrentHealth(event.hurtEntity)}`);
     }
     if (event.hurtEntity.typeId === "minecraft:player"){
         let o = event.hurtEntity.onScreenDisplay;

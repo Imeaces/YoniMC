@@ -1,44 +1,35 @@
-import { EventListener, EventSignal, EventTypes, Event } from "yoni/event.js";
+import { EventListener, EventSignal, EventTypes, EventRemover, EventTriggerBuilder } from "yoni/event.js";
+import { EntityEvent } from "./EntityEvent.js";
 import { runTask, Minecraft } from "yoni/basis.js";
 import { Entity } from "yoni/entity.js";
 const Location = Minecraft.Location;
 
+class EntityMovementEventSignal extends EventSignal {}
 //这个事件非常卡，我相信你们不会想要使用它的
-export class EntityMovementEvent extends Event {
-    #isCancelled;
+export class EntityMovementEvent extends EntityEvent {
+    isCancelled;
     get cancel(){
-        return this.#isCancelled();
+        return this.isCancelled();
     }
     
-    #setCancel;
+    setCancel;
     /**
      * 如果取消跨维度移动事件的话，可能会导致游戏崩溃
      */
     set cancel(bool){
-        this.#setCancel(!!bool);
+        this.setCancel(!!bool);
     }
     
-    #oldLocation;
-    get oldLocation(){
-        return this.#oldLocation;
-    }
+    oldLocation;
     
-    #newLocation;
-    get newLocation(){
-        return this.#newLocation;
-    }
+    newLocation;
     
-    #entity;
-    get entity(){
-        return this.#entity;
-    }
     constructor (values){
-        super();
-        this.#isCancelled = values.isCancelled;
-        this.#setCancel = values.setCancel;
-        this.#entity = values.entity;
-        this.#oldLocation = values.oldLocation;
-        this.#newLocation = values.newLocation;
+        super(values.entity);
+        this.isCancelled = values.isCancelled;
+        this.setCancel = values.setCancel;
+        this.oldLocation = values.oldLocation;
+        this.newLocation = values.newLocation;
     }
 }
 
@@ -168,7 +159,7 @@ const triggerEvent = async (entity, oldLoc, changedLoc)=>{
         entityType: entity.entityType,
         entity: entity
     }
-    signal.triggerEvent({
+    trigger.triggerEvent({
         isCancelled,
         setCancel,
         oldLocation: oldLoc,
@@ -181,7 +172,15 @@ const triggerEvent = async (entity, oldLoc, changedLoc)=>{
     });
 };
 
-let signal = EventSignal.builder("yoni:entityMovement")
+/*
+{
+    entities: Entity[],
+    entityType: EntityType,
+    movementKeyword: [ "x", "y", "z", "rx", "ry", "dimension", "location", "rotation" ]
+}
+*/
+let trigger = new EventTriggerBuilder("yoni:entityMovement")
+    .eventSignalClass(EntityMovementEventSignal)
     .eventClass(EntityMovementEvent)
     .filterResolver((values, filters)=>{
         values = values[0];
@@ -216,7 +215,6 @@ let signal = EventSignal.builder("yoni:entityMovement")
         }
         return true;
     })
-    .build()
     .whenFirstSubscribe(()=>{
         启用轮询 = true;
         runTask(conditionFunc);
@@ -224,4 +222,5 @@ let signal = EventSignal.builder("yoni:entityMovement")
     .whenLastUnsubscribe(()=>{
         启用轮询 = false;
     })
+    .build()
     .registerEvent();

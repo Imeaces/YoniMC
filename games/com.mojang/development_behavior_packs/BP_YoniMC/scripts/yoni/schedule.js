@@ -18,6 +18,12 @@ export class Schedule {
     static tickCycleSchedule = Symbol("Schedule.tickCycleSchedule")
     static tickDelaySchedule = Symbol("Schedule.tickDelaySchedule")
     
+    id;
+    
+    get isQueue(){
+        return taskMap.has(this.id);
+    }
+    
     get isLastSuccess(){
         let rt = false;
         if (isLastSuccessRecords.has(this))
@@ -42,7 +48,7 @@ export class Schedule {
             rt = lastExecuteTimeRecords.get(this);
         return rt;
     }
-    constructor(callback, props){
+    constructor(props, callback){
         let { async, period, delay, type } = props;
         this.async = (!!async)?true:false;
         
@@ -120,6 +126,7 @@ function doTickDelaySchedule(event){
     //首先，处理只执行一次的tick任务
     let tickDelaySchedules = schedulesTypedRecords[Schedule.tickDelaySchedule];
     if (tickDelaySchedules !== undefined){
+        tickDelaySchedules = Array.from(tickDelaySchedules);
         for (let idx = tickDelaySchedules.length - 1; idx >= 0; idx--){
             let time = Date.now();
             let id = tickDelaySchedules[idx];
@@ -141,6 +148,7 @@ function doTimeDelaySchedule(event){
     //接着，处理只执行一次的时间延时任务
     let timeDelaySchedules = schedulesTypedRecords[Schedule.timeDelaySchedule];
     if (timeDelaySchedules !== undefined){
+        timeDelaySchedules = Array.from(timeDelaySchedules);
         for (let idx = timeDelaySchedules.length - 1; idx >= 0; idx--){
             let time = Date.now();
             let id = timeDelaySchedules[idx];
@@ -163,6 +171,7 @@ function doTickCycleSchedule(event){
     //然后，处理循环执行的tick任务
     let tickCycleSchedules = schedulesTypedRecords[Schedule.tickCycleSchedule];
     if (tickCycleSchedules !== undefined){
+        tickCycleSchedules = Array.from(tickCycleSchedules);
         for (let idx = tickCycleSchedules.length - 1; idx >= 0; idx--){
             let time = Date.now();
             let id = tickCycleSchedules[idx];
@@ -183,6 +192,7 @@ function doTimeCycleSchedule(event){
     //最后，处理循环的时间延时任务
     let timeCycleSchedules = schedulesTypedRecords[Schedule.timeCycleSchedule];
     if (timeCycleSchedules !== undefined){
+        timeCycleSchedules = Array.from(timeCycleSchedules);
         for (let idx = timeCycleSchedules.length - 1; idx >= 0; idx--){
             let time = Date.now();
             let id = timeCycleSchedules[idx];
@@ -252,11 +262,11 @@ export default class YoniScheduler {
      * @returns {Number} taskId
      */
     static runTask(callback, async = false){
-        let schedule = new Schedule(callback, {
+        let schedule = new Schedule({
             async,
             delay: 0,
             type: Schedule.tickDelaySchedule
-        });
+        }, callback);
         YoniScheduler.addSchedule(schedule);
         return schedule.id;
     }
@@ -269,9 +279,10 @@ export default class YoniScheduler {
      * @returns {Number} taskId
      */
     static runDelayTimerTask(callback, delay=0, async = false){
-        let schedule = new Schedule(callback, { async, delay,
+        let schedule = new Schedule({
+            async, delay,
             type: Schedule.timeDelaySchedule
-        });
+        }, callback);
         YoniScheduler.addSchedule(schedule);
         return schedule.id;
     }
@@ -284,11 +295,11 @@ export default class YoniScheduler {
      * @returns {Number} taskId
      */
     static runDelayTickTask(callback, delay=0, async = false){
-        let schedule = new Schedule(callback, {
+        let schedule = new Schedule({
             async,
             delay,
             type: Schedule.tickDelaySchedule
-        });
+        }, callback);
         YoniScheduler.addSchedule(schedule);
         return schedule.id;
     }
@@ -302,12 +313,12 @@ export default class YoniScheduler {
      * @returns {Number} taskId
      */
     static runCycleTimerTask(callback, delay, period=1, async = falsw){
-        let schedule = new Schedule(callback, {
+        let schedule = new Schedule({
             async,
             delay,
             period,
             type: Schedule.timeCycleSchedule
-        });
+        }, callback);
         YoniScheduler.addSchedule(schedule);
         return schedule.id;
     }
@@ -321,12 +332,12 @@ export default class YoniScheduler {
      * @returns {Number} taskId
      */
     static runCycleTickTask(callback, delay=0, period, async = false){
-        let schedule = new Schedule(callback, {
+        let schedule = new Schedule({
             async,
             delay,
             period,
             type: Schedule.tickCycleSchedule
-        });
+        }, callback);
         YoniScheduler.addSchedule(schedule);
         return schedule.id;
     }

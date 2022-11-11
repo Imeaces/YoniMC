@@ -1,18 +1,19 @@
 import { runTask } from "yoni/basis.js";
-import { EventSignal, Event } from "yoni/event.js";
+import { EventSignal, Event, EventTriggerBuilder } from "yoni/event.js";
 import { Command } from "yoni/command.js";
 
-//毕竟真正的tick事件目前没啥办法做到
-let tick = 0;
-
+export class TickEventSignal extends EventSignal {}
 export class TickEvent extends Event {
     constructor(c, d){
         super();
         this.currentTick = c;
         this.deltaTime = d;
         Object.freeze(this);
-    } 
+    }
 }
+
+//毕竟真正的tick事件目前没啥办法做到
+let tick = 0;
 
 let shouldRun = false;
 
@@ -34,17 +35,19 @@ const triggerEvent = ()=>{
         // console.fatal("游戏刻事件被跳过了 {} 次", currentTick - lastTick);
     }
     lastTick = currentTick;
-    signal.triggerEvent(currentTick, deltaTime);
+    trigger.triggerEvent(currentTick, deltaTime);
 };
 
-const signal = EventSignal.builder("yoni:tick")
+const trigger = new EventTriggerBuilder()
+    .id("yoni:tick")
+    .eventSignalClass(TickEventSignal)
     .eventClass(TickEvent)
-    .build()
     .whenFirstSubscribe(()=>{
         shouldRun = true;
         runTask(triggerEvent);
     })
     .whenLastUnsubscribe(()=>{
-        runTask(triggerEvent);
+        shouldRun = false;
     })
+    .build()
     .registerEvent();
