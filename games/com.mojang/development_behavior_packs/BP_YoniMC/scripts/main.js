@@ -1,23 +1,11 @@
 import { Logger } from "yoni/util/Logger.js";
 
 let importList = [
-    "./yonimc/command.js",
-    "./yonimc/TagAdapter.js",
-    "./yonimc/guxi.js",
-    //"./yonimc/itemlore.js",
-    "./yonimc/chat.js",
-    "./yonimc/levitation.js",
-    "./yonimc/server.js",
-    "./yonimc/notice.js",
-    "./debug.js",
     "./test.js",
-    "yonimc/guxi/hotbarctrl.js",
-    "yonimc/ChainDestroy.js",
-    "./c.js"
 ];
 
 let logger = new Logger("Main");
-
+logger.info("awa");
 importList.forEach(path=>{
     import(path)
     .catch(e=>{

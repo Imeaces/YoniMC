@@ -4,7 +4,7 @@ import { Minecraft, dim, VanillaWorld, Gametest } from "yoni/basis.js";
 import { YoniEntity, YoniPlayer } from "yoni/entity.js";
 import { send, say } from "yoni/util/utils.js";
 import { Logger, log } from "yoni/util/Logger.js";
-import { isDebug } from "yoni/config.js";
+import { debug } from "yoni/config.js";
 import { World } from "yoni/world.js";
 import Scoreboard from "yoni/scoreboard.js";
 import { EventListener, EventTypes } from "yoni/event.js";
@@ -13,11 +13,9 @@ import { load } from "yoni/loader.js";
 import { getKeys } from "yoni/lib/utils.js";
 import "yoni/index.js";
 
-let printError = (...args)=>{
+const printError = (...args)=>{
     printErrorToConsole("", ...args);
 };
-
-if (isDebug()){
 
 let logger = new Logger("debug");
 let _ = undefined;
@@ -86,5 +84,3 @@ ChatCommand.registerPrefixCommand("$", "exec", async (sender, rawCommand, label,
     let rt = await sender.fetchCommand(cmd);
     sender.sendMessage("§7"+ JSON.stringify(rt) );
 });
-
-}

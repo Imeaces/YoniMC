@@ -9,3 +9,7 @@ export const overrideDefaultConsole = true;
 export function isDebug(){
     return debug;
 }
+
+//导入debug用函数
+if (debug)
+    import("./debug.js");

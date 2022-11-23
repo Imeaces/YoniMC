@@ -1,4 +1,5 @@
 import "yoni/index.js";
+
 EventListener.register("minecraft:itemUseOn", (event)=>{
     if (event.source.typeId !== "minecraft:player") return;
     let source = YoniEntity.from(event.source);
@@ -9,6 +10,7 @@ EventListener.register("minecraft:itemUseOn", (event)=>{
     if (chargeLevel !== 4) return;
     doTeleport(source.dimension, blockLocation);
 });
+
 async function doTeleport(dimension, location, tick=10){
     if (tick > 0){
         runTask(()=>{
@@ -16,7 +18,6 @@ async function doTeleport(dimension, location, tick=10){
         });
         return;
     }
-    console.error("doing ttt");
     try{
     
     let destinationDim = null;
@@ -82,12 +83,3 @@ async function doTeleport(dimension, location, tick=10){
         console.error(e);
     }
 }
-/*
-Array.from(EventTypes.getEventTypes().keys()).forEach(key=>{
-    if (key!=="minecraft:tick"&&key.startsWith("minecraft:")){
-        EventListener.register(key,()=>{
-            console.debug("触发了事件{}",key);
-        });
-    }
-});
-*/

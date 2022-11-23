@@ -1,38 +1,70 @@
-import { StatusCode, overworld, dim, VanillaScoreboard, Minecraft } from "yoni/basis.js";
+import { StatusCode, VanillaScoreboard, Minecraft } from "../basis.js";
+import { Command } from "../command.js";
 
 import Objective from "./Objective.js";
 import Entry from "./Entry.js";
 
-let log;
-import("yoni/util/Logger.js").then((m)=>{
-    log = m.log;
-});
+//实际运行并不需要，只是为了自动补全生效而导入的
+import { YoniEntity } from "../entity.js";
+
 /**
+ * @typedef {string} DisplaySlotType
+ */
+/**
+ * @readonly
+ * @enum {DisplaySlotType}
  * enum of alive display slot
  */
-export const DisplaySlotType = {
+export const DisplaySlotTypes = {
     list: "list",
     sidebar: "sidebar",
     belowname: "belowname"
 }
 
 /**
+ * @typedef {string} ObjectiveSortOrder
+ */
+/**
+ * @readonly
+ * @enum {ObjectiveSortOrder}
+ * Used for specifying a sort order for 
+ * how to display an objective and its list of participants.
+ */
+export const ObjectiveSortOrderEnum = {
+    "ascending": "ascending",
+    "descending": "descending"
+}
+
+/**
+ * @interface
+ * 与显示位置有关的类型
+ * @typedef {Object} DisplayOptions
+ * @property {ObjectiveSortOrder|undefined} sortOrder - 如果可能，在此位置上排序使用的方式
+ * @property {Objective|Minecraft.ScoreboardObjective} objective - 此位置上显示的记分项
+ */
+
+/**
  * Contains objectives and participants for the scoreboard.
  */
 export default class SimpleScoreboard {
+    /**
+     * @type {Map<string, Objective>}
+     */
     static #objectives = new Map();
     
     /**
-     * @remarks
-     * Adds a new objective to the scoreboard.
-     * @param objectiveId
-     * @param displayName
+     * @remarks Adds a new objective to the scoreboard.
+     * @param {string} name - name of new objective
+     * @param {string} criteria - criteria of new objective, current only accept "dummy"
+     * @param {string} displayName - displayName of new
+     * objective, default is equals to name
+     * @returns {Objective} new objective
      * @throws This function can throw errors.
      */
     static addObjective(name, criteria="dummy", displayName=name){
         if (!name || typeof name !== "string")
             throw new TypeError("Objective name not valid!");
-        if (this.getObjective(name) !== undefined)
+        if (this.getObjective(name) !== null)
             throw new Error("Objective "+name+" existed!");
         if (criteria !== "dummy")
             throw new Error("Unsupported criteria: " + criteria);
@@ -52,9 +84,8 @@ export default class SimpleScoreboard {
     }
     
     /**
-     * @remarks
-     * Removes an objective from the scoreboard.
-     * @param objectiveId or Objective
+     * @remarks Removes an objective from the scoreboard.
+     * @param {string|Objective|Minecraft.ScoreboardObjective} nameOrObjective - objectiveId or Objective
      */
     static removeObjective(nameOrObjective){
         let objectiveId;
@@ -69,10 +100,6 @@ export default class SimpleScoreboard {
             throw new Error("unknown error while removing objective");
         }
         if (this.#objectives.has(objectiveId)){
-            let inMapObjective = this.getObjective(objectiveId);
-            if (!inMapObjective.isUnregister()){
-                inMapObjective.unregister();
-            }
             this.#objectives.delete(objectiveId);
         }
     }
@@ -80,9 +107,9 @@ export default class SimpleScoreboard {
     /**
      * @remarks
      * Returns a specific objective (by id).
-     * @param objectiveId
-     * @param (Boolean) if true, it will try to create a dummy objective when objective didn't exist
-     * @return return Objective if existed, else return null
+     * @param {string} name - objectiveId
+     * @param {boolean} autoCreateDummy=false - if true, it will try to create a dummy objective when objective didn't exist
+     * @returns {?Objective} return Objective if existed, else return null
      */
     static getObjective(name, autoCreateDummy=false){
         let result = null;
@@ -105,9 +132,10 @@ export default class SimpleScoreboard {
         return result;
     }
     
-    /**
+    /** 
      * @remarks
      * Returns all defined objectives.
+     * @returns {Objective[]} an array contains all defined objectives.
      */
     static getObjectives(){
         let objectives = [];
@@ -121,15 +149,18 @@ export default class SimpleScoreboard {
      * @remarks
      * Returns an objective that occupies the specified display
      * slot.
-     * @param displaySlotId
+     * @param {DisplaySlotType} slot
+     * @returns {DisplayOptions}
      * @throws This function can throw errors.
      */
-    static getDisplayAtSlot(...args){
-        let rt = VanillaScoreboard.getObjectiveAtDisplaySlot(...args);
+    static getDisplayAtSlot(slot){
+        let rt = VanillaScoreboard.getObjectiveAtDisplaySlot(slot);
         let result = {
-            objective: this.getObjective(rt.objective.id),
+            objective: rt.objective ?
+                this.getObjective(rt.objective.id) :
+                null
         };
-        if (sortOrder in rt){
+        if ("sortOrder" in rt){
             result.sortOrder = rt.sortOrder;
         }
         return result;
@@ -141,38 +172,65 @@ export default class SimpleScoreboard {
          } else if (any && typeof any === "string"){
              return any;
          } else {
-             throw new Error();
+             throw new TypeError();
          }
     }
-    
+    /**
+     * @remarks
+     * 在指定位置上显示记分项
+     * @param {DisplaySlotType} slot - 位置的id
+     * @param {DisplayOptions} settings - 对于显示方式的设置
+     * @returns {Objective} 指定显示位置的记分项对应的对象
+     */
     static setDisplayAtSlot(slot, settings){
-        let objId = this.#getIdOfObjective(settings.objective);
-        let rt = VanillaScoreboard.setObjectiveAtDisplaySlot(
+        let obj = this.getObjective(this.#getIdOfObjective(settings.objective));
+        let settingArg;
+        try {
+            if ("sortOrder" in settings){
+                settingArg = new Minecraft.ScoreboardObjectiveDisplayOptions(
+                    obj.vanillaObjective,
+                    settings.sortOrder
+                );
+            } else {
+                settingArg = new Minecraft.ScoreboardObjectiveDisplayOptions(
+                    obj.vanillaObjective
+                );
+            }
+        } catch {
+            settingArg = {
+                objective: obj.vanillaObjective
+            };
+            if ("sortOrder" in settings){
+                settingArg.sortOrder = settings.sortOrder
+            }
+        }
+        VanillaScoreboard.setObjectiveAtDisplaySlot(
             slot,
-            new Minecraft.ScoreboardObjectiveDisplayOptions(
-                objId,
-                settings.sortOrder
-            )
+            settingArg
         );
-        return this.getObjective(rt.id);
+        return obj;
     }
     
     /**
      * @remarks
      * Clears the objective that occupies a display slot.
-     * @param displaySlotId
+     * @param {DisplaySlotType} slot - 位置的id
+     * @returns {?Objective}
      * @throws TypeError when slot not a DisplaySlot.
      */
     static clearDisplaySlot(slot){
         let rt = VanillaScoreboard.clearObjectiveAtDisplaySlot(slot);
         if (rt?.id !== undefined){
             return this.getObjective(rt.id);
+        } else {
+            return null;
         }
     }
     
     /**
      * @remarks
      * Returns all defined scoreboard identities.
+     * @returns {Entry[]}
      */
     static getEntries(){
         return Array.from(VanillaScoreboard.getParticipants())
@@ -181,6 +239,9 @@ export default class SimpleScoreboard {
             });
     }
     
+    /**
+     * remove all objectives from scoreboard
+     */
     static removeAllObjectives(){
         Array.from(VanillaScoreboard.getObjectives())
             .forEach(obj=>{
@@ -189,12 +250,15 @@ export default class SimpleScoreboard {
     }
     
     /**
-     * reset scores of all participants
-     * @param particular filter function, the function will be call for every participants, if return true, then reset the scores of participants
-     * @return Promise<Number> success count
+     * @remarks reset scores of all participants (in asynchronously)
+     * @param {(entry:Entry) => boolean} filter - particular 
+     * filter function, the function will be call for each 
+     * participants, if return true, then reset the scores of 
+     * participants
+     * @return {Promise<number>} success count
      */
-    static async postResetAllScore(filter){
-        if (filter === undefined){
+    static async postResetAllScore(filter=null){
+        if (filter === null){
             let rt = await Command.fetch("scoreboard players reset *");
             if (rt.statusCode){
                 throw new Error(rt.statusMessage);
@@ -227,7 +291,7 @@ export default class SimpleScoreboard {
     
     /**
      * reset scores of a participant
-     * @param entry
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry 
      */
     static async postResetScore(entry){
         if (!(entry instanceof Entry))
@@ -235,14 +299,16 @@ export default class SimpleScoreboard {
         
         if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
             let ent = entry.getEntity();
-            if (ent === undefined){
+            if (ent == null){
                 throw new InternalError("Could not find the entity");
             }
-            if (await Command.fetchExecuteParams(ent, "scoreboard", "players", "reset", "@s").statusCode != StatusCode.success){
+            let rt = await Command.addExecuteParams(Command.PRIORITY_HIGHEST, ent, "scoreboard", "players", "reset", "@s");
+            if (rt.statusCode != StatusCode.success){
                 throw new InternalError("Could not set score, maybe entity or player disappeared?");
             }
-        } else if ([...VanillaWorld.getPlayers()].length === 0){
-            if (await Command.fetchParams("scoreboard", "players", "reset", entry.displayName).statusCode !== StatusCode.success){
+        } else if ([...VanillaWorld.getPlayers({name: entry.displayName})].length === 0){
+            let rt = await Command.addParams(Command.PRIORITY_HIGHEST, "scoreboard", "players", "reset", entry.displayName);
+            if (rt.statusCode !== StatusCode.success){
                 throw new InternalError(rt.statusMessage);
             }
         } else {

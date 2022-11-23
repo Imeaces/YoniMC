@@ -2,6 +2,7 @@ import { Minecraft, dim, Gametest, VanillaWorld, StatusCode } from "yoni/basis.j
 import { Command } from "yoni/command.js";
 import Entry from "yoni/scoreboard/Entry.js";
 import { dealWithCmd } from "yoni/lib/utils.js";
+import { Location } from "yoni/Location.js";
 
 const { EntityTypes } = Minecraft;
 
@@ -10,21 +11,48 @@ let entityMap = new WeakMap();
 function getAliveEntities(option){
     let entities = [];
     
-    for (let dimid in Minecraft.MinecraftDimensionTypes){
-        entities.push(...dim(dimid).getEntities(option));
-    }
+    Object.values(Minecraft.MinecraftDimensionTypes)
+        .forEach((dimid)=>{
+            for (let ent of dim(dimid).getEntities(option)){
+                entities.push(ent);
+            }
+        });
     return entities;
 }
 
 function getLoadedEntities(option){
+    if (("location" in option || "maxDistance" in option || "minDistance" in option) && !("dimension" in option)){
+        throw new Error("'location', 'maxDistance' or 'minDistance' usage in options is not allow, unless specified 'dimension' filed");
+    }
     let entities = getAliveEntities(option);
-    [...VanillaWorld.getPlayers(option)].forEach((_)=>{
-        if (!entities.includes(_)){
-            entities.push(_);
+    let entitiesInDim = [];
+    let playersInDim = [];
+    if (option.dimension != null){
+        let loc = new Location(option);
+        let dimension = loc.dimension;
+        entitiesInDim = loc.dimension.getEntities(option);
+        playersInDim = VanillaWorld.getPlayers(option);
+        for (let pl of VanillaWorld.getPlayers()){
+            if (dimension === pl.dimension){
+                playersInDim.push(pl);
+            }
         }
-    });
+    } else {
+        entitiesInDim = getAliveEntities(option);
+        playersInDim = VanillaWorld.getPlayers(option);
+    }
+    for (let ent of playersInDim){
+        entities.push(ent);
+    }
+    for (let ent of entitiesInDim){
+        if (!playersInDim.includes(ent)){
+            entities.push(ent);
+        }
+    }
     return entities;
 }
+
+const entitySymbol = Symbol();
 
 class Entity {
     
@@ -44,10 +72,16 @@ class Entity {
         return this.vanillaEntity;
     }
     
+    get location(){
+        let { rotation, location, dimension } = this.vanillaEntity;
+        return new Location({rotation, location, dimension});
+    }
+    
     constructor(entity, symbol){
     
-        if (entity !== symbol){
-            return Entity.from(entity);
+        if (symbol !== entitySymbol){
+            throw new Error("not allow create a entity object use constructor, use Entity.from()");
+            //return Entity.from(entity);
         }
         
         //如果不是MCEntity则报错
@@ -106,11 +140,32 @@ class Entity {
         let command = "say " + message;
         return Command.fetchExecute(this, command);
     }
-    setCurrentHealth(){
-        return Entity.setCurrentHealth(this);
+    setCurrentHealth(v){
+        return Entity.setCurrentHealth(this, v);
     }
-    setMaxHealth(){
-        return Entity.setMaxHealth(this);
+    
+    /**
+     * 传入位置，将实体传送到指定位置
+     * 允许两种长度的参数
+     * 当传入了1个参数，被认为是yoni的方法
+     * 当传入了2个参数，被认为是yoni的方法
+     * 当传入了4个参数，被认为是原版的方法
+     * 当传入了5个参数，被认为是原版的方法
+     * yoni方法中，第一个参数认为是位置，第二个参数认为是keepVelocity
+     * 原版方法中参数顺序为[location, dimension, rx, ry, keepVelocity?=null]
+     */
+    teleport(args){
+        if (args.length <= 2){
+            let keepVelocity = null;
+            if (args.length === 2){
+                keepVelocity = args.pop();
+            }
+            let location = new Location(...args);
+            let { rx, ry, dimension } = location;
+            this.vanillaEntity.teleport(location, dimension, rx, ry, keepVelocity);
+        } else {
+            this.vanillaEntity.teleport(...args);
+        }
     }
     
     /**
@@ -139,11 +194,11 @@ class Entity {
         
         let rt = null;
         if (entity instanceof Minecraft.Entity)
-            rt = new Entity(entity, entity);
+            rt = new Entity(entity, entitySymbol);
         else if (entity instanceof Minecraft.Player)
-            rt = new Player(entity, entity);
+            rt = new Player(entity, entitySymbol);
         else if (entity instanceof Gametest.SimulatedPlayer)
-            rt = new SimulatedPlayer(entity, entity);
+            rt = new SimulatedPlayer(entity, entitySymbol);
         
         if (rt !== null)
             entityMap.set(entity, rt);
@@ -211,6 +266,8 @@ class Entity {
     
     /**
      * 得到一个Minecraft.Entity
+     * @param entity
+     * @returns <? extends Minecraft.Entity>
      */
     static getMinecraftEntity(entity){
         Entity.checkIsEntity(entity);
@@ -222,7 +279,9 @@ class Entity {
     }
     
     /**
-     * 得到一个Entity
+     * 得到一个Entity，如果无法根据参数得到一个Entity将会抛出错误
+     * @param entity
+     * @returns <? extends Entity>
      */
     static getYoniEntity(entity){
         Entity.checkIsEntity(entity);
@@ -256,11 +315,7 @@ class Entity {
      */
     static isAliveEntity(entity){
         entity = Entity.getMinecraftEntity(entity);
-        for (let ent of Entity.getLoadedEntities()){
-            if (entity.getMinecraftEntity() === ent)
-                return true;
-        }
-        return false;
+        return getLoadedEntities().includes(entity);
     }
     
     /**
@@ -308,11 +363,14 @@ class Entity {
     }
 
     /**
-     * 检测两个参数是否为YoniEntity
+     * 检测参数是否为YoniEntity
+     * @param any
      */
     static isYoniEntity(object){
         if (object instanceof Entity)
             return true;
+        else
+            return false;
     }
     
     /**
@@ -321,13 +379,6 @@ class Entity {
     static setCurrentHealth(entity, val){
         let component = Entity.getHealthComponent(entity);
         component.setCurrent(val);
-    }
-    /**
-     * 获取实体最大血量
-     */
-    static setMaxHealth(entity, val){
-        let component = Entity.getHealthComponent(entity);
-        component.value = val;
     }
 }
 
@@ -396,9 +447,13 @@ const defineEntityPrototypeFor = (targetPrototype, srcPrototype) => {
         });
 }
 
+/* 修补 */
+//定义不存在的属性
 defineEntityPrototypeFor(Entity.prototype, Minecraft.Entity.prototype);
 defineEntityPrototypeFor(Player.prototype, Minecraft.Player.prototype);
 defineEntityPrototypeFor(SimulatedPlayer.prototype, Gametest.SimulatedPlayer.prototype);
+
+/*修复结束*/
 
 export {
     SimulatedPlayer,

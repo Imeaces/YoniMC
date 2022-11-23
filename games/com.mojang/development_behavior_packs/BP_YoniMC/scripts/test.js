@@ -53,31 +53,24 @@ EventListener.register("minecraft:beforeItemUseOn", (event)=>{
 });
 */
 
-//测试用代码
-//请添加yoni:console标签以获得日志输出
 EventListener.register("yoni:playerTeleportDimension", (event)=>{
     event.player.sendMessage("你切换了维度，现在是"+event.newDimension.id+"，原来是"+event.oldDimension.id);
     
 });
 
 
-
-
-
-
-import("./BeforePlayerSleep.js")
-.then((m)=>{
-    let s = new m.BeforePlayerSleepEventSignal();
-    s.subscribe((e)=>{
-        send(e.player, "睡什么睡起来嗨");
-        e.cancel = true;
-    });
-}).catch(logger.error);
-
 EventListener.register("yoni:raidEventTrigger", (event)=>{
     event.source.onScreenDisplay.setTitle("你遭遇了袭击！");
 });
 
 
-
+/*
+Array.from(EventTypes.getEventTypes().keys()).forEach(key=>{
+    if (key!=="minecraft:tick"&&key.startsWith("minecraft:")){
+        EventListener.register(key,()=>{
+            console.debug("触发了事件{}",key);
+        });
+    }
+});
+*/
 }

@@ -1,13 +1,20 @@
-import { StatusCode, overworld, runTask } from "yoni/basis.js";
-import { debug } from "yoni/config.js";
-import { getErrorMsg } from "yoni/util/console.js";
-import { getKeys } from "yoni/lib/utils.js";
+import { StatusCode, overworld, runTask, Minecraft } from "./basis.js";
+import { debug } from "./config.js";
+import { getKeys } from "./lib/utils.js";
 
+//实际运行并不需要，只是为了自动补全生效而导入的
+import { YoniEntity } from "./entity.js";
 
 let log = ()=>{};
 
 const testIfHasSpecificChar = /(["'\\])/g;
 const testIfHasSpaceChar = /(\s)/g;
+/**
+ * generates a command by a set of params
+ * @param {string} cmd 
+ * @param  {...string} args 
+ * @returns {string} command
+ */
 export function getCommand(cmd, ...args){
     if (args?.length === 1 && Array.isArray(args[0])){
         args = args[0];
@@ -30,6 +37,7 @@ export function getCommand(cmd, ...args){
 let commandQueues = [[], [], [], [], []];
 
 //空间换时间（滑稽）
+/** @returns {boolean} */
 function hasNextQueue(){
     if (commandQueues[4].length
     || commandQueues[3].length
@@ -40,6 +48,7 @@ function hasNextQueue(){
     }
     return false;
 }
+/** @returns {number} */
 function countNextQueues(){
     return commandQueues[4].length
     + commandQueues[3].length
@@ -47,6 +56,7 @@ function countNextQueues(){
     + commandQueues[1].length
     + commandQueues[0].length;
 }
+/** @returns {CommandQueue} */
 function fetchNextQueue(){
     if (commandQueues[4].length){
         return commandQueues[4][0];
@@ -64,6 +74,7 @@ function fetchNextQueue(){
         return commandQueues[0][0];
     }
 }
+/** remove next queue */
 function removeNextQueue(){
     if (commandQueues[4].length){
         commandQueues[4].shift();
@@ -78,6 +89,7 @@ function removeNextQueue(){
     }
 }
 
+/** @type {CommandQueue} */
 let lastFailedCommand = null;
 let executeQueueCount = 0;
 async function executeCommandQueues(){
@@ -87,7 +99,6 @@ async function executeCommandQueues(){
         //从队列plus中取得一个排队中的命令
         let commandQueue = fetchNextQueue();
         //然后将命令送入minecraft 的命令队列
-        let commandPromise;
         try {
             let p = commandQueue.sender.runCommandAsync(commandQueue.command);
             commandQueue.resolveResult(p);
@@ -107,10 +118,30 @@ async function executeCommandQueues(){
     }
 }
 
+/**
+ * something that can runCommandAsync
+ * @typedef {(Minecraft.Entity|Minecraft.Player|Minecraft.Dimension|YoniEntity)} CommandSender
+ */
+/**
+ * contains command queue infos
+ */
 export class CommandQueue {
+    /**
+     * @type {CommandSender}
+     */
     sender;
+    /**
+     * @type {string}
+     */
     command;
+    /**
+     * @type {Function}
+     */
     resolve;
+    /**
+     * 
+     * @param {Promise<Minecraft.CommandResult>} commandPromise 
+     */
     async resolveResult(commandPromise){
         
         //然后是获取命令结果(但是现在已经没有结果了)
@@ -136,6 +167,13 @@ export class CommandQueue {
         }
         this.resolve(commandResult);
     }
+    /**
+     * 
+     * @param {CommandSender} sender 
+     * @param {string}} command 
+     * @param {Function} resolve 
+     * @param {Function} reject 
+     */
     constructor(sender, command, resolve, reject){
         if (typeof sender?.runCommandAsync !== "function"){
             throw new TypeError("sender cannot runCommandAsync()");
@@ -147,38 +185,93 @@ export class CommandQueue {
     }
 }
 
+/**
+ * Indicates the execution priority of this command
+ * @typedef {number} CommandPriority
+ */
 export default class Command {
     
+    /** @type {CommandPriority} */
     static PRIORITY_HIGHEST = 5;
+    /** @type {CommandPriority} */
     static PRIORITY_HIGH = 4;
+    /** @type {CommandPriority} */
     static PRIORITY_NORMAL = 3;
+    /** @type {CommandPriority} */
     static PRIORITY_LOW = 2;
+    /** @type {CommandPriority} */
     static PRIORITY_LOWEST = 1;
     
+    /**
+     * execute a command
+     * @param {string} command
+     */
     static fetch(command){
         return Command.addExecute(Command.PRIORITY_NORMAL, overworld, command);
     }
+    /**
+     * execute a command with params
+     * @param  {...string} params - Command params
+     * @returns {Promise<Minecraft.CommandResult>}
+     */
     static fetchParams(...params){
         return Command.addExecute(Command.PRIORITY_NORMAL, overworld, getCommand(...params));
     }
+    /**
+     * execute a command with params by specific sender
+     * @param {CommandSender} sender - Command's sender
+     * @param {...string} params - command params
+     * @returns {Promise<Minecraft.CommandResult>}
+     */
     static fetchExecuteParams(sender, ...params){
         return Command.addExecute(Command.PRIORITY_NORMAL, sender, getCommand(...params));
     }
+    /**
+     * execute a command by specific sender
+     * @param {CommandSender} sender - Command's sender
+     * @returns {Promise<Minecraft.CommandResult>}
+     */
     static fetchExecute(sender, command){
         return Command.addExecute(Command.PRIORITY_NORMAL, sender, command);
     }
     
+    /**
+     * add a command to specific priority to execute
+     * @param {CommandPriority} priority 
+     * @param {string} command 
+     * @returns {Promise<Minecraft.CommandResult>}
+     */
     static add(priority, command){
         return Command.addExecute(priority, overworld, command);
     }
+    /**
+     * add a command with params to specific priority to execute
+     * @param {CommandPriority} priority 
+     * @param {...string} params
+     * @returns {Promise<Minecraft.CommandResult>}
+     */
     static addParams(priority, ...params){
         return Command.addExecute(priority, overworld, getCommand(...params));
     }
+    /**
+     * add a command with params to specific priority to execute by sender
+     * @param {CommandPriority} priority 
+     * @param {CommandSender} sender
+     * @param {...string} params
+     * @returns {Promise<Minecraft.CommandResult>}
+     */
     static addExecuteParams(priority, sender, ...params){
         return Command.addExecute(priority, sender, getCommand(...params));
     }
     //某些命令需要以尽可能快的速度执行，故添加此函数，可设置命令权重
     //然后我就把所有命令都用这个来执行了
+    /**
+     * 
+     * @param {CommandPriority} priority 
+     * @param {CommandSender} sender 
+     * @param {string} command 
+     * @returns {Promise<Minecraft.CommandResult>}
+     */
     static addExecute(priority, sender, command){
         let resolve, reject;
         let promise = new Promise((re, rj)=>{
@@ -193,9 +286,21 @@ export default class Command {
         }
     }
     
+    /**
+     * get command by params
+     * @param {string} command 
+     * @param  {...string} args - command params
+     * @returns {string} command
+     */
     static getCommand(command, ...args){
         return getCommand(command, ...args);
     }
+    /**
+     * execute a set of commands by sender
+     * @param {CommandSender} sender 
+     * @param {string[]} commands - command
+     * @returns {Promise<Minecraft.CommandResult[]]>}
+     */
     static async postExecute(sender, commands){
         commands = Array.from(commands);
         let promises = commands.map((cmd)=>Command.fetchExecute(sender, cmd));
@@ -212,7 +317,7 @@ export { Command };
 runTask(executeCommandQueues);
 
 if (debug){
-    import("yoni/util/Logger.js")
+    import("./util/Logger.js")
     .then(m=>{
         let logger = new m.Logger("Command");
         log = logger.debug;
@@ -220,7 +325,7 @@ if (debug){
     
     import("./command/ChatCommand.js")
     .then(m=>{
-        m.ChatCommand.registerCustomPrefixCommand("$", "cmdm", (sender, _, __, args)=>{
+        m.ChatCommand.registerCustomPrefixCommand("$", "cmdm", (_sender, _, __, args)=>{
             if (args[0] === "clearandprint"){
                 let str = ""; //JSON.stringify(commandQueues[3]);
                 for (let s of commandQueues[2]){

@@ -1,11 +1,28 @@
-import { Minecraft, VanillaWorld, overworld, StatusCode, VanillaScoreboard } from "yoni/basis.js";
+import { Minecraft, VanillaWorld, StatusCode, VanillaScoreboard } from "../basis.js";
 
-import { Command } from "yoni/command.js";
+import { Command } from "../command.js";
 import { Entry, EntryType } from "./Entry.js";
 import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "./ScoreboardError.js"
 
+import { YoniEntity } from "../entity.js";
+
 /**
- * Contains objectives and participants for the scoreboard.
+ * check whether numbers is in range from -2^31 to 2^31-1
+ * @param  {...number} scores 
+ * @throws Throws when one of number not in range
+ */
+function checkScoreIsInRange(...scores){
+    for (let s of scores){
+        if (Number.isInteger(s) === false
+        || s > 2147483647
+        || s < -2147483648){
+            throw new ScoreRangeError();
+        }
+    }
+}
+
+/**
+ * 包含记分板的目标（记分项）和参与者（记分对象）。
  */
 class Objective {
     #scoreboard;
@@ -16,8 +33,13 @@ class Objective {
     #unregistered = false;
     #vanillaObjective;
     
+    get scoreboard(){
+        return this.#scoreboard;
+    }
+
     /**
-     * Identifier of the scoreboard objective.
+     * 记分项的标识符。
+     * @returns {string}
      * @throws This property can throw when used.
      */
     get id(){
@@ -25,7 +47,7 @@ class Objective {
     }
     
     /**
-     * Returns the criteria of the objective
+     * 记分项的准则
      * @throws This property can throw when used.
      */
     get criteria(){
@@ -33,26 +55,37 @@ class Objective {
     }
     
     /**
-     * Returns the player-visible name of this scoreboard
-     * objective.
+     * 返回此记分项的玩家可见名称。
+     * @returns {string}
      * @throws This property can throw when used.
      */
     get displayName(){
         return this.#displayName;
     }
     
+    /** 
+     * @remarks 此记分项对象是否只允许使用getScore()
+     * @remarks （此功能未实现）
+     * @returns {boolean} 表示是否此记分项对象只允许使用getScore()
+     */
     isReadOnly(){
         this.checkUnregistered();
         return !!this.#objectiveOptions?.readonly;
     }
     
     /**
-     * Returns whether the objective has been removed.
+     * @remarks 检测此对象对应的记分项是否已经被移除
+     * @returns {boolean} 此对象对应的记分项是否已经被移除。
      */
     isUnregistered(){
         if (!this.#unregistered){
             let currentVanillaObjective = VanillaScoreboard.getObjective(this.#id);
-            if (currentVanillaObjective === undefined || currentVanillaObjective !== this.#vanillaObjective && currentVanillaObjective !== this.#vanillaObjective?.vanillaObjective){
+            if (currentVanillaObjective === undefined
+            || currentVanillaObjective === null
+            || (
+                currentVanillaObjective !== this.#vanillaObjective
+                && currentVanillaObjective !== this.#vanillaObjective?.vanillaObjective
+            )){
                 this.#unregistered = true;
             }
         }
@@ -60,8 +93,8 @@ class Objective {
     }
 
     /**
-     * Returns whether the objective has been removed.
-     * @throws Throw when the objective has been removed.
+     * @remarks 检查此对象对应的记分项是否被移除
+     * @throws 当此对象对应的记分项被移除时抛出错误
      */
     checkUnregistered(){
         if (this.isUnregistered())
@@ -69,17 +102,15 @@ class Objective {
     }
     
     /**
-     * Returns the origin objective class of this scoreboard
-     * objective.
-     * @return {Minecraft.ScoreboardObjective}
+     * 原始记分项对象
+     * @returns {Minecraft.ScoreboardObjective} 原始记分项对象
      */
     get vanillaObjective(){
         return this.#vanillaObjective;
     }
     
     /**
-     * @remarks
-     * Remove this objective
+     * 将此对象对应的记分项从记分板上移除
      * @throws This function can throw error when objective has been unregistered.
      */
     unregister(){
@@ -109,62 +140,102 @@ class Objective {
         }
     }
     
+    /**
+     * @remarks 为记分板项目在记分项上添加分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {number} score - 要添加的分数
+     * @returns {Promise<number>} 记分板项目的新分数
+     */
     async postAddScore(entry, score){
-        if (!Number.isInteger(score))
-            throw new ScoreRangeError();
+        checkScoreIsInRange(score);
         if (!await this.#postPlayersCommand("add", entry, score)){
             throw new InternalError("Could not add score, maybe entity or player disappeared?");
         }
         return this.getScore(entry);
     }
     
-    async postRandomScore(entry, min=-2147483648, max=2147483647){
-        if (!Number.isInteger(min) || !Number.isInteger(max))
-            throw new ScoreRangeError();
-        if (!await this.#postPlayersCommand("random", entry, min, max)){
+    /**
+     * @remarks 为记分板项目在记分项上设置一个随机的分数。
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {number} min=-2147483647 - 随机分数的最小值
+     * @param {number} max=2147483647 - 随机分数的最大值
+     * @param {boolean} useBuiltIn=false - 是否在js代码层面进行随机
+     * 由于实现原理以及Minecraft自身的特性，一次随机只能有2^64-1种可能，
+     * 如果将最小值设置为-2147483648，并将最大值设置为2147483647
+     * 随机的结果一定会是 -2147483648
+     * 如果想要避免这种情况，请将此项设置为true
+     * @returns {Promise<number>} 记分板项目的新分数
+     */
+    async postRandomScore(entry, min=-2147483648, max=2147483647, useBuiltIn=false){
+        checkScoreIsInRange(min, max);
+        if (useBuiltIn){
+            let vals = max - min + 1;
+            let randomScore = vals * Math.random();
+            let result = Math.round(randomScore + min);
+            return this.postSetScore(entry, result);
+        } else if (!await this.#postPlayersCommand("random", entry, min, max)){
             throw new InternalError("Could not random score, maybe entity or player disappeared?");
         }
         return this.getScore(entry);
     }
     
+    /**
+     * @remarks 为记分板项目在记分项上减少指定的分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {number} score - 要减少的分数
+     * @returns {Promise<number>} 记分板项目的新分数
+     */
     async postRemoveScore(entry, score){
-        if (!Number.isInteger(score))
-            throw new ScoreRangeError();
+        checkScoreIsInRange(score);
         if (!await this.#postPlayersCommand("remove", entry, score)){
             throw new InternalError("Could not remove score, maybe entity or player disappeared?");
         }
         return this.getScore(entry);
     }
     
+    /**
+     * @remarks 在记分项重置指定记分板项目的分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     */
     async postResetScore(entry){
         if (!await this.#postPlayersCommand("reset", entry)){
             throw new InternalError("Could not reset score, maybe entity or player disappeared?");
         }
     }
     
+    /**
+     * @remarks 重置所有在记分项上的记分板项目的分数
+     */
     async postResetScores(){
-        let rt = await Command.fetchParams("scoreboard", "players", "reset", "*", this.#id);
-        if (!rt.statusCode){
+        let rt = await Command.addParams(Command.PRIORITY_HIGHEST, "scoreboard", "players", "reset", "*", this.#id);
+        if (rt.statusCode !== StatusCode.success){
             throw new Error(rt.statusMessage);
         }
     }
     
     /**
-     * @remarks
-     * Set a specific score for a participant.
-     * @param entry, or other thing that can be set score
-     * @param {Number} an integer number
+     * @remarks 为记分板项目在记分项上设置指定的分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {number} score - 要设置的分数
+     * @returns {Promise<number>} 记分板项目的新分数
      * @throws This function can throw errors.
      */
     async postSetScore(entry, score){
-        if (!Number.isInteger(score))
-            throw new ScoreRangeError();
+        checkScoreIsInRange(score);
         if (!await this.#postPlayersCommand("set", entry, score)){
             throw new InternalError("Could not set score, maybe entity or player disappeared?");
         }
         return score;
     }
     
+    /**
+     * @remarks 为记分板项目在记分项上执行特定的操作
+     * @param {string} option - 操作的名称
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {...any} args - 操作所需要的参数
+     * @returns {Promise<boolean>} 操作是否成功
+     * @throws This function can throw errors.
+     */
     async #postPlayersCommand(option, entry, ...args){
         this.checkUnregistered();
         
@@ -173,14 +244,17 @@ class Objective {
         
         if (entry.type === EntryType.PLAYER || entry.type === EntryType.ENTITY){
             let params = ["scoreboard", "players", option, "@s", this.#id, ...args];
+            console.error(params);
             let ent = entry.getEntity();
             if (ent === undefined){
                 throw new InternalError("Could not find the entity");
             }
-            return !(await Command.addExecuteParams(Command.PRIORITY_HIGHEST, ent, ...params)).statusCode;
+            let rt = await Command.addExecuteParams(Command.PRIORITY_HIGHEST, ent, ...params);
+            return rt.statusCode === StatusCode.success;
         } else if ([...VanillaWorld.getPlayers({name: entry.displayName})].length === 0){
             let params = ["scoreboard", "players", option, entry.displayName, this.#id, ...args];
-            return !(await Command.addParams(Command.PRIORITY_HIGHEST, ...params)).statusCode;
+            let rt = await Command.addParams(Command.PRIORITY_HIGHEST, ...params);
+            return rt.statusCode === StatusCode.success;
         } else {
             throw new NameConflictError(entry.displayName);
         }
@@ -188,10 +262,9 @@ class Objective {
     }
     
     /**
-     * @remarks
-     * Returns a specific score for a participant.
-     * @param participant
-     * @return {Number} - the score of entry
+     * @remarks 获取记分板项目在记分项上的分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @returns {number} 记分板项目的分数
      * @throws This function can throw errors.
      */
     getScore(entry){
@@ -210,23 +283,21 @@ class Objective {
     }
     
     /**
-     * @remarks
-     * Returns all objective participant identities.
+     * @remarks 获取在记分项上的记分板项目
+     * @returns {Entry[]} 一个包含了在记分项上的记分板项目的数组
      * @throws This function can throw errors.
      */
     getEntries(){
         this.checkUnregistered();
         
-        return Array.from(this.vanillaObjective.getParticipants())
-            .map((_) => {
-                return Entry.getEntry({scbid: _, type: _.type});
-            });
+        return Array
+        .from(this.vanillaObjective.getParticipants())
+        .map((scbid) => Entry.getEntry({scbid, type: scbid.type}) );
     }
     
     /**
-     * @remarks
-     * Returns specific scores for this objective for all
-     * participants.
+     * @remarks 获取表示了在记分项上的记分板项目的分数的对象
+     * @returns {ScoreInfo[]} 一个数组，包含了所有表示了在记分项上的记分板项目的分数的对象
      * @throws This function can throw errors.
      */
     getScoreInfos(){
@@ -234,10 +305,17 @@ class Objective {
         
         return Array.from(this.getEntries())
             .map((_)=>{
-                return this.getScoreInfo(_)
+                return this.getScoreInfo(_);
             });
     }
     
+    /**
+     * @remarks 获取一个可以代表一个记分板项目在此记分项上的分数的对象
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {boolean} autoInit - 如果为true，且指定的记分板项目在此记分项上的分数未定义，将会设置它的分数为0
+     * @returns {ScoreInfo}
+     * @throws This function can throw errors.
+     */
     getScoreInfo(entry, autoInit=false){
         this.checkUnregistered();
         
@@ -251,20 +329,56 @@ class Objective {
     }
     
     //以下为兼容函数，主要是不这样做要改的东西比较多
-    setScore(...args){
-        return this.postSetScore(...args);
+    
+    /**
+     * @remarks 为记分板项目在记分项上设置指定的分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {number} score - 要设置的分数
+     * @returns {Promise<number>} 记分板项目的新分数
+     * @throws This function can throw errors.
+     */
+    async setScore(entry, score){
+        return this.postSetScore(entry, score);
     }
-    removeScore(...args){
-        return this.postRemoveScore(...args);
+    /**
+     * @remarks 为记分板项目在记分项上减少指定的分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {number} score - 要减少的分数
+     * @returns {Promise<number>} 记分板项目的新分数
+     */
+    async removeScore(entry, score){
+        return this.postRemoveScore(entry, score);
     }
-    randomScore(...args){
-        return this.postRandomScore(...args);
+    /**
+     * @remarks 为记分板项目在记分项上设置一个随机的分数。
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {number} min=-2147483647 - 随机分数的最小值
+     * @param {number} max=2147483647 - 随机分数的最大值
+     * @param {boolean} useBuiltIn=false - 是否在js代码层面进行随机
+     * 由于实现原理以及Minecraft自身的特性，一次随机只能有2^64-1种可能，
+     * 如果将最小值设置为-2147483648，并将最大值设置为2147483647
+     * 随机的结果一定会是 -2147483648
+     * 如果想要避免这种情况，请将此项设置为true
+     * @returns {Promise<number>} 记分板项目的新分数
+     */
+    async randomScore(entry, min=-2147483647, max=2147483647, useBuiltIn=false){
+        return this.postRandomScore(entry, min, max, useBuiltIn);
     }
-    resetScore(...args){
-        return this.postResetScore(...args);
+    /**
+     * @remarks 在记分项重置指定记分板项目的分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     */
+    async resetScore(entry){
+        return this.postResetScore(entry);
     }
-    addScore(...args){
-        return this.postAddScore(...args);
+    /**
+     * @remarks 为记分板项目在记分项上添加分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @param {number} score - 要添加的分数
+     * @returns {Promise<number>} 记分板项目的新分数
+     */
+    async addScore(entry, score){
+        return this.postAddScore(entry, score);
     }
 }
 
@@ -272,6 +386,10 @@ class ScoreInfo {
     #entry;
     #objective;
     
+    /**
+     * @param {Objective} obj
+     * @param {Entry} entry 
+     */
     constructor(obj, entry){
         if (!(obj instanceof Objective))
             throw new TypeError("Not an Objective type");
@@ -281,16 +399,25 @@ class ScoreInfo {
         this.#entry = entry;
     }
     
+    /**
+     * @param {number} score
+     */
     set score(score){
         this.#objective.setScore(this.#entry, score);
     }
     
+    /**
+     * @type {number}
+     */
     get score(){
         return this.#objective.getScore(this.#entry);
     }
     
-    reset(){
-        this.#objective.resetScore(this.#entry);
+    /**
+     * 重置此对象对应的记分板项目在对应的记分项上的分数
+     */
+    async reset(){
+        awaitthis.#objective.resetScore(this.#entry);
     }
     
     getEntry(){

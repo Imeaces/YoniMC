@@ -6,21 +6,51 @@ export { Gametest }
 export { MinecraftGui }
 export { Minecraft }
 
+/**
+ * @see {@link Minecraft.world}
+ */
 export const VanillaWorld = Minecraft.world;
+/**
+ * @see {@link Minecraft.world.events}
+ */
 export const VanillaEvents = VanillaWorld.events;
+/**
+ * @see {@link Minecraft.world.scoreboard}
+ */
 export const VanillaScoreboard = VanillaWorld.scoreboard;
+/**
+ * @see {@link Minecraft.system}
+ */
 export const MinecraftSystem = Minecraft.system;
+/**
+ * @see {@link Minecraft.system.events}
+ */
 export const SystemEvents = MinecraftSystem.events;
 
-export const runTask = (callback)=>{ MinecraftSystem.run(callback); }
+/**
+ * @param {()=> void} callback 
+ */
+export const runTask = (callback) => { MinecraftSystem.run(callback); }
+
+/**
+ * overworld dimension
+ */
 export const overworld = VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.overworld);
 
+/**
+ * a type contains a set of statusCode
+ */
 export class StatusCode {
     static fail = -2147483648;
     static error = -2147483646;
     static success = 0;
 }
 
+/**
+ * 
+ * @param {string|Minecraft.Dimension|number} dimid - something means a dimension
+ * @returns {Minecraft.Dimension} dimension objective
+ */
 function dim(dimid = Minecraft.MinecraftDimensionTypes.overworld){
   switch (dimid) {
     case -1:

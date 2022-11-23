@@ -1,5 +1,10 @@
 import { Types, getIdentifierInfo } from "./Types.js";
 import { Event, EventRemover } from "./Event.js";
+import { runTask } from "yoni/basis.js";
+
+async function callAsyncFunction(func, ...args){
+    return func(...args);
+}
 
 class Trigger {
     
@@ -18,25 +23,46 @@ class Trigger {
     
     signal;
     
-    firebug(callbacks /* Array<Object{callback: <Function>, filters: <Array> }> */, eventClass /* any */, eventValues/* Array[any] */){
-        let event = EventRemover(new eventClass(...eventValues));
-        callbacks.forEach((f)=>{
-            f(event);
-        });
+    /**
+     * 同步的事件回调
+     * @param {Function[]} callbacks
+     * @param {*} eventClass
+     * @param {any[]} eventValues
+     */
+    firebug(callbacks, eventClass, eventValues){
+        let proxy = Proxy.revocable(new eventClass(...eventValues), {});
+        let event = proxy.proxy;
+        runTask(proxy.revoke);
+        callbacks.forEach(f => f(event) );
+        proxy.revoke();
     }
-    async firebugAsync(callbacks /* Array<Object{callback: <Function>, filters: <Array> }> */, eventClass /* any */, eventValues/* Array[any] */){
-        await Promise.all(
+    /**
+     * 异步的事件回调
+     * @param {AsyncFunction[]} callbacks
+     * @param {*} eventClass
+     * @param {any[]} eventValues
+     */
+    async firebugAsync(callbacks, eventClass, eventValues){
+        return Promise.allSettled(
             callbacks.map(async (f)=>{
-                await f(EventRemover(new eventClass(...eventValues)));
+                let proxy = Proxy.revocable(new eventClass(...eventValues), {});
+                let event = proxy.proxy;
+                return callAsyncFunction(f, event)
+                .finally(proxy.revoke);
             })
-        )
+        );
     }
     
     getCallbacks(){
         return [];
     }
     
-    filterResolver(eventValue /* Array[any] */, filters, /* Array[any] */){
+    /**
+     * @param {any[]} eventValues
+     * @param {any[]} filters
+     * @return {boolean}
+     */
+    filterResolver(eventValues, filters){
         return true;
     };
     
@@ -62,10 +88,20 @@ class Trigger {
     };
     async fireEventAsync(...args){
         let callbacks = this.getCallbacksByFilter(...args);
-        await this.firebugAsync(callbacks, this.eventClass, args);
+        return this.firebugAsync(callbacks, this.eventClass, args);
     }
-    triggerEvent = this.fireEvent;
-    triggerEventAsync = this.fireEventAsync;
+    get triggerEvent(){
+        return this.fireEvent;
+    }
+    set triggerEvent(v){
+        this.fireEvent = v;
+    }
+    get triggerEventAsync(){
+        return this.fireEventAsync;
+    }
+    set triggerEventAsync(v){
+        this.fireEventAsync = v;
+    }
     
     registerEvent(){
         Types.register(this.identifier, this.signal);

@@ -6,7 +6,7 @@ const eventList = new Set()
    .add("player/PlayerDeadEvent.js")
    .add("player/PlayerJoinedEvent.js")
    .add("player/PlayerTeleportDimensionEvent.js")
-   .add("world/RaidEventTriggerEvent.js")
+   .add("world/raid/RaidTriggerEvent.js")
    .add("world/TickEvent.js");
 
 Array.from(eventList).forEach(path=>loader(path));

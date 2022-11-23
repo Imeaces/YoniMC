@@ -1,1 +1,1 @@
-import "./entry.js";
+import "./yoni/debug_func.js";

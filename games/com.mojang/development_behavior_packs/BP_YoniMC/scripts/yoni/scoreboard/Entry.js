@@ -1,30 +1,44 @@
-import { VanillaScoreboard, Minecraft } from "yoni/basis.js";
-import { YoniEntity } from "yoni/entity.js";
+import { VanillaScoreboard, Minecraft } from "../basis.js";
+import { YoniEntity } from "../entity.js";
 
 let idRecords = new Map();
-let entityRecords = new WeakMap();
 let nameRecords = new Map();
+let entityRecords = new WeakMap();
 let scbidRecords = new WeakMap();
 
+/**
+ * Represents an entry type of scoreboard
+ * @readonly
+ * @enum
+ */
 class EntryType {
+    /** @type {EntryType} */
     static PLAYER = Minecraft.ScoreboardIdentityType.player;
+    /** @type {EntryType} */
     static ENTITY = Minecraft.ScoreboardIdentityType.entity;
+    /** @type {EntryType} */
     static FAKE_PLAYER = Minecraft.ScoreboardIdentityType.fakePlayer;
 }
 
 /**
- * interface
+ * @interface
+ * @typedef {Object} EntryOption
+ * @property {string} [name]
+ * @property {number} [id]
+ * @property {Minecraft.ScoreboardIdentity} [scbid]
+ * @property {YoniEntity|Minecraft.Entity|Minecraft.Player} [entity]
+ * @property {EntryType} [type]
  */
-class EntryOption {
-    name;
-    id;
-    scbid;
-    entity;
-    type;
-}
 
+/**
+ * Contains an identity of the scoreboard item.
+ */
 class Entry {
     
+    /**
+     * @param {Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} any
+     * @returns {Entry}
+     */
     static guessEntry(any){
         if (any instanceof Minecraft.ScoreboardIdentity)
             return this.getEntry({scbid: any});
@@ -37,6 +51,11 @@ class Entry {
         throw new Error("Sorry, couldn't guess the entry");
     }
     
+    /**
+     * 
+     * @param {EntryOption} option 
+     * @returns {Entry}
+     */
     static getEntry(option){
         
         let { entity, id, name, scbid, type } = option;
@@ -61,7 +80,7 @@ class Entry {
         if (type != null && entry.type !== type)
             throw new Error("entry type do not matches");
             
-        if (entry.getEntity() !== null)
+        if (entry.getEntity() != null)
             entityRecords.set(entry.getEntity(), entry);
         if (entry.id !== undefined)
             idRecords.set(entry.id, entry);
@@ -79,16 +98,28 @@ class Entry {
     #vanillaScbid;
     #entity;
     
+    /**
+     * Type of the scoreboard identity.
+     * @returns {EntryType}
+     */
     get type(){
         return this.#type;
     }
     
+    /**
+     * Identifier of the scoreboard identity.
+     * @returns {number}
+     */
     get id(){
         if (this.vanillaScbid?.id !== this.#id)
             this.#id = this.vanillaScbid?.id;
         return this.#id;
     }
     
+    /**
+     * Returns the player-visible name of this identity.
+     * @returns {string}
+     */
     get displayName(){
         if (this.vanillaScbid !== undefined && this.#vanillaScbid.displayName !== undefined)
             return this.vanillaScbid.displayName;
@@ -101,20 +132,29 @@ class Entry {
         
     }
     
+    /**
+     * @returns {Minecraft.ScoreboardIdentity}
+     */
     get vanillaScbid(){
-        if (this.#type === EntryType.PLAYER || this.#type === EntryType.ENTITY && this.#entity.scoreboard !== this.#vanillaScbid)
+        if ((this.#type === EntryType.PLAYER || this.#type === EntryType.ENTITY)
+        && this.#entity.scoreboard !== this.#vanillaScbid)
             this.#vanillaScbid = this.#entity.scoreboard;
         if (this.#vanillaScbid !== undefined && scbidRecords.get(this.#vanillaScbid) !== this)
             scbidRecords.set(this.#vanillaScbid, this);
         return this.#vanillaScbid;
     }
     
+    /**
+     * If the scoreboard identity is an entity or player, returns 
+     * the entity that this scoreboard item corresponds to.
+     * @returns {Minecraft.Entity}
+     */
     getEntity(){
         if (this.#type === EntryType.FAKE_PLAYER)
             this.#entity = null;
         return this.#entity;
     }
-    
+    /** @returns {Entry} Returns self, after update the vanillaScbid record */
     update(){
         if (this.#type === EntryType.FAKE_PLAYER){
             this.#vanillaScbid = undefined;
@@ -131,6 +171,9 @@ class Entry {
         return this;
     }
     
+    /**
+     * @hideconstructor
+     */
     constructor(option){
         let { entity, id, name, scbid, type } = option;
         entity = (entity instanceof YoniEntity) ? entity.vanillaEntity : entity;
@@ -163,14 +206,14 @@ class Entry {
                         break;
                     }
                 }
-                if (scbid !== undefined){
-                    type = scbid.type;
-                    name = scbid.displayName;
-                    id = scbid.id;
-                    entity = scbid.getEntity();
-                } else if (id !== undefined){
-                    throw new Error(`Unable to determine the scbid ${id}`);
-                }
+            }
+            if (scbid !== undefined){
+                type = scbid.type;
+                name = scbid.displayName;
+                id = scbid.id;
+                entity = scbid.getEntity();
+            } else if (id !== undefined){
+                throw new Error(`Unable to determine the scbid ${id}`);
             }
         }
         
@@ -183,5 +226,5 @@ class Entry {
     }
 }
 
-export { Entry, EntryType, EntryOption };
+export { Entry, EntryType };
 export default Entry;

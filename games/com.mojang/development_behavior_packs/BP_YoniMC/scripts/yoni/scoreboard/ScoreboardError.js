@@ -2,6 +2,7 @@ export class ScoreRangeError extends Error {
     name = "ScoreRangeError";
     message = "Score must be an integer and can only range -2147483648 to 2147483647";
 }
+
 export class ObjectiveUnregisteredError extends Error {
     name = "ObjectiveUnregisteredError";
     constructor(name){
