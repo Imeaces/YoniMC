@@ -68,7 +68,8 @@ const levels = {
     fail: "error",
     ex: "error",
     notice: "warn",
-    log: "info"
+    log: "info",
+    severe: "error"
 }
 
 function getLevelName(level=4){

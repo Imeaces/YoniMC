@@ -1,37 +1,28 @@
 import { StatusCode, VanillaScoreboard, Minecraft } from "../basis.js";
 import { Command } from "../command.js";
+import { YoniEntity } from "yoni/entity.js";
 
 import Objective from "./Objective.js";
 import Entry from "./Entry.js";
-
-//实际运行并不需要，只是为了自动补全生效而导入的
-import { YoniEntity } from "../entity.js";
-
-/**
- * @typedef {string} DisplaySlotType
- */
+ 
 /**
  * @readonly
- * @enum {DisplaySlotType}
+ * @enum
  * enum of alive display slot
  */
-export const DisplaySlotTypes = {
+export const DisplaySlotType = {
+    /** @type {DisplaySlot} */
     list: "list",
+    /** @type {DisplaySlot} */
     sidebar: "sidebar",
+    /** @type {DisplaySlot} */
     belowname: "belowname"
 }
 
-/**
- * @typedef {string} ObjectiveSortOrder
- */
-/**
- * @readonly
- * @enum {ObjectiveSortOrder}
- * Used for specifying a sort order for 
- * how to display an objective and its list of participants.
- */
-export const ObjectiveSortOrderEnum = {
+export const ObjectiveSortOrder = {
+    /** @type {SortOrder} */
     "ascending": "ascending",
+    /** @type {SortOrder} */
     "descending": "descending"
 }
 
@@ -39,8 +30,8 @@ export const ObjectiveSortOrderEnum = {
  * @interface
  * 与显示位置有关的类型
  * @typedef {Object} DisplayOptions
- * @property {ObjectiveSortOrder|undefined} sortOrder - 如果可能，在此位置上排序使用的方式
- * @property {Objective|Minecraft.ScoreboardObjective} objective - 此位置上显示的记分项
+ * @property {SortOrder} [sortOrder] - 如果可能，在此位置上排序使用的方式
+ * @property {Objective|Minecraft.ScoreboardObjective|string} objective - 此位置上显示的记分项
  */
 
 /**
@@ -53,7 +44,7 @@ export default class SimpleScoreboard {
     static #objectives = new Map();
     
     /**
-     * @remarks Adds a new objective to the scoreboard.
+     * Adds a new objective to the scoreboard.
      * @param {string} name - name of new objective
      * @param {string} criteria - criteria of new objective, current only accept "dummy"
      * @param {string} displayName - displayName of new
@@ -86,6 +77,7 @@ export default class SimpleScoreboard {
     /**
      * @remarks Removes an objective from the scoreboard.
      * @param {string|Objective|Minecraft.ScoreboardObjective} nameOrObjective - objectiveId or Objective
+     * @throws Throws when cannot determine the objective
      */
     static removeObjective(nameOrObjective){
         let objectiveId;
@@ -105,10 +97,9 @@ export default class SimpleScoreboard {
     }
     
     /**
-     * @remarks
      * Returns a specific objective (by id).
      * @param {string} name - objectiveId
-     * @param {boolean} autoCreateDummy=false - if true, it will try to create a dummy objective when objective didn't exist
+     * @param {boolean} autoCreateDummy - if true, it will try to create a dummy objective when objective didn't exist
      * @returns {?Objective} return Objective if existed, else return null
      */
     static getObjective(name, autoCreateDummy=false){
@@ -138,18 +129,14 @@ export default class SimpleScoreboard {
      * @returns {Objective[]} an array contains all defined objectives.
      */
     static getObjectives(){
-        let objectives = [];
-        Array.from(VanillaScoreboard.getObjectives()).forEach((_)=>{
-            objectives.push(this.getObjective(_.id));
-        });
-        return objectives;
+        return Array.from(VanillaScoreboard.getObjectives())
+            .map(obj=>this.getObjective(obj.id));
     }
     
     /**
-     * @remarks
      * Returns an objective that occupies the specified display
      * slot.
-     * @param {DisplaySlotType} slot
+     * @param {DisplaySlot} slot
      * @returns {DisplayOptions}
      * @throws This function can throw errors.
      */
@@ -178,7 +165,7 @@ export default class SimpleScoreboard {
     /**
      * @remarks
      * 在指定位置上显示记分项
-     * @param {DisplaySlotType} slot - 位置的id
+     * @param {DisplaySlot} slot - 位置的id
      * @param {DisplayOptions} settings - 对于显示方式的设置
      * @returns {Objective} 指定显示位置的记分项对应的对象
      */
@@ -214,7 +201,7 @@ export default class SimpleScoreboard {
     /**
      * @remarks
      * Clears the objective that occupies a display slot.
-     * @param {DisplaySlotType} slot - 位置的id
+     * @param {DisplaySlot} slot - 位置的id
      * @returns {?Objective}
      * @throws TypeError when slot not a DisplaySlot.
      */
@@ -234,9 +221,10 @@ export default class SimpleScoreboard {
      */
     static getEntries(){
         return Array.from(VanillaScoreboard.getParticipants())
-            .map((_)=>{
-                return Entry.getEntry({scbid: _, type: _.type});
-            });
+            .map((scbid) => Entry.getEntry({
+                scbid,
+                type: scbid.type
+            }));
     }
     
     /**
@@ -250,7 +238,7 @@ export default class SimpleScoreboard {
     }
     
     /**
-     * @remarks reset scores of all participants (in asynchronously)
+     * reset scores of all participants (in asynchronously)
      * @param {(entry:Entry) => boolean} filter - particular 
      * filter function, the function will be call for each 
      * participants, if return true, then reset the scores of 
@@ -290,7 +278,7 @@ export default class SimpleScoreboard {
     }
     
     /**
-     * reset scores of a participant
+     * 重置记分板上指定项目的所有分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry 
      */
     static async postResetScore(entry){

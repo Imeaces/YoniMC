@@ -1,0 +1,32 @@
+{
+  "name": "yonimc_scripts",
+  "version": "0.8.3",
+  "description": "YoniMC Scripts",
+  "main": "scripts/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Silvigarabis/YoniMC.git"
+  },
+  "keywords": [
+    "minecraft",
+    "addon",
+    "gametest"
+  ],
+  "author": "Silvigarabis",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/Silvigarabis/YoniMC/issues"
+  },
+  "homepage": "https://github.com/Silvigarabis/YoniMC#readme",
+  "dependencies": {
+    "@minecraft/server": "^1.0.0-beta.11940b24",
+    "@minecraft/server-admin": "^1.0.0-beta.11940b24",
+    "@minecraft/server-gametest": "^1.0.0-beta.11940b24",
+    "@minecraft/server-net": "^1.0.0-beta.11940b24",
+    "@minecraft/server-ui": "^1.0.0-beta.11940b24",
+    "typescript": "^4.9.3"
+  }
+}

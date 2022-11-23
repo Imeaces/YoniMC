@@ -2,6 +2,7 @@ import { Logger } from "yoni/util/Logger.js";
 
 let importList = [
     "./test.js",
+    "./yonimc/main.js"
 ];
 
 let logger = new Logger("Main");

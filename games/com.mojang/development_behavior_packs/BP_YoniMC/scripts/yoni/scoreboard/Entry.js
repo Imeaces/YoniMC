@@ -6,18 +6,12 @@ let nameRecords = new Map();
 let entityRecords = new WeakMap();
 let scbidRecords = new WeakMap();
 
-/**
- * Represents an entry type of scoreboard
- * @readonly
- * @enum
- */
-class EntryType {
-    /** @type {EntryType} */
-    static PLAYER = Minecraft.ScoreboardIdentityType.player;
-    /** @type {EntryType} */
-    static ENTITY = Minecraft.ScoreboardIdentityType.entity;
-    /** @type {EntryType} */
-    static FAKE_PLAYER = Minecraft.ScoreboardIdentityType.fakePlayer;
+/** @enum {Minecraft.ScoreboardIdentityType} */
+const EntryType = {
+    PLAYER: Minecraft.ScoreboardIdentityType.player,
+    ENTITY: Minecraft.ScoreboardIdentityType.entity,
+    FAKE_PLAYER: Minecraft.ScoreboardIdentityType.fakePlayer
+    
 }
 
 /**
@@ -133,7 +127,7 @@ class Entry {
     }
     
     /**
-     * @returns {Minecraft.ScoreboardIdentity}
+     * @returns {Minecraft.ScoreboardIdentity|undefined}
      */
     get vanillaScbid(){
         if ((this.#type === EntryType.PLAYER || this.#type === EntryType.ENTITY)

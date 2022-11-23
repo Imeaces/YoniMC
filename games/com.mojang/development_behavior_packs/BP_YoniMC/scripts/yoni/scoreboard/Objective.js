@@ -64,8 +64,8 @@ class Objective {
     }
     
     /** 
-     * @remarks 此记分项对象是否只允许使用getScore()
-     * @remarks （此功能未实现）
+     * 此记分项对象是否只允许使用getScore()
+     * （此功能未实现）
      * @returns {boolean} 表示是否此记分项对象只允许使用getScore()
      */
     isReadOnly(){
@@ -74,7 +74,7 @@ class Objective {
     }
     
     /**
-     * @remarks 检测此对象对应的记分项是否已经被移除
+     * 检测此对象对应的记分项是否已经被移除
      * @returns {boolean} 此对象对应的记分项是否已经被移除。
      */
     isUnregistered(){
@@ -93,7 +93,7 @@ class Objective {
     }
 
     /**
-     * @remarks 检查此对象对应的记分项是否被移除
+     * 检查此对象对应的记分项是否被移除
      * @throws 当此对象对应的记分项被移除时抛出错误
      */
     checkUnregistered(){
@@ -141,7 +141,7 @@ class Objective {
     }
     
     /**
-     * @remarks 为记分板项目在记分项上添加分数
+     * 为记分板项目在记分项上添加分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {number} score - 要添加的分数
      * @returns {Promise<number>} 记分板项目的新分数
@@ -155,15 +155,15 @@ class Objective {
     }
     
     /**
-     * @remarks 为记分板项目在记分项上设置一个随机的分数。
+     * 为记分板项目在记分项上设置一个随机的分数。
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {number} min=-2147483647 - 随机分数的最小值
      * @param {number} max=2147483647 - 随机分数的最大值
-     * @param {boolean} useBuiltIn=false - 是否在js代码层面进行随机
+     * @param {boolean} useBuiltIn=false - 是否在js代码层面进行随机。
      * 由于实现原理以及Minecraft自身的特性，一次随机只能有2^64-1种可能，
-     * 如果将最小值设置为-2147483648，并将最大值设置为2147483647
-     * 随机的结果一定会是 -2147483648
-     * 如果想要避免这种情况，请将此项设置为true
+     * 如果将最小值设置为-2147483648，并将最大值设置为2147483647，
+     * 随机的结果一定会是 -2147483648。
+     * 如果想要避免这种情况，请将此项设置为true。
      * @returns {Promise<number>} 记分板项目的新分数
      */
     async postRandomScore(entry, min=-2147483648, max=2147483647, useBuiltIn=false){
@@ -180,7 +180,7 @@ class Objective {
     }
     
     /**
-     * @remarks 为记分板项目在记分项上减少指定的分数
+     * 为记分板项目在记分项上减少指定的分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {number} score - 要减少的分数
      * @returns {Promise<number>} 记分板项目的新分数
@@ -194,7 +194,7 @@ class Objective {
     }
     
     /**
-     * @remarks 在记分项重置指定记分板项目的分数
+     * 在记分项重置指定记分板项目的分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      */
     async postResetScore(entry){
@@ -204,7 +204,7 @@ class Objective {
     }
     
     /**
-     * @remarks 重置所有在记分项上的记分板项目的分数
+     * 重置所有在记分项上的记分板项目的分数
      */
     async postResetScores(){
         let rt = await Command.addParams(Command.PRIORITY_HIGHEST, "scoreboard", "players", "reset", "*", this.#id);
@@ -214,7 +214,7 @@ class Objective {
     }
     
     /**
-     * @remarks 为记分板项目在记分项上设置指定的分数
+     * 为记分板项目在记分项上设置指定的分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {number} score - 要设置的分数
      * @returns {Promise<number>} 记分板项目的新分数
@@ -229,7 +229,7 @@ class Objective {
     }
     
     /**
-     * @remarks 为记分板项目在记分项上执行特定的操作
+     * 为记分板项目在记分项上执行特定的操作
      * @param {string} option - 操作的名称
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {...any} args - 操作所需要的参数
@@ -262,7 +262,7 @@ class Objective {
     }
     
     /**
-     * @remarks 获取记分板项目在记分项上的分数
+     * 获取记分板项目在记分项上的分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @returns {number} 记分板项目的分数
      * @throws This function can throw errors.
@@ -283,7 +283,7 @@ class Objective {
     }
     
     /**
-     * @remarks 获取在记分项上的记分板项目
+     * 获取在记分项上的记分板项目
      * @returns {Entry[]} 一个包含了在记分项上的记分板项目的数组
      * @throws This function can throw errors.
      */
@@ -296,7 +296,7 @@ class Objective {
     }
     
     /**
-     * @remarks 获取表示了在记分项上的记分板项目的分数的对象
+     * 获取表示了在记分项上的记分板项目的分数的对象
      * @returns {ScoreInfo[]} 一个数组，包含了所有表示了在记分项上的记分板项目的分数的对象
      * @throws This function can throw errors.
      */
@@ -310,7 +310,7 @@ class Objective {
     }
     
     /**
-     * @remarks 获取一个可以代表一个记分板项目在此记分项上的分数的对象
+     * 获取一个可以代表一个记分板项目在此记分项上的分数的对象
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {boolean} autoInit - 如果为true，且指定的记分板项目在此记分项上的分数未定义，将会设置它的分数为0
      * @returns {ScoreInfo}
@@ -328,29 +328,31 @@ class Objective {
         return scoreInfo;
     }
     
-    //以下为兼容函数，主要是不这样做要改的东西比较多
-    
     /**
-     * @remarks 为记分板项目在记分项上设置指定的分数
+     * 为记分板项目在记分项上设置指定的分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {number} score - 要设置的分数
      * @returns {Promise<number>} 记分板项目的新分数
      * @throws This function can throw errors.
+     * @deprecated 由于新版本移除了runCommand()，故原有的方法
+     * 不再可用，请改用 {@link Objective.postSetScore}
      */
     async setScore(entry, score){
         return this.postSetScore(entry, score);
     }
     /**
-     * @remarks 为记分板项目在记分项上减少指定的分数
+     * 为记分板项目在记分项上减少指定的分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {number} score - 要减少的分数
      * @returns {Promise<number>} 记分板项目的新分数
+     * @deprecated 由于新版本移除了runCommand()，故原有的方法
+     * 不再可用，请改用 {@link Objective.postRemoveScore}
      */
     async removeScore(entry, score){
         return this.postRemoveScore(entry, score);
     }
     /**
-     * @remarks 为记分板项目在记分项上设置一个随机的分数。
+     * 为记分板项目在记分项上设置一个随机的分数。
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {number} min=-2147483647 - 随机分数的最小值
      * @param {number} max=2147483647 - 随机分数的最大值
@@ -360,22 +362,28 @@ class Objective {
      * 随机的结果一定会是 -2147483648
      * 如果想要避免这种情况，请将此项设置为true
      * @returns {Promise<number>} 记分板项目的新分数
+     * @deprecated 由于新版本移除了runCommand()，故原有的方法
+     * 不再可用，请改用 {@link Objective.postRandomScore}
      */
     async randomScore(entry, min=-2147483647, max=2147483647, useBuiltIn=false){
         return this.postRandomScore(entry, min, max, useBuiltIn);
     }
     /**
-     * @remarks 在记分项重置指定记分板项目的分数
+     * 在记分项重置指定记分板项目的分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @deprecated 由于新版本移除了runCommand()，故原有的方法
+     * 不再可用，请改用 {@link Objective.postResetScore}
      */
     async resetScore(entry){
         return this.postResetScore(entry);
     }
     /**
-     * @remarks 为记分板项目在记分项上添加分数
+     * 为记分板项目在记分项上添加分数
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      * @param {number} score - 要添加的分数
      * @returns {Promise<number>} 记分板项目的新分数
+     * @deprecated 由于新版本移除了runCommand()，故原有的方法
+     * 不再可用，请改用 {@link Objective.postAddScore}
      */
     async addScore(entry, score){
         return this.postAddScore(entry, score);
@@ -417,7 +425,7 @@ class ScoreInfo {
      * 重置此对象对应的记分板项目在对应的记分项上的分数
      */
     async reset(){
-        awaitthis.#objective.resetScore(this.#entry);
+        await this.#objective.postResetScore(this.#entry);
     }
     
     getEntry(){
