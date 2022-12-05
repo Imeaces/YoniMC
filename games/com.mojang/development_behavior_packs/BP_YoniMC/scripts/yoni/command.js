@@ -2,37 +2,47 @@ import { StatusCode, overworld, runTask, Minecraft } from "./basis.js";
 import { debug } from "./config.js";
 import { getKeys } from "./lib/utils.js";
 
-//实际运行并不需要，只是为了自动补全生效而导入的
-import { YoniEntity } from "./entity.js";
-
 let log = ()=>{};
 
-const testIfHasSpecificChar = /(["'\\])/g;
-const testIfHasSpaceChar = /(\s)/g;
 /**
- * generates a command by a set of params
+ * generates a command by a set of params, and try to make sure that every arg is standalone
  * @param {string} cmd 
- * @param  {...string} args 
+ * @param  {string[]|...string} args 
  * @returns {string} command
  */
-export function getCommand(cmd, ...args){
+function getCommand(cmd, ...args){
     if (args?.length === 1 && Array.isArray(args[0])){
         args = args[0];
     }
     if (args.length !== 0){
+        //遍历每个参数，对满足某一条件的参数进行处理
         args.forEach((arg) => {
+            let shouldQuote = false; //标记是否应当在两侧添加引号
             arg = String(arg);
-            if (testIfHasSpecificChar.test(arg)){
-                arg = arg.replaceAll(testIfHasSpecificChar, "\\$1");
+            if (arg.length === 0){ //空参数
+                shouldQuote = true;
+            } else if (getCommand.startsWithNumberRegex.test(arg)){ //以数字开头的参数
+                shouldQuote = true;
+            } else if (getCommand.spaceCharRegex.test(arg)){ //含有空格，需要引号括起
+                shouldQuote = true;
             }
-            if (testIfHasSpaceChar.test(arg)){
+            if (getCommand.specificCharRegex.test(arg)){ //将特殊符号转义
+                arg = arg.replaceAll(getCommand.specificCharGlobalRegex, "\\$1");
+                console.log("yyy");
+            }
+            if (shouldQuote){ //如果需要引号，则添加引号
                 arg = `"${arg}"`;
             }
-            cmd += ` ${arg}`;
+            cmd += ` ${arg}`; //将参数字符串拼接到命令
         });
     }
     return cmd;
 }
+//因为不globle没法replaceAll
+getCommand.specificCharGlobalRegex = /(["'\\])/g;
+getCommand.specificCharRegex = /(["'\\])/;
+getCommand.spaceCharRegex = /(\s)/;
+getCommand.startsWithNumberRegex = /^[0-9]/;
 
 let commandQueues = [[], [], [], [], []];
 
@@ -91,11 +101,11 @@ function removeNextQueue(){
 
 /** @type {CommandQueue} */
 let lastFailedCommand = null;
-let executeQueueCount = 0;
-async function executeCommandQueues(){
-    executeQueueCount = 0;
+
+function executeCommandQueues(){
     runTask(executeCommandQueues);
-    while (hasNextQueue() && executeQueueCount++ < 10000){
+    let executeQueueCount = 0;
+    while (hasNextQueue()){
         //从队列plus中取得一个排队中的命令
         let commandQueue = fetchNextQueue();
         //然后将命令送入minecraft 的命令队列
@@ -113,15 +123,26 @@ async function executeCommandQueues(){
             }
             break;
         }
+        executeQueueCount += 1;
         //送入之后将队列中的命令移除
         removeNextQueue();
     }
 }
 
 /**
- * something that can runCommandAsync
- * @typedef {(Minecraft.Entity|Minecraft.Player|Minecraft.Dimension|YoniEntity)} CommandSender
+ * @interface
+ * @typedef {CommandResult}
+ * @property {number} statusCode
+ * @property {number} [successCount]
  */
+ 
+/**
+ * something that can runCommandAsync
+ * @interface
+ * @typedef {CommandSender}
+ * @peoperty {Function} runCommandAsync - a method that execute command on the object
+ */
+ 
 /**
  * contains command queue infos
  */
@@ -138,39 +159,40 @@ export class CommandQueue {
      * @type {Function}
      */
     resolve;
+    reject;
     /**
-     * 
-     * @param {Promise<Minecraft.CommandResult>} commandPromise 
+     * @param {Promise<CommandResult>} commandPromise 
      */
     async resolveResult(commandPromise){
         
         //然后是获取命令结果(但是现在已经没有结果了)
-        let commandResult;
+        //所以只好生成一个
+        let commandResult = { statusCode: StatusCode.success };
+        let rt = null;
         try {
-            //statusCode啥的都没了，只能自己修复一下了
-            //有点想骂人，真就啥都不想给开发者用呗
-            let rt = await commandPromise;
-            let obj = { statusCode: StatusCode.success };
-            let objKeys = getKeys(obj);
-            getKeys(rt).forEach(key=>{
-                if (objKeys.includes(key)){
-                    return;
-                }
-                obj[key] = rt[key];
-            });
-            commandResult = obj;
+            rt = await commandPromise;
         } catch (commmandExecuteErrorMessage){
-            commandResult = {
-                statusCode: StatusCode.error,
-                statusMessage: String(commmandExecuteErrorMessage)
-            };
+            commandResult.statusCode = StatusCode.error;
+            commandResult.statusMessage = String(commmandExecuteErrorMessage);
+        }
+        try {
+            if (rt != null){
+                for (let key in rt){
+                    if (key in commandResult){
+                        continue;
+                    }
+                    commandResult[key] = rt[key];
+                }
+            }
+        } catch(e){ //在commandResult出现问题的时候大概会触发这段代码
+            log("在复制属性的时候出现错误: {}", e);
         }
         this.resolve(commandResult);
     }
     /**
      * 
      * @param {CommandSender} sender 
-     * @param {string}} command 
+     * @param {string} command 
      * @param {Function} resolve 
      * @param {Function} reject 
      */
@@ -203,6 +225,14 @@ export default class Command {
     static PRIORITY_LOWEST = 1;
     
     /**
+     * 返回队列中未执行的命令的数量
+     * @returns {number}
+     */
+    static countQueues(){
+        return countNextQueues();
+    }
+    
+    /**
      * execute a command
      * @param {string} command
      */
@@ -211,8 +241,8 @@ export default class Command {
     }
     /**
      * execute a command with params
-     * @param  {...string} params - Command params
-     * @returns {Promise<Minecraft.CommandResult>}
+     * @param {...string} params - Command params
+     * @returns {Promise<CommandResult>}
      */
     static fetchParams(...params){
         return Command.addExecute(Command.PRIORITY_NORMAL, overworld, getCommand(...params));
@@ -221,7 +251,7 @@ export default class Command {
      * execute a command with params by specific sender
      * @param {CommandSender} sender - Command's sender
      * @param {...string} params - command params
-     * @returns {Promise<Minecraft.CommandResult>}
+     * @returns {Promise<CommandResult>}
      */
     static fetchExecuteParams(sender, ...params){
         return Command.addExecute(Command.PRIORITY_NORMAL, sender, getCommand(...params));
@@ -229,7 +259,7 @@ export default class Command {
     /**
      * execute a command by specific sender
      * @param {CommandSender} sender - Command's sender
-     * @returns {Promise<Minecraft.CommandResult>}
+     * @returns {Promise<CommandResult>}
      */
     static fetchExecute(sender, command){
         return Command.addExecute(Command.PRIORITY_NORMAL, sender, command);
@@ -239,7 +269,7 @@ export default class Command {
      * add a command to specific priority to execute
      * @param {CommandPriority} priority 
      * @param {string} command 
-     * @returns {Promise<Minecraft.CommandResult>}
+     * @returns {Promise<CommandResult>}
      */
     static add(priority, command){
         return Command.addExecute(priority, overworld, command);
@@ -248,7 +278,7 @@ export default class Command {
      * add a command with params to specific priority to execute
      * @param {CommandPriority} priority 
      * @param {...string} params
-     * @returns {Promise<Minecraft.CommandResult>}
+     * @returns {Promise<CommandResult>}
      */
     static addParams(priority, ...params){
         return Command.addExecute(priority, overworld, getCommand(...params));
@@ -258,7 +288,7 @@ export default class Command {
      * @param {CommandPriority} priority 
      * @param {CommandSender} sender
      * @param {...string} params
-     * @returns {Promise<Minecraft.CommandResult>}
+     * @returns {Promise<CommandResult>}
      */
     static addExecuteParams(priority, sender, ...params){
         return Command.addExecute(priority, sender, getCommand(...params));
@@ -270,7 +300,7 @@ export default class Command {
      * @param {CommandPriority} priority 
      * @param {CommandSender} sender 
      * @param {string} command 
-     * @returns {Promise<Minecraft.CommandResult>}
+     * @returns {Promise<CommandResult>}
      */
     static addExecute(priority, sender, command){
         let resolve, reject;
@@ -299,7 +329,7 @@ export default class Command {
      * execute a set of commands by sender
      * @param {CommandSender} sender 
      * @param {string[]} commands - command
-     * @returns {Promise<Minecraft.CommandResult[]]>}
+     * @returns {Promise<CommandResult[]]>}
      */
     static async postExecute(sender, commands){
         commands = Array.from(commands);

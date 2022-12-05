@@ -31,15 +31,14 @@ function getLoadedEntities(option){
         let loc = new Location(option);
         let dimension = loc.dimension;
         entitiesInDim = loc.dimension.getEntities(option);
-        playersInDim = VanillaWorld.getPlayers(option);
-        for (let pl of VanillaWorld.getPlayers()){
+        for (let pl of VanillaWorld.getPlayers(option)){
             if (dimension === pl.dimension){
                 playersInDim.push(pl);
             }
         }
     } else {
         entitiesInDim = getAliveEntities(option);
-        playersInDim = VanillaWorld.getPlayers(option);
+        playersInDim = Array.from(VanillaWorld.getPlayers(option));
     }
     for (let ent of playersInDim){
         entities.push(ent);

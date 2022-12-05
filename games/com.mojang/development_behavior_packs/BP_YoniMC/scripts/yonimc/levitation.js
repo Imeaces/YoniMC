@@ -4,7 +4,13 @@ import { Minecraft } from "yoni/basis.js";
 import { log } from "yoni/util/Logger.js";
 const { MinecraftEffectTypes } = Minecraft;
 
-YoniScheduler.addSchedule(new Schedule (() => {
+YoniScheduler.addSchedule(new Schedule (
+{
+    async: false,
+    type: Schedule.tickCycleSchedule,
+    delay: 4,
+    period: 10
+},() => {
     World.getPlayers().forEach((player)=>{
         
         if (player.selectedSlot !== 8) return;
@@ -19,10 +25,4 @@ YoniScheduler.addSchedule(new Schedule (() => {
             player.addEffect(MinecraftEffectTypes.slowFalling, 17, 0, true);
         }
     });
-},
-{
-    async: false,
-    type: Schedule.tickCycleSchedule,
-    delay: 4,
-    period: 10
 }));

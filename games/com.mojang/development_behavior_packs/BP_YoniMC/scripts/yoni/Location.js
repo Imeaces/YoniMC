@@ -264,17 +264,19 @@ function fromValueGetDimension(value){
 }
 
 function makeLocation(values){
-    console.warn("测试用消息，提示这个说明你正在new一个Location");
     let x, y, z, rx, ry, dimension = null;
-    const value0 = value[0];
-    const value1 = value[1];
-    const value2 = value[2];
-    const value3 = value[3];
-    const value4 = value[4];
-    const value5 = value[5];
+    const value0 = values[0];
+    const value1 = values[1];
+    const value2 = values[2];
+    const value3 = values[3];
+    const value4 = values[4];
+    const value5 = values[5];
     if (values.length > 3 && values.length < 7){
+        let hasDim = false;
+        let hasRotation = false;
         if (values.length > 5 || values.length === 4){
             dimension = values.shift();
+            hasDim = true;
         }
         x = values[0];
         y = values[1];
@@ -282,29 +284,47 @@ function makeLocation(values){
         if (values.length >= 4){
             rx = values[3];
             ry = values[4];
+            hasRotation = true;
         }
-        return {x,y,z,rx,ry,dimension};
-    } else if (values.length === 3){
-        dimension = values0;
-        if (hasKeys(values1, "x", "y", "z")){
-            x = values1.x;
-            y = values1.y;
-            z = values1.z;
-            if (hasKeys(values2, "rx", "ry")){
-                rx = values2.rx;
-                ry = values2.ry;
-                return {x,y,z,rx,ry,dimension};
-            } else if (values2?.length === 2){
-                rx = values2[0];
-                ry = values2[1];
+        if (hasRotation){
+            if (hasDim){
                 return {x,y,z,rx,ry,dimension};
             }
-        } else if (isFinite(values0)
-        && isFinite(values1)
-        && isFinite(values2)){
-            x = values0;
-            y = values1;
-            z = values2;
+            return {x,y,z,rx,ry};
+        }
+        if (hasDim){
+            return {x,y,z,dimension};
+        }
+        return {x,y,z};
+    } else if (values.length === 3){
+        dimension = value0;
+        if (hasKeys(value1, "x", "y", "z") || value1?.length === 3){
+            if (value1?.length === 3){
+                x = value1[0];
+                y = value1[1];
+                z = value1[2];
+            } else {
+                x = value1.x;
+                y = value1.y;
+                z = value1.z;
+            }
+            if (hasKeys(value2, "rx", "ry")){
+                rx = value2.rx;
+                ry = value2.ry;
+                return {x,y,z,rx,ry,dimension};
+            } else if (value2?.length === 2){
+                rx = value2[0];
+                ry = value2[1];
+                return {x,y,z,rx,ry,dimension};
+            } else {
+                return {x, y, z, dimension}
+            }
+        } else if (isFinite(value0)
+        && isFinite(value1)
+        && isFinite(value2)){
+            x = value0;
+            y = value1;
+            z = value2;
             return {x, y, z};
         }
         throw new Error("未能匹配到以下任何一种形式"
@@ -314,57 +334,66 @@ function makeLocation(values){
             + "\nx, y, z"
         );
     } else if (values.length === 2){
-        if (hasKeys(value0, "x", "y", "z", "dimension")){
-            x = values0.x;
-            y = values0.y;
-            z = values0.z;
-            dimension = values[0].dimension;
-            if (hasKeys(values1, "rx", "ry")){
-                rx = values1.rx;
-                ry = values1.ry;
-                return {x,y,z,rx,ry,dimension};
-            } else if (values1?.length === 1){
-                rx = values1[0];
-                ry = values1[1];
-                return {x,y,z,rx,ry,dimension};
+        if (hasKeys(value0, "x", "y", "z")){
+            x = value0.x;
+            y = value0.y;
+            z = value0.z;
+            if (hasKeys(value1, "rx", "ry")){
+                rx = value1.rx;
+                ry = value1.ry;
+                if (hasKeys(value0, "dimension")){
+                    dimension = value0.dimension;
+                    return {x,y,z,rx,ry,dimension};
+                }
+                return {x,y,z,rx,ry};
+            } else if (value1?.length === 2){
+                rx = value1[0];
+                ry = value1[1];
+                if (hasKeys(value0, "dimension")){
+                    dimension = value0.dimension;
+                    return {x,y,z,rx,ry,dimension};
+                }
+                return {x,y,z,rx,ry};
             }
         } else {
-            dimension = values0;
-            if (hasKeys(values1, "x", "y", "z")){
-                x = values1.x;
-                y = values1.y;
-                z = values1.z;
-                if (hasKeys(values1, "rx", "ry")){
-                    rx = values1.rx;
-                    ry = values1.ry;
+            dimension = value0;
+            if (hasKeys(value1, "x", "y", "z")){
+                x = value1.x;
+                y = value1.y;
+                z = value1.z;
+                if (hasKeys(value1, "rx", "ry")){
+                    rx = value1.rx;
+                    ry = value1.ry;
                     return {x,y,z,rx,ry,dimension};
                 }
                 return {x,y,z,dimension};
-            } else if (values1?.length === 5){
-                x = values1[0];
-                y = values1[1];
-                z = values1[2];
-                rx = values1[3];
-                ry = values1[4];
+            } else if (value1?.length === 5){
+                x = value1[0];
+                y = value1[1];
+                z = value1[2];
+                rx = value1[3];
+                ry = value1[4];
                 return {x,y,z,rx,ry,dimension};
-            } else if (values1?.length === 3){
-                x = values1[0];
-                y = values1[1];
-                z = values1[2];
+            } else if (value1?.length === 3){
+                x = value1[0];
+                y = value1[1];
+                z = value1[2];
                 return {x,y,z,dimension};
             }
         }
+        
         throw new Error("未能匹配到以下任何一种形式"
             + "\n{dimension, x, y, z} [rx, ry]"
             + "\n{dimension, x, y, z} {rx, ry}"
-            + "\ndimension, [ x, y, z, rx, ry]"
+            + "\n{x, y, z} [rx, ry]"
+            + "\n{x, y, z} {rx, ry}"
+            + "\ndimension, [x, y, z, rx, ry]"
             + "\ndimension, {x, y, z, rx, ry}"
             + "\ndimension, {x, y, z}"
             + "\ndimension, [x, y, z]"
         );
     } else if (values.length === 1){
-        console.error("这是一个测试用消息，表明你只传了一个参数");
-        values = values0;
+        values = value0;
         if (hasKeys(values, "x", "y", "z")){ //必须有x y z
             x = values.x;
             y = values.y;
@@ -385,51 +414,61 @@ function makeLocation(values){
                 return {x, y, z, rx, ry};
             }
             
-            console.error("这是一个测试用消息，表明你用{x, y, z}弄出来了一个Location，希望你没传null");
             return {x, y, z};
-        } else if (values?.length === 6){
-            return makeLocation(values);
-        } else if (values?.length >= 3){
-            x = values[0];
-            y = values[1];
-            z = values[2];
-            if (values.length === 5){
-                rx = values[3];
-                ry = values[4];
-                return {x, y, z, rx, ry};
-            }
-            return {x, y, z};
-        } else if (hasKeys(values, "dimension", "location")){
-            dimension = values.dim;
-            let loc = values.location;
-            x = loc.x;
-            y = loc.y;
-            z = loc.z;
-            if ("rotation" in values){
-                let roc = values.rotation;
-                rx = roc.x;
-                ry = roc.y;
-                return {x, y, z, rx, ry, dimension};
-            }
-            return {x, y, z, dimension};
         } else if (typeof values === "string"){
             let json;
             try {
                 json = JSON.parse(values);
-                return makeLocation(json);
+                return makeLocation([json]);
             } catch {
                 throw new Error("指定的字符串无法转换为位置");
             }
+        } else if (values?.length > 3){
+            return makeLocation(values);
+        } else if (hasKeys(values, "location")){
+            let loc = values.location;
+            x = loc.x;
+            y = loc.y;
+            z = loc.z;
+            
+            let hasDim = false;
+            let hasRotation = false;
+            
+            if (hasKeys(values, "dimension")){
+                dimension = values.dimemsion;
+                hasDim = true;
+            }
+            
+            if ("rotation" in values){
+                let roc = values.rotation;
+                rx = roc.x;
+                ry = roc.y;
+                hasRotation = true;
+            }
+            
+            if (hasRotation){
+                if (hasDim){
+                    return {x,y,z,rx,ry,dimension};
+                }
+                return {x,y,z,rx,ry};
+            }
+            
+            if (hasDim){
+                return {x,y,z,dimension};
+            }
+            return {x,y,z};
         }
         throw new Error("未能匹配到以下任何一种形式"
             + "\n{dimension, x, y, z, rx, ry}"
-            + "\n[dimension, x, y, z, rx, ry]"
             + "\n{x, y, z, rx, ry}"
             + "\n{x, y, z}"
+            + "\n[dimension, x, y, z, rx, ry]"
             + "\n[x, y, z, rx, ry]"
             + "\n[x, y, z]"
             + "\n{dimension, location, rotation}"
             + "\n{dimension, location}"
+            + "\n{rotation, location}"
+            + "\n{location}"
         );
     }
     throw new Error("未能匹配到以下任何一种形式"
