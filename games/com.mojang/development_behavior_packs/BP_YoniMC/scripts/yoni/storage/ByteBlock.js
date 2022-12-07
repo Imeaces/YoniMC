@@ -125,7 +125,7 @@ class ByteBlock {
      * @ignore
      * @returns {Generator<number>}
      */
-    readAll * (){
+    * readAll (){
         throw new Error("not implemented");
         let modCount = this.#modCount;
         let length = this.length;
@@ -147,7 +147,7 @@ class ByteBlock {
     /**
      * @ignore
      */
-    readAllWithWrite * (){
+    * readAllWithWrite (){
         throw new Error("not implemented");
     }
     read4Bytes(fourthIndex){

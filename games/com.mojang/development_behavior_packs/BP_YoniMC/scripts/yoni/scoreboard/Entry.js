@@ -75,7 +75,7 @@ class Entry {
             throw new Error("entry type do not matches");
             
         if (entry.getEntity() != null)
-            entityRecords.set(entry.getEntity(), entry);
+            entityRecords.set(YoniEntity.getMinecraftEntity(entry.getEntity()), entry);
         if (entry.id !== undefined)
             idRecords.set(entry.id, entry);
         if (entry.vanillaScbid !== undefined)
@@ -170,6 +170,8 @@ class Entry {
      */
     constructor(option){
         let { entity, id, name, scbid, type } = option;
+        
+        //处理时使用原版实体对象
         entity = (entity instanceof YoniEntity) ? entity.vanillaEntity : entity;
         
         if (entity !== undefined){
@@ -212,7 +214,8 @@ class Entry {
         }
         
         this.#id = id;
-        this.#entity = entity;
+        //存储的是YoniEntity
+        this.#entity = YoniEntity.from(entity);
         this.#name = name;
         this.#type = type;
         this.#vanillaScbid = scbid;

@@ -13,7 +13,7 @@ function getAliveEntities(option){
     
     Object.values(Minecraft.MinecraftDimensionTypes)
         .forEach((dimid)=>{
-            for (let ent of dim(dimid).getEntities(option)){
+            for (let ent of VanillaWorld.getDimension(dimid).getEntities(option)){
                 entities.push(ent);
             }
         });
@@ -24,36 +24,43 @@ function getLoadedEntities(option){
     if (("location" in option || "maxDistance" in option || "minDistance" in option) && !("dimension" in option)){
         throw new Error("'location', 'maxDistance' or 'minDistance' usage in options is not allow, unless specified 'dimension' filed");
     }
-    let entities = getAliveEntities(option);
-    let entitiesInDim = [];
-    let playersInDim = [];
+    let entities = [];
+    let players = [];
     if (option.dimension != null){
-        let loc = new Location(option);
-        let dimension = loc.dimension;
-        entitiesInDim = loc.dimension.getEntities(option);
-        for (let pl of VanillaWorld.getPlayers(option)){
-            if (dimension === pl.dimension){
-                playersInDim.push(pl);
+        let absoluteLocation = new Location(option);
+        let absoluteDimension = absoluteLocation.dimension;
+        if (absoluteDimension !== null){
+            entities = Array.from(absoluteDimension.getEntities(option));
+            //如果有这个属性的话，获取玩家会报错
+            if (! ("entityType" in option && option.entityType === "minecraft:player")){
+                players = Array.from(absoluteDimension.getPlayers(option));
             }
         }
     } else {
-        entitiesInDim = getAliveEntities(option);
-        playersInDim = Array.from(VanillaWorld.getPlayers(option));
+        entities = getAliveEntities(option);
+        players = Array.from(VanillaWorld.getPlayers(option));
     }
-    for (let ent of playersInDim){
-        entities.push(ent);
-    }
-    for (let ent of entitiesInDim){
-        if (!playersInDim.includes(ent)){
-            entities.push(ent);
-        }
-    }
+    
+    //如果玩家实体对象不在entities中，则推入
+    //虽然很好看，但是可能有隐患
+    //不过如果不想它的话，这个代码的确挺好看的
+    // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/apply#%E4%BD%BF%E7%94%A8_apply_%E5%92%8C%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0
+    entities.push.apply(entities, players.filter(player => {
+        return false === entities.includes(player);
+    }));
+    
     return entities;
 }
 
 const entitySymbol = Symbol();
 
 class Entity {
+    
+    get [Symbol.toStringTag](){
+        if (this instanceof Entity)
+            return `[object Entity]: { type: ${this.typeId} }`;
+        return "[object Object]";
+    }
     
     get entityType(){
         return EntityTypes.get(this.typeid);
@@ -377,11 +384,20 @@ class Entity {
      */
     static setCurrentHealth(entity, val){
         let component = Entity.getHealthComponent(entity);
+        if (!component){
+            throw new Error("No health component for this entity");
+        }
         component.setCurrent(val);
     }
 }
 
 class Player extends Entity {
+    
+    get [Symbol.toStringTag](){
+        if (this instanceof Player)
+            return `[object Player]: { type: ${this.typeId} }`;
+        return "[object Object]";
+    }
     
     /**
      * 踢出玩家
@@ -405,6 +421,11 @@ class Player extends Entity {
 }
 
 class SimulatedPlayer extends Player {
+    get [Symbol.toStringTag](){
+        if (this instanceof SimulatedPlayer)
+            return `[object SimulatedPlayer]: { type: ${this.typeId} }`;
+        return "[object Object]";
+    }
 }
 
 const defineEntityPrototypeFor = (targetPrototype, srcPrototype) => {

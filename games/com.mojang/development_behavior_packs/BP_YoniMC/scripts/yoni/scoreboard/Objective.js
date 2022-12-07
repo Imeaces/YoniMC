@@ -33,6 +33,15 @@ class Objective {
     #unregistered = false;
     #vanillaObjective;
     
+    /**
+     * 返回指向同一记分项的对象，但是不会检查原版记分项是否存在。在项目数较多时，使用此类记分项对象可以提高性能
+     * @returns {Objective} 指向同一记分项的对象，但是不会检查原版记分项是否存在
+     */ 
+    withoutExistenceCheck(){
+        let nObj = new Objective(this);
+        nObj.checkUnregistered = function(){};
+    }
+    
     get scoreboard(){
         return this.#scoreboard;
     }
@@ -209,7 +218,7 @@ class Objective {
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
      */
     async postResetScore(entry){
-        if (!await this.#postPlayersCommand("reset", entry)){
+        if (true !== await this.#postPlayersCommand("reset", entry)){
             throw new InternalError("Could not reset score, maybe entity or player disappeared?");
         }
     }
@@ -250,7 +259,7 @@ class Objective {
      * @returns {Promise<boolean>} 操作是否成功
      * @throws This function can throw errors.
      */
-    async #postPlayersCommand(option, entry, ...args){
+    #postPlayersCommand(option, entry, ...args){
         this.checkUnregistered();
         
         if (!(entry instanceof Entry))
@@ -262,12 +271,12 @@ class Objective {
             if (ent === undefined){
                 throw new InternalError("Could not find the entity");
             }
-            let rt = await Command.addExecuteParams(Command.PRIORITY_HIGHEST, ent, ...params);
-            return rt.statusCode === StatusCode.success;
+            return Command.addExecuteParams(Command.PRIORITY_HIGHEST, ent, ...params)
+                .then((rt) => rt === StatusCode.success);
         } else if ([...VanillaWorld.getPlayers({name: entry.displayName})].length === 0){
             let params = ["scoreboard", "players", option, entry.displayName, this.#id, ...args];
-            let rt = await Command.addParams(Command.PRIORITY_HIGHEST, ...params);
-            return rt.statusCode === StatusCode.success;
+            return Command.addParams(Command.PRIORITY_HIGHEST, ...params)
+                .then((rt) => rt.statusCode === StatusCode.success);
         } else {
             throw new NameConflictError(entry.displayName);
         }

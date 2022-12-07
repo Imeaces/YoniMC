@@ -84,7 +84,7 @@ function executeSchedule(schedule, time){
     executingSchedule = schedule;
     lastExecuteTimeRecords.set(schedule, time);
     if (schedule.async){
-        async ()=>{
+        (async ()=>{
             isLastSuccessRecords.set(schedule, false);
             try {
                 //do task
@@ -97,7 +97,7 @@ function executeSchedule(schedule, time){
                 lastFailTimeRecords.set(schedule, true);
                 logger.error(`async schedule {} 运行时出现错误 {}`, schedule.id, err);
             }
-        }();
+        })();
     } else {
         isLastSuccessRecords.set(schedule, false);
         try {
