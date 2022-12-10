@@ -121,7 +121,7 @@ const scheduleAddTimeRecords = new WeakMap();
 const schedulesTypedRecords = {};
 const taskMap = new Map();
 
-function doTickDelaySchedule(event){
+function doTickDelaySchedule(){
     runTask(doTickDelaySchedule);
     //首先，处理只执行一次的tick任务
     let tickDelaySchedules = schedulesTypedRecords[Schedule.tickDelaySchedule];
@@ -143,7 +143,7 @@ function doTickDelaySchedule(event){
         }
     }
 }
-function doTimeDelaySchedule(event){
+function doTimeDelaySchedule(){
     runTask(doTimeDelaySchedule);
     //接着，处理只执行一次的时间延时任务
     let timeDelaySchedules = schedulesTypedRecords[Schedule.timeDelaySchedule];
@@ -166,7 +166,7 @@ function doTimeDelaySchedule(event){
         }
     }
 }
-function doTickCycleSchedule(event){
+function doTickCycleSchedule(){
     runTask(doTickCycleSchedule);
     //然后，处理循环执行的tick任务
     let tickCycleSchedules = schedulesTypedRecords[Schedule.tickCycleSchedule];
@@ -187,7 +187,7 @@ function doTickCycleSchedule(event){
         }
     }
 }
-function doTimeCycleSchedule(event){
+function doTimeCycleSchedule(){
     runTask(doTimeCycleSchedule);
     //最后，处理循环的时间延时任务
     let timeCycleSchedules = schedulesTypedRecords[Schedule.timeCycleSchedule];

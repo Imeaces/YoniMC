@@ -180,14 +180,23 @@ class ByteBlock {
 }
 
 /**
- * 
+ * 你可能想不到，这个函数的逻辑是ChatGPT想出来的
+ * 这个函数的作用是将4个byte编码成一个int
+ * 按位与运算符“|”会将超过32位的数字丢弃其最高有效位
+ * 不过我不确定这个东西的性能怎么样
  * @param {number[]} fourBytes 
  * @returns {number}
  */
 function enc(fourBytes){
     let [ b0, b1, b2, b3 ] = fourBytes;
+    return b1 << 24 | b2 << 16 | b3 << 8 | b4;
+}
+/*
+function enc(fourBytes){
+    let [ b0, b1, b2, b3 ] = fourBytes;
     return b0 * 16777216 + b1 * 65536 + b2 * 256 + b3;
 }
+*/
 function dec(b){
     let b0 = b >>> 24;
     let b1 = ( b % 16777216 ) >>> 16;

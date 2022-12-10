@@ -74,8 +74,8 @@ class Entry {
         if (type != null && entry.type !== type)
             throw new Error("entry type do not matches");
             
-        if (entry.getEntity() != null)
-            entityRecords.set(YoniEntity.getMinecraftEntity(entry.getEntity()), entry);
+        if (entry.getVanillaEntity() != null)
+            entityRecords.set(entry.getVanillaEntity(), entry);
         if (entry.id !== undefined)
             idRecords.set(entry.id, entry);
         if (entry.vanillaScbid !== undefined)
@@ -146,8 +146,15 @@ class Entry {
     getEntity(){
         if (this.#type === EntryType.FAKE_PLAYER)
             this.#entity = null;
+        return YoniEntity.from(this.#entity);
+    }
+    
+    getVanillaEntity(){
+        if (this.#type === EntryType.FAKE_PLAYER)
+            this.#entity = null;
         return this.#entity;
     }
+    
     /** @returns {Entry} Returns self, after update the vanillaScbid record */
     update(){
         if (this.#type === EntryType.FAKE_PLAYER){
@@ -214,8 +221,7 @@ class Entry {
         }
         
         this.#id = id;
-        //存储的是YoniEntity
-        this.#entity = YoniEntity.from(entity);
+        this.#entity = entity;
         this.#name = name;
         this.#type = type;
         this.#vanillaScbid = scbid;

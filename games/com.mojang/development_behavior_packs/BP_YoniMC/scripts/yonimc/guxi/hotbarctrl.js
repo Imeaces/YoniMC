@@ -1,5 +1,5 @@
 import YoniEntity from "yoni/entity.js";
-import { EventListener, EventSignal } from "yoni/event.js";
+import { EventListener, EventTriggerBuilder, EventSignal } from "yoni/event.js";
 import { Scoreboard } from "yoni/scoreboard.js";
 class HotbarChangedEvent{
     constructor(player, currentSlot, lastSlot){
@@ -13,9 +13,9 @@ class HotbarChangedEvent{
 let lastSlotMap = new WeakMap();
 let shouldRun = false;
 
-let signal = EventSignal.builder("guxi:guxiHotbarChanged")
+let trigger = new EventTriggerBuilder("guxi:guxiHotbarChanged")
     .eventClass(HotbarChangedEvent)
-    .build()
+    .eventSignalClass(class GuxiHotbarChangedEventSignal extends EventSignal {})
     .whenFirstSubscribe(()=>{
         shouldRun = true;
         runTask(doHotbarCtrl);
@@ -23,6 +23,7 @@ let signal = EventSignal.builder("guxi:guxiHotbarChanged")
     .whenLastUnsubscribe(()=>{
         shouldRun = false;
     })
+    .build()
     .registerEvent();
 
 function getLastSlots(player){
@@ -55,7 +56,7 @@ function doHotbarCtrl(){
             let slot = lastSlotMap.get(player);
             if (player.selectedSlot !== slot){
                 lastSlotMap.set(player, player.selectedSlot);
-                signal.triggerEvent(player, player.selectedSlot, slot);
+                trigger.triggerEvent(player, player.selectedSlot, slot);
             }
         } else {
             lastSlotMap.set(player, player.selectedSlot);

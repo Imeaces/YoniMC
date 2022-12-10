@@ -35,7 +35,7 @@ import {
 import { isDebug } from "./debug.js";
 import * as YoniUtilUtils from "./util/utils.js";
 import FastScoreboard from "./util/FastScoreboard.js";
-import { ChatCommand } from "./command/ChatCommand.js";
+import { ChatCommand } from "./util/ChatCommand.js";
 globalThis.Yoni = {
     isDebug
 };

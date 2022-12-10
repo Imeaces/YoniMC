@@ -1,4 +1,4 @@
-import ChatCommand from "yoni/command/ChatCommand.js";
+import ChatCommand from "yoni/util/ChatCommand.js";
 import Scoreboard from "yoni/scoreboard.js";
 import { EventListener } from "yoni/event.js";
 import { isDebug } from "./config.js";

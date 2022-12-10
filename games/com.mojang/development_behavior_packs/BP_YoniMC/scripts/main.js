@@ -1,17 +1,11 @@
-import { Logger } from "yoni/util/Logger.js";
+import { Logger, log } from "yoni/util/Logger.js";
+import { load } from "yoni/loader.js";
 
-let importList = [
-    "./test.js",
-    "./yonimc/main.js"
+const loadList = [
+    //"test.js",
+    "yonimc/main.js"
 ];
+let logger = new Logger("MAIN");
 
-let logger = new Logger("Main");
-logger.info("awa");
-importList.forEach(path=>{
-    import(path)
-    .catch(e=>{
-        logger.error("导入{}的时候发生错误 {}", path, e);
-    });
-});
-
-logger.info("scripts main end");
+load(loadList)
+.finally(()=>logger.info("scripts main end"));

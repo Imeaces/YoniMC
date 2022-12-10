@@ -1,4 +1,4 @@
-import { ChatCommand } from "yoni/command/ChatCommand.js";
+import { ChatCommand } from "yoni/util/ChatCommand.js";
 import { Minecraft, dim } from "yoni/basis.js";
 import { YoniEntity } from "yoni/entity.js";
 import Command from "yoni/command.js";

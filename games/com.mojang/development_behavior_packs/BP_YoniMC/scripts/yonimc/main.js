@@ -11,7 +11,7 @@ let importList = [
     "yonimc/notice.js",
     "yonimc/guxi/hotbarctrl.js",
     "yonimc/ChainDestroy.js",
-    "yonimc/anchorPortal.js.js"
+    "yonimc/anchorPortal.js"
 ];
 
 let logger = new Logger("Yonimc");

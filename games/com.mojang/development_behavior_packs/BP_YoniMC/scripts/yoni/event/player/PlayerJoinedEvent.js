@@ -1,7 +1,7 @@
 import { YoniEntity } from "yoni/entity.js";
 import { EventListener, EventSignal, Event, EventTriggerBuilder } from "yoni/event.js";
 import { PlayerEvent } from "./PlayerEvent";
-import { VanillaWorld } from "yoni/basis.js";
+import { VanillaWorld, runTask } from "yoni/basis.js";
 import { YoniScheduler } from "yoni/schedule.js";
 
 class PlayerJoinedEvent extends PlayerEvent {

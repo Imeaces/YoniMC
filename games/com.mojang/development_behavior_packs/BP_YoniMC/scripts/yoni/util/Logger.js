@@ -119,6 +119,8 @@ async function printLog(time, level, msg, ...rps){
     let outputText = "[{} {}]{}";
     outputText = transferHolder(outputText, time, levelName, msg);
     
+    outputText = "§中" + outputText;
+    
     if (outputContentLog || level === "LOG"){
         outputToConsole(outputText);
     }

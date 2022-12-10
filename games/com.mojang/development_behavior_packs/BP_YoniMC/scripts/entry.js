@@ -2,18 +2,41 @@
 import "yoni/util/WatchBird.js";
 import { VanillaEvents } from "yoni/basis.js";
 
-let logger;
+let originConsole = globalThis.console;
+let logger = null;
 
-//接着，等待世界加载初始化完成，并进行异步加载
-let ev = async ()=>{
-    VanillaEvents.worldInitialize.unsubscribe(ev);
-    try {
-        let m = await import("yoni/util/Logger.js");
-        let logger = new m.Logger("Main");
-        logger.info("加载主函数");
-        await import('main.js');
-    } catch (e){
-        logger.fatal("在加载主函数的时候出现错误 {}", e);
+async function setupLogger(Logger){
+    logger = new Logger("ENTRY");
+}
+
+function fallbackLogger(){
+    logger = {
+        info: (...msg)=>{ originConsole.warn("[info]", ...msg); },
+        log: (...msg)=>{ originConsole.warn("[log]", ...msg); },
+        warn: function (){ originConsole.warn.apply(originConsole, arguments); },
+        error: function (){ originConsole.error.apply(originConsole, arguments); },
+        fatal: (...msg)=>{ originConsole.warn("[fatal]", ...msg); },
     }
-};
-VanillaEvents.worldInitialize.subscribe(ev);
+    logger.error("未能载入高级Logger，使用基础Logger进行日志输出");
+}
+
+async function initLogger(){
+    try {
+        let LoggerModule = await import("yoni/util/Logger.js");
+        await setupLogger(LoggerModule.Logger);
+    } catch {
+        await fallbackLogger();
+    }
+}
+
+function load(){
+    VanillaEvents.worldInitialize.unsubscribe(load);
+    import('main.js')
+    .then(()=>{})
+    .catch(async (e)=>{
+        await initLogger();
+        logger.fatal("在加载主函数的时候出现错误 {}", e);
+    });
+}
+
+VanillaEvents.worldInitialize.subscribe(load);
