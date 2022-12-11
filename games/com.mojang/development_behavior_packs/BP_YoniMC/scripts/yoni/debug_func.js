@@ -1,4 +1,4 @@
-import { ChatCommand } from "yoni/command/ChatCommand.js";
+import { ChatCommand } from "yoni/util/ChatCommand.js";
 import { Command } from "yoni/command.js";
 import { Minecraft, dim, VanillaWorld, Gametest } from "yoni/basis.js";
 import { YoniEntity, YoniPlayer } from "yoni/entity.js";
@@ -17,8 +17,22 @@ const printError = (...args)=>{
     printErrorToConsole("", ...args);
 };
 
+const standaloneEnvirnmentRoot = Object.assign({
+    getKeys, getErrorMsg, printError, Scoreboard,
+    World, Logger, log, send, say, YoniEntity, Minecraft,
+    dim, VanillaWorld, Gametest, Command, ChatCommand,
+    EventTypes, EventListener, load
+}, globalThis);
+
+let _ = undefined;/*
+async function doEval(sender, code){
+    _ = Function("const globalThis = this; return eval(arguments[0])")
+    .call(Object.assign({ sender, _ }, standaloneEnvirnmentRoot), code);
+    return _;
+}
+*/
 let logger = new Logger("debug");
-let _ = undefined;
+
 let saves = new Proxy(new Map(),{
     set: (target, key, value)=>{
         target.set(key,value);
@@ -31,12 +45,15 @@ let saves = new Proxy(new Map(),{
         return target[key];
     }
 });
+
 function save(id, any){
     saves.set(id, any);
 }
+
 function get(id){
     return saves.get(id);
 }
+
 let evaledPlayers = new Set();
 
 ChatCommand.registerPrefixCommand("$", "eval", async (sender, rawCommand, label, args) => {
@@ -58,6 +75,7 @@ ChatCommand.registerPrefixCommand("$", "geval", (sender, rawCommand, label, args
         evaledPlayers.delete(sender.vanillaEntity);
     }
 });
+
 EventListener.register("minecraft:beforeChat", (event)=>{
     let { sender, message } = event;
     if (evaledPlayers.has(sender)) event.cancel = true;
@@ -65,15 +83,20 @@ EventListener.register("minecraft:beforeChat", (event)=>{
     evalCode(sender, message);
 });
 
-async function evalCode(sender, code){
+async function doEval(sender, code){
+    _ = eval(code);
+    return _;
+}
+
+function evalCode(sender, code){
     sender = YoniEntity.from(sender);
     sender.sendMessage("> "+code);
-    return new Promise((re)=>{
-        let rt = eval(code);
+    doEval(sender, code)
+    .then((rt)=>{
         sender.sendMessage("§7"+rt);
         _ = rt;
-        re(rt);
-    }).catch((e)=>{
+    })
+    .catch((e)=>{
         sender.sendMessage("§c"+getErrorMsg(e).errMsg);
     });
 }

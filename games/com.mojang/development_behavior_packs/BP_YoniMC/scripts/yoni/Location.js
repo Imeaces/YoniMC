@@ -218,14 +218,14 @@ class Location {
         throw new Error("not implemented yet");
     }
     equals(loc){
-        let fromLocation = makeLocation(loc);
+        let fromLocation = new Location(loc);
         let { x, y, z, rx, ry, dimension } = this;
         if (fromLocation.x === x
         && fromLocation.y === y
         && fromLocation.z === z
         && fromLocation.rx === rx
         && fromLocation.ry === ry
-        && fromValueGetDimension(fromLocation.dimension) === dimension){
+        && fromLocation.dimension === dimension){
             return true;
         } else {
             return false;
@@ -236,7 +236,7 @@ class Location {
     }
     
     toString(){
-        return Object.prototype.valueOf.call(this.toJSON());
+        return "Location: " + JSON.stringify(this.toJSON());
     }
     toJSON(){
         let { x, y, z, rx, ry } = this;
@@ -256,10 +256,10 @@ function fromValueGetDimension(value){
     let validValues = ["overworld", "the_end", "the end", "nether", "theEnd", 0, -1, 1];
     if (value instanceof Minecraft.Dimension){
         return value;
-    } else if (Object.values(MinecraftDimensionTypes).includes(value) || validValues.includes(value)){
-        return dim(v);
+    } else if (Object.values(Minecraft.MinecraftDimensionTypes).includes(value) || validValues.includes(value)){
+        return dim(value);
     } else {
-        throw newError("unknown dimension");
+        throw new Error("unknown dimension");
     }
 }
 

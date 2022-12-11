@@ -1,6 +1,7 @@
 import { debug } from "./config.js";
+import { load } from "./loader.js";
 
-export function runTaskIfDebug(callback){
+export async function runTaskIfDebug(callback){
     if (debug) callback();
 }
 
@@ -9,5 +10,4 @@ export function isDebug(){
 }
 
 
-//导入debug用函数
-import("./debug_func.js");
+runTaskIfDebug(()=>load("yoni/debug_func.js"));

@@ -40,8 +40,8 @@ class Entity {
     
     get [Symbol.toStringTag](){
         if (this instanceof Entity)
-            return `[object Entity]: { type: ${this.typeId} }`;
-        return "[object Object]";
+            return `Entity: { type: ${this.typeId} }`;
+        return "Object";
     }
     
     get entityType(){
@@ -376,9 +376,11 @@ class Player extends Entity {
     get experienceLevel(){
         let level = 0;
         for (let i = 16384; i >= 1; i /= 2){
-            let arr = VanillaWorld.getPlayers({ minLevel: i});
-            if (Array.from(arr).includes(this.vanillaEntity)){
-                level += i;
+            level += i;
+            let rt = VanillaWorld.getPlayers({ minLevel: level });
+            if ( ! Array.from( rt ).includes( this.vanillaEntity ) )
+            {
+                level -= i;
             }
         }
         return level;

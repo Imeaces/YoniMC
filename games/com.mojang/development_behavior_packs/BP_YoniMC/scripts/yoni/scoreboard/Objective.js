@@ -272,7 +272,7 @@ class Objective {
                 throw new InternalError("Could not find the entity");
             }
             return Command.addExecuteParams(Command.PRIORITY_HIGHEST, ent, ...params)
-                .then((rt) => rt === StatusCode.success);
+                .then((rt) => rt.statusCode === StatusCode.success);
         } else if ([...VanillaWorld.getPlayers({name: entry.displayName})].length === 0){
             let params = ["scoreboard", "players", option, entry.displayName, this.#id, ...args];
             return Command.addParams(Command.PRIORITY_HIGHEST, ...params)

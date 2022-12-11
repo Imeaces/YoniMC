@@ -8,7 +8,7 @@ YoniScheduler.addSchedule(new Schedule (
 {
     async: false,
     type: Schedule.tickCycleSchedule,
-    delay: 4,
+    delay: parseInt(10 * Math.random()),
     period: 10
 },() => {
     World.getPlayers().forEach((player)=>{
