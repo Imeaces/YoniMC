@@ -359,7 +359,7 @@ class Objective {
      * @deprecated 由于新版本移除了runCommand()，故原有的方法
      * 不再可用，请改用 {@link Objective.postSetScore}
      */
-    async setScore(entry, score){
+    setScore(entry, score){
         return this.postSetScore(entry, score);
     }
     /**

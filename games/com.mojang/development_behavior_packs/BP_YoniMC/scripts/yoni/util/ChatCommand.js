@@ -96,6 +96,11 @@ export default class ChatCommand {
         this.registerCustomPrefixCommand(...args);
     }
     
+    /**
+     * 
+     * @param {string} command 
+     * @param {(sender:YoniEntity, rawCommand:string, label:string, args:string[])=>void} executor 
+     */
     static registerCommand(command, executor){
         if (typeof command !== "string" || command.length === 0)
             throw new TypeError("command not valid");

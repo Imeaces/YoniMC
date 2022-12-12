@@ -152,8 +152,8 @@ class Entity {
     
     /**
      * 从一个实体中获得YoniEntity
-     * @param 可以被认为是实体的东西
-     * @return {Entity} 如果无法获得，返回null
+     * @param {Minecraft.Entity|Minecraft.Player|Gametest.SimulatedPlayer|Entity|Player|SimulatedPlayer|any} entity - 可以被认为是实体的东西
+     * @return {?Entity} 如果无法获得，返回null
      */
     static from(entity){
         // 如果有记录，直接返回对应实体
