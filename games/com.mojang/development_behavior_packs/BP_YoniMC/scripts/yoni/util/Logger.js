@@ -207,7 +207,7 @@ if (overrideDefaultConsole){
 }
 
 if (debug)
-import("yoni/command/ChatCommand.js")
+import("yoni/util/ChatCommand.js")
 .then(m=>{
     m.ChatCommand.registerPrefixCommand("$", "log", (sender, rawCommand, label, args)=>{
         if (!debug) return;

@@ -191,7 +191,7 @@ class Location {
     }
     
     getBlock(){
-        return this.dimension.getBlock({x: this.x, y: this.y, z: this.z});
+        return this.dimension.getBlock(this.getVanillaBlockLocation());
     }
     getBlockX(){
         throw new Error("not implemented yet");
@@ -205,6 +205,22 @@ class Location {
     toBlockLocation(){
         let { x, y, z, dimension } = this;
         return new Location(dimension, [Math.floor(x), Math.floor(y), Math.floor(z)]);
+    }
+    offset(x, y, z){
+        const location = this.clone();
+        location.x += x;
+        location.y += y;
+        location.z += z;
+        return location;
+    }
+    
+    getVanillaBlockLocation(){
+        let { x, y, z } = this;
+        return new Minecraft.BlockLocation(Math.floor(x), Math.floor(y), Math.floor(z));
+    }
+    getVanillaLocation(){
+        let { x, y, z } = this;
+        return new Minecraft.Location(x, y, z);
     }
     
     isLoaded(){
@@ -435,7 +451,7 @@ function makeLocation(values){
             let hasRotation = false;
             
             if (hasKeys(values, "dimension")){
-                dimension = values.dimemsion;
+                dimension = values.dimension;
                 hasDim = true;
             }
             

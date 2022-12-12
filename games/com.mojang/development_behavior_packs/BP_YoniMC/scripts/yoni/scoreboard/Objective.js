@@ -252,6 +252,30 @@ class Objective {
     }
     
     /**
+     * 异步获取记分板项目在记分项上的分数
+     * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
+     * @returns {Promise<number>} 记分板项目的分数
+     * @throws This function can throw errors.
+     */
+    postGetScore(entry){
+        this.checkUnregistered();
+        
+        if (!(entry instanceof Entry))
+            entry = Entry.guessEntry(entry);
+        
+        return this.#postGetScore(entry);
+    }
+    async #postGetScore(entry){
+        try {
+            return this.vanillaObjective.getScore(entry.vanillaScbid);
+        } catch {
+            try {
+                return this.vanillaObjective.getScore(entry.update().vanillaScbid);
+            } catch { return undefined; }
+        }
+    }
+    
+    /**
      * 为记分板项目在记分项上执行特定的操作
      * @param {string} option - 操作的名称
      * @param {Entry|Minecraft.ScoreboardIdentity|Minecraft.Entity|Minecraft.Player|string|number|YoniEntity} entry - 可以作为记分板项目的东西
@@ -370,7 +394,7 @@ class Objective {
      * @deprecated 由于新版本移除了runCommand()，故原有的方法
      * 不再可用，请改用 {@link Objective.postRemoveScore}
      */
-    async removeScore(entry, score){
+    removeScore(entry, score){
         return this.postRemoveScore(entry, score);
     }
     /**
@@ -387,7 +411,7 @@ class Objective {
      * @deprecated 由于新版本移除了runCommand()，故原有的方法
      * 不再可用，请改用 {@link Objective.postRandomScore}
      */
-    async randomScore(entry, min=-2147483647, max=2147483647, useBuiltIn=false){
+    randomScore(entry, min=-2147483647, max=2147483647, useBuiltIn=false){
         return this.postRandomScore(entry, min, max, useBuiltIn);
     }
     /**
@@ -396,7 +420,7 @@ class Objective {
      * @deprecated 由于新版本移除了runCommand()，故原有的方法
      * 不再可用，请改用 {@link Objective.postResetScore}
      */
-    async resetScore(entry){
+    resetScore(entry){
         return this.postResetScore(entry);
     }
     /**
@@ -407,7 +431,7 @@ class Objective {
      * @deprecated 由于新版本移除了runCommand()，故原有的方法
      * 不再可用，请改用 {@link Objective.postAddScore}
      */
-    async addScore(entry, score){
+    addScore(entry, score){
         return this.postAddScore(entry, score);
     }
 }

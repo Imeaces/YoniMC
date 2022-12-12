@@ -3,6 +3,13 @@ import { Logger } from "./util/Logger.js";
 import { runTask } from "./basis.js";
 import { debug } from "./config.js";
 
+
+/*
+    这里有一个问题亟待解决
+    那就是当一个任务在运行时添加了其他任务，会不会导致执行顺序错误？
+    现在的想法是先处理完增删之后再执行任务
+*/
+
 const logger = new Logger("Schedule");
 
 let scheduleCurrentIndex = 0;
@@ -13,10 +20,10 @@ const lastExecuteTimeRecords = new WeakMap();
 const scheduleCallbacks = new WeakMap();
 
 export class Schedule {
-    static timeCycleSchedule = Symbol("Schedule.timerCycleSchedule");
-    static timeDelaySchedule = Symbol("Schedule.timerDelaySchedule");
-    static tickCycleSchedule = Symbol("Schedule.tickCycleSchedule")
-    static tickDelaySchedule = Symbol("Schedule.tickDelaySchedule")
+    static timeCycleSchedule = "Schedule.timerCycleSchedule";
+    static timeDelaySchedule = "Schedule.timerDelaySchedule";
+    static tickCycleSchedule = "Schedule.tickCycleSchedule";
+    static tickDelaySchedule = "Schedule.tickDelaySchedule";
     
     id;
     
@@ -125,10 +132,9 @@ function doTickDelaySchedule(){
     runTask(doTickDelaySchedule);
     //首先，处理只执行一次的tick任务
     let tickDelaySchedules = schedulesTypedRecords[Schedule.tickDelaySchedule];
+    let taskQueue = new Set();
     if (tickDelaySchedules !== undefined){
-        tickDelaySchedules = Array.from(tickDelaySchedules);
         for (let idx = tickDelaySchedules.length - 1; idx >= 0; idx--){
-            let time = Date.now();
             let id = tickDelaySchedules[idx];
             let schedule = taskMap.get(id);
             let delayLess = (scheduleTickDelayLessRecords.has(schedule)) ? scheduleTickDelayLessRecords.get(schedule) : schedule.delay;
@@ -139,16 +145,19 @@ function doTickDelaySchedule(){
                 tickDelaySchedules.splice(idx, 1);
                 taskMap.delete(id);
             }
-            executeSchedule(schedule, time);
+            taskQueue.add(schedule);
         }
+    }
+    for (const schedule of taskQueue){
+         executeSchedule(schedule, Date.now());
     }
 }
 function doTimeDelaySchedule(){
     runTask(doTimeDelaySchedule);
     //接着，处理只执行一次的时间延时任务
+    let taskQueue = new Set();
     let timeDelaySchedules = schedulesTypedRecords[Schedule.timeDelaySchedule];
     if (timeDelaySchedules !== undefined){
-        timeDelaySchedules = Array.from(timeDelaySchedules);
         for (let idx = timeDelaySchedules.length - 1; idx >= 0; idx--){
             let time = Date.now();
             let id = timeDelaySchedules[idx];
@@ -161,19 +170,20 @@ function doTimeDelaySchedule(){
                 timeDelaySchedules.splice(idx, 1);
                 taskMap.delete(id);
             }
-            lastExecuteTimeRecords.set(schedule, time);
-            executeSchedule(schedule, time);
+            taskQueue.add(schedule);
         }
+    }
+    for (const schedule of taskQueue){
+         executeSchedule(schedule, Date.now());
     }
 }
 function doTickCycleSchedule(){
     runTask(doTickCycleSchedule);
     //然后，处理循环执行的tick任务
     let tickCycleSchedules = schedulesTypedRecords[Schedule.tickCycleSchedule];
+    let taskQueue = new Set();
     if (tickCycleSchedules !== undefined){
-        tickCycleSchedules = Array.from(tickCycleSchedules);
         for (let idx = tickCycleSchedules.length - 1; idx >= 0; idx--){
-            let time = Date.now();
             let id = tickCycleSchedules[idx];
             let schedule = taskMap.get(id);
             let delayLess = (scheduleTickDelayLessRecords.has(schedule)) ? scheduleTickDelayLessRecords.get(schedule) : schedule.delay;
@@ -183,16 +193,19 @@ function doTickCycleSchedule(){
             } else {
                 scheduleTickDelayLessRecords.set(schedule, schedule.period);
             }
-            executeSchedule(schedule, time);
+            taskQueue.add(schedule);
         }
+    }
+    for (const schedule of taskQueue){
+         executeSchedule(schedule, Date.now());
     }
 }
 function doTimeCycleSchedule(){
     runTask(doTimeCycleSchedule);
     //最后，处理循环的时间延时任务
     let timeCycleSchedules = schedulesTypedRecords[Schedule.timeCycleSchedule];
+    let taskQueue = new Set();
     if (timeCycleSchedules !== undefined){
-        timeCycleSchedules = Array.from(timeCycleSchedules);
         for (let idx = timeCycleSchedules.length - 1; idx >= 0; idx--){
             let time = Date.now();
             let id = timeCycleSchedules[idx];
@@ -207,9 +220,11 @@ function doTimeCycleSchedule(){
                     return;
                 }
             }
-            executeSchedule(schedule, time);
-            
+            taskQueue.add(schedule);
         }
+    }
+    for (const schedule of taskQueue){
+         executeSchedule(schedule, Date.now());
     }
 }
 
@@ -256,7 +271,7 @@ export default class YoniScheduler {
     }
     
     /**
-     * 执行一个任务
+     * 执行一个任务（以尽量快的速度）
      * @param {Function} 需要执行的任务
      * @param {Boolean} 是否异步执行
      * @returns {Number} taskId

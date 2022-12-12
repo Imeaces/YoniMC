@@ -19,11 +19,11 @@ function getCommand(cmd, ...args){
         args.forEach((arg) => {
             let shouldQuote = false; //标记是否应当在两侧添加引号
             arg = String(arg);
-            if (arg.length === 0){ //空参数
+            if (arg.trim().length === 0){ //空参数
                 shouldQuote = true;
-            } else if (getCommand.startsWithNumberRegex.test(arg)){ //以数字开头的参数
+            }/* else if (getCommand.startsWithNumberRegex.test(arg)){ //以数字开头的参数
                 shouldQuote = true;
-            } else if (getCommand.spaceCharRegex.test(arg)){ //含有空格，需要引号括起
+            }*/ else if (getCommand.spaceCharRegex.test(arg)){ //含有空格，需要引号括起
                 shouldQuote = true;
             }
             if (getCommand.specificCharRegex.test(arg)){ //将特殊符号转义
@@ -329,7 +329,7 @@ export default class Command {
      * execute a set of commands by sender
      * @param {CommandSender} sender 
      * @param {string[]} commands - command
-     * @returns {Promise<CommandResult[]]>}
+     * @returns {Promise<CommandResult[]>}
      */
     static async postExecute(sender, commands){
         commands = Array.from(commands);
@@ -353,7 +353,7 @@ if (debug){
         log = logger.debug;
     });
     
-    import("./command/ChatCommand.js")
+    import("./util/ChatCommand.js")
     .then(m=>{
         m.ChatCommand.registerCustomPrefixCommand("$", "cmdm", (_sender, _, __, args)=>{
             if (args[0] === "clearandprint"){

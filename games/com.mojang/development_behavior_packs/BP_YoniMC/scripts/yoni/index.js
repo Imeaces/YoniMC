@@ -36,10 +36,12 @@ import { isDebug } from "./debug.js";
 import * as YoniUtilUtils from "./util/utils.js";
 import FastScoreboard from "./util/FastScoreboard.js";
 import { ChatCommand } from "./util/ChatCommand.js";
+import { Location } from "./Location.js";
+
 globalThis.Yoni = {
     isDebug
 };
-
+globalThis.dim = dim;
 globalThis.runTask = runTask;
 globalThis.Logger = Logger;
 globalThis.world = World;
@@ -66,6 +68,8 @@ globalThis.Vanilla = {
     EventTypes: VanillaEvents,
     Scoreboard: VanillaScoreboard
 }
+
+globalThis.Location = Location;
 
 const Utils = (()=>{
     let obj = {};
@@ -115,5 +119,6 @@ export {
     YoniPlayer,
     YoniSimulatedPlayer,
     
-    Utils
+    Utils,
+    Location
 }

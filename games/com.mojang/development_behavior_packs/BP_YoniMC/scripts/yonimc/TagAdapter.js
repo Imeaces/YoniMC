@@ -16,6 +16,7 @@ YoniScheduler.runCycleTickTask(() => {
             e.removeTag("stat:is_sneaking");
     })
 }, 4, 10, false);
+/*
 YoniScheduler.runCycleTickTask(() => {
     let healthO = Scoreboard.getObjective("health", true);
     let maxHealthO = Scoreboard.getObjective("max_health", true);
@@ -25,7 +26,7 @@ YoniScheduler.runCycleTickTask(() => {
         healthO.postSetScore(player, Math.floor(component.current));
         maxHealthO.postSetScore(player, Math.floor(component.value));
     });
-}, 7, 20, false);
+}, 7, 20, false);*/
 
 EventListener.register("itemUse", (event) => {
     let ent = event.source;
