@@ -184,11 +184,11 @@ function valueCtrl(sender, args){
 function elytraManage(sender, args){
     switch(args[0]){
         case "expand":
-            Command.execute(sender, "function yonimc/guxi/creation/elytra/expand");
+            Command.fetchExecute(sender, "function yonimc/guxi/creation/elytra/expand");
             sender.sendMessage("展开鞘翅");
             break;
         case "recovery":
-            Command.execute(sender, "function yonimc/guxi/creation/elytra/recovery");
+            Command.fetchExecute(sender, "function yonimc/guxi/creation/elytra/recovery");
             sender.sendMessage("收起鞘翅");
             break;
         default: 
@@ -250,7 +250,7 @@ EventListener.register("beforeItemUse", (event)=> {
         event.cancel = true;
 
         let ent = event.source;
-        Command.execute(ent, "replaceitem entity @s slot.weapon.mainhand 0 bucket 1");
+        Command.fetchExecute(ent, "replaceitem entity @s slot.weapon.mainhand 0 bucket 1");
         let lavaBucketEnergyVolume = Obj.get("values", "lava_bucket_energy_volume");
         Obj.add(
             "energy",
@@ -340,7 +340,7 @@ EventListener.register("entityHurt", (event)=> {
         Obj.add("ef_fireimmu", ent, Math.round(Math.max(4, Obj.get("ef_fireimmu", ent)*3.1*Math.random())));
         if (Math.random()*1000<=1){
             Obj.add("energy_pool", ent, Math.round(damage*500));
-            Command.execute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace lava 0")
+            Command.fetchExecute(ent, "fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace lava 0")
             .next("fill ~-4 ~-4 ~-4 ~4 ~4 ~4 netherrack 0 replace magma -1")
             .next("fill ~-4 ~-4 ~-4 ~4 ~4 ~4 obsidian 0 replace flowing_lava 0")
             .next("fill ~-4 ~-4 ~-4 ~4 ~4 ~4 air 0 replace lava -1")
@@ -364,8 +364,8 @@ EventListener.register("entityHurt", (event)=> {
         if (lost > 0){
             Obj.remove("energy_pool", ent, Math.round(Math.max(0, lost/maxHealth*Obj.get("energy_pool", ent))));
         }
-        //Command.execute(ent, `title @s title 损失血量 ${lostHealth}`);
-        //Command.execute(ent, `title @s subtitle ${event.cause} ${event.damage}`);
+        //Command.fetchExecute(ent, `title @s title 损失血量 ${lostHealth}`);
+        //Command.fetchExecute(ent, `title @s subtitle ${event.cause} ${event.damage}`);
         
         
     }

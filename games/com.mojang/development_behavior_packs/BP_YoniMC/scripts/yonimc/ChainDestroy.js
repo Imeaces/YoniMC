@@ -13,17 +13,18 @@ ChatCommand.registerCommand("setchaincount", (sender, command, label, args)=>{
 });
 
 EventListener.register("blockBreak", async (event)=>{
-    return;
+    const { player, dimension, block, brokenBlockPermutation } = event;
+    if (!player.isSneaking) return;
     let blocksThatToBreak = [];
     let blocksThatToDetect = [];
     let blocksThatToDetectInPos = [];
     let blocksThatDetected = [];
-    let dim = event.dimension;
+    let dim = dimension;
     let chainBlockType = null;
     const bloc = (block)=>{
         return `${block.location.x},${block.location.y},${block.location.z}`;
     };
-    const detectBlockRound = (block) => {
+    const detectBlockRound = async (block) => {
         blocksThatDetected.push(bloc(block));
         let nearBlocks = [];
         for (let ox = -1; ox < 2; ox++){
@@ -46,15 +47,15 @@ EventListener.register("blockBreak", async (event)=>{
             }
         }
     }
-    //if (chainBlockList.includes(event.brokenBlockPermutation.type.typeId)){
-        blocksThatToDetect.push(event.block);
-        chainBlockType = event.brokenBlockPermutation.type.id;
+    //if (chainBlockList.includes(brokenBlockPermutation.type.typeId)){
+        blocksThatToDetect.push(block);
+        chainBlockType = brokenBlockPermutation.type.id;
     //}
 
     let blocksDetectCount = 0;
     for (let i = 0; i< blocksThatToDetect.length; i++){
         if (blocksDetectCount > chainCount){
-            await YoniUtils.send(event.player, "to much block "+ blocksThatToDetect.length);
+            await YoniUtils.send(player, "to much block "+ blocksThatToDetect.length);
             break;
         } else {
             blocksDetectCount++;
@@ -65,13 +66,13 @@ EventListener.register("blockBreak", async (event)=>{
         if (blocksThatDetected.includes(bloc(block)))
             continue;
         
-        detectBlockRound(block);
+        await detectBlockRound(block);
         //blocksThatToDetect.splice(0,1);
         
     }
     for (let pos of new Set(blocksThatToBreak)){
         Command.fetchExecute(dim, `setblock ${pos.replaceAll(/,/g, "\x20")} air 0 destroy`);
     }
-    event.player.onScreenDisplay.setTitle(`${blocksThatToBreak.length}`);
-    event.player.onScreenDisplay.updateSubtitle(`${blocksDetectCount}`);
+    player.onScreenDisplay.setTitle(`${blocksThatToBreak.length}`);
+    player.onScreenDisplay.updateSubtitle(`${blocksDetectCount}`);
 });

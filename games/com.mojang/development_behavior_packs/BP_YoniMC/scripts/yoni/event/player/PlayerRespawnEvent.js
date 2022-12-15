@@ -1,45 +1,32 @@
 import { YoniEntity } from "yoni/entity.js";
-import { EventListener, EventSignal, Event, EventTriggerBuilder } from "yoni/event.js";
+import { EventListener, EventSignal, EventTriggerBuilder } from "yoni/event.js";
 import { PlayerEvent } from "./PlayerEvent";
-import { World } from "yoni/world.js";
-import { YoniScheduler } from "yoni/schedule.js";
+import { VanillaWorld } from "yoni/basis.js";
+import { YoniScheduler, Schedule } from "yoni/schedule.js";
+import { Location } from "yoni/Location.js";
 
-class PlayerRespawnEventSignal extends EventSignal {}
-class PlayerRespawnEvent extends PlayerEvent{
+export class PlayerRespawnEventSignal extends EventSignal {}
+export class PlayerRespawnEvent extends PlayerEvent{
     sourceLocation;
     currentLocation;
     constructor(player, coords){
         super(player);
-        this.sourceLocation = {
-            dimension: coords.dimension,
-            x: coords.location.x,
-            y: coords.location.y,
-            z: coords.location.z,
-            rx: coords.rotation.x,
-            ry: coords.rotation.y
-        };
-        this.currentLocation = {
-            dimension: player.dimension,
-            x: player.location.x,
-            y: player.location.y,
-            z: player.location.z,
-            rx: player.rotation.x,
-            ry: player.rotation.y
-        };
+        this.sourceLocation = coords;
+        this.currentLocation = this.player.location;
     }
 }
 
-let DeadPlayers = new WeakSet();
-let DeadPlayerLocationRecords = new WeakMap();
+const DeadPlayers = new WeakSet();
+const DeadPlayerLocationRecords = new WeakMap();
 
 let eventId0 = null;
-let schedule = new Schedule({
+const schedule = new Schedule({
     async: false,
     type: Schedule.tickCycleSchedule,
     delay: 0,
     period: 1
 }, ()=>{
-    let players = World.getPlayers();
+    let players = Array.from(VanillaWorld.getPlayers());
     if (players.length === 0){
         YoniScheduler.removeSchedule(schedule);
         return;
@@ -48,7 +35,7 @@ let schedule = new Schedule({
         if (!DeadPlayers.has(player)){
             return;
         }
-        if (player.getCurrentHealth() > 0){
+        if (YoniEntity.getCurrentHealth(player) > 0){
             let coords = DeadPlayerCoordsRecords.get(player);
             DeadPlayers.delete(player);
             DeadPlayerLocationRecords.delete(player);
@@ -60,13 +47,7 @@ let schedule = new Schedule({
 function start(){
     eventId0 = EventListener.register("yonimc:playerDead", (event)=>{
         let player = event.player;
-        let coords = {};
-        coords.dimension = player.dimension;
-        coords.rotation = player.rotation;
-        coords.location = (()=>{
-            let { x, y, z } = player.location;
-            return new Location(x, y, z);
-        });
+        let location = new Location(player);
         DeadPlayers.add(player);
         DeadPlayerCoordsRecords.set(player, coords);
         if (!schedule.isQueue()){

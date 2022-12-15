@@ -1,24 +1,12 @@
 import { YoniScheduler } from "yoni/schedule.js";
 
+/**
+ * @typedef {(event: Event) => void} EventCallback
+ */
+
 class Event {
-    constructor(...values){
-        if (values.length !== 0){
-            values.forEach((vals)=>{
-                for (let key in vals){
-                    Object.defineProperty(this, key, {
-                        configurable: false,
-                        enumerable: false,
-                        get: function (){
-                            return vals[key];
-                            
-                        },
-                        set: function (val){
-                            vals[key] = val;
-                        }
-                    });
-                }
-            });
-        }
+    constructor(...values) {
+        Object.assign(this, ...values);
     }
 }
 

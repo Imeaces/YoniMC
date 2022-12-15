@@ -1,10 +1,9 @@
-import { YoniEntity } from "yoni/entity.js";
-import { EventListener, EventSignal, Event, EventTriggerBuilder } from "yoni/event.js";
-import { PlayerEvent } from "./PlayerEvent";
-import { VanillaWorld, runTask } from "yoni/basis.js";
-import { YoniScheduler } from "yoni/schedule.js";
+import { EventListener, EventSignal, EventTriggerBuilder } from "yoni/event.js";
+import { PlayerEvent } from "./PlayerEvent.js";
+import { VanillaWorld } from "yoni/basis.js";
+import { YoniScheduler, Schedule } from "yoni/schedule.js";
 
-class PlayerJoinedEvent extends PlayerEvent {
+export class PlayerJoinedEvent extends PlayerEvent {
     constructor(player){
         super(player);
     }
@@ -12,16 +11,19 @@ class PlayerJoinedEvent extends PlayerEvent {
         this.player.postKick("加入游戏被取消");
     }
 }
-class PlayerDeadEventSignal extends EventSignal {}
 
-let joiningPlayers = new Set();
-let 启用轮询 = false;
+export class PlayerDeadEventSignal extends EventSignal {
+}
+
+const joiningPlayers = new WeakSet();
 let eventId = null;
 
-let ticking = ()=>{
-    if (启用轮询){
-        runTask(ticking);
-    }
+const schedule = new Schedule({
+    type: Schedule.tickCycleSchedule,
+    async: false,
+    delay: 0,
+    period: 0
+}, () => {
     if (joiningPlayers.size === 0){
         return;
     }
@@ -29,25 +31,23 @@ let ticking = ()=>{
     [...VanillaWorld.getPlayers()].forEach((pl)=>{
         if (joiningPlayers.has(pl)){
             joiningPlayers.delete(pl);
-            signal.triggerEvent(pl);
+            trigger.triggerEvent(pl);
         }
     });
-}
-let scheduleId = -1;
+});
 
 const trigger = new EventTriggerBuilder()
     .id("yoni:playerJoined")
     .eventSignalClass(PlayerDeadEventSignal)
     .eventClass(PlayerJoinedEvent)
     .whenFirstSubscribe(()=>{
-        启用轮询 = true;
-        runTask(ticking);
+        YoniScheduler.addSchedule(schedule);
         eventId = EventListener.register("minecraft:playerJoin", (event)=>{
             joiningPlayers.add(event.player);
         });
     })
     .whenLastUnsubscribe(()=>{
-        启用轮询 = false;
+        YoniScheduler.removeSchedule(schedule);
         EventListener.unregister(eventId);
     })
     .build()

@@ -1,11 +1,10 @@
-import { YoniEntity } from "yoni/entity.js";
 import { EventListener, EventSignal, EventTriggerBuilder } from "yoni/event.js";
 import { PlayerEvent } from "./PlayerEvent.js";
+import { YoniEntity } from "yoni/entity.js";
 
 export class PlayerDeadEvent extends PlayerEvent {
     constructor(player){
         super(player);
-        Object.freeze(this);
     }
 }
 export class PlayerDeadEventSignal extends EventSignal {}
@@ -25,9 +24,9 @@ const trigger = new EventTriggerBuilder()
             if (YoniEntity.getCurrentHealth(event.hurtEntity) === 0){
                 trigger.triggerEvent(event.hurtEntity);
             }
-        }, {type:"minecraft:player"});
+        }, { entityTypes: ["minecraft:player"] });
         eventId1 = EventListener.register("yoni:playerJoined", (event)=>{
-            if (event.player.getCurrentHealth() === 0){
+            if (YoniEntity.getCurrentHealth(event.player) === 0){
                 trigger.triggerEvent(event.player);
             }
         });

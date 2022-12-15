@@ -3,12 +3,16 @@ import { EventSignal, Event, EventTriggerBuilder } from "yoni/event.js";
 import { Command } from "yoni/command.js";
 
 export class TickEventSignal extends EventSignal {}
+
 export class TickEvent extends Event {
-    constructor(c, d){
-        super();
-        this.currentTick = c;
-        this.deltaTime = d;
-        Object.freeze(this);
+    get currentTick(){
+        return super.currentTick;
+    }
+    get deltaTime(){
+        return super.deltaTime;
+    }
+    constructor(currentTick, deltaTime){
+        super({deltaTime, currentTick});
     }
 }
 

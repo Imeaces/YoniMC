@@ -3,6 +3,10 @@ import { dim, Minecraft, VanillaWorld, overworld } from "./basis.js";
  * 一个复杂点的Location类
  */
 class Location {
+    /**
+     * @param {number} v
+     * @returns {number}
+     */
     static normalizePitch(v){
         if (!isFinite(v))
             throw new Error("Number not finite");
@@ -11,6 +15,10 @@ class Location {
         v -= 180;
         return v;
     }
+    /**
+     * @param {number} v
+     * @returns {number}
+     */
     static normalizeYaw(v){
         if (!isFinite(v))
             throw new Error("Number not finite");
@@ -21,6 +29,9 @@ class Location {
     }
     
     #x = NaN;
+    /**
+     * @type {number}
+     */
     get x(){
         return this.#x;
     }
@@ -31,6 +42,9 @@ class Location {
     }
     
     #y = NaN;
+    /**
+     * @type {number}
+     */
     get y(){
         return this.#y;
     }
@@ -41,6 +55,9 @@ class Location {
     }
     
     #z = NaN;
+    /**
+     * @type {number}
+     */
     get z(){
         return this.#z;
     }
@@ -51,6 +68,9 @@ class Location {
     }
     
     #rx = 0;
+    /**
+     * @type {number}
+     */
     get rx(){
         return this.#rx;
     }
@@ -59,6 +79,9 @@ class Location {
     }
     
     #ry = 0;
+    /**
+     * @type {number}
+     */
     get ry(){
         return this.#ry;
     }
@@ -67,6 +90,9 @@ class Location {
     }
     
     #dimension = null;
+    /**
+     * @type {Minecraft.Dimension}
+     */
     get dimension(){
         return this.#dimension;
     }
@@ -102,6 +128,7 @@ class Location {
      * [x, y, z]
      * {dimension, location, rotation}
      * {dimension, location}
+     * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
      */
     constructor(...values){
         let { x, y, z, rx, ry, dimension } = makeLocation(values);
@@ -129,6 +156,9 @@ class Location {
             this.dimension = dimension;
         }
     }
+    /**
+     * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
+     */
     add(...values){
         let { x, y, z } = makeLocation(values);
         this.x += x;
@@ -136,6 +166,9 @@ class Location {
         this.z += z;
         return this;
     }
+    /**
+     * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
+     */
     subtract(...values){
         let { x, y, z } = makeLocation(values);
         this.x -= x;
@@ -143,6 +176,9 @@ class Location {
         this.z -= z;
         return this;
     }
+    /**
+     * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
+     */
     multiply(...values){
         let { x, y, z } = makeLocation(values);
         this.x *= x;
@@ -150,6 +186,9 @@ class Location {
         this.z *= z;
         return this;
     }
+    /**
+     * 将坐标设置为原点
+     */
     zero(){
         this.x = 0;
         this.y = 0;
@@ -157,12 +196,18 @@ class Location {
         return this;
     }
     
+    /**
+     * @param {LocationDataParams1_01} loc
+     */
     distance(loc){
         let distance = this.distancrSquared(loc);
         return Math.sqrt(distance);
     }
+    /**
+     * @param {LocationDataParams1_01} loc
+     */
     distancrSquared(loc){
-        let fromLocation = makeLocation(loc);
+        let fromLocation = makeLocation([loc]);
         if (this.dimension !== fromValueGetDimension(fromLocation.dimension)){
             throw new Error("different dimension");
         }
@@ -190,6 +235,9 @@ class Location {
         throw new Error("not implemented yet");
     }
     
+    /**
+     * @returns {Minecraft.Block} 此位置上的方块
+     */
     getBlock(){
         return this.dimension.getBlock(this.getVanillaBlockLocation());
     }
@@ -202,10 +250,19 @@ class Location {
     getBlockZ(){
         throw new Error("not implemented yet");
     }
+    /**
+     * 返回一个取整后的坐标，且旋转角为0
+     */
     toBlockLocation(){
         let { x, y, z, dimension } = this;
         return new Location(dimension, [Math.floor(x), Math.floor(y), Math.floor(z)]);
     }
+    /**
+     * 返回一个在此坐标上偏移指定坐标的Location
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     */
     offset(x, y, z){
         const location = this.clone();
         location.x += x;
@@ -214,10 +271,16 @@ class Location {
         return location;
     }
     
+    /**
+     * @returns {Minecraft.BlockLocation} 根据此位置创建一个原版的Minecraft.BlockLocation
+     */
     getVanillaBlockLocation(){
         let { x, y, z } = this;
         return new Minecraft.BlockLocation(Math.floor(x), Math.floor(y), Math.floor(z));
     }
+    /**
+     * @returns {Minecraft.Location} 根据此位置创建一个原版的Minecraft.Location
+     */
     getVanillaLocation(){
         let { x, y, z } = this;
         return new Minecraft.Location(x, y, z);
@@ -233,6 +296,9 @@ class Location {
     checkFinite(){
         throw new Error("not implemented yet");
     }
+    /**
+     * @param {LocationDataParams1_01} loc
+     */
     equals(loc){
         let fromLocation = new Location(loc);
         let { x, y, z, rx, ry, dimension } = this;
@@ -279,6 +345,171 @@ function fromValueGetDimension(value){
     }
 }
 
+/**
+ * {x, y, z, rx?, ry?, dimension?}
+ * @interface
+ * @typedef ILocationValue01
+ * @property {number} x
+ * @property {number} y
+ * @property {number} z
+ * @property {number} [rx]
+ * @property {number} [ry]
+ * @property {Minecraft.Dimension} [dimension]
+ */
+/**
+ * {x, y, z, rx?, ry?, **dimension**?}
+ * @interface
+ * @typedef ILocationValue01_1
+ * @property {number} x
+ * @property {number} y
+ * @property {number} z
+ * @property {number} [rx]
+ * @property {number} [ry]
+ * @property {string|nunber} [dimension] - 一个可以代表某个维度的值
+ */
+/**
+ * [dimension, x, y, z, rx?, ry?]
+ * @typedef {[Minecraft.Dimension, number, number, number]|[Minecraft.Dimension, number, number, number, number, number]} ILocationValue01_2
+ */
+/**
+ * [**dimension**, x, y, z, rx?, ry?]
+ * @typedef {[string, number, number, number]|[number, number, number, number]|[string, number, number, number, number, number]|[number, number, number, number, number, number]} ILocationValue01_3
+ */
+/**
+ * [dimension, x, y, z, rx, ry]
+ * @typedef {[Minecraft.Dimension, number, number, number, number, number]} ILocationValue01_4
+ */
+/**
+ * [**dimension**, x, y, z, rx, ry]
+ * @typedef {[string, number, number, number, number, number]|[number, number, number, number, number, number]} ILocationValue01_5
+ */
+
+/**
+ * {location, dimension?, rotation?}
+ * @interface
+ * @typedef ILocationValue1
+ * @property {ILocationValue_Location} location
+ * @property {ILocationValue_Rotation} [rotation]
+ * @property {Minecraft.Dimension} [dimension]
+ */
+/**
+ * {location, dimension?, rotation?}
+ * @interface
+ * @typedef ILocationValue1_1
+ * @property {ILocationValue_Location} location
+ * @property {ILocationValue_Rotation} [rotation]
+ * @property {string|number} [dimension] - 一个可以代表某个维度的值
+ */
+
+/**
+ * {x, y, z}
+ * @interface
+ * @typedef ILocationValue_Location
+ * @property {number} x
+ * @property {number} y
+ * @property {number} z
+ */
+/**
+ * [x, y, z]
+ * @typedef {[number, number, number]} ILocationValue_Location_1
+ */
+/**
+ * {x, y, z, dimension}
+ * @interface
+ * @typedef ILocationValue_Location_2
+ * @property {Minecraft.Dimension} dimension
+ * @property {number} x
+ * @property {number} y
+ * @property {number} z
+ */
+/**
+ * {x, y, z, **dimension**}
+ * @interface
+ * @typedef ILocationValue_Location_3
+ * @property {string|number} dimension - 一个可以代表某个维度的值
+ * @property {number} x
+ * @property {number} y
+ * @property {number} z
+ */
+/**
+ * [dimension, x, y, z]
+ * @typedef {[Minecraft.Dimension, number, number, number]} ILocationValue_Location_4
+ */
+/**
+ * [**dimension**, x, y, z]
+ * @typedef {[string, number, number, number]|[number, number, number, number]} ILocationValue_Location_5
+ */
+/**
+ * {x, y, z, rx?, ry?}
+ * @interface
+ * @typedef ILocationValue_Location_6
+ * @property {number} x
+ * @property {number} y
+ * @property {number} z
+ * @property {number} [rx]
+ * @property {number} [ry]
+ */
+/**
+ * [x, y, z, rx?, ry?]
+ * @typedef {[number, number, number]|[number, number, number, number, number]} ILocationValue_Location_7
+ */
+/**
+ * [x, y, z, rx, ry]
+ * @typedef {[number, number, number, number, number]} ILocationValue_Location_8
+ */
+
+/**
+ * {rx, ry}
+ * @interface
+ * @typedef ILocationValue_Rotation
+ * @property {number} rx
+ * @property {number} ry
+ */
+/**
+ * [rx, ry]
+ * @typedef {[number, number]} ILocationValue_Rotation_1
+ */
+
+//++++++++++++++++++++++++++base end-------------------------------
+/**
+ * @typedef {[ILocationValue01|ILocationValue01_1|ILocationValue01_2|ILocationValue01_3|ILocationValue1|ILocationValue1_1|ILocationValue_Location|ILocationValue_Location_1|ILocationValue_Location_2|ILocationValue_Location_3|ILocationValue_Location_4|ILocationValue_Location_5]} LocationDataParams1
+ */
+/**
+ * @typedef {ILocationValue01|ILocationValue01_1|ILocationValue01_2|ILocationValue01_3|ILocationValue1|ILocationValue1_1|ILocationValue_Location|ILocationValue_Location_1|ILocationValue_Location_2|ILocationValue_Location_3|ILocationValue_Location_4|ILocationValue_Location_5} LocationDataParams1_01
+ */
+
+/**
+ * @typedef {[Minecraft.Dimension, ILocationValue_Location_6|ILocationValue_Location_7]} LocationDataParams2
+ */
+/**
+ * @typedef {[string|number, ILocationValue_Location_6|ILocationValue_Location_7]} LocationDataParams2_1
+ */
+/**
+ * @typedef {[ILocationValue_Location_3|ILocationValue_Location_2|ILocationValue_Location_1|ILocationValue_Location, ILocationValue_Rotation|ILocationValue_Rotation_1]} LocationDataParams2_2
+ */
+
+/**
+ * @typedef {[Minecraft.Dimension, ILocationValue_Location|ILocationValue_Location_1, ILocationValue_Rotation|ILocationValue_Rotation_1]} LocationDataParams3
+ */
+/**
+ * @typedef {ILocationValue_Location_1} LocationDataParams3_1
+ */
+/**
+ * [dimension, x, y, z]
+ * @typedef {ILocationValue_Location_4} LocationDataParams4
+ */
+/**
+ * [x, y, z, rx, ry]
+ * @typedef {ILocationValue_Location_8} LocationDataParams5
+ */
+/**
+ * [dimension, x, y, z, rx, ry]
+ * @typedef {ILocationValue01_4|ILocationValue01_5} LocationDataParams6
+ */
+ 
+/**
+ * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
+ */
 function makeLocation(values){
     let x, y, z, rx, ry, dimension = null;
     const value0 = values[0];

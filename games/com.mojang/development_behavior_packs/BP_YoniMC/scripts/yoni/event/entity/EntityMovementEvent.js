@@ -1,195 +1,149 @@
-import { EventListener, EventSignal, EventTypes, EventRemover, EventTriggerBuilder } from "yoni/event.js";
+import { EventSignal, EventTriggerBuilder } from "yoni/event.js";
 import { EntityEvent } from "./EntityEvent.js";
-import { runTask, Minecraft } from "yoni/basis.js";
-import { Entity } from "yoni/entity.js";
-const Location = Minecraft.Location;
+import { YoniEntity } from "yoni/entity.js";
+import { Location } from "yoni/Location.js";
+import { YoniScheduler, Schedule } from "yoni/schedule.js";
 
-class EntityMovementEventSignal extends EventSignal {}
+export class EntityMovementEventSignal extends EventSignal {
+    subscribe(callback, options){
+        super(callback, options);
+        if (options != null){
+            filtersList.push(options);
+        }
+    }
+}
+
 //这个事件非常卡，我相信你们不会想要使用它的
 export class EntityMovementEvent extends EntityEvent {
-    isCancelled;
+    #cancelled = false;
     get cancel(){
-        return this.isCancelled();
+        return this.#cancelled;
     }
     
-    setCancel;
     /**
      * 如果取消跨维度移动事件的话，可能会导致游戏崩溃
      */
     set cancel(bool){
-        this.setCancel(!!bool);
+        if (this.#cancelled) return;
+        if (bool){
+            this.#cancelled = true;
+            this.entity.teleport(this.from);
+        }
     }
     
-    oldLocation;
-    
-    newLocation;
-    
-    constructor (values){
-        super(values.entity);
-        this.isCancelled = values.isCancelled;
-        this.setCancel = values.setCancel;
-        this.oldLocation = values.oldLocation;
-        this.newLocation = values.newLocation;
+    get from(){
+        return super.from.clone();
+    }
+    get to(){
+        return super.to.clone();
+    }
+    constructor(entity, from, to, movementKeys){
+        super(entity, {from, to, movementKeys});
     }
 }
 
-let 启用轮询 = false;
-let eventLocationRecords = new WeakMap();
+let entityLocationRecords = new WeakMap();
 
-const conditionFunc = ()=>{
-    if (启用轮询)
-        runTask(conditionFunc);
-    else
-        return;
-    
-    Entity.getLoadedEntities().forEach((ent)=>{
-        if (ent.dimension === undefined || ent.rotation === undefined || ent.location === undefined) return;
-        let hasMove = false;
-        let oldLoc = eventLocationRecords.get(ent);
-        let newLoc = Object.freeze({
-            dimension: ent.dimension,
-            location: Object.freeze({
-                x: ent.location.x,
-                y: ent.location.y,
-                z: ent.location.z
-            }),
-            rotation: Object.freeze({
-                x: ent.rotation.x,
-                y: ent.rotation.y
-            })
-        });
-        let changedLoc = {
-        };
+const filtersList = [];
+
+function getTargetEntities(){
+    if (filtersList.length === 0){
+        return YoniEntity.getLoadedEntities();
+    }
+    const selectedEntities = [];
+    const allEntities = YoniEntity.getLoadedEntities();
+    filtersList.forEach(filter => {
+        if (filter.entities){
+            filter.entities.map(entity => YoniEntity.from(entity))
+                .forEach(entity => {
+                    selectedEntities.push(entity);
+                });
+        }
+        if (filter.entityTypes){
+            allEntities
+                .filter(oneEntity => {
+                    return filter.entityTypes.includes(oneEntity.typeId);
+                })
+                .forEach(oneEntity => {
+                    selectedEntities.push(oneEntity);
+                });
+        }
+    });
+    return Array.from(
+        new Set(
+            selectedEntities.map(e =>
+                Entity.from(e)
+            )
+        )
+    );
+}
+
+const schedule = new Schedule ({
+    async: false,
+    type: Schedule.tickCycleSchedule,
+    period: 1,
+    delay: 0
+}, ()=>{
+    for (const entity of getTargetEntities()){
+        let oldLoc = entityLocationRecords.get(entity);
         if (oldLoc === undefined){
-            eventLocationRecords.set(ent, newLoc);
-            return;
+            entityLocationRecords.set(entity, entity.location);
+            continue;
         }
-        if (oldLoc.dimension.id !== newLoc.dimension.id){
-            hasMove = true;
-            changedLoc = newLoc;
-        } else {
-            if (newLoc.location.x !== oldLoc.location.x){
-                hasMove = true;
-                if (changedLoc.location === undefined){
-                    changedLoc.location = {};
-                }
-                changedLoc.location.x = newLoc.location.x;
-            }
-            if (newLoc.location.y !== oldLoc.location.y){
-                hasMove = true;
-                if (changedLoc.location === undefined){
-                    changedLoc.location = {};
-                }
-                changedLoc.location.y = newLoc.location.y;
-            }
-            if (newLoc.location.z !== oldLoc.location.z){
-                hasMove = true;
-                if (changedLoc.location === undefined){
-                    changedLoc.location = {};
-                }
-                changedLoc.location.z = newLoc.location.z;
-            }
-            if (newLoc.rotation.x !== oldLoc.rotation.x){
-                hasMove = true;
-                if (changedLoc.rotation === undefined){
-                    changedLoc.rotation = {};
-                }
-                changedLoc.rotation.x = newLoc.rotation.x;
-            }
-            if (newLoc.rotation.y !== oldLoc.rotation.y){
-                hasMove = true;
-                if (changedLoc.rotation === undefined){
-                    changedLoc.rotation = {};
-                }
-                changedLoc.rotation.y = newLoc.rotation.y;
-            }
+        let newLoc = entity.location;
+        if (newLoc.equals(oldLoc)){
+            continue;
         }
-        Object.freeze(changedLoc.rotation);
-        Object.freeze(changedLoc.location);
-        Object.freeze(changedLoc);
-        if (hasMove){
-            eventLocationRecords.set(ent, newLoc);
-            triggerEvent(ent, oldLoc, changedLoc);
+        let movementKeys = [];
+        if (newLoc.x !== oldLoc.x){
+            movementKeys.push("x", "location");
         }
-    });
+        if (newLoc.y !== oldLoc.y){
+            movementKeys.push("y", "location");
+        }
+        if (newLoc.z !== oldLoc.z){
+            movementKeys.push("z", "location");
+        }
+        if (newLoc.rx !== oldLoc.rx){
+            movementKeys.push("rx", "rotation");
+        }
+        if (newLoc.ry !== oldLoc.ry){
+            movementKeys.push("ry", "rotation");
+        }
+        if (newLoc.dimension !== oldLoc.dimension){
+            movementKeys.push("x", "y", "z", "rx", "ry", "dimension", "location", "rotation");
+        }
+        
+        movementKeys = new Set(movementKeys);
+        movementKeys = Array.from(movementKeys);
+        
+        trigger.triggerEvent(entity, oldLoc, newLoc, movementKeys);
+    }
 };
 
-const triggerEvent = async (entity, oldLoc, changedLoc)=>{
-    let cancelled = false;
-    let isCancelled = ()=>{
-        return cancelled;
-    };
-    let setCancel = (bool)=>{
-        if (bool && !cancelled){
-            entity.teleport(oldLoc.location,
-                oldLoc.dimension,
-                oldLoc.rotation.x,
-                oldLoc.rotation.y,
-                false
-            );
-            eventLocationRecords.set(entity, oldLoc);
-            cancelled = true;
-        }
-    }
-    let movementFilterKeys = (()=>{
-        let keys = [];
-        if ("dimension" in changedLoc){
-            keys.push("dimension", "rotation", "rx", "ry", "location", "x", "y", "z");
-        } else {
-            if ("rotation" in changedLoc){
-                keys.push("rotation");
-                if ("x" in changedLoc.rotation)
-                    keys.push("rx");
-                if ("y" in changedLoc.rotation)
-                    keys.push("ry");
-            }
-            if ("location" in changedLoc){
-                keys.push("location");
-                if ("x" in changedLoc.location)
-                    keys.push("x");
-                if ("y" in changedLoc.location)
-                    keys.push("y");
-                if ("z" in changedLoc.location)
-                    keys.push("z");
-            }
-        }
-        return keys;
-    })();
-    let entityEventOptionValues = {
-        entityType: entity.entityType,
-        entity: entity
-    }
-    trigger.triggerEvent({
-        isCancelled,
-        setCancel,
-        oldLocation: oldLoc,
-        newLocation: changedLoc,
-        entity,
-        filters: {
-            movementFilterKeys,
-            entityEventOptionValues
-        }
-    });
-};
-
-/*
-{
-    entities: Entity[],
-    entityType: EntityType,
-    movementKeyword: [ "x", "y", "z", "rx", "ry", "dimension", "location", "rotation" ]
-}
-*/
-let trigger = new EventTriggerBuilder("yoni:entityMovement")
+const trigger = new EventTriggerBuilder()
+    .id("yoni:entityMovement")
     .eventSignalClass(EntityMovementEventSignal)
     .eventClass(EntityMovementEvent)
-    .filterResolver((values, filters)=>{
-        values = values[0];
-        filters = filters[0];
-        let filterValues = values.filters;
-        if (Array.isArray(filters.movementKeyword)){
+    .filterResolver((values, filterValues)=>{
+        
+        const [entity, from, to, movementKeys] = values;
+        
+        const filterEntityTypes = filterValues.entityTypes;
+        const filterEntitys = filterValues.entities;
+        
+        if (filterValues.movementKeys != null){
+            for (const key of filterValues.movementKeys){
+                if ( ! movementKeys.includes(key)){
+                    return false;
+                }
+            }
+        }
+        
+        if (filterValues.entities != null){
             let found = false;
-            for (let key of filters.movementKeyword){
-                if (filterValues.movementFilterKeys.includes(key)){
+            for (let filterEntity of filterValues.entities){
+                if (YoniEntity.isSameEntity(filterEntity, entity)){
                     found = true;
                     break;
                 }
@@ -198,29 +152,18 @@ let trigger = new EventTriggerBuilder("yoni:entityMovement")
                 return false;
             }
         }
-        if (filters.entities !== undefined){
-            let found = false;
-            for (let ent of filters.entities){
-                if (YoniEntity.isSameEntity(ent, filterValues.entityEventOptionValues.entity)){
-                    found = true;
-                    break;
-                }
-            }
-            if (!found){
-                return false;
-            }
+        
+        if (filterValues.entityTypes != null){
+            return filterValues.entityTypes.includes(entity.typeId);
         }
-        if (filters.entityType !== undefined && filters.entityType !== filterValues.entityEventOptionValues.entityType){
-            return false;
-        }
+        
         return true;
     })
     .whenFirstSubscribe(()=>{
-        启用轮询 = true;
-        runTask(conditionFunc);
+        YoniScheduler.addSchedule(schedule);
     })
     .whenLastUnsubscribe(()=>{
-        启用轮询 = false;
+        YoniScheduler.removeSchedule(schedule);
     })
     .build()
     .registerEvent();

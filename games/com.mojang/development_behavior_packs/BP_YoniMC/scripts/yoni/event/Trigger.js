@@ -1,12 +1,20 @@
 import { Types, getIdentifierInfo } from "./Types.js";
-import { Event, EventRemover } from "./Event.js";
+import { Event } from "./Event.js";
 import { runTask } from "yoni/basis.js";
 
 async function callAsyncFunction(func, ...args){
     return func(...args);
 }
 
+/**
+ * @interface
+ */
 class Trigger {
+    
+    constructor(identifier, signal=null){
+        this.#identifier = getIdentifierInfo(identifier).id;
+        this.signal = signal;
+    }
     
     #identifier;
     get identifier(){
@@ -23,6 +31,8 @@ class Trigger {
     
     signal;
     
+    getCallbacks;
+    
     /**
      * 同步的事件回调
      * @param {Function[]} callbacks
@@ -30,7 +40,16 @@ class Trigger {
      * @param {any[]} eventValues
      */
     firebug(callbacks, eventClass, eventValues){
-        let proxy = Proxy.revocable(new eventClass(...eventValues), {});
+        let proxy = Proxy.revocable(new eventClass(...eventValues), {
+            get(t, k){
+                let v = t[k];
+                if ("function" === typeof v){
+                    return function proxyCallFunction(...args){ return t[k](...args); };
+                } else {
+                    return v;
+                }
+            }
+        });
         let event = proxy.proxy;
         runTask(proxy.revoke);
         callbacks.forEach(f => f(event) );
@@ -53,33 +72,24 @@ class Trigger {
         );
     }
     
-    getCallbacks(){
-        return [];
-    }
-    
     /**
      * @param {any[]} eventValues
-     * @param {any[]} filters
+     * @param {any[]|any} filters
      * @return {boolean}
      */
     filterResolver(eventValues, filters){
         return true;
     };
     
-    constructor(identifier, signal=null){
-        this.#identifier = getIdentifierInfo(identifier).id;
-        this.signal = signal;
-    }
-    
     getCallbacksByFilter(...args){
-        return this.getCallbacks().map(e=>{
+        return this.getCallbacks().filter(e=>{
             if (e.filters === undefined)
-                return e.callback;
+                return true;
             else if (this.filterResolver(args, e.filters))
-                return e.callback;
+                return true;
             else
-                return;
-        }).filter(e => e !== undefined);
+                return false;
+        }).map(e => e.callback );
     }
     
     fireEvent(...args){
@@ -90,6 +100,7 @@ class Trigger {
         let callbacks = this.getCallbacksByFilter(...args);
         return this.firebugAsync(callbacks, this.eventClass, args);
     }
+    
     get triggerEvent(){
         return this.fireEvent;
     }
@@ -112,13 +123,8 @@ class Trigger {
         return this;
     }
     
-    onSubscribe(){
-    }
-    onUnsubscribe(){
-    }
-    whenFirstSubscribe(){
-    }
-    whenLastUnsubscribe(){
+    defineCallbacksGetter(getter){
+        this.getCallbacks = getter;
     }
 }
 

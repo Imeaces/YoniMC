@@ -3,6 +3,7 @@ import { Minecraft } from "yoni/basis.js";
 import { Entity } from "yoni/entity.js";
 
 const EntityTypes = Minecraft.EntityTypes;
+
 export class PlayerEvent extends Event{
     constructor(player, ...args){
         super(...args);
@@ -14,4 +15,5 @@ export class PlayerEvent extends Event{
     }
     eventType = EntityTypes.get("minecraft:player");
 }
+
 export default PlayerEvent;

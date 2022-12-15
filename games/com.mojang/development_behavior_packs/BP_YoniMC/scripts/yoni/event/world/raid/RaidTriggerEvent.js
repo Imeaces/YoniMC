@@ -2,11 +2,14 @@ import { EventTriggerBuilder, EventSignal, Event } from "yoni/event.js";
 import { Entity } from "yoni/entity.js";
 
 class RaidEventTriggerEvent extends Event {
-    source;
-    id = "minecraft:raid_trigger";
+    get source(){
+        return super.source
+    }
+    get id(){
+        return "minecraft:raid_trigger";
+    }
     constructor(source){
-        super();
-        this.source = source;
+        super({source});
     }
 }
 class RaidEventTriggerEventSignal extends EventSignal {
