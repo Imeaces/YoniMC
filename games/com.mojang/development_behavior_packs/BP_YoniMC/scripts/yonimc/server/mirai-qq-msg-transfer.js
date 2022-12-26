@@ -1,15 +1,15 @@
-import { http, HttpRequest, HttpHeader } from "@minecraft/server-net";
-import { EventListener, Events, EventSignal, EventTriggerBuilder } from "yoni/event.js";
-import { Command } from "yoni/command.js";
-import { World } from "yoni/world.js";
-import { getErrorMsg } from "yoni/util/console.js";
-import { say } from "yoni/util/utils.js";
-import { Logger } from "yoni/util/Logger.js";
-import { ChatCommand } from "yoni/util/ChatCommand.js";
+import { http, HttpRequest, HttpHeader } from "mojang-net";
+import { EventListener, EventSignal, EventTriggerBuilder } from "../../yoni/event.js";
+import { Command } from "../../yoni/command.js";
+import { World } from "../../yoni/world.js";
+import { getErrorMsg } from "../../yoni/util/console.js";
+import { say } from "../../yoni/util/utils.js";
+import { Logger } from "../../yoni/util/Logger.js";
+import { ChatCommand } from "../../yoni/util/ChatCommand.js";
 
 const logger = new Logger("Server");
 
-const log = logger.trace(...args);
+const log = logger.trace;
 
 import { API_URL, API_KEY, QQNumber, GroupNumber, AdminList } from "./mirai-config.js";
 
@@ -38,6 +38,7 @@ class MiraiSession {
      * @returns {Promise<Object>}
      */
     async post(uri, contents={}, headers={}, retryCount = 2){
+        MiraiSession.logger.trace("new request, type: POST, retryCount: {}", retryCount);
         let error = null;
         while (retryCount >= 0){
             try {
@@ -47,6 +48,7 @@ class MiraiSession {
                 } else {
                     session = await this.getSession();
                 }
+                MiraiSession.logger.trace("request url: {}, type: POST, contents: {}", this.API_URL+uri, JSON.stringify(contents));
                 let request = new HttpRequest(this.API_URL+uri)
                     .setMethod("POST")
                     .setTimeout(this.timeoutDelay)
@@ -63,7 +65,9 @@ class MiraiSession {
                 retryCount --;
             }
         }
-        throw new Error("failed to post request");
+        let outError = new Error("failed to post request");
+        outError.cause = error;
+        throw outError;
     }
     
     /**
@@ -72,7 +76,8 @@ class MiraiSession {
      * @param {Array<{[key]: any}>} headers
      */
     async get(uri, args={}, headers={}, retryCount = 2){
-        let error = e;
+        MiraiSession.logger.trace("new request, type: GET, retryCount: {}", retryCount);
+        let error;
         while (retryCount >= 0){
             try {
                 let sessionKey;
@@ -85,6 +90,7 @@ class MiraiSession {
                 for (let argKey in args){
                     url += `&${encodeURIComponent(argKey)}=${encodeURIComponent(args[argKey])}`
                 }
+                MiraiSession.logger.trace("request url: {}, type: GET", url);
                 let request = new HttpRequest(url)
                     .setMethod("GET")
                     .setTimeout(this.timeoutDelay);
@@ -98,12 +104,15 @@ class MiraiSession {
                 error = e;
             }
         }
-        throw new Error("failed to get request");
+        let outError = new Error("failed to get request");
+        outError.cause = error;
+        throw outError;
     }
     async refreshSession(botQQNumber = this.botQQNumber, retryCount = 5){
         if (botQQNumber == null){
             throw new Error("you must specific a botQQNumber for the new session");
         }
+        MiraiSession.logger.trace("refresh session use apiKey: ******, qq: {}, retryCount: {}", botQQNumber, retryCount);
         let verifyApiKeyRequest = new HttpRequest(this.API_URL+"/verify")
             .setMethod("POST")
             .setTimeout(this.timeoutDelay)
@@ -120,13 +129,24 @@ class MiraiSession {
                     retryCount --;
                 }
             }
-            throw Object.assign(new Error("failed to verify api key"), { cause: error });
+            error = Object.assign(new Error("failed to verify api key"), { cause: error });
+            MiraiSession.logger.trace("get sessionKey failed\n{}", error);
+            throw error;
         })();
-        let verifyApiKeyResultBody = JSON.parse(verifyApiKeyResult.body);
-        let unbindSessionKey = verifyApiKeyResultBody.session;
-        if (unbindSessionKey == null){
+        let unbindSessionKey;
+        if (verifyApiKeyResult.body.trim() !== ""){
+            let verifyApiKeyResultBody = JSON.parse(verifyApiKeyResult.body);
+            unbindSessionKey = verifyApiKeyResultBody.session;
+            if (unbindSessionKey == null){
+                let error = new Error("failed to verify api key");
+                MiraiSession.logger.trace(error);
+                throw error;
+            }
+        } else {
+            MiraiSession.logger.trace("未能获取到sessionkey");
             throw new Error("未能获取到sessionkey");
         }
+        MiraiSession.logger.trace("sessionkey: {}, binding...", unbindSessionKey);
         let bindSessionRequest = new HttpRequest(this.API_URL+"/bind")
             .setMethod("POST")
             .setTimeout(this.timeoutDelay)
@@ -144,10 +164,13 @@ class MiraiSession {
                     error = e;
                 }
             }
-            throw Object.assign(new Error("failed to bind session"), { cause: error });
+            error = Object.assign(new Error("failed to bind session"), { cause: error });
+            MiraiSession.logger.trace("post set info for session failed\n{}", error);
+            throw error;
         })();
         let bindSessionResultBody = JSON.parse(bindSessionResult.body);
         if (bindSessionResultBody.code === 0){
+            MiraiSession.logger.trace("bind qq {} for session {}", botQQNumber, unbindSessionKey);
             this.#sessionKey = unbindSessionKey;
             this.sessionLastUpdateTime = Date.now();
             return unbindSessionKey;
@@ -160,21 +183,26 @@ class MiraiSession {
     sessionLastUpdateTime = 0;
     sessionUpdateDelay = 240000;
     /**
-     * @param {boolean} force
+     * @param {boolean} force - force update info for the session, instead use the cached session
      * @param {number} retryCount
      */
     async getSession(force = false, retryCount = 1){
+        MiraiSession.logger.trace("getting session, force: {}, retryCount: {}", force, retryCount);
         let error = null;
-        if (!force
+        if (this.#sessionKey != null && !force
             && (Date.now() - this.sessionLastUpdateTime < this.sessionUpdateDelay)
         ){
+            MiraiSession.logger.trace("getting session, use cached session: {}", this.#sessionKey);
+            this.sessionLastUpdateTime = Date.now();
             return this.#sessionKey;
         }
         if (this.#sessionKey == null){
+            MiraiSession.logger.trace("no session, refresh()");
             return this.refreshSession();
         }
         while (retryCount >= 0){
             try {
+                 MiraiSession.logger.trace("update info for session: {}", this.#sessionKey);
                 let getSessionInfoRequest = new HttpRequest(this.API_URL + "/sessionInfo?sessionKey=" + this.#sessionKey)
                     .setMethod("GET")
                     .setTimeout(this.timeoutDelay);
@@ -182,20 +210,27 @@ class MiraiSession {
                     let error;
                     while (retryCount >= 0){
                         try {
-                            return http.request(getSessionInfoRequest);
+                            return await http.request(getSessionInfoRequest);
                         } catch (e){
                             retryCount --;
                             error = e;
                         }
                     }
                     let outError = new Error("error while checking session info");
+                     MiraiSession.logger.trace("failed in get session info for session: {}, error: {}", this.#sessionKey, outError);
                     throw outError.cause = error, outError;
                 })();
-                let getSessionInfoRequestResultBody = JSON.parse(getSessionInfoRequestResult.body);
-                if (getSessionInfoRequestResultBody.code === 0){
-                    this.this.sessionLastUpdateTime = Date.now();
-                    return this.#sessionKey;
+                MiraiSession.logger.trace("session info: session: {}, infos: {}", this.#sessionKey, getSessionInfoRequestResult.body);
+                if (getSessionInfoRequestResult.body.trim() !== ""){
+                    let getSessionInfoRequestResultBody = JSON.parse(getSessionInfoRequestResult.body);
+                    if (getSessionInfoRequestResultBody.code === 0){
+                        MiraiSession.logger.trace("session is fine: session: {}", this.#sessionKey);
+                        this.sessionLastUpdateTime = Date.now();
+                        return this.#sessionKey;
+                    }
                 }
+                MiraiSession.logger.trace("session is gone: session: {}, refreshing...", this.#sessionKey);
+                this.#sessionKey = null;
                 return this.refreshSession();
             } catch(e) {
                 retryCount --;
@@ -205,7 +240,7 @@ class MiraiSession {
         let outError = new Error("error while getting session");
         ouError.cause = error;
         MiraiSession.logger.error(outError);
-        throw new Error(outError);
+        throw new outError;
     }
 }
 
@@ -214,13 +249,14 @@ const session = new MiraiSession(API_URL, API_KEY, QQNumber);
 let isRunningDoSendQQGroupMessage = false;
 async function doSendQQGroupMessage(currentTime){
     if (isRunningDoSendQQGroupMessage) return; 
-    log(msgSequeneList.length);
+    log("broadcast {} message", sendMessageSchedules.length);
     isRunningDoSendQQGroupMessage = true;
-    while (msgSequeneList.length > 0){
+    while (sendMessageSchedules.length > 0){
         try {
-            await msgSequeneList.shift()();
-        } catch {
+            await sendMessageSchedules.shift()();
+        } catch(e) {
             //failed
+            log(e);
             isRunningDoSendQQGroupMessage = false;
             return;
         }
@@ -248,7 +284,7 @@ function sendQQGroupMessage(message, retry=true){
 }
 
 ChatCommand.registerCommand("qq", (sender, rawCommand, label)=>{
-    let message = rawCommand.slice(label.length+2);
+    let message = rawCommand.slice(label.length+1);
     sendQQGroupMessage(`<${sender.name}> ${message}`);
 });
 
@@ -271,7 +307,7 @@ EventListener.register("yonimc:serverReceiveQQMsg", (event)=>{
         let rt = Command.run(event.message.substring(1));
         sendQQGroupMessage(`命令已执行: 状态${rt.statusCode}\n${rt.statusMessage}`);
     } else if (World.getPlayers().length > 0){
-        World.getPlayers().forEach(player=>player.sendMessage({`[QQ][${memberName}]: ${message}`}));
+        World.getPlayers().forEach(player=>player.sendMessage(`[QQ][${memberName}]: ${message}`));
     }
 });
 
@@ -301,7 +337,7 @@ const serverReceiveQQMsgPollingSchedule = new Schedule({
     if (currentTime - lastFetchTime < fetchDelay)
         return;
     else
-        lastFetchTimeMs = currentDateMs;
+        lastFetchTime = currentTime;
         
     if (fetchDelay < 20000)
         fetchDelay += 1000;
@@ -332,13 +368,13 @@ const serverReceiveQQMsgPollingSchedule = new Schedule({
             switch(a.type){
                 case "Plain":
                     fetchDelay = 1500;
-                    serverReceiveQQMsgEventTrigger.triggerEvent(currentDateMs, sender, a.text);
+                    serverReceiveQQMsgEventTrigger.triggerEvent(currentTime, sender, a.text);
                     break;
             }
         }
     }
 });
-const serverReceiveQQMsgEventTrigger = EventTriggerBuilder("yonimc:serverReceiveQQMsg")
+const serverReceiveQQMsgEventTrigger = new EventTriggerBuilder("yonimc:serverReceiveQQMsg")
     .eventClass(QQGroupChatEvent)
     .whenFirstSubscribe(()=>{
         YoniScheduler.addSchedule(serverReceiveQQMsgPollingSchedule);

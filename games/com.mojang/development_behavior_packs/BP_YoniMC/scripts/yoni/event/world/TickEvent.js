@@ -1,6 +1,6 @@
-import { runTask } from "yoni/basis.js";
-import { EventSignal, Event, EventTriggerBuilder } from "yoni/event.js";
-import { Command } from "yoni/command.js";
+import { runTask } from "../../basis.js";
+import { EventSignal, Event, EventTriggerBuilder } from "../../event.js";
+import { Command } from "../../command.js";
 
 export class TickEventSignal extends EventSignal {}
 

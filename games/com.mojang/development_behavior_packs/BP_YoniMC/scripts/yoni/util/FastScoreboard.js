@@ -1,4 +1,4 @@
-import Scoreboard from "yoni/scoreboard/SimpleScoreboard.js";
+import Scoreboard from "../scoreboard/SimpleScoreboard.js";
 
 /**
  * 方便调用的，不完整的记分板操作类

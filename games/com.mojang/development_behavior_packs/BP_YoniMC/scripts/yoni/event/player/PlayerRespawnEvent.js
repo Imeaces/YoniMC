@@ -1,9 +1,9 @@
-import { YoniEntity } from "yoni/entity.js";
-import { EventListener, EventSignal, EventTriggerBuilder } from "yoni/event.js";
+import { YoniEntity } from "../../entity.js";
+import { EventListener, EventSignal, EventTriggerBuilder } from "../../event.js";
 import { PlayerEvent } from "./PlayerEvent";
-import { VanillaWorld } from "yoni/basis.js";
-import { YoniScheduler, Schedule } from "yoni/schedule.js";
-import { Location } from "yoni/Location.js";
+import { VanillaWorld } from "../../basis.js";
+import { YoniScheduler, Schedule } from "../../schedule.js";
+import { Location } from "../../Location.js";
 
 export class PlayerRespawnEventSignal extends EventSignal {}
 export class PlayerRespawnEvent extends PlayerEvent{

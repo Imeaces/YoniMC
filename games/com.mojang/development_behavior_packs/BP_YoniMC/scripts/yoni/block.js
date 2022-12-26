@@ -1,8 +1,5 @@
 import { dim, Minecraft } from "./basis.js";
 import Location from "./Location.js";
-const VanillaBlock  = Minecraft.Block;
-
-const blockMap = new Map();
 
 export class Block {
     static isBlock(object){
@@ -13,10 +10,15 @@ export class Block {
         }
     }
     
+    get location(){
+        return new Location(this);
+    }
+    
     /**
-     * @param {Location|VanillaBlock|Block}
+     * @param {Minecraft.Block}
      */
-    constructor(locationV0, locationV1, locationV2, locationV3, locationV4, locationV5){
+    constructor(){
+        this.vanillaBlock = arguments[0];
     }
 }
 export default Block;

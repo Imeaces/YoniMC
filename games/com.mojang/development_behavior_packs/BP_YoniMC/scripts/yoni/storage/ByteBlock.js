@@ -1,4 +1,4 @@
-import { Scoreboard } from "yoni/scoreboard.js";
+import { Scoreboard } from "../scoreboard.js";
 
 
 // length 最小值为1

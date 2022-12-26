@@ -1,4 +1,4 @@
-import { SystemEvents } from "yoni/basis.js";
+import { SystemEvents } from "../basis.js";
 
 let interruptCount = 0;
 let lastTimeMS = 0;

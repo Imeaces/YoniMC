@@ -1,17 +1,17 @@
-import { Logger } from "yoni/util/Logger.js";
+import { Logger } from "../yoni/util/Logger.js";
 
 let importList = [
-    "yonimc/command.js",
-    "yonimc/TagAdapter.js",
-    "yonimc/guxi.js",
-    //"./yonimc/itemlore.js",
-    "yonimc/chat.js",
-    "yonimc/levitation.js",
-    "yonimc/server.js",
-    "yonimc/notice.js",
-    "yonimc/guxi/hotbarctrl.js",
-    "yonimc/ChainDestroy.js",
-    "yonimc/anchorPortal.js"
+    "./command.js",
+    "./TagAdapter.js",
+    "./guxi.js",
+    //"./itemlore.js",
+    "./chat.js",
+    "./levitation.js",
+    "./server.js",
+    "./notice.js",
+    "./guxi/hotbarctrl.js",
+    "./ChainDestroy.js",
+    "./anchorPortal.js"
 ];
 
 let logger = new Logger("Yonimc");

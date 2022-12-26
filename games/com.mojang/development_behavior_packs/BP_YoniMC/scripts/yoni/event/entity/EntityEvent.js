@@ -1,5 +1,5 @@
-import { Event, EventRemover } from "yoni/event.js";
-import { Entity } from "yoni/entity.js";
+import { Event } from "../../event.js";
+import { Entity } from "../../entity.js";
 
 export class EntityEvent extends Event {
     get entity(){

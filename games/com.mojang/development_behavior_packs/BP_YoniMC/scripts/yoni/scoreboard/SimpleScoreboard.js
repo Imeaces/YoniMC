@@ -1,6 +1,6 @@
 import { StatusCode, VanillaScoreboard, Minecraft } from "../basis.js";
 import { Command } from "../command.js";
-import { YoniEntity } from "yoni/entity.js";
+import { YoniEntity } from "../entity.js";
 
 import Objective from "./Objective.js";
 import Entry from "./Entry.js";

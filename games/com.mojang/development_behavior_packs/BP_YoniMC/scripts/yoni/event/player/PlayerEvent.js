@@ -1,6 +1,6 @@
-import { Event } from "yoni/event.js";
-import { Minecraft } from "yoni/basis.js";
-import { Entity } from "yoni/entity.js";
+import { Event } from "../../event.js";
+import { Minecraft } from "../../basis.js";
+import { Entity } from "../../entity.js";
 
 const EntityTypes = Minecraft.EntityTypes;
 

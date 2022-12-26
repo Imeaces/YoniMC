@@ -13,7 +13,6 @@ export class IEventTrigger {
     
     getCallbacks;
     
-    
     /**
      * @param {any[]} eventValues
      * @param {any[]|any} filters

@@ -1,7 +1,7 @@
-import { EventListener, EventSignal, EventTriggerBuilder } from "yoni/event.js";
+import { EventListener, EventSignal, EventTriggerBuilder } from "../../event.js";
 import { PlayerEvent } from "./PlayerEvent.js";
-import { VanillaWorld } from "yoni/basis.js";
-import { YoniScheduler, Schedule } from "yoni/schedule.js";
+import { VanillaWorld } from "../../basis.js";
+import { YoniScheduler, Schedule } from "../../schedule.js";
 
 export class PlayerJoinedEvent extends PlayerEvent {
     constructor(player){

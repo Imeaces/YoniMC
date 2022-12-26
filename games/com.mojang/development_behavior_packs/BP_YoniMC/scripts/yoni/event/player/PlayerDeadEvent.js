@@ -1,6 +1,6 @@
-import { EventListener, EventSignal, EventTriggerBuilder } from "yoni/event.js";
+import { EventListener, EventSignal, EventTriggerBuilder } from "../../event.js";
 import { PlayerEvent } from "./PlayerEvent.js";
-import { YoniEntity } from "yoni/entity.js";
+import { YoniEntity } from "../../entity.js";
 
 export class PlayerDeadEvent extends PlayerEvent {
     constructor(player){

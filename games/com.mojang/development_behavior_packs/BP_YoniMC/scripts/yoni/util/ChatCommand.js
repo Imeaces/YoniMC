@@ -1,7 +1,7 @@
-import { VanillaEvents }  from "yoni/basis.js";
-import { EventListener } from "yoni/event.js";
-import { YoniEntity } from "yoni/entity.js";
-import { Logger } from "yoni/util/Logger.js";
+import { VanillaEvents }  from "../basis.js";
+import { EventListener } from "../event.js";
+import { YoniEntity } from "../entity.js";
+import { Logger } from "../util/Logger.js";
 
 const logger = new Logger("ChatCommand");
 

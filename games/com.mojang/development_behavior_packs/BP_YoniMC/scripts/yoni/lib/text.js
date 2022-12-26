@@ -64,25 +64,6 @@ function string2Byte(data) {
     parsedData = Array.prototype.concat.apply([], parsedData);
     return parsedData;
 }
-/* 垃圾代码，只是保留用作未知用途
-encodeUtf8(str){
-  for (let i = 0; i < str.length; i++){ //遍历每个字符
-    //获取字符的编号，然后转为2进
-    let bin = ""
-    let codeAt = str.charCodeAt(i);
-    let binCode = "" + codeAt;
-    binCode = binCode.toString(2);
-    
-    if (codeAt < 128){
-      bin = "0",
-      let c = codeAt
-    while (code.length < 4){
-      code = "0" + code;
-    }
-    
-  }
-}
-*/
 /*
 //byteLength代码来源 http://c.biancheng.net/view/5547.html
 //经过修改

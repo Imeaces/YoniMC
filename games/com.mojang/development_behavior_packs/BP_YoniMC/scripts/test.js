@@ -1,15 +1,15 @@
-import { ChatCommand } from "yoni/util/ChatCommand.js";
-import { Command } from "yoni/command.js";
-import { Minecraft, dim, VanillaWorld, VanillaEvents, VanillaScoreboard, Gametest, runTask } from "yoni/basis.js";
-import { EventListener } from "yoni/event.js";
-import { getErrorMsg } from "yoni/util/console.js";
-import { YoniEntity, Player as YoniPlayer } from "yoni/entity.js";
-import { send, say } from "yoni/util/utils.js";
-import { Logger } from "yoni/util/Logger.js";
-import { isDebug } from "yoni/debug.js";
-import Scoreboard from "yoni/scoreboard.js";
-import { getKeys } from "yoni/lib/utils.js";
-import { YoniScheduler } from "yoni/schedule.js";
+import { ChatCommand } from "./yoni/util/ChatCommand.js";
+import { Command } from "./yoni/command.js";
+import { Minecraft, dim, VanillaWorld, VanillaEvents, VanillaScoreboard, Gametest, runTask } from "./yoni/basis.js";
+import { EventListener } from "./yoni/event.js";
+import { getErrorMsg } from "./yoni/util/console.js";
+import { YoniEntity, Player as YoniPlayer } from "./yoni/entity.js";
+import { send, say } from "./yoni/util/utils.js";
+import { Logger } from "./yoni/util/Logger.js";
+import { isDebug } from "./yoni/debug.js";
+import Scoreboard from "./yoni/scoreboard.js";
+import { getKeys } from "./yoni/lib/utils.js";
+import { YoniScheduler } from "./yoni/schedule.js";
 
 const logger = new Logger("TEST");
 
@@ -17,9 +17,9 @@ if (isDebug()){
 
 
 ChatCommand.registerCommand("test", (sender, rawCommand, label, args)=>{
-    v.run(()=>{
-        player.sendMessage("成功");
-    })
+    YoniScheduler.runTask(()=>{
+        
+    });
 });
 
 
@@ -66,15 +66,6 @@ EventListener.register("minecraft:beforePlayerSleep", (event)=>{
     player.sendMessage("不许睡");
     event.cancel = true;
 });
-
-class ASystem extends Minecraft.System {
-    constructor (){
-        const v = {};
-        return Object.setPrototypeOf(v, Minecraft.System.prototype);
-    }
-}
-
-const v = new ASystem();
 
 /*
 Array.from(EventTypes.getEventTypes().keys()).forEach(key=>{

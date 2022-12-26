@@ -109,44 +109,48 @@ class Location {
     }
     
     /**
-     * 代表一个MC中的位置，其中包括维度，坐标，旋转角
-     * 参数顺序一般遵循以下规则
-     * 先维度，后坐标，最后旋转角
-     * 坐标先x，之后是y，最后是z
-     * 旋转角先是rx，后是ry
-     * 以下列出了所有的可能的参数形式，参数中不存在的内容将会以默认值补全
-     * dimension, x, y, z, rx, ry
-     * x, y, z, rx, ry
-     * dimension, x, y, z
-     * x, y, z
-     * dimension, {x, y, z}, {rx, ry}
-     * dimension, [x, y, z], {rx, ry}
-     * dimension, {x, y, z}, [rx, ry]
-     * dimension, [x, y, z], [rx, ry]
-     * {dimension, x, y, z}, {rx, ry}
-     * [dimension, x, y, z], {rx, ry}
-     * {dimension, x, y, z}, [rx, ry]
-     * [dimension, x, y, z], [rx, ry]
-     * {x, y, z}, {rx, ry}
-     * [x, y, z], {rx, ry}
-     * {x, y, z}, [rx, ry]
-     * [x, y, z], [rx, ry]
-     * dimension, {x, y, z, rx, ry}
-     * dimension, {x, y, z}
-     * dimension, [x, y, z, rx, ry]
-     * dimension, [x, y, z]
-     * {location: {x, y, z}, dimension, rotation: {x, y}}
-     * {location: {x, y, z}, dimension}
-     * {location: {x, y, z}, rotation: {x, y}}
-     * {location: {x, y, z}}
-     * {x, y, z, rx, ry, dimension}
-     * {x, y, z, rx, ry}
-     * {x, y, z, dimension}
-     * {x, y, z}
-     * [dimension, x, y, z, rx, ry]
-     * [x, y, z, rx, ry]
-     * [dimension, x, y, z]
-     * [x, y, z]
+     * @desc 代表一个MC中的位置，其中包括维度，坐标，旋转角
+     * @desc 您可以以多种形式传递参数来构造一个Location
+     * @desc 比如，你可以将大部分原版中表示一个位置的变量作为参数传入
+     * @desc 其中包括Block, Entity, 原版中符合Vector3接口的其他类型
+     * @desc 同时额外支持更多形式的参数
+     * @desc 参数顺序一般遵循以下规则
+     * @desc 先维度，后坐标，最后旋转角
+     * @desc 坐标先x，之后是y，最后是z
+     * @desc 旋转角先是rx，后是ry
+     * @desc 以下列出了所有的可能的参数形式，参数中不存在的内容将会以默认值补全
+     * @desc dimension, x, y, z, rx, ry
+     * @desc x, y, z, rx, ry
+     * @desc dimension, x, y, z
+     * @desc x, y, z
+     * @desc dimension, {x, y, z}, {rx, ry}
+     * @desc dimension, [x, y, z], {rx, ry}
+     * @desc dimension, {x, y, z}, [rx, ry]
+     * @desc dimension, [x, y, z], [rx, ry]
+     * @desc {dimension, x, y, z}, {rx, ry}
+     * @desc [dimension, x, y, z], {rx, ry}
+     * @desc {dimension, x, y, z}, [rx, ry]
+     * @desc [dimension, x, y, z], [rx, ry]
+     * @desc {x, y, z}, {rx, ry}
+     * @desc [x, y, z], {rx, ry}
+     * @desc {x, y, z}, [rx, ry]
+     * @desc [x, y, z], [rx, ry]
+     * @desc dimension, {x, y, z, rx, ry}
+     * @desc dimension, {x, y, z}
+     * @desc dimension, [x, y, z, rx, ry]
+     * @desc dimension, [x, y, z]
+     * @desc {location: {x, y, z}, dimension, rotation: {x, y}}
+     * @desc {location: {x, y, z}, dimension}
+     * @desc {location: {x, y, z}, rotation: {x, y}}
+     * @desc {location: {x, y, z}}
+     * @desc {x, y, z, rx, ry, dimension}
+     * @desc {x, y, z, rx, ry}
+     * @desc {x, y, z, dimension}
+     * @desc {x, y, z}
+     * @desc [dimension, x, y, z, rx, ry]
+     * @desc [x, y, z, rx, ry]
+     * @desc [dimension, x, y, z]
+     * @desc [x, y, z]
      * @param {LocationParams} values
      */
     constructor(...values){

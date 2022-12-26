@@ -1,5 +1,5 @@
-import { debug } from "yoni/config.js";
-import { Logger } from "yoni/util/Logger.js";
+import { debug } from "../config.js";
+import { Logger } from "../util/Logger.js";
 
 import { EventTypes, EventRegisterListener, getIdentifierInfo } from "./Types.js";
 

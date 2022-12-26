@@ -1,12 +1,12 @@
-import { ChatCommand } from "yoni/util/ChatCommand.js";
-import { Minecraft, dim } from "yoni/basis.js";
-import { YoniEntity } from "yoni/entity.js";
-import Command from "yoni/command.js";
-import { Scoreboard } from "yoni/scoreboard.js";
-import { EventListener } from "yoni/event.js";
-import { YoniScheduler, Schedule } from "yoni/schedule.js";
-import { World } from "yoni/world.js";
-import { Logger } from "yoni/util/Logger.js";
+import { ChatCommand } from "../yoni/util/ChatCommand.js";
+import { Minecraft, dim } from "../yoni/basis.js";
+import { YoniEntity } from "../yoni/entity.js";
+import Command from "../yoni/command.js";
+import { Scoreboard } from "../yoni/scoreboard.js";
+import { EventListener } from "../yoni/event.js";
+import { YoniScheduler, Schedule } from "../yoni/schedule.js";
+import { World } from "../yoni/world.js";
+import { Logger } from "../yoni/util/Logger.js";
 const { MinecraftEffectTypes, EntityDamageCause, EntityQueryScoreOptions } = Minecraft;
 
 const logger = new Logger("Species.guxi");

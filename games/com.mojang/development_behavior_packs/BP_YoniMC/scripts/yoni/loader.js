@@ -1,4 +1,4 @@
-import { Logger } from "yoni/util/Logger.js";
+import { Logger } from "./util/Logger.js";
 const logger = new Logger("Loader");
 
 let successCount = 0;

@@ -1,4 +1,4 @@
-import "yoni/index.js";
+import "../yoni/index.js";
 import { logger } from "./logger.js";
 
 const radius = 8;

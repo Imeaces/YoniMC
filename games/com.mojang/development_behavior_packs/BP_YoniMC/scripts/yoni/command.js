@@ -3,7 +3,6 @@ import { debug } from "./config.js";
 import { getKeys } from "./lib/utils.js";
 
 let log = ()=>{};
-
 /**
  * generates a command by a set of params, and try to make sure that every arg is standalone
  * @param {string} cmd 
@@ -130,17 +129,14 @@ function executeCommandQueues(){
 }
 
 /**
- * @interface
- * @typedef {CommandResult}
- * @property {number} statusCode
- * @property {number} [successCount]
+ * @interface 
+ * @typedef {{statusCode: number, successCount?: number}} CommandResult
  */
  
 /**
  * something that can runCommandAsync
  * @interface
- * @typedef {CommandSender}
- * @peoperty {Function} runCommandAsync - a method that execute command on the object
+ * @typedef {{runCommandAsync: (command: string) => CommandResult}} CommandSender 
  */
  
 /**
@@ -349,7 +345,17 @@ export default class Command {
                 return JSON.parse(e);
             }
         }
-        throw new Error("not allowed to runCommand in sync");
+        throw new Error("current version doesn't support 'Command.run' method, try 'Command.fetch' instead");
+    }
+    static execute(sender, command){
+        if (sender.runCommand){
+            try {
+                return Object.assign({}, sender.runCommand(command));
+            } catch (e){
+                return JSON.parse(e);
+            }
+        }
+        throw new Error("current version doesn't support 'Command.execute' method, try 'Command.fetchExecute' instead");
     }
 }
 

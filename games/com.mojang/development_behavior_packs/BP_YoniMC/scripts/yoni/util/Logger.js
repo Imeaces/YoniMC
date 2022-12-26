@@ -1,14 +1,14 @@
-import { VanillaWorld } from "yoni/basis.js";
+import { VanillaWorld } from "../basis.js";
 import { getErrorMsg } from "./console.js";
-import { Command } from "yoni/command.js";
-import { dealWithCmd } from "yoni/lib/utils.js";
+import { Command } from "../command.js";
+import { dealWithCmd } from "../lib/utils.js";
 
 import {
     outputContentLog,
     debug,
     logLevel as configLogLevel,
     overrideDefaultConsole
-} from "yoni/config.js";
+} from "../config.js";
 
 async function send(receiver, message){
     let rawtext = JSON.stringify({rawtext:[{translate: String(message)}]}, dealWithCmd)
@@ -119,11 +119,12 @@ async function printLog(time, level, msg, ...rps){
     let outputText = "[{} {}]{}";
     outputText = transferHolder(outputText, time, levelName, msg);
     
-    outputText = "§中" + outputText;
-    
     if (outputContentLog || level === "LOG"){
         outputToConsole(outputText);
     }
+    
+    outputText = "§中" + outputText;
+    
     consoles.forEach(pl=>send(pl, outputText));
     
 }
@@ -207,7 +208,7 @@ if (overrideDefaultConsole){
 }
 
 if (debug)
-import("yoni/util/ChatCommand.js")
+import("../util/ChatCommand.js")
 .then(m=>{
     m.ChatCommand.registerPrefixCommand("$", "log", (sender, rawCommand, label, args)=>{
         if (!debug) return;

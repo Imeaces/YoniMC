@@ -1,6 +1,6 @@
-import { VanillaWorld, overworld } from "yoni/basis.js";
-import { Command } from "yoni/command.js";
-import { dealWithCmd } from "yoni/lib/utils.js";
+import { VanillaWorld, overworld } from "../basis.js";
+import { Command } from "../command.js";
+import { dealWithCmd } from "../lib/utils.js";
 
 export async function say(msg = "", displayNameOrSender="commands.origin.script"){
     let runner;

@@ -4,7 +4,9 @@ import { Command } from "../command.js";
 import { Entry, EntryType } from "./Entry.js";
 import { NameConflictError, ScoreRangeError, ObjectiveUnregisteredError } from "./ScoreboardError.js"
 
-import { YoniEntity } from "../entity.js";
+/**
+ * @typedef {import("../entity.js").YoniEntity} YoniEntity
+ */
 
 /**
  * check whether numbers is in range from -2^31 to 2^31-1

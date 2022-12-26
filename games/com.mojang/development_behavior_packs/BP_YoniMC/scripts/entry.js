@@ -1,6 +1,6 @@
 //先导入防止看门狗咬人的脚本
-import "yoni/util/WatchBird.js";
-import { VanillaEvents } from "yoni/basis.js";
+import "./yoni/util/WatchBird.js";
+import { VanillaEvents } from "./yoni/basis.js";
 
 let originConsole = globalThis.console;
 let logger = null;
@@ -22,7 +22,7 @@ function fallbackLogger(){
 
 async function initLogger(){
     try {
-        let LoggerModule = await import("yoni/util/Logger.js");
+        let LoggerModule = await import("./yoni/util/Logger.js");
         await setupLogger(LoggerModule.Logger);
     } catch {
         await fallbackLogger();
@@ -31,7 +31,7 @@ async function initLogger(){
 
 function load(){
     VanillaEvents.worldInitialize.unsubscribe(load);
-    import('main.js')
+    import('./main.js')
     .then(()=>{})
     .catch(async (e)=>{
         await initLogger();

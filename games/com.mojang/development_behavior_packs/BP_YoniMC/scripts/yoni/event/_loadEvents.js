@@ -1,5 +1,5 @@
-import { load } from "yoni/loader.js";
-const loader = load.getLoader("yoni/event/");
+import { load } from "../loader.js";
+const loader = load.getLoader("./event/");
 const eventList = new Set()
    .add("entity/EntityMovementEvent.js")
    .add("player/PlayerDeadEvent.js")

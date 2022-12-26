@@ -1,4 +1,4 @@
-import { EventSignal, EventListener } from "yoni/event.js";
+import { EventSignal, EventListener } from "../../event.js";
 import { PlayerEvent } from "./PlayerEvent.js";
 
 class PlayerSleepEvent extends PlayerEvent {

@@ -1,8 +1,8 @@
-import { EventSignal, EventTriggerBuilder } from "yoni/event.js";
+import { EventSignal, EventTriggerBuilder } from "../../event.js";
 import { EntityEvent } from "./EntityEvent.js";
-import { YoniEntity } from "yoni/entity.js";
-import { Location } from "yoni/Location.js";
-import { YoniScheduler, Schedule } from "yoni/schedule.js";
+import { YoniEntity } from "../../entity.js";
+import { Location } from "../../Location.js";
+import { YoniScheduler, Schedule } from "../../schedule.js";
 
 export class EntityMovementEventSignal extends EventSignal {
     subscribe(callback, options){

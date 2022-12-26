@@ -1,6 +1,6 @@
-import { VanillaEvents as MinecraftEvents, SystemEvents } from "yoni/basis.js";
-import { debug } from "yoni/config.js";
-import { Logger } from "yoni/util/Logger.js";
+import { VanillaEvents as MinecraftEvents, SystemEvents } from "../basis.js";
+import { debug } from "../config.js";
+import { Logger } from "../util/Logger.js";
 
 /**
  * 事件管理
@@ -134,14 +134,13 @@ class Types {
         if (namespaceMap.has(idInfo.name)){
             try {
                 namespaceMap.delete(idInfo.name);
+                 logger.debug("已注销事件 {}，但它仍存在于已注册的监听器中", idInfo.id);
+                return true;
             } catch (err){
                 throw new Error("未能注册事件，可能指定的命名空间不可修改事件\n以下是错误信息: "+String(err));
             }
-            logger.debug("已注销事件 {}，但它仍存在于已注册的监听器中", idInfo.id);
-            return true;
-        } else {
-            return false;
         }
+        return false;
     }
     static hasNamespace(namespace){
         return registeredEventTypes.has(namespace);
@@ -164,7 +163,7 @@ class Types {
             return null;
         }
     }
-    static getEventTypes (){
+    static getEventTypes(){
         let rtmap = new Map();
         for (let mkey of registeredEventTypes.keys()){
             let map = registeredEventTypes.get(mkey);
@@ -175,11 +174,9 @@ class Types {
         }
         return rtmap;
     }
-    static getAll = function * getAll(){
+    static * getAll(){
         for (let namespaceMap of registeredEventTypes.values()){
-            for (let eventType of namespaceMap.values()){
-                yield eventType;
-            }
+            yield* namespaceMap.values();
         }
     }
 }
@@ -205,6 +202,49 @@ class Types {
     registeredEventTypes.set("system", map);
 })();
 
+export const events = new Proxy({}, {
+    get(t, k){
+        if (k === Symbol.iterator)
+            return () => Types.getAll();
+        if (Types.has(k))
+            return Types.get(k);
+    },
+    set(t, k, v){
+        try {
+            Types.register(k, v);
+        } catch {
+            return false;
+        }
+        return true;
+    },
+    has(t, k){
+        if (k in t){
+            return true;
+        }
+        return Types.has(k);
+    },
+    deleteProperty(t, k){
+        try {
+            Types.unregister(k);
+        } catch {
+            return false;
+        }
+        return true;
+    },
+    ownKeys(){
+        let typeKeys = [];
+        let defaultKeys = [];
+        for (let k of Types.getEventTypes().keys()){
+            let idInfo = getIdentifierInfo(k);
+            if (!defaultKeys.includes(idInfo.id))
+                defaultKeys.push(idInfo.id);
+            if (idInfo.namespace === "custom")
+                continue;
+            typeKeys.push(k);
+        }
+        return defaultKeys.concat(typeKeys);
+    }
+});
 export default Types;
 export { Types };
 export { Types as EventTypes };

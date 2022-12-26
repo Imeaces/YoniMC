@@ -1,39 +1,49 @@
-import * as Gametest from "@minecraft/server-gametest";
-import * as MinecraftGui from "@minecraft/server-ui";
-import * as Minecraft from "@minecraft/server";
-
-export { Gametest }
-export { MinecraftGui }
+import { Minecraft } from "./modules/Minecraft.js";
 export { Minecraft }
 
+export { MinecraftGui } from "./modules/MinecraftGui.js";
+export { Gametest } from "./modules/Gametest.js";
+
 /**
- * @see {@link Minecraft.world}
+ * @borrows Minecraft.world as VanillaWorld
  */
 export const VanillaWorld = Minecraft.world;
 /**
- * @see {@link Minecraft.world.events}
+ * @borrows Minecraft.world.events as VanillaEvents
  */
 export const VanillaEvents = VanillaWorld.events;
 /**
- * @see {@link Minecraft.world.scoreboard}
+ * @borrows Minecraft.world.scoreboard as VanillaScoreboard
  */
 export const VanillaScoreboard = VanillaWorld.scoreboard;
 /**
- * @see {@link Minecraft.system}
+ * @borrows Minecraft.system as MinecraftSystem
  */
 export const MinecraftSystem = Minecraft.system;
 /**
- * @see {@link Minecraft.system.events}
+ * @borrows Minecraft.system.events as SystemEvents
  */
 export const SystemEvents = MinecraftSystem.events;
 
 /**
- * @param {()=> void} callback 
+ * @param {(...args) => void} callback 
+ * @param {...any} args
  */
-export const runTask = (callback) => { MinecraftSystem.run(callback); }
+export const runTask = (callback, ...args) => {
+    if (MinecraftSystem.run){
+        MinecraftSystem.run(callback, ...args);
+    } else {
+        const runTask = ()=>{
+            VanillaEvents.tick.unsubscribe(runTask);
+            callback(...args);
+        };
+        VanillaEvents.tick.subscribe(runTask);
+    }
+}
 
 /**
  * overworld dimension
+ * @type {Minecraft.Dimension}
  */
 export const overworld = VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.overworld);
 
@@ -47,32 +57,51 @@ export class StatusCode {
 }
 
 /**
- * 
+ * 返回一个维度对象
  * @param {string|Minecraft.Dimension|number} dimid - something means a dimension
  * @returns {Minecraft.Dimension} dimension objective
  */
-function dim(dimid = Minecraft.MinecraftDimensionTypes.overworld){
-  switch (dimid) {
-    case -1:
-    case "nether":
-      return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.nether);
-    case 1:
-    case "the end":
-    case "the_end":
-    case "theEnd":
-      return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.theEnd);
-    case 0:
-    case "overworld":
-       return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.overworld);
-    default:
-      try {
-          return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes[dimid]);
-      } catch {
-          return dim(0);
-      }
-  }
+let dim = (dimid = 0) => {
+    switch (dimid) {
+        case 0:
+        case "overworld":
+        case Minecraft.MinecraftDimensionTypes.overworld:
+            return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.overworld);
+        case -1:
+        case "nether":
+        case Minecraft.MinecraftDimensionTypes.nether:
+            return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.nether);
+        case 1:
+        case "the end":
+        case "theEnd":
+        case "the_end":
+        case Minecraft.MinecraftDimensionTypes.theEnd:
+            return VanillaWorld.getDimension(Minecraft.MinecraftDimensionTypes.theEnd);
+        default:
+            try {
+                return VanillaWorld.getDimension(dimid);
+            } catch {
+                return dim(0);
+            }
+    }
 }
+
+/*
+ * 主世界
+ * @type {Minecraft.Dimension}
+ */
 dim.overworld = dim(0);
+
+/*
+ * 末地
+ * @type {Minecraft.Dimension}
+ */
 dim.theEnd = dim(1);
+
+/*
+ * 下界
+ * @type {Minecraft.Dimension}
+ */
 dim.nether = dim(-1);
+
 export { dim };

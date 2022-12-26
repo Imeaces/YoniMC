@@ -1,3 +1,5 @@
-import { Minecraft } from "yoni/basis.js";
+import { Minecraft } from "./yoni/basis.js";
 
-Minecraft.world.say("ok");
+Minecraft.system.run(()=>{
+    Minecraft.world.say("ok");
+});

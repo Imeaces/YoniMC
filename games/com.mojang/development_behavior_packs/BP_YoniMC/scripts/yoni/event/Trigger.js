@@ -1,6 +1,6 @@
 import { Types, getIdentifierInfo } from "./Types.js";
 import { Event } from "./Event.js";
-import { runTask } from "yoni/basis.js";
+import { runTask } from "../basis.js";
 import { IEventTrigger } from "./IEventTrigger.js";
 
 async function callAsyncFunction(func, ...args){

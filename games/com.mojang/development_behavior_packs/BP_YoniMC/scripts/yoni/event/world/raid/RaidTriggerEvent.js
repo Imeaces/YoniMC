@@ -1,15 +1,17 @@
-import { EventTriggerBuilder, EventSignal, Event } from "yoni/event.js";
-import { Entity } from "yoni/entity.js";
+import { EventTriggerBuilder, EventSignal, Event } from "../../../event.js";
+import { Entity } from "../../../entity.js";
 
 class RaidEventTriggerEvent extends Event {
+    #source;
     get source(){
-        return super.source
+        return this.#source;
     }
     get id(){
         return "minecraft:raid_trigger";
     }
     constructor(source){
-        super({source});
+        super();
+        this.#source = source;
     }
 }
 class RaidEventTriggerEventSignal extends EventSignal {
@@ -17,13 +19,19 @@ class RaidEventTriggerEventSignal extends EventSignal {
 
 let eventId = null;
 function start(){
+    let options;
+    try { //兼容1.19.30
+        options = new Minecraft.EntityDataDrivenTriggerEventOptions();
+    } catch {
+        options = {};
+    }
+    options.entityTypes = ["minecraft:player"];
+    options.eventTypes = ["minecraft:trigger_raid"];
     eventId = EventListener.register("minecraft:dataDrivenEntityTriggerEvent", (event)=>{
-        trigger.fireEvent(Entity.from(event.entity));
+        if (event.entity.typeId === "minecraft:player")
+            trigger.fireEvent(Entity.from(event.entity));
         
-    }, {
-        entityTypes: ["minecraft:player"],
-        eventTypes: ["minecraft:trigger_raid"]
-    });
+    }, options);
 }
 function stop(){
     EventListener.unregister(eventId);

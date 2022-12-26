@@ -1,6 +1,7 @@
 import { Types, getIdentifierInfo } from "./Types.js";
 import { Event } from "./Event.js";
 import { EventTrigger } from "./Trigger.js";
+import { EventSignal } from "./Signal.js";
 
 class TriggerBuilder {
     

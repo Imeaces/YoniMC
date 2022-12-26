@@ -1,17 +1,17 @@
-import { ChatCommand } from "yoni/util/ChatCommand.js";
-import { Command } from "yoni/command.js";
-import { Minecraft, dim, VanillaWorld, Gametest } from "yoni/basis.js";
-import { YoniEntity, YoniPlayer } from "yoni/entity.js";
-import { send, say } from "yoni/util/utils.js";
-import { Logger, log } from "yoni/util/Logger.js";
-import { debug } from "yoni/config.js";
-import { World } from "yoni/world.js";
-import Scoreboard from "yoni/scoreboard.js";
-import { EventListener, EventTypes } from "yoni/event.js";
-import { getErrorMsg, printError as printErrorToConsole } from "yoni/util/console.js";
-import { load } from "yoni/loader.js";
-import { getKeys } from "yoni/lib/utils.js";
-import "yoni/index.js";
+import { ChatCommand } from "./util/ChatCommand.js";
+import { Command } from "./command.js";
+import { Minecraft, dim, VanillaWorld, Gametest } from "./basis.js";
+import { YoniEntity, YoniPlayer } from "./entity.js";
+import { send, say } from "./util/utils.js";
+import { Logger, log } from "./util/Logger.js";
+import { debug } from "./config.js";
+import { World } from "./world.js";
+import Scoreboard from "./scoreboard.js";
+import { EventListener, EventTypes } from "./event.js";
+import { getErrorMsg, printError as printErrorToConsole } from "./util/console.js";
+import { load } from "./loader.js";
+import { getKeys } from "./lib/utils.js";
+import "./index.js";
 
 const printError = (...args)=>{
     printErrorToConsole("", ...args);
@@ -85,5 +85,11 @@ ChatCommand.registerPrefixCommand("$", "exec", async (sender, rawCommand, label,
     let cmd = rawCommand.slice(label.length+1);
     sender.sendMessage("/"+cmd);
     let rt = await sender.fetchCommand(cmd);
+    sender.sendMessage("§7"+ JSON.stringify(rt) );
+});
+ChatCommand.registerPrefixCommand("$", "run", (sender, rawCommand, label, args) => {
+    let cmd = rawCommand.slice(label.length+1);
+    sender.sendMessage("/"+cmd);
+    let rt = Command.run(cmd);
     sender.sendMessage("§7"+ JSON.stringify(rt) );
 });

@@ -1,4 +1,4 @@
-import "yoni/index.js";
+import "../yoni/index.js";
 
 const chainBlockList=[
   "minecraft:diamond_ore"

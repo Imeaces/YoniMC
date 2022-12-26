@@ -2,11 +2,14 @@ import {
     Minecraft,
     Gametest,
     VanillaWorld, 
-    StatusCode } from "yoni/basis.js";
-import { dealWithCmd } from "yoni/lib/utils.js";
-import { Location } from "yoni/Location.js";
-import { Command } from "yoni/command.js";
-import { Entry } from "yoni/scoreboard/Entry.js";
+    StatusCode,
+    dim } from "./basis.js";
+import { dealWithCmd } from "./lib/utils.js";
+import { Location } from "./Location.js";
+import { Command } from "./command.js";
+import { Entry } from "./scoreboard/Entry.js";
+import { PlayerOnScreenDisplay } from "./entity/player/PlayerOnScreenDisplay.js";
+import { copyPropertiesWithoutOverride } from "./lib/copyPropertiesWithoutOverride.js";
 
 const { EntityTypes } = Minecraft;
 
@@ -18,6 +21,9 @@ const entitySymbol = Symbol();
  * @typedef {Entity|Player|SimulatedPlayer} YoniEntityType
  * @typedef {Minecraft.Player|Minecraft.Entity|Gametest.SimulatedPlayer} MinecraftEntityType
  * @typedef {YoniEntityType|MinecraftEntityType} EntityType
+ */
+/**
+ * 代表一个实体
  */
 class Entity {
     
@@ -457,11 +463,23 @@ class Player extends Entity {
     
     get [Symbol.toStringTag](){
         if (this instanceof Player)
-            return `[object Player]: { type: ${this.typeId} }`;
-        return "[object Object]";
+            return `Player: { type: ${this.typeId}, name: ${this.name} }`;
+        return "Object";
+    }
+    
+    #onScreenDisplay === null;
+    get onScreenDisplay(){
+        if (this.vanillaEntity.onScreenDisplay){
+            return this.vanillaEntity.onScreenDisplay;
+        }
+        if (this.#onScreenDisplay === null){
+            this.#onScreenDisplay = new PlayerOnScreenDisplay(this);
+        }
+        return this.#onScreenDisplay;
     }
     
     /**
+     * 玩家的经验等级
      * @type {number}
      */
     get experienceLevel(){
@@ -477,17 +495,18 @@ class Player extends Entity {
         return level;
     }
     
-   /**
+    /**
+     * 设置玩家的经验等级
      * @param {number} level
      */
-   setExperienceLevel(level){
+    setExperienceLevel(level){
        if (isFinite(level) && level >= 0 && Number.isInteger(level)){
            return Promise.all([
                Command.addExecute(Command.PRIORITY_HIGH, this, "xp -24791l @s"),
                Command.addExecute(Command.PRIORITY_HIGH, this, `xp ${level}l @s`)
            ]);
        } else {
-           throw new TypeError("level not allowed");
+           throw new TypeError("level not finite");
        }
     }
     
@@ -512,6 +531,7 @@ class Player extends Entity {
     }
     
     /**
+     * 以原始json文本的形式给玩家发送消息
      * @param {Minecraft.IRawMessage} rawtext 
      */
     sendRawMessage(rawtext){
@@ -525,38 +545,6 @@ class SimulatedPlayer extends Player {
         if (this instanceof SimulatedPlayer)
             return `SimulatedPlayer: { type: ${this.typeId} }`;
         return "Object";
-    }
-}
-
-function defineEntityPrototypeFor(targetPrototype, srcPrototype){
-    let undefinedKeys = [];
-    for (let key in srcPrototype){
-        if (key in targetPrototype){
-            continue;
-        }
-        
-        let propertyDescriptor = Object.getOwnPropertyDescriptor(srcPrototype, key);
-        if ("value" in propertyDescriptor && typeof propertyDescriptor.value === "function"){
-            Object.defineProperty(targetPrototype, key, {
-                configurable: true,
-                enumerable: false,
-                writable: false,
-                value: function (){
-                    return this.vanillaEntity[key].apply(this.vanillaEntity, arguments);
-                }
-            });
-        } else {
-            Object.defineProperty(targetPrototype, key, {
-                configurable: true,
-                enumerable: false,
-                get: function (){
-                    return this.vanillaEntity[key];
-                },
-                set: function (value){
-                    this.vanillaEntity[key] = value;
-                }
-            });
-        }
     }
 }
 
@@ -596,8 +584,7 @@ function getLoadedEntities(option){
     let entities = [];
     let players = [];
     if (option?.dimension != null){
-        let absoluteLocation = new Location(option);
-        let absoluteDimension = absoluteLocation.dimension;
+        let absoluteDimension = dim(option.dimension);
         if (absoluteDimension !== null){
             entities = Array.from(absoluteDimension.getEntities(option));
             //如果有这个属性的话，获取玩家会报错
@@ -624,9 +611,9 @@ function getLoadedEntities(option){
 
 
 /* 修补 */
-defineEntityPrototypeFor(Entity.prototype, Minecraft.Entity.prototype);
-defineEntityPrototypeFor(Player.prototype, Minecraft.Player.prototype);
-defineEntityPrototypeFor(SimulatedPlayer.prototype, Gametest.SimulatedPlayer.prototype);
+copyPropertiesWithoutOverride(Entity.prototype, Minecraft.Entity.prototype, "vanillaEntity");
+copyPropertiesWithoutOverride(Player.prototype, Minecraft.Player.prototype, "vanillaEntity");
+copyPropertiesWithoutOverride(SimulatedPlayer.prototype, Gametest.SimulatedPlayer.prototype, "vanillaEntity");
 /*修复结束*/
 
 export default Entity;

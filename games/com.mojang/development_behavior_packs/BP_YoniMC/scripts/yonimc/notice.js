@@ -1,10 +1,10 @@
-import { EventListener } from "yoni/event.js";
-import Scoreboard from "yoni/scoreboard.js";
-import { say } from "yoni/util/utils.js";
-import { Logger } from "yoni/util/Logger.js";
+import { EventListener } from "../yoni/event.js";
+import Scoreboard from "../yoni/scoreboard.js";
+import { say } from "../yoni/util/utils.js";
+import { Logger } from "../yoni/util/Logger.js";
 import { isServerMode } from "./server.js";
-import Command from "yoni/command.js";
-import { Entity } from "yoni/entity.js";
+import Command from "../yoni/command.js";
+import { Entity } from "../yoni/entity.js";
 
 const logger = new Logger("LOG");
 

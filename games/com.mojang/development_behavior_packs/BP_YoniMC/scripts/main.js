@@ -1,9 +1,9 @@
-import { Logger, log } from "yoni/util/Logger.js";
-import { load } from "yoni/loader.js";
+import { Logger, log } from "./yoni/util/Logger.js";
+import { load } from "./yoni/loader.js";
 
 const loadList = [
-    "test.js",
-    "yonimc/main.js"
+    "../test.js",
+    "../yonimc/main.js"
 ];
 let logger = new Logger("MAIN");
 

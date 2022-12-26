@@ -1,5 +1,14 @@
-import { dim } from "./basis.js";
+import { EventListener, EventSignal, Event, EventTriggerBuilder } from "./event.js";
 
+class ChatEventSignal extends EventSignal {
+}
+class ChatEvent extends Event {
+    constructor(time, player, message){
+    }
+}
+const trigger = new EventTriggerBuilder("yoni:chat")
+    
+EventListener.register
 function log(){
   return
 }

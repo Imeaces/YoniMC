@@ -57,12 +57,15 @@ class Signal extends IEventSignal {
             this.#identifier = getIdentifierInfo(identifier).id;
         }
         this.#trigger = trigger;
-        trigger.getCallbacks = function getCallbacks(){
-            if (this !== trigger){
-                throw new Error("invalid access");
+        trigger.getCallbacks = (()=>{
+            const f = () => this.#callbacks;
+            return function getCallbacks(){
+                if (this !== trigger){
+                    throw new Error("invalid access");
+                }
+                return f();
             }
-            return Array.from(this.#callbacks);
-        }
+        })();
     }
     
     subscribe(callback, ...filters){

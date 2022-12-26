@@ -1,6 +1,6 @@
-import YoniEntity from "yoni/entity.js";
-import { EventListener, EventTriggerBuilder, EventSignal } from "yoni/event.js";
-import { Scoreboard } from "yoni/scoreboard.js";
+import YoniEntity from "../../yoni/entity.js";
+import { EventListener, EventTriggerBuilder, EventSignal } from "../../yoni/event.js";
+import { Scoreboard } from "../../yoni/scoreboard.js";
 class HotbarChangedEvent{
     constructor(player, currentSlot, lastSlot){
         this.player = player;
