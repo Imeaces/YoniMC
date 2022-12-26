@@ -467,7 +467,7 @@ class Player extends Entity {
         return "Object";
     }
     
-    #onScreenDisplay === null;
+    #onScreenDisplay = null;
     get onScreenDisplay(){
         if (this.vanillaEntity.onScreenDisplay){
             return this.vanillaEntity.onScreenDisplay;

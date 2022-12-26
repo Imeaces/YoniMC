@@ -1,2 +1,2 @@
-export * from "mojang-minecraft-ui";
-export * as MinecraftGui from "mojang-minecraft-ui";
+export * from "@minecraft/server-ui";
+export * as MinecraftGui from "@minecraft/server-ui";

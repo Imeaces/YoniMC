@@ -1,2 +1,2 @@
-export * from "mojang-minecraft";
-export * as Minecraft from "mojang-minecraft";
+export * from "@minecraft/server";
+export * as Minecraft from "@minecraft/server";

@@ -1,2 +1,2 @@
-export * from "mojang-gametest";
-export * as Gametest from "mojang-gametest";
+export * from "@minecraft/server-gametest";
+export * as Gametest from "@minecraft/server-gametest";

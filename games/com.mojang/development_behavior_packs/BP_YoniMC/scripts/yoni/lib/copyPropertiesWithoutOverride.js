@@ -2,7 +2,7 @@ export function copyPropertiesWithoutOverride(target, src, accessKey){
     if ((typeof accessKey !== "string" && typeof accessKey !== "symbol") || accessKey === ""){
         throw new TypeError("accessKey not valid");
     }
-    for (let key in srcPrototype){
+    for (let key in src){
         if (key in target || key === accessKey){
             continue;
         }
