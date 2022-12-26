@@ -1,217 +1,237 @@
 import { http, HttpRequest, HttpHeader } from "@minecraft/server-net";
-import { EventListener, Events, EventSignal } from "yoni/event.js";
+import { EventListener, Events, EventSignal, EventTriggerBuilder } from "yoni/event.js";
 import { Command } from "yoni/command.js";
 import { World } from "yoni/world.js";
 import { getErrorMsg } from "yoni/util/console.js";
 import { say } from "yoni/util/utils.js";
 import { Logger } from "yoni/util/Logger.js";
-import { ChatCommand } from "yoni/command/ChatCommand.js";
+import { ChatCommand } from "yoni/util/ChatCommand.js";
 
 const logger = new Logger("Server");
 
-const log = (...args)=>{ logger.trace(...args); };
+const log = logger.trace(...args);
 
 import { API_URL, API_KEY, QQNumber, GroupNumber, AdminList } from "./mirai-config.js";
 
-let timeoutDelay = 1200;
-
-let session = null;
-
-//ms
-let fetchDelay = 5000;
-
-async function post(url="/", content={}, headers, i=0){
-    log("post");
-    try {
-        log(`requset getting session...`);
-        content.sessionKey = await getSession((i===0)?true:false, (i===0)?false:true);
-    } catch {
-        log(`requset get session failed`);
-        throw new Error(`requset get session failed`);
-    }
-    log(`post use session: ${content.sessionKey}`);
-    try {
-    let req = new HttpRequest(API_URL+url)
-        .setMethod("POST")
-        .setTimeout(timeoutDelay)
-        .setBody(JSON.stringify(content));
-    for (let h in headers){
-        req.addHeader(h, headers[h]);
-    }
-    try {
-        log(`start request to ${url}`);
-        let rt = await http.request(req);
-        log(`successfully request to ${url}`);
-        return rt;
-    } catch {
-        log(`failed request to ${url}, try again: ${i}`);
-        if (i < 2){
-            return await post(url, content, headers, i+1);
-        } else {
-            throw new Error();
-            log(`err: try again to much`);
+class MiraiSession {
+    static logger = new Logger("MiraiSession");
+    timeoutDelay = 1200;
+    botQQNumber = null;
+    API_URL;
+    #API_KEY;
+    #sessionKey;
+    
+    constructor (apiUrl, apiKey = "", botQQNumber = null){
+        this.API_URL = apiUrl;
+        this.#API_KEY = apiKey;
+        if (botQQNumber != null){
+            this.botQQNumber = botQQNumber;
+            this.refreshSession()
+                .catch(MiraiSession.logger.error);
         }
     }
-    }catch(e){ log(getErrorMsg(e).errMsg); }
-}
-
-async function get(url="/", argus={}, headers={}, i=0){
-    log("get");
-    let urls = url;
-    urls += "?sessionKey=" + await getSession((i===0)?true:false, (i===0)?false:true);
-    log(`get url with session: ${urls}`);
-    for (let a in argus){
-        urls += `&${encodeURIComponent(a)}=${encodeURIComponent(argus[a])}`
-    }
-    log(`get url with session and args: ${urls}`);
-    let req = new HttpRequest(API_URL+urls)
-        .setMethod("GET")
-        .setTimeout(timeoutDelay);
-    for (let h in headers){
-        req.addHeader(h, headers[h]);
-    }
-    try {
-        log(`start get ${urls}`);
-        let rt = await http.request(req);
-        log(`successfully get ${urls}`);
-        return rt;
-    } catch {
-        log(`failed get ${urls}, try again: ${i}`);
-        if (i < 2){
-            return await get(url, argus, headers, i+1);
-        } else {
-            log(`err: try again to much`);
-            throw new Error();
-        }
-    }
-}
-
-let lastSessionUpdateTime = 0;
-
-async function getSession(retry=true, force=false){
-    log("getSession: will retry "+retry);
-    try {
-        if (session === null) session = await newSessionKey(retry);
-    } catch {
-        if (retry)
-            return await getSession(false, true);
-        else
-            throw new Error();
-    }
-    if (!force && Date.now() - lastSessionUpdateTime < 240000){
-        log(`use last cached session: ${session}`);
-        return session;
-    }
-    log(`check session: ${session}`);
-    let u = API_URL + "/sessionInfo?sessionKey=" + session;
-    let req = new HttpRequest(u)
-        .setMethod("GET")
-        .setTimeout(timeoutDelay);
-    let rt;
-    try {
-        rt = await http.request(req);
-    } catch {
-        if (retry){
-            log(`check session failed: ${session}, try again`);
-            return await getSession(false, true);
-        } else {
-            log(`check session failed: ${session}`);
-            throw new Error();
-        }
-    }
-    let body = JSON.parse(rt.body);
-    log(rt.body);
-    if (body.code !== 0){
-        if (retry){
-            log(`check session failed: ${session}, ${rt.body}, try again`);
-            session = null;
-            return await getSession(false, true);
-        } else {
-            log(`check session failed: ${session}, ${rt.body}`);
-            throw new Error();
-        }
-    } else {
-        log(`check session successfully: ${session}, ${rt.body}`);
-        lastSessionUpdateTime = Date.now();
-        return session;
-    }
-}
-
-async function newSessionKey(retry=true){
-    log("getting newSessionKey");
-    let req = new HttpRequest(API_URL+"/verify")
-        .setMethod("POST")
-        .setTimeout(timeoutDelay)
-        .setBody(JSON.stringify({verifyKey: API_KEY}));
-    let rt;
-    try {
-        rt = await http.request(req);
-    } catch {
-        if (retry)
-            return await newSessionKey(false);
-        else
-            throw new Error();
-    }
-    let rtBody = JSON.parse(rt.body);
-    let sK = rtBody.session;
-    if (sK === undefined){
-        log("未能获取到sessionkey");
-        throw new Error("未能获取到sessionkey");
-    }
-    if (await bindSession(sK)){
-        log(`newSessionKey ${sK}`);
-        return sK;
-    } else if (retry){
-        log(`failed in getting newSessionKey, try again`);
-        return await newSessionKey(false);
-    } else {
-        log(`failed to get newSessionKey`);
-        throw new Error();
-    }
-}
-
-async function bindSession(sK){
-    log("bindSession "+sK);
-    let req = new HttpRequest(API_URL+"/bind")
-        .setMethod("POST")
-        .setTimeout(timeoutDelay)
-        .setBody(JSON.stringify({
-            sessionKey: sK,
-            qq: QQNumber
-        }));
-    try {
-        let rt = await http.request(req);
-        return (JSON.parse(rt.body).code === 0) ? true : false;
-    } catch {
-        return false;
-    }
-}
-let sendMessageSchedules = new Map();
-
-async function doSendQQGroupMessage(currentDateMs){
-    let msgSequeneList = [...sendMessageSchedules.keys()]
-        .sort((a,b)=>{
-            return a - b;
-        });
-    log(msgSequeneList.length)
-    for (let key of msgSequeneList){
-        let func = sendMessageSchedules.get(key);
-        sendMessageSchedules.delete(key);
-        
-        try {
-            await func();
-        } catch {
+    
+    /**
+     * @param {string} url
+     * @param {{[key]: any}} contents
+     * @param {Array<{[key]: any}>} headers
+     * @returns {Promise<Object>}
+     */
+    async post(uri, contents={}, headers={}, retryCount = 2){
+        let error = null;
+        while (retryCount >= 0){
             try {
-            await func();
-            } catch {
-                continue;
+                let session;
+                if (error){
+                    session = await this.getSession(true, retryCount);
+                } else {
+                    session = await this.getSession();
+                }
+                let request = new HttpRequest(this.API_URL+uri)
+                    .setMethod("POST")
+                    .setTimeout(this.timeoutDelay)
+                    .setBody(JSON.stringify(
+                        Object.assign({ sessionKey: session }, contents)
+                    ));
+                for (let headerKey in headers){
+                    request.addHeader(headerKey, headers[headerKey]);
+                }
+                let result = await http.request(request);
+                return JSON.parse(result.body);
+            } catch (e){
+                error = e;
+                retryCount --;
             }
         }
+        throw new Error("failed to post request");
+    }
+    
+    /**
+     * @param {string} url
+     * @param {{[key]: any}} args
+     * @param {Array<{[key]: any}>} headers
+     */
+    async get(uri, args={}, headers={}, retryCount = 2){
+        let error = e;
+        while (retryCount >= 0){
+            try {
+                let sessionKey;
+                if (error){
+                    sessionKey = await this.getSession(true, retryCount);
+                } else {
+                    sessionKey = await this.getSession();
+                }
+                let url = `${this.API_URL}${uri}?sessionKey=${sessionKey}`;
+                for (let argKey in args){
+                    url += `&${encodeURIComponent(argKey)}=${encodeURIComponent(args[argKey])}`
+                }
+                let request = new HttpRequest(url)
+                    .setMethod("GET")
+                    .setTimeout(this.timeoutDelay);
+                for (let headerKey in headers){
+                    request.addHeader(headerKey, headers[headerKey]);
+                }
+                let result = await http.request(request);
+                return JSON.parse(result.body);
+            } catch (e){
+                retryCount --;
+                error = e;
+            }
+        }
+        throw new Error("failed to get request");
+    }
+    async refreshSession(botQQNumber = this.botQQNumber, retryCount = 5){
+        if (botQQNumber == null){
+            throw new Error("you must specific a botQQNumber for the new session");
+        }
+        let verifyApiKeyRequest = new HttpRequest(this.API_URL+"/verify")
+            .setMethod("POST")
+            .setTimeout(this.timeoutDelay)
+            .setBody(JSON.stringify({
+                verifyKey: this.#API_KEY
+            }));
+        let verifyApiKeyResult = await (async ()=>{
+            let error;
+            while (retryCount >= 0){
+                try {
+                    return await http.request(verifyApiKeyRequest);
+                } catch(e) {
+                    error = e;
+                    retryCount --;
+                }
+            }
+            throw Object.assign(new Error("failed to verify api key"), { cause: error });
+        })();
+        let verifyApiKeyResultBody = JSON.parse(verifyApiKeyResult.body);
+        let unbindSessionKey = verifyApiKeyResultBody.session;
+        if (unbindSessionKey == null){
+            throw new Error("未能获取到sessionkey");
+        }
+        let bindSessionRequest = new HttpRequest(this.API_URL+"/bind")
+            .setMethod("POST")
+            .setTimeout(this.timeoutDelay)
+            .setBody(JSON.stringify({
+                sessionKey: unbindSessionKey,
+                qq: botQQNumber
+            }));
+        let bindSessionResult = await (async ()=>{
+            let error;
+            while (retryCount >= 0){
+                try {
+                    return await http.request(bindSessionRequest);
+                } catch(e) {
+                    retryCount --;
+                    error = e;
+                }
+            }
+            throw Object.assign(new Error("failed to bind session"), { cause: error });
+        })();
+        let bindSessionResultBody = JSON.parse(bindSessionResult.body);
+        if (bindSessionResultBody.code === 0){
+            this.#sessionKey = unbindSessionKey;
+            this.sessionLastUpdateTime = Date.now();
+            return unbindSessionKey;
+        }
+        let error = new Error("failed to bind session");
+        error.cause = bindSessionResult.body;
+        MiraiSession.logger.error(error);
+        throw error;
+    }
+    sessionLastUpdateTime = 0;
+    sessionUpdateDelay = 240000;
+    /**
+     * @param {boolean} force
+     * @param {number} retryCount
+     */
+    async getSession(force = false, retryCount = 1){
+        let error = null;
+        if (!force
+            && (Date.now() - this.sessionLastUpdateTime < this.sessionUpdateDelay)
+        ){
+            return this.#sessionKey;
+        }
+        if (this.#sessionKey == null){
+            return this.refreshSession();
+        }
+        while (retryCount >= 0){
+            try {
+                let getSessionInfoRequest = new HttpRequest(this.API_URL + "/sessionInfo?sessionKey=" + this.#sessionKey)
+                    .setMethod("GET")
+                    .setTimeout(this.timeoutDelay);
+                let getSessionInfoRequestResult = await (async ()=>{
+                    let error;
+                    while (retryCount >= 0){
+                        try {
+                            return http.request(getSessionInfoRequest);
+                        } catch (e){
+                            retryCount --;
+                            error = e;
+                        }
+                    }
+                    let outError = new Error("error while checking session info");
+                    throw outError.cause = error, outError;
+                })();
+                let getSessionInfoRequestResultBody = JSON.parse(getSessionInfoRequestResult.body);
+                if (getSessionInfoRequestResultBody.code === 0){
+                    this.this.sessionLastUpdateTime = Date.now();
+                    return this.#sessionKey;
+                }
+                return this.refreshSession();
+            } catch(e) {
+                retryCount --;
+                error = e;
+            }
+        }
+        let outError = new Error("error while getting session");
+        ouError.cause = error;
+        MiraiSession.logger.error(outError);
+        throw new Error(outError);
     }
 }
 
+const session = new MiraiSession(API_URL, API_KEY, QQNumber);
+
+let isRunningDoSendQQGroupMessage = false;
+async function doSendQQGroupMessage(currentTime){
+    if (isRunningDoSendQQGroupMessage) return; 
+    log(msgSequeneList.length);
+    isRunningDoSendQQGroupMessage = true;
+    while (msgSequeneList.length > 0){
+        try {
+            await msgSequeneList.shift()();
+        } catch {
+            //failed
+            isRunningDoSendQQGroupMessage = false;
+            return;
+        }
+    }
+    isRunningDoSendQQGroupMessage = false;
+}
+
+const sendMessageSchedules = [];
+
 function sendQQGroupMessage(message, retry=true){
-    if (message===undefined) throw new Error("empty message");
+    if (message === undefined) throw new Error("empty message");
     let body = {
         target: GroupNumber,
         messageChain: [
@@ -222,8 +242,8 @@ function sendQQGroupMessage(message, retry=true){
         ]
     };
     let headers = { "Content-Type": "application/json" };
-    sendMessageSchedules.set(Date.now(), async ()=>{
-        return await post("/sendGroupMessage", body, headers);
+    sendMessageSchedules.push(async ()=>{
+        return await session.post("/sendGroupMessage", body, headers);
     });
 }
 
@@ -251,10 +271,7 @@ EventListener.register("yonimc:serverReceiveQQMsg", (event)=>{
         let rt = Command.run(event.message.substring(1));
         sendQQGroupMessage(`命令已执行: 状态${rt.statusCode}\n${rt.statusMessage}`);
     } else if (World.getPlayers().length > 0){
-        let rawtext = [
-            { text: `[QQ][${memberName}]: ${message}` }
-        ];
-        Command.run(`tellraw @a ${JSON.stringify({rawtext})}`);
+        World.getPlayers().forEach(player=>player.sendMessage({`[QQ][${memberName}]: ${message}`}));
     }
 });
 
@@ -269,85 +286,65 @@ class QQGroupChatEvent {
     }
 }
 
-let lastFetchTimeMs = 0;
-let seid;
-let signal = EventSignal.builder("yonimc:serverReceiveQQMsg")
-    .eventClass(QQGroupChatEvent)
-    .build()
-    .whenFirstSubscribe(()=>{
-        seid = EventListener.register("tick", async (event)=>{
-            
-            let currentDateMs = Date.now();
-            
-            if (sendMessageSchedules.size > 0) doSendQQGroupMessage(currentDateMs);
-            
-            if (currentDateMs - lastFetchTimeMs < fetchDelay)
-                return;
-            else
-                lastFetchTimeMs = currentDateMs;
-                
-            if (fetchDelay < 20000)
-                fetchDelay += 1000;
-             
-            let rt;
-            let body;
-            try {
-                rt = await get("/fetchMessage", {
-                    count: 40
-                });
-                body = JSON.parse(rt.body);
-                if (body.code !== 0) return;
-            } catch {
-                
-            }
-            
-            for (let d of body.data){
-                if (d.type !== "GroupMessage")
-                    continue;
-                    
-                let { sender } = d;
-                
-                //不是特定群聊就检测下一条消息
-                if (sender.group.id !== GroupNumber)
-                    continue;
-                    
-                //时间差距过大就放弃此消息
-                if (Math.abs(sender.lastSpeakTimestamp - currentDateMs/1000) > 60)
-                    continue;
-                    
-                    
-                for (let a of d.messageChain){
-                    switch(a.type){
-                        case "Plain":
-                            fetchDelay = 1500;
-                            signal.triggerEvent(currentDateMs, sender, a.text);
-                            break;
-                    }
-                }
-            }
+let lastFetchTime = 0;
+let fetchDelay = 1000;
+const serverReceiveQQMsgPollingSchedule = new Schedule({
+    type: Schedule.tickCycleSchedule,
+    async: true,
+    period: 20,
+    delay: Math.random() * 20
+}, async ()=>{
+    let currentTime = Date.now();
+    
+    if (sendMessageSchedules.length > 0) doSendQQGroupMessage(currentTime);
+    
+    if (currentTime - lastFetchTime < fetchDelay)
+        return;
+    else
+        lastFetchTimeMs = currentDateMs;
         
-        });
+    if (fetchDelay < 20000)
+        fetchDelay += 1000;
+    
+    let rt = await session.get("/fetchMessage", {
+        count: 40
+    });
+    if (rt.code !== 0){
+        logger.error("无法获取到消息: {}", JSON.stringify(rt));
+        return;
+    }
+    
+    for (let d of rt.data){
+        if (d.type !== "GroupMessage")
+            continue;
+        
+        let { sender } = d;
+        
+        //不是特定群聊就检测下一条消息
+        if (sender.group.id !== GroupNumber)
+            continue;
+        
+        //时间差距过大就放弃此消息
+        if (Math.abs(sender.lastSpeakTimestamp - currentTime/1000) > 60)
+            continue;
+            
+        for (let a of d.messageChain){
+            switch(a.type){
+                case "Plain":
+                    fetchDelay = 1500;
+                    serverReceiveQQMsgEventTrigger.triggerEvent(currentDateMs, sender, a.text);
+                    break;
+            }
+        }
+    }
+});
+const serverReceiveQQMsgEventTrigger = EventTriggerBuilder("yonimc:serverReceiveQQMsg")
+    .eventClass(QQGroupChatEvent)
+    .whenFirstSubscribe(()=>{
+        YoniScheduler.addSchedule(serverReceiveQQMsgPollingSchedule);
     })
     .whenLastUnsubscribe(()=>{
-        EventListener.unregister(seid);
+        YoniScheduler.removeSchedule(serverReceiveQQMsgPollingSchedule);
     })
+    .build()
     .registerEvent();
-        
-
-/*
-EventListener.register("playerDead", (event)=>{
-    let { player } = event;
-    let body = {
-        target: 532861538,
-        messageChain: [
-            {
-                type: "Plain",
-                text: `${player.name} 不知道怎么就死了`
-            }
-        ]
-    };
-    let headers = { "Content-Type": "application/json" };
-    post("/sendGroupMessage", body, headers);
-
-});
-*/

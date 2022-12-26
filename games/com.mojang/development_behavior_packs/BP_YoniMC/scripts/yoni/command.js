@@ -340,6 +340,17 @@ export default class Command {
         }
         return Promise.all(results);
     }
+    
+    static run(command){
+        if (overworld.runCommand){
+            try {
+                return Object.assign({}, overworld.runCommand(command));
+            } catch (e){
+                return JSON.parse(e);
+            }
+        }
+        throw new Error("not allowed to runCommand in sync");
+    }
 }
 
 export { Command };

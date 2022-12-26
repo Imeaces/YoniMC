@@ -1,4 +1,6 @@
 import { getIdentifierInfo } from "./Types.js";
+import { IEventTrigger } from "./IEventTrigger.js";
+import { IEventSignal } from "./IEventSignal.js";
 
 /**
  * @interface
@@ -14,9 +16,9 @@ import { getIdentifierInfo } from "./Types.js";
 /**
  * @impletments IEventSignal
  */
-class Signal {
+class Signal extends IEventSignal {
     /**
-     * @type {IEventSignalTrigger}
+     * @type {IEventTrigger}
      */
     #trigger;
     /**
@@ -49,35 +51,26 @@ class Signal {
         return getIdentifierInfo(this.#identifier).name;
     }
     
-    /**
-     * @param {string} identifier
-     * @param {IEventSignalTrigger} trigger
-     */
     constructor(identifier, trigger){
+        super();
         if (identifier){
             this.#identifier = getIdentifierInfo(identifier).id;
         }
         this.#trigger = trigger;
-        trigger.defineCallbacksGetter(function getCallbacks(){
+        trigger.getCallbacks = function getCallbacks(){
             if (this !== trigger){
                 throw new Error("invalid access");
             }
             return Array.from(this.#callbacks);
-        });
+        }
     }
     
-    /**
-     * 为事件添加指定的回调函数，并传入可选的过滤器
-     * @param {(arg) => void} callback - 回调函数
-     * @param {...any} filters
-     * @returns {(arg) => void} 传入的回调函数
-     */
     subscribe(callback, ...filters){
         if (typeof callback !== "function")
             throw new Error("not a function in arguments[0]");
         const trigger = this.#trigger;
         
-        if ("onSubscribe" in trigger.onSubscribe)
+        if ("onSubscribe" in trigger)
             trigger.onSubscribe(callback, filters); //触发
         
         if (filters.length === 1)
@@ -95,11 +88,6 @@ class Signal {
         return callback;
     }
     
-    /**
-     * 从订阅中移除指定的回调函数
-     * @param {(arg) => void} callback - 指定的回调函数
-     * @returns {(arg) => void}
-     */
     unsubscribe(callback){
         if (typeof callback !== "function") //检查参数是否为函数
             throw new Error("not a function in arguments[0]");

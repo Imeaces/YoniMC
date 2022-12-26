@@ -33,26 +33,7 @@ async function doEval(sender, code){
 */
 let logger = new Logger("debug");
 
-let saves = new Proxy(new Map(),{
-    set: (target, key, value)=>{
-        target.set(key,value);
-        return true;
-    },
-    get: (target, key)=>{
-        if (target.has(key)){
-            return target.get(key);
-        }
-        return target[key];
-    }
-});
-
-function save(id, any){
-    saves.set(id, any);
-}
-
-function get(id){
-    return saves.get(id);
-}
+let saves = new Object(null);
 
 let evaledPlayers = new Set();
 
@@ -94,7 +75,6 @@ function evalCode(sender, code){
     doEval(sender, code)
     .then((rt)=>{
         sender.sendMessage("§7"+rt);
-        _ = rt;
     })
     .catch((e)=>{
         sender.sendMessage("§c"+getErrorMsg(e).errMsg);

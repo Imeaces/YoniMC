@@ -15,7 +15,10 @@ export class PlayerJoinedEvent extends PlayerEvent {
 export class PlayerDeadEventSignal extends EventSignal {
 }
 
-const joiningPlayers = new WeakSet();
+const joiningPlayers = new Set();
+/**
+ * @type {number | null}
+ */
 let eventId = null;
 
 const schedule = new Schedule({

@@ -9,6 +9,9 @@ export class PlayerEvent extends Event{
         super(...args);
         this.#player = Entity.from(player);
     }
+    /**
+     * @type {Player}
+     */
     #player;
     get player(){
         return this.#player;

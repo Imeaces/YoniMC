@@ -1,4 +1,12 @@
-import { dim, Minecraft, VanillaWorld, overworld } from "./basis.js";
+import { dim, Minecraft } from "./basis.js";
+
+function makeNumber(v){
+    v = Number(v);
+    if (!isFinite(v))
+        throw new Error("Number not finite");
+    return v;
+}
+
 /**
  * 一个复杂点的Location类
  */
@@ -8,8 +16,7 @@ class Location {
      * @returns {number}
      */
     static normalizePitch(v){
-        if (!isFinite(v))
-            throw new Error("Number not finite");
+        v = makeNumber(v);
         v += 180;
         v = v % 360;
         v -= 180;
@@ -20,8 +27,7 @@ class Location {
      * @returns {number}
      */
     static normalizeYaw(v){
-        if (!isFinite(v))
-            throw new Error("Number not finite");
+        v = makeNumber(v);
         v += 180;
         v = v % 360;
         v -= 180;
@@ -36,8 +42,7 @@ class Location {
         return this.#x;
     }
     set x(v){
-        if (!isFinite(v))
-            throw new Error("Number not finite");
+        v = makeNumber(v);
         this.#x = v;
     }
     
@@ -49,8 +54,7 @@ class Location {
         return this.#y;
     }
     set y(v){
-        if (!isFinite(v))
-            throw new Error("Number not finite");
+        v = makeNumber(v);
         this.#y = v;
     }
     
@@ -62,8 +66,7 @@ class Location {
         return this.#z;
     }
     set z(v){
-        if (!isFinite(v))
-            throw new Error("Number not finite");
+        v = makeNumber(v);
         this.#z = v;
     }
     
@@ -89,46 +92,62 @@ class Location {
         this.#ry = Location.normalizeYaw(v);
     }
     
-    #dimension = null;
+    // @ts-ignore
+    #dimension;
     /**
      * @type {Minecraft.Dimension}
      */
     get dimension(){
         return this.#dimension;
     }
+    /**
+     * @param {number|string|Minecraft.Dimension} v
+     */
     set dimension(v){
         v = fromValueGetDimension(v);
         this.#dimension = v;
     }
     
     /**
-     * 必须可以匹配到x, y, z
-     * 目前可以匹配以下类型的位置
+     * 代表一个MC中的位置，其中包括维度，坐标，旋转角
+     * 参数顺序一般遵循以下规则
+     * 先维度，后坐标，最后旋转角
+     * 坐标先x，之后是y，最后是z
+     * 旋转角先是rx，后是ry
+     * 以下列出了所有的可能的参数形式，参数中不存在的内容将会以默认值补全
      * dimension, x, y, z, rx, ry
      * x, y, z, rx, ry
      * dimension, x, y, z
-     *
-     * dimension, {x, y, z}, {rx, ry}
-     * dimension, [x, y, z], [rx, ry]
-     * dimension, {x, y, z}, [rx, ry]
      * x, y, z
-     *
-     * {dimension, x, y, z} [rx, ry]
-     * {dimension, x, y, z} {rx, ry}
-     * dimension, [ x, y, z, rx, ry]
+     * dimension, {x, y, z}, {rx, ry}
+     * dimension, [x, y, z], {rx, ry}
+     * dimension, {x, y, z}, [rx, ry]
+     * dimension, [x, y, z], [rx, ry]
+     * {dimension, x, y, z}, {rx, ry}
+     * [dimension, x, y, z], {rx, ry}
+     * {dimension, x, y, z}, [rx, ry]
+     * [dimension, x, y, z], [rx, ry]
+     * {x, y, z}, {rx, ry}
+     * [x, y, z], {rx, ry}
+     * {x, y, z}, [rx, ry]
+     * [x, y, z], [rx, ry]
      * dimension, {x, y, z, rx, ry}
      * dimension, {x, y, z}
+     * dimension, [x, y, z, rx, ry]
      * dimension, [x, y, z]
-     *
-     * {dimension, x, y, z, rx, ry}
-     * [dimension, x, y, z, rx, ry]
+     * {location: {x, y, z}, dimension, rotation: {x, y}}
+     * {location: {x, y, z}, dimension}
+     * {location: {x, y, z}, rotation: {x, y}}
+     * {location: {x, y, z}}
+     * {x, y, z, rx, ry, dimension}
      * {x, y, z, rx, ry}
+     * {x, y, z, dimension}
      * {x, y, z}
+     * [dimension, x, y, z, rx, ry]
      * [x, y, z, rx, ry]
+     * [dimension, x, y, z]
      * [x, y, z]
-     * {dimension, location, rotation}
-     * {dimension, location}
-     * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
+     * @param {LocationParams} values
      */
     constructor(...values){
         let { x, y, z, rx, ry, dimension } = makeLocation(values);
@@ -157,7 +176,7 @@ class Location {
         }
     }
     /**
-     * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
+     * @param {LocationParams} values
      */
     add(...values){
         let { x, y, z } = makeLocation(values);
@@ -167,7 +186,7 @@ class Location {
         return this;
     }
     /**
-     * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
+     * @param {LocationParams} values
      */
     subtract(...values){
         let { x, y, z } = makeLocation(values);
@@ -177,7 +196,7 @@ class Location {
         return this;
     }
     /**
-     * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
+     * @param {LocationParams} values
      */
     multiply(...values){
         let { x, y, z } = makeLocation(values);
@@ -197,20 +216,20 @@ class Location {
     }
     
     /**
-     * @param {LocationDataParams1_01} loc
+     * @param {Location1Arg} loc
      */
     distance(loc){
         let distance = this.distancrSquared(loc);
         return Math.sqrt(distance);
     }
     /**
-     * @param {LocationDataParams1_01} loc
+     * @param {Location1Arg} loc
      */
     distancrSquared(loc){
         let fromLocation = makeLocation([loc]);
-        if (this.dimension !== fromValueGetDimension(fromLocation.dimension)){
+        /*if (this.dimension !== fromValueGetDimension(fromLocation.dimension)){
             throw new Error("different dimension");
-        }
+        }*/
         let { x, y, z } = this;
         let distance = 0;
         distance += Math.abs(fromLocation.x ** 2 - x ** 2);
@@ -297,7 +316,7 @@ class Location {
         throw new Error("not implemented yet");
     }
     /**
-     * @param {LocationDataParams1_01} loc
+     * @param {Location1Arg} loc
      */
     equals(loc){
         let fromLocation = new Location(loc);
@@ -326,282 +345,206 @@ class Location {
         return { x, y, z, rx, ry, dimension };
     }
     
-    static serialize(v){
-        throw new Error("not implemented yet");
+    /**
+     * 将一个Location对象转换为一段字符串
+     * @param {Location} v 
+     * @returns {string}
+     */
+    static serialize(v) {
+        return JSON.stringify(v);
     }
-    static deserialize(v){
-        throw new Error("not implemented yet");
+    /**
+     * 将一段由Location对象转换后的字符串转换为Location对象
+     * @param {string} v 
+     * @returns {Location}
+     */
+    static deserialize(v) {
+        return new Location(JSON.parse(v));
     }
 }
 
+const DimensionValues = {
+    "minecraft:nether": dim.nether,
+    "nether": dim.nether,
+    "-1": dim.nether,
+    "minecraft:overworld": dim.overworld,
+    "overworld": dim.overworld,
+    "0": dim.overworld,
+    "minecraft:the_end": dim.theEnd,
+    "the_end": dim.theEnd,
+    "the end": dim.theEnd,
+    "theEnd": dim.theEnd,
+    "1": dim.theEnd
+}
+/**
+ * @param {any} value
+ */
 function fromValueGetDimension(value){
-    let validValues = ["overworld", "the_end", "the end", "nether", "theEnd", 0, -1, 1];
     if (value instanceof Minecraft.Dimension){
         return value;
-    } else if (Object.values(Minecraft.MinecraftDimensionTypes).includes(value) || validValues.includes(value)){
-        return dim(value);
+    } else if (value in DimensionValues){
+        return DimensionValues[value];
     } else {
         throw new Error("unknown dimension");
     }
 }
 
 /**
- * {x, y, z, rx?, ry?, dimension?}
- * @interface
- * @typedef ILocationValue01
- * @property {number} x
- * @property {number} y
- * @property {number} z
- * @property {number} [rx]
- * @property {number} [ry]
- * @property {Minecraft.Dimension} [dimension]
+ * @typedef {-1|'minecraft:nether'|'nether'} NetherDimensionLike
+ * @typedef {0|'minecraft:overworld'|'overworld'} OverworldDimensionLike
+ * @typedef {1|'minecraft:the_end'|'the_end'|'theEnd'|'the end'} TheEndDimensionLike
+ * @typedef {NetherDimensionLike|OverworldDimensionLike|TheEndDimensionLike|Minecraft.Dimension} DimensionLike
  */
 /**
- * {x, y, z, rx?, ry?, **dimension**?}
- * @interface
- * @typedef ILocationValue01_1
- * @property {number} x
- * @property {number} y
- * @property {number} z
- * @property {number} [rx]
- * @property {number} [ry]
- * @property {string|nunber} [dimension] - 一个可以代表某个维度的值
+ * @typedef {{x: number, y: number, z: number, rx?: number, ry?: number, dimension?: DimensionLike}} ILocation
+ * @typedef {[number, number, number]|[number, number, number, number, number]|[DimensionLike, number, number, number]|[DimensionLike, number, number, number, number, number]} ILocationArray
  */
 /**
- * [dimension, x, y, z, rx?, ry?]
- * @typedef {[Minecraft.Dimension, number, number, number]|[Minecraft.Dimension, number, number, number, number, number]} ILocationValue01_2
+ * @typedef {{x: number, y: number, z: number}} ILocationCoords
+ * @typedef {{x: number, y: number, z: number, dimension: DimensionLike}} ILocationCoordsWithDimension
+ * @typedef {{x: number, y: number, z: number, rx: number, ry: number}} ILocationCoordsWithRotation
+ * @typedef {[number, number, number]} ILocationCoordsArray
+ * @typedef {[DimensionLike, number, number, number]} ILocationCoordsArrayWithDimension
+ * @typedef {[number, number, number, number, number]} ILocationCoordsArrayWithRotation
  */
 /**
- * [**dimension**, x, y, z, rx?, ry?]
- * @typedef {[string, number, number, number]|[number, number, number, number]|[string, number, number, number, number, number]|[number, number, number, number, number, number]} ILocationValue01_3
+ * @typedef {{rx: number, ry: number}} ILocationRotation
+ * @typedef {{x: number, y: number}} ILocationRotationValue
+ * @typedef {[number, number]} ILocationRotationArray
  */
 /**
- * [dimension, x, y, z, rx, ry]
- * @typedef {[Minecraft.Dimension, number, number, number, number, number]} ILocationValue01_4
+ * @typedef {{location: ILocationCoords, rotation: ILocationRotationValue, dimension: DimensionLike}} ILocationOfObject
  */
 /**
- * [**dimension**, x, y, z, rx, ry]
- * @typedef {[string, number, number, number, number, number]|[number, number, number, number, number, number]} ILocationValue01_5
- */
-
-/**
- * {location, dimension?, rotation?}
- * @interface
- * @typedef ILocationValue1
- * @property {ILocationValue_Location} location
- * @property {ILocationValue_Rotation} [rotation]
- * @property {Minecraft.Dimension} [dimension]
+ * @typedef {ILocationOfObject|ILocation|ILocationArray} Location1Arg
+ * @typedef {[Location1Arg]} LocationArgs1Params
  */
 /**
- * {location, dimension?, rotation?}
- * @interface
- * @typedef ILocationValue1_1
- * @property {ILocationValue_Location} location
- * @property {ILocationValue_Rotation} [rotation]
- * @property {string|number} [dimension] - 一个可以代表某个维度的值
- */
-
-/**
- * {x, y, z}
- * @interface
- * @typedef ILocationValue_Location
- * @property {number} x
- * @property {number} y
- * @property {number} z
+ * @typedef {[DimensionLike, ILocationCoords|ILocationCoordsWithRotation|ILocationCoordsArray|ILocationCoordsArrayWithRotation]|[ILocationCoords|ILocationCoordsArray|ILocationCoordsWithDimension|ILocationCoordsArrayWithDimension, ILocationRotation|ILocationRotationArray]} LocationArgs2Params
  */
 /**
- * [x, y, z]
- * @typedef {[number, number, number]} ILocationValue_Location_1
+ * @typedef {[DimensionLike, ILocationCoords|ILocationCoordsArray, ILocationRotation|ILocationRotationArray]|ILocationCoords} LocationArgs3Params
  */
 /**
- * {x, y, z, dimension}
- * @interface
- * @typedef ILocationValue_Location_2
- * @property {Minecraft.Dimension} dimension
- * @property {number} x
- * @property {number} y
- * @property {number} z
+ * @typedef {ILocationArray} LocationArgsMoreParams
  */
 /**
- * {x, y, z, **dimension**}
- * @interface
- * @typedef ILocationValue_Location_3
- * @property {string|number} dimension - 一个可以代表某个维度的值
- * @property {number} x
- * @property {number} y
- * @property {number} z
+ * @typedef {LocationArgs1Params|LocationArgs2Params|LocationArgs3Params|LocationArgsMoreParams} LocationParams
  */
 /**
- * [dimension, x, y, z]
- * @typedef {[Minecraft.Dimension, number, number, number]} ILocationValue_Location_4
- */
-/**
- * [**dimension**, x, y, z]
- * @typedef {[string, number, number, number]|[number, number, number, number]} ILocationValue_Location_5
- */
-/**
- * {x, y, z, rx?, ry?}
- * @interface
- * @typedef ILocationValue_Location_6
- * @property {number} x
- * @property {number} y
- * @property {number} z
- * @property {number} [rx]
- * @property {number} [ry]
- */
-/**
- * [x, y, z, rx?, ry?]
- * @typedef {[number, number, number]|[number, number, number, number, number]} ILocationValue_Location_7
- */
-/**
- * [x, y, z, rx, ry]
- * @typedef {[number, number, number, number, number]} ILocationValue_Location_8
- */
-
-/**
- * {rx, ry}
- * @interface
- * @typedef ILocationValue_Rotation
- * @property {number} rx
- * @property {number} ry
- */
-/**
- * [rx, ry]
- * @typedef {[number, number]} ILocationValue_Rotation_1
- */
-
-//++++++++++++++++++++++++++base end-------------------------------
-/**
- * @typedef {[ILocationValue01|ILocationValue01_1|ILocationValue01_2|ILocationValue01_3|ILocationValue1|ILocationValue1_1|ILocationValue_Location|ILocationValue_Location_1|ILocationValue_Location_2|ILocationValue_Location_3|ILocationValue_Location_4|ILocationValue_Location_5]} LocationDataParams1
- */
-/**
- * @typedef {ILocationValue01|ILocationValue01_1|ILocationValue01_2|ILocationValue01_3|ILocationValue1|ILocationValue1_1|ILocationValue_Location|ILocationValue_Location_1|ILocationValue_Location_2|ILocationValue_Location_3|ILocationValue_Location_4|ILocationValue_Location_5} LocationDataParams1_01
- */
-
-/**
- * @typedef {[Minecraft.Dimension, ILocationValue_Location_6|ILocationValue_Location_7]} LocationDataParams2
- */
-/**
- * @typedef {[string|number, ILocationValue_Location_6|ILocationValue_Location_7]} LocationDataParams2_1
- */
-/**
- * @typedef {[ILocationValue_Location_3|ILocationValue_Location_2|ILocationValue_Location_1|ILocationValue_Location, ILocationValue_Rotation|ILocationValue_Rotation_1]} LocationDataParams2_2
- */
-
-/**
- * @typedef {[Minecraft.Dimension, ILocationValue_Location|ILocationValue_Location_1, ILocationValue_Rotation|ILocationValue_Rotation_1]} LocationDataParams3
- */
-/**
- * @typedef {ILocationValue_Location_1} LocationDataParams3_1
- */
-/**
- * [dimension, x, y, z]
- * @typedef {ILocationValue_Location_4} LocationDataParams4
- */
-/**
- * [x, y, z, rx, ry]
- * @typedef {ILocationValue_Location_8} LocationDataParams5
- */
-/**
- * [dimension, x, y, z, rx, ry]
- * @typedef {ILocationValue01_4|ILocationValue01_5} LocationDataParams6
- */
- 
-/**
- * @param {LocationDataParams1|LocationDataParams2|LocationDataParams2_1|LocationDataParams2_2|LocationDataParams3|LocationDataParams3_1|LocationDataParams4|LocationDataParams5|LocationDataParams6} values
+ * @param {LocationParams} values
+ * @returns {ILocation}
  */
 function makeLocation(values){
     let x, y, z, rx, ry, dimension = null;
-    const value0 = values[0];
-    const value1 = values[1];
-    const value2 = values[2];
-    const value3 = values[3];
-    const value4 = values[4];
-    const value5 = values[5];
-    if (values.length > 3 && values.length < 7){
-        let hasDim = false;
+    const matchILocationArray = (value)=>{
+        let baseIdx = 0;
         let hasRotation = false;
-        if (values.length > 5 || values.length === 4){
-            dimension = values.shift();
-            hasDim = true;
+        if (value.length === 4 || value.length === 6){
+            baseIdx = 1;
+            dimension = value[0];
         }
-        x = values[0];
-        y = values[1];
-        z = values[2];
-        if (values.length >= 4){
-            rx = values[3];
-            ry = values[4];
+        if (value.length >= 5){
+            rx = value[baseIdx+3];
+            ry = value[baseIdx+4];
             hasRotation = true;
         }
-        if (hasRotation){
-            if (hasDim){
-                return {x,y,z,rx,ry,dimension};
+        if (value.length >= 3){
+            x = value[baseIdx+0];
+            y = value[baseIdx+1];
+            z = value[baseIdx+2];
+            if (hasRotation){
+                if (baseIdx === 1){
+                    return {x, y, z, rx, ry, dimension};
+                }
+                return {x, y, z, rx, ry};
+            } else if (baseIdx === 1){
+                return {x, y, z, dimension};
             }
-            return {x,y,z,rx,ry};
-        }
-        if (hasDim){
-            return {x,y,z,dimension};
-        }
-        return {x,y,z};
-    } else if (values.length === 3){
-        dimension = value0;
-        if (hasKeys(value1, "x", "y", "z") || value1?.length === 3){
-            if (value1?.length === 3){
-                x = value1[0];
-                y = value1[1];
-                z = value1[2];
-            } else {
-                x = value1.x;
-                y = value1.y;
-                z = value1.z;
-            }
-            if (hasKeys(value2, "rx", "ry")){
-                rx = value2.rx;
-                ry = value2.ry;
-                return {x,y,z,rx,ry,dimension};
-            } else if (value2?.length === 2){
-                rx = value2[0];
-                ry = value2[1];
-                return {x,y,z,rx,ry,dimension};
-            } else {
-                return {x, y, z, dimension}
-            }
-        } else if (isFinite(value0)
-        && isFinite(value1)
-        && isFinite(value2)){
-            x = value0;
-            y = value1;
-            z = value2;
             return {x, y, z};
+        } else {
+            throw new Error("传入的参数未能匹配任何可能额形式");
         }
-        throw new Error("未能匹配到以下任何一种形式"
-            + "\ndimension, {x, y, z}, {rx, ry}"
-            + "\ndimension, [x, y, z], [rx, ry]"
-            + "\ndimension, {x, y, z}, [rx, ry]"
-            + "\nx, y, z"
+    }
+    if (values.length === 1){
+        const value = values[0];
+        if (hasKeys(value, "location")){
+            const location = value.location;
+            x = location.x;
+            y = location.y;
+            z = location.z;
+            if (hasKeys(value, "rotation")){
+                const rotation = value.rotation;
+                rx = rotation.x;
+                ry = rotation.y;
+                if (hasKeys(value, "dimension")){
+                    dimension = value.dimension;
+                    return {x, y, z, rx, ry, dimension};
+                }
+                return {x, y, z, rx, ry};
+            }
+            if (hasKeys(value, "dimension")){
+                dimension = value.dimension;
+                return {x, y, z, dimension};
+            }
+            return {x, y, z};
+        } else if (hasKeys(value, "x", "y", "z")){
+            x = value.x;
+            y = value.y;
+            z = value.z;
+            if (hasKeys(value, "rx", "ry")){
+                rx = value.rx;
+                ry = value.ry;
+                if (hasKeys(value, "dimension")){
+                    dimension = value.dimension;
+                    return {x, y, z, rx, ry, dimension};
+                }
+                return {x, y, z, rx, ry};
+            }
+            if (hasKeys(value, "dimension")){
+                dimension = value.dimension;
+                return {x, y, z, dimension};
+            }
+            return {x, y, z};
+        } else if (Array.isArray(value) && value.length >= 3){
+            return matchILocationArray(value);
+        }
+        throw new Error("未能匹配到下列可能的形式"
+            + "\n{location: {x, y, z}, dimension, rotation: {x, y}}"
+            + "\n{location: {x, y, z}, dimension}"
+            + "\n{location: {x, y, z}, rotation: {x, y}}"
+            + "\n{location: {x, y, z}}"
+            + "\n{x, y, z, rx, ry, dimension}"
+            + "\n{x, y, z, rx, ry}"
+            + "\n{x, y, z, dimension}"
+            + "\n{x, y, z}"
+            + "\n[dimension, x, y, z, rx, ry]"
+            + "\n[x, y, z, rx, ry]"
+            + "\n[dimension, x, y, z]"
+            + "\n[x, y, z]"
         );
     } else if (values.length === 2){
+        const value0 = values[0];
+        const value1 = values[1];
+        let hasDimension = false;
         if (hasKeys(value0, "x", "y", "z")){
             x = value0.x;
             y = value0.y;
             z = value0.z;
-            if (hasKeys(value1, "rx", "ry")){
-                rx = value1.rx;
-                ry = value1.ry;
-                if (hasKeys(value0, "dimension")){
-                    dimension = value0.dimension;
-                    return {x,y,z,rx,ry,dimension};
-                }
-                return {x,y,z,rx,ry};
-            } else if (value1?.length === 2){
-                rx = value1[0];
-                ry = value1[1];
-                if (hasKeys(value0, "dimension")){
-                    dimension = value0.dimension;
-                    return {x,y,z,rx,ry,dimension};
-                }
-                return {x,y,z,rx,ry};
+            if (hasKeys(value0, "dimension")){
+                dimension = value0.dimension;
+                hasDimension = true;
             }
+        } else if (Array.isArray(value0) && value0.length >= 3){
+            let baseIdx = 0;
+            if (value0.length === 4){
+                dimension = value0[0];
+                hasDimension = true;
+                baseIdx = 1;
+            }
+            x = value0[baseIdx+0];
+            y = value0[baseIdx+1];
+            z = value0[baseIdx+2];
         } else {
             dimension = value0;
             if (hasKeys(value1, "x", "y", "z")){
@@ -611,121 +554,115 @@ function makeLocation(values){
                 if (hasKeys(value1, "rx", "ry")){
                     rx = value1.rx;
                     ry = value1.ry;
-                    return {x,y,z,rx,ry,dimension};
+                    return {dimension, x, y, z, rx, ry};
                 }
-                return {x,y,z,dimension};
-            } else if (value1?.length === 5){
+                return {dimension, x, y, z};
+            } else if (Array.isArray(value1) && value1.length >= 3){
                 x = value1[0];
                 y = value1[1];
                 z = value1[2];
-                rx = value1[3];
-                ry = value1[4];
-                return {x,y,z,rx,ry,dimension};
-            } else if (value1?.length === 3){
-                x = value1[0];
-                y = value1[1];
-                z = value1[2];
-                return {x,y,z,dimension};
+                if (value1.length === 5){
+                    rx = value1[3];
+                    ry = value1[4];
+                    return {dimension, x, y, z, rx, ry};
+                }
+                return {dimension, x, y, z};
             }
+            throw new Error("未能匹配到下列可能的形式"
+                + "\ndimension, {x, y, z, rx, ry}"
+                + "\ndimension, {x, y, z}"
+                + "\ndimension, [x, y, z, rx, ry]"
+                + "\ndimension, [x, y, z]"
+            );
         }
-        
-        throw new Error("未能匹配到以下任何一种形式"
-            + "\n{dimension, x, y, z} [rx, ry]"
-            + "\n{dimension, x, y, z} {rx, ry}"
-            + "\n{x, y, z} [rx, ry]"
-            + "\n{x, y, z} {rx, ry}"
-            + "\ndimension, [x, y, z, rx, ry]"
-            + "\ndimension, {x, y, z, rx, ry}"
-            + "\ndimension, {x, y, z}"
-            + "\ndimension, [x, y, z]"
-        );
-    } else if (values.length === 1){
-        values = value0;
-        if (hasKeys(values, "x", "y", "z")){ //必须有x y z
-            x = values.x;
-            y = values.y;
-            z = values.z;
-            
-            if (hasKeys(values, "dimension")){
-                dimension = values.dimension;
-                if (hasKeys(values, "rx", "ry")){
-                    rx = values.rx;
-                    ry = values.ry;
-                    return {x, y, z, rx, ry, dimension};
-                }
-                return {x, y, z, dimension};
-            }
-            if (hasKeys(values, "rx", "ry")){
-                rx = values.rx;
-                ry = values.ry;
-                return {x, y, z, rx, ry};
-            }
-            
+        if (hasKeys(value1, "rx", "ry")){
+            rx = value1.rx;
+            ry = value1.ry;
+        } else if (Array.isArray(value1) && value1.length === 2){
+            rx = value1[0];
+            ry = value1[1];
+        } else {
+            throw new Error("未能匹配到下列可能的形式"
+                + "\n{dimension, x, y, z}, {rx, ry}"
+                + "\n[dimension, x, y, z], {rx, ry}"
+                + "\n{dimension, x, y, z}, [rx, ry]"
+                + "\n[dimension, x, y, z], [rx, ry]"
+                + "\n{x, y, z}, {rx, ry}"
+                + "\n[x, y, z], {rx, ry}"
+                + "\n{x, y, z}, [rx, ry]"
+                + "\n[x, y, z], [rx, ry]"
+            );
+        }
+        if (hasDimension){ 
+            return {dimension, x, y, z, rx, ry};
+        }
+        return {x, y, z, rx, ry};
+    } else if (values.length === 3){
+        const value0 = values[0];
+        const value1 = values[1];
+        const value2 = values[2];
+        if (typeof value0 === "number" && typeof value1 === "number" && typeof value1 === "number"){
+            x = value0;
+            y = value1;
+            z = value2;
             return {x, y, z};
-        } else if (typeof values === "string"){
-            let json;
-            try {
-                json = JSON.parse(values);
-                return makeLocation([json]);
-            } catch {
-                throw new Error("指定的字符串无法转换为位置");
-            }
-        } else if (values?.length > 3){
-            return makeLocation(values);
-        } else if (hasKeys(values, "location")){
-            let loc = values.location;
-            x = loc.x;
-            y = loc.y;
-            z = loc.z;
-            
-            let hasDim = false;
-            let hasRotation = false;
-            
-            if (hasKeys(values, "dimension")){
-                dimension = values.dimension;
-                hasDim = true;
-            }
-            
-            if ("rotation" in values){
-                let roc = values.rotation;
-                rx = roc.x;
-                ry = roc.y;
-                hasRotation = true;
-            }
-            
-            if (hasRotation){
-                if (hasDim){
-                    return {x,y,z,rx,ry,dimension};
-                }
-                return {x,y,z,rx,ry};
-            }
-            
-            if (hasDim){
-                return {x,y,z,dimension};
-            }
-            return {x,y,z};
         }
-        throw new Error("未能匹配到以下任何一种形式"
-            + "\n{dimension, x, y, z, rx, ry}"
-            + "\n{x, y, z, rx, ry}"
-            + "\n{x, y, z}"
-            + "\n[dimension, x, y, z, rx, ry]"
-            + "\n[x, y, z, rx, ry]"
-            + "\n[x, y, z]"
-            + "\n{dimension, location, rotation}"
-            + "\n{dimension, location}"
-            + "\n{rotation, location}"
-            + "\n{location}"
+        dimension = value0;
+        if (hasKeys(value1, "x", "y", "z")){
+            x = value1.x;
+            y = value1.y;
+            z = value1.z;
+        } else if (Array.isArray(value1) && value1.length === 3){
+            x = value1[0];
+            y = value1[1];
+            z = value1[2];
+        } else {
+            throw new Error("未能匹配到下列可能的形式"
+                + "\nx, y, z"
+                + "\ndimension, {x, y, z}, {rx, ry}"
+                + "\ndimension, [x, y, z], {rx, ry}"
+                + "\ndimension, {x, y, z}, [rx, ry]"
+                + "\ndimension, [x, y, z], [rx, ry]"
+            );
+        }
+        if (hasKeys(value2, "rx", "ry")){
+            rx = value2.rx;
+            ry = value2.ry;
+            return {dimension, x, y, z, rx, ry};
+        } else if (Array.isArray(value2) && value2.length === 2){
+            rx = value2[1];
+            ry = value2[2];
+            return {dimension, x, y, z, rx, ry};
+        }
+        throw new Error("未能匹配到下列可能的形式"
+            + "\nx, y, z"
+            + "\ndimension, {x, y, z}, {rx, ry}"
+            + "\ndimension, [x, y, z], {rx, ry}"
+            + "\ndimension, {x, y, z}, [rx, ry]"
+            + "\ndimension, [x, y, z], [rx, ry]"
         );
+    } else if (values.length < 7 && values.length > 0){
+        try {
+            return matchILocationArray(values);
+        } catch {
+            //匹配失败
+        }
     }
-    throw new Error("未能匹配到以下任何一种形式"
+    throw new Error("传入的参数无法被认为是可能的Location"
+        + "\n最少需要1个参数，最多可以有6个参数"
+        + "\n未能匹配到下列可能的形式"
         + "\ndimension, x, y, z, rx, ry"
         + "\nx, y, z, rx, ry"
         + "\ndimension, x, y, z"
-        + "以及其他的18种（详情请在代码中查看）"
+        + "\nx, y, z"
     );
 }
 
+/**
+ * @param {Object} value
+ * @param {...string} keys
+ * @returns {boolean}
+ */
 function hasKeys(value, ...keys){
     let type = typeof value;
     if (type !== "object" && type !== "function"){

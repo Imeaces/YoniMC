@@ -27,7 +27,7 @@ export class Schedule {
     
     id;
     
-    get isQueue(){
+    isQueue(){
         return taskMap.has(this.id);
     }
     
@@ -55,6 +55,11 @@ export class Schedule {
             rt = lastExecuteTimeRecords.get(this);
         return rt;
     }
+    /**
+     * 
+     * @param {{async?: boolean, type: any, period?:number, delay?:number}} props 
+     * @param {() => void} callback 
+     */
     constructor(props, callback){
         let { async, period, delay, type } = props;
         this.async = (!!async)?true:false;
@@ -250,7 +255,7 @@ export default class YoniScheduler {
     /**
      * @param {Number|Schedule} taskId
      */
-    static removeSchedlue(idOrSchedule){
+    static removeSchedule(idOrSchedule){
         let id;
         if (idOrSchedule instanceof Schedule)
             id = idOrSchedule.id;

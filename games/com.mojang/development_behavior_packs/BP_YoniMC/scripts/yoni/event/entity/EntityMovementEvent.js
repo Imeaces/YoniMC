@@ -6,7 +6,7 @@ import { YoniScheduler, Schedule } from "yoni/schedule.js";
 
 export class EntityMovementEventSignal extends EventSignal {
     subscribe(callback, options){
-        super(callback, options);
+        super.subscribe(callback, options);
         if (options != null){
             filtersList.push(options);
         }
@@ -119,7 +119,7 @@ const schedule = new Schedule ({
         
         trigger.triggerEvent(entity, oldLoc, newLoc, movementKeys);
     }
-};
+});
 
 const trigger = new EventTriggerBuilder()
     .id("yoni:entityMovement")

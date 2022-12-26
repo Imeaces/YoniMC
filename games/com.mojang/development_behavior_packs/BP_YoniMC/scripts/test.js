@@ -1,27 +1,25 @@
-//import { ChatCommand } from "yoni/command/ChatCommand.js";
-//import { Command } from "yoni/command.js";
-//import { Minecraft, dim, VanillaWorld, VanillaEvents, VanillaScoreboard, Gametest, runTask } from "yoni/basis.js";
-//import { EventListener } from "yoni/event.js";
-//import { getErrorMsg } from "yoni/util/console.js";
-//import { YoniEntity, Player as YoniPlayer } from "yoni/entity.js";
+import { ChatCommand } from "yoni/util/ChatCommand.js";
+import { Command } from "yoni/command.js";
+import { Minecraft, dim, VanillaWorld, VanillaEvents, VanillaScoreboard, Gametest, runTask } from "yoni/basis.js";
+import { EventListener } from "yoni/event.js";
+import { getErrorMsg } from "yoni/util/console.js";
+import { YoniEntity, Player as YoniPlayer } from "yoni/entity.js";
 import { send, say } from "yoni/util/utils.js";
-//import { Logger } from "yoni/util/Logger.js";
-//import { isDebug } from "yoni/debug.js";
-//import Scoreboard from "yoni/scoreboard.js";
-//import { getKeys } from "yoni/lib/utils.js";
-//import { YoniScheduler } from "yoni/schedule.js";
+import { Logger } from "yoni/util/Logger.js";
+import { isDebug } from "yoni/debug.js";
+import Scoreboard from "yoni/scoreboard.js";
+import { getKeys } from "yoni/lib/utils.js";
+import { YoniScheduler } from "yoni/schedule.js";
 
-const { EntityTypes, DynamicPropertiesDefinition } = Minecraft;
 const logger = new Logger("TEST");
-let num = 0;
 
 if (isDebug()){
 
 
 ChatCommand.registerCommand("test", (sender, rawCommand, label, args)=>{
-    YoniScheduler.runTask(()=>{
-        
-    });
+    v.run(()=>{
+        player.sendMessage("成功");
+    })
 });
 
 
@@ -63,6 +61,20 @@ EventListener.register("yoni:raidEventTrigger", (event)=>{
     event.source.onScreenDisplay.setTitle("你遭遇了袭击！");
 });
 
+EventListener.register("minecraft:beforePlayerSleep", (event)=>{
+    const player = YoniEntity.from(event.player);
+    player.sendMessage("不许睡");
+    event.cancel = true;
+});
+
+class ASystem extends Minecraft.System {
+    constructor (){
+        const v = {};
+        return Object.setPrototypeOf(v, Minecraft.System.prototype);
+    }
+}
+
+const v = new ASystem();
 
 /*
 Array.from(EventTypes.getEventTypes().keys()).forEach(key=>{

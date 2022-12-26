@@ -19,6 +19,9 @@ export class PlayerRespawnEvent extends PlayerEvent{
 const DeadPlayers = new WeakSet();
 const DeadPlayerLocationRecords = new WeakMap();
 
+/**
+ * @type {number | null}
+ */
 let eventId0 = null;
 const schedule = new Schedule({
     async: false,
@@ -36,7 +39,7 @@ const schedule = new Schedule({
             return;
         }
         if (YoniEntity.getCurrentHealth(player) > 0){
-            let coords = DeadPlayerCoordsRecords.get(player);
+            let coords = DeadPlayerLocationRecords.get(player);
             DeadPlayers.delete(player);
             DeadPlayerLocationRecords.delete(player);
             trigger.fireEvent(player, coords);
@@ -49,7 +52,7 @@ function start(){
         let player = event.player;
         let location = new Location(player);
         DeadPlayers.add(player);
-        DeadPlayerCoordsRecords.set(player, coords);
+        DeadPlayerLocationRecords.set(player, location);
         if (!schedule.isQueue()){
             YoniScheduler.addSchedule(schedule);
         }
