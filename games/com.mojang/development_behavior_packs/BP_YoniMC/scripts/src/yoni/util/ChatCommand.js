@@ -1,6 +1,6 @@
 import { VanillaEvents }  from "../basis.js";
 import { EventListener } from "../event.js";
-import { EntityBase } from "../entity.js";
+import { EntityBase, YoniPlayer } from "../entity.js";
 import { Logger } from "../util/Logger.js";
 
 const logger = new Logger("ChatCommand");
@@ -99,7 +99,7 @@ export default class ChatCommand {
     /**
      * 
      * @param {string} command 
-     * @param {(sender:YoniEntity, rawCommand:string, label:string, args:string[])=>void} executor 
+     * @param {(sender: YoniPlayer, rawCommand:string, label:string, args:string[])=>void} executor 
      */
     static registerCommand(command, executor){
         if (typeof command !== "string" || command.length === 0)

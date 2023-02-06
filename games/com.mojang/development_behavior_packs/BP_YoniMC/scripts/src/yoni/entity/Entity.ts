@@ -170,5 +170,7 @@ copyPropertiesWithoutOverride(Entity.prototype, Minecraft.Entity.prototype, "van
 
 EntityClassRegistry.register(Entity, Minecraft.Entity);
 
-export default Entity;
-export { Entity };
+type YoniEntity = Entity & Minecraft.Entity;
+
+export default YoniEntity;
+export { YoniEntity, Entity };

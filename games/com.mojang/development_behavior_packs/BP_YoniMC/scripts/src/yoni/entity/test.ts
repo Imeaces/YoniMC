@@ -1,7 +1,7 @@
-import { Player } from "./Player.js";
+import { YoniPlayer } from "./Player.js";
 
 // @ts-ignore
-let p: Player = {};
+let p: YoniPlayer = {};
 
 p.kill();
 

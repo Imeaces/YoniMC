@@ -576,7 +576,7 @@ class Objective {
         checkScoreIsInRange(score);
         this.__doPlayerCommand("add", one, score);
     }
-    __doPlayerCommand(option, one, ...args){
+    __doPlayerCommand(option: string, one: EntryValueType, ...args: any[]){
         throw new Error("not implemented");
     }
 }
@@ -584,6 +584,7 @@ class Objective {
 //即使ts不喜欢动态注入，我也要这么做
 //尽可能保证执行效果一致
 if (emitLegacyMode){
+    // @ts-ignore 旧版兼容，忽略类型不存在
     if (overworld.runCommand){
         Objective.prototype.__doPlayerCommand = Objective.prototype.__playerCommand
     }/* else if (Minecraft.ScoreboardObjective.prototype.setScore){
@@ -591,6 +592,7 @@ if (emitLegacyMode){
     }*/ else {
         // @ts-ignore
         Objective.prototype.addScore = function addScore(this: Objective, one, score) {
+            // @ts-ignore
             return this.postAddScore.apply(this, arguments);
         };
         // @ts-ignore

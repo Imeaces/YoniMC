@@ -1,7 +1,7 @@
 import { VanillaScoreboard, Minecraft, Gametest } from "../basis.js";
 import { EntityBase } from "../entity/EntityBase.js";
-import { Entity } from "../entity/Entity.js";
-import { Player } from "../entity/Player.js";
+import Entity from "../entity/Entity.js";
+import Player from "../entity/Player.js";
 import { UnknownEntryError } from "./ScoreboardError.js";
 import { EntryType, EntryValueType } from "./EntryType.js";
 
@@ -415,5 +415,7 @@ if (useOptionalFasterCode){
             }
         }, 0, 600, true); //每600t运行一次任务，异步
     });
-
+//接下来的想法是弄好原版scbid的信息缓存
+//但比较麻烦的是小概率事件
 }
+

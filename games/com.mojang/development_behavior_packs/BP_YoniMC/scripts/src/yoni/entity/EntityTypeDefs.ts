@@ -1,12 +1,12 @@
-import { Player } from "./Player.js";
-import { SimulatedPlayer } from "./SimulatedPlayer.js";
-import { Entity } from "./Entity.js";
+import YoniPlayer from "./Player.js";
+import YoniSimulatedPlayer from "./SimulatedPlayer.js";
+import YoniEntity from "./Entity.js";
 import { Minecraft, Gametest } from "../basis.js";
 
 export type YoniEntityType = 
-    Entity
-    | Player
-    | SimulatedPlayer
+    YoniEntity
+    | YoniPlayer
+    | YoniSimulatedPlayer
 
 export type MinecraftEntityType = 
     Minecraft.Entity

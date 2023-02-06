@@ -8,9 +8,6 @@ import {
     Entity,
     Player,
     SimulatedPlayer,
-    YoniEntity,
-    YoniPlayer,
-    YoniSimulatedPlayer
 } from "./entity.js";
 import {
     Minecraft,
@@ -20,7 +17,7 @@ import {
     VanillaScoreboard,
     VanillaEvents,
     dim,
-    runTask
+    runTask,
 } from "./basis.js";
 import { Logger, log, console } from "./util/Logger.js";
 import { World } from "./world.js";
@@ -99,9 +96,6 @@ export {
     Player,
     Entity,
     SimulatedPlayer,
-    YoniEntity,
-    YoniPlayer,
-    YoniSimulatedPlayer,
     
     Utils,
     Yoni,
@@ -116,7 +110,6 @@ if (injectGlobal){
     globalThis.world = World;
     globalThis.EntityBase = EntityBase;
     globalThis.Entity = Entity;
-    globalThis.YoniEntity = Entity;
     globalThis.Player = Player;
     globalThis.SimulatedEntity = SimulatedPlayer;
     globalThis.EventTypes = EventTypes;

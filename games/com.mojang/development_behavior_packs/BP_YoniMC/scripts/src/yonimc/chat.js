@@ -1,6 +1,6 @@
 import { Command } from "../yoni/command.js";
 import { EventListener } from "../yoni/event.js";
-import { YoniEntity } from "../yoni/entity.js";
+import { EntityBase } from "../yoni/entity.js";
 import { ChatCommand } from "../yoni/util/ChatCommand.js";
 import { Minecraft } from "../yoni/basis.js";
 const { MinecraftEffectTypes } = Minecraft;
@@ -8,7 +8,7 @@ const { MinecraftEffectTypes } = Minecraft;
 const regex = /@(?:all|here)\b/m;
 
 EventListener.register("chat", (event) => {
-    let runner = YoniEntity.from(event.sender);
+    let runner = EntityBase.from(event.sender);
     if (regex.test(event.message)){
         Command.fetchExecute(runner, "title @a title @s");
         Command.fetchExecute(runner, "title @a subtitle @了所有人");

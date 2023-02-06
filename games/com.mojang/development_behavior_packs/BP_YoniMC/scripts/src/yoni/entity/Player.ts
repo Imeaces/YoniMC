@@ -124,4 +124,4 @@ EntityClassRegistry.register(Player, Minecraft.Player);
 type YoniPlayer = Player & Minecraft.Player;
 
 export default YoniPlayer;
-export { YoniPlayer as Player };
+export { YoniPlayer, Player };

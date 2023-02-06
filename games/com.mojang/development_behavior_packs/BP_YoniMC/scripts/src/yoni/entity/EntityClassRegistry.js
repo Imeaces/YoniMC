@@ -52,6 +52,8 @@ export class EntityClassRegistry {
         
     }
     static register(entityClass, originalEntityClass){
+        console.info("register entity class {}, ori: {}", entityClass.name, originalEntityClass.name);
+        
         if (! (entityClass.prototype instanceof EntityBase))
             throw new TypeError("the entityClass has not implemented EntityBase");
         

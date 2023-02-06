@@ -17,5 +17,7 @@ copyPropertiesWithoutOverride(SimulatedPlayer.prototype, Gametest.SimulatedPlaye
 
 EntityClassRegistry.register(SimulatedPlayer, Gametest.SimulatedPlayer);
 
-export default SimulatedPlayer;
-export { SimulatedPlayer };
+type YoniSimulatedPlayer = SimulatedPlayer & Gametest.SimulatedPlayer;
+
+export default YoniSimulatedPlayer;
+export { YoniSimulatedPlayer, SimulatedPlayer };

@@ -1,5 +1,5 @@
 import { Minecraft, VanillaWorld, dim } from "../yoni/basis.js";
-import { YoniEntity } from "../yoni/entity.js";
+import { EntityBase } from "../yoni/entity.js";
 import Command from "../yoni/command.js";
 import { Scoreboard } from "../yoni/scoreboard.js";
 import { EventListener } from "../yoni/event.js";

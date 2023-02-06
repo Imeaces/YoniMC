@@ -24,6 +24,8 @@ export const overrideDefaultConsole = true;
 export const enableScoreboardIdentityByNumberIdQuery = false;
 
 //使用更复杂的代码（可能也更好）去尝试兼容旧版本，这可能会降低性能
+//目前必须启用此选项以兼容原本的objective.setScore
+//不开启此选项时只能使用objective.postSetScore
 export const emitLegacyMode = true;
 
 export const injectGlobal = false;

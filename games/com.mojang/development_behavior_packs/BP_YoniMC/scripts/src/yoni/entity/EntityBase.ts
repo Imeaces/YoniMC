@@ -49,10 +49,12 @@ class EntityBase {
     
     /**
      * 由实体对象创建对应的 YoniEntity 实体对象，这个方法确保了实体对象的唯一。
+     * 
+     * 如果要确保一定能获取到 YoniEntity 对象，请使用 {@link EntityBase.getYoniEntity}
      * @param {any} entity - 可以被认为是实体的东西，出于代码便利，允许传入任何值。实际上只有实体类型的对象才有效果。
      * @return {YoniEntityType} 如果 `entity` 不为实体类型，则返回 `null`。
      */
-    static from(entity): YoniEntityType {
+    static from(entity): YoniEntityType | null {
         return EntityClassRegistry.from(entity);
     }
     
@@ -241,12 +243,12 @@ class EntityBase {
     /**
      * 得到一个Entity
      * @param {EntityType} entity
-     * @returns {YoniEntityType|null}
+     * @returns {YoniEntityType}
      * @throws 如果参数不是实体将会抛出错误
      */
-    static getYoniEntity(entity){
+    static getYoniEntity(entity: EntityType): YoniEntityType {
         EntityBase.checkIsEntity(entity);
-        return EntityBase.from(entity);
+        return EntityBase.from(entity) as unknown as YoniEntityType;
     }
     
     /**
