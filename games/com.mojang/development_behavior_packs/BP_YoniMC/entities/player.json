@@ -12,9 +12,11 @@
             "player.yonimc.species.guxi", //准备混合脚本控制，其中，几乎不变的东西由指令控制
             //{ "condition.guxi.val": "query.variant == 2695" },
             //{ "status.guxi.health_by_energy_state": "query.variant == 2695" },
-            "player.yonimc.species.vanilla.player"
+            "player.yonimc.species.vanilla.player",
+            "entity.status.sleeping"
     ]},
     "animations": {
+        "entity.status.sleeping": "controller.animation.entity.status.is_sleeping",
         "entity.status.alive": "controller.animation.entity.status.alive",
         "entity.yonimc.effect": "controller.animation.entity.yonimc.effect",
         //"status.guxi.health_by_energy_state": "controller.animation.entity.status.guxi.health_by_energy_state",

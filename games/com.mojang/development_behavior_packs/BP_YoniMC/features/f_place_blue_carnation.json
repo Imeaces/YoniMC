@@ -1,0 +1,14 @@
+{
+  "format_version": "1.13.0",
+  "minecraft:single_block_feature": {
+    "description": {
+      "identifier": "yonimc:f_place_blue_carnation"
+    },
+    "places_block": "yonimc:blue_carnation",
+    "enforce_survivability_rules": false,
+    "enforce_placement_rules": false,
+    "may_replace": [
+      "minecraft:air"
+    ]
+  }
+}

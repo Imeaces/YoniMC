@@ -99,6 +99,23 @@
           ]
         }
       }
+    },
+    "controller.animation.entity.status.is_sleeping": {
+      "initial_state": "is_not_sleep",
+      "states": {
+        "is_not_sleep": {
+          "on_entry": [ "/tag @s remove flag:status.is_sleeping" ],
+          "transitions": [
+            { "is_sleeping": "query.is_sleeping" }
+          ]
+        },
+        "is_sleeping": {
+          "on_entry": [ "/tag @s add flag:status.is_sleeping" ],
+          "transitions": [
+            { "is_not_sleep": "!query.is_sleeping" }
+          ]
+        }
+      }
     }
   }
 }

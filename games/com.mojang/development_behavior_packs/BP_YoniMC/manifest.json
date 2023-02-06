@@ -4,7 +4,7 @@
         "name": "YoniMC",
         "description": "YoniMC 可能的不一样的世界",
         "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
-        "version": [0, 8, 4],
+        "version": [0, 9, 0],
         "min_engine_version": [1, 19, 50]
     },
     "modules": [
@@ -12,7 +12,7 @@
             "description": "data:yoni",
             "type": "data",
             "uuid": "6e360e97-62a7-4515-a052-3813e306488e",
-            "version": [0, 6, 11930]
+            "version": [0, 7, 0]
         },
         {
             "description": "scripts:yoni",
@@ -35,14 +35,14 @@
         {
             "module_name": "@minecraft/server-ui",
             "version": "1.0.0-beta"
-        },/*
+        },
         {
             "module_name": "@minecraft/server-net",
             "version": "1.0.0-beta"
-        },*/
+        },
         { //YoniMC资源包
             "uuid": "86e4face-ed0c-4945-bd61-f648424cd056",
-            "version": [0, 1, 9]
+            "version": [0, 1, 10]
         }
     ],
     "metadata": {

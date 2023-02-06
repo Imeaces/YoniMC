@@ -17,3 +17,5 @@ text=auto
 *.py eof=lf
 *.sh eof=lf
 *.yml eof=lf
+
+**/*.json linguist-language=jsonc

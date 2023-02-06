@@ -1,0 +1,24 @@
+  
+  //@def feature
+  "minecraft:single_block_feature": {
+    // @type content
+    // @specific single_block
+    "description": {
+      "identifier": "yonimc:flowers_feature"
+    },
+    
+    // @place "yonimc:blue_carnation"
+    "places_block": "yonimc:blue_carnation",
+    
+    // @condition can_place
+    "enforce_placement_rules": false,
+    
+    // @condition can_plant_survive
+    "enforce_survivability_rules": false,
+    
+    // #on [ "grass", "dirt" ]
+    "may_place_on": [
+      "minecraft:grass",
+      "minecraft:dirt"
+    ]
+  }
