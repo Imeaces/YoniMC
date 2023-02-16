@@ -1,3 +1,5 @@
+# range [-10, 20]
+
 execute if score @s guxi:ef_mining matches -1 run effect @s mining_fatigue 3 0 true
 execute if score @s guxi:ef_mining matches -2 run effect @s mining_fatigue 3 1 true
 execute if score @s guxi:ef_mining matches -3 run effect @s mining_fatigue 3 2 true

@@ -1,3 +1,5 @@
+# [-10, 20]
+
 execute if score @s guxi:ef_damage matches -1 run effect @s weakness 3 0 true
 execute if score @s guxi:ef_damage matches -2 run effect @s weakness 3 1 true
 execute if score @s guxi:ef_damage matches -3 run effect @s weakness 3 2 true
