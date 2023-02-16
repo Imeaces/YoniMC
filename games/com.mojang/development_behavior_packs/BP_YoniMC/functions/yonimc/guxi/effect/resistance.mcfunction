@@ -1,3 +1,5 @@
+# [0, 11]
+
 #全防
 execute if score @s guxi:ef_res matches 11.. run effect @s resistance 3 3 true
 execute if score @s guxi:ef_res matches 10 run effect @s resistance 3 3 true

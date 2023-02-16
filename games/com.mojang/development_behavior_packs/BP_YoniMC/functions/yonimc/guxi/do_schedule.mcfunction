@@ -12,3 +12,5 @@ function yonimc/guxi/effect/play
 function yonimc/guxi/play_energy
 
 function yonimc/guxi/play_health
+
+function yonimc/guxi/creation/elytra/build_structure

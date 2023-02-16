@@ -1,0 +1,60 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.entity.player.yonimc.species.vanilla.player": {
+            //while (true)
+            //    run func
+            "initial_state": "init",
+            "states": {
+                "init": {
+                    "transitions": [
+                        { "loop0": "query.property('yonimc:species0') == 1" },
+                        { "spawn_wait": "(1.0)"}
+                    ],
+                    "on_entry": [
+                    ]
+                },
+                "spawn_wait": {
+                    "transitions": [
+                        { "spawn_start": "query.property('yonimc:species0') == 1" }
+                    ]
+                },
+                "spawn_start": {
+                    "transitions": [
+                        { "loop0": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "/say species as minecraft_player"
+                    ]
+                },
+                "drop": {
+                    "transitions": [
+                        { "init": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        //"/event entity @s yonimc:remove_all",
+                        "/say species drop minecraft_player"
+                    ]
+                },
+                "loop0": {
+                    "transitions": [
+                        { "loop1": "query.property('yonimc:species0') == 1" },
+                        { "drop": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "/function yonimc/species/vanilla/player"
+                    ]
+                },
+                "loop1": {
+                    "transitions": [
+                        { "loop0": "query.property('yonimc:species0') == 1" },
+                        { "drop": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "/function yonimc/species/vanilla/player"
+                    ]
+                }
+            }
+        }
+    }
+}
