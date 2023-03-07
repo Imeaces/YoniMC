@@ -17,7 +17,7 @@ import {
     emitLegacyMode
 } from "../config.js";
 import { EntityBase } from "../entity.js";
-import { EntityType } from "../entity/EntityTypeDefs.js";
+import { EntityValue } from "../entity/EntityTypeDefs.js";
 import { Command } from "../command.js";
 
 /**
@@ -337,54 +337,19 @@ class Objective {
     }
     
     /**
-     * 为分数持有者在记分项上执行特定的操作。
-     * @param {string} option - 操作类型。
-     * @param {EntryValueType} one - 可能为分数持有者的值。
-     * @param {...any} args - 操作所需要的参数。
-     * @throws 未知的命令错误。
-     * @throws 若尝试为虚拟玩家设置分数，且世界中有相同名字的玩家时，抛出 `NameConflictError`。
-     */
-    __playerCommand(option: string, one: EntryValueType, ...args: any[]): void{
-        let { entity, name, type } = Objective.findCommandRequirement(one);
-        
-        if (type === EntryType.PLAYER || type === EntryType.ENTITY){
-            let cmd = Command.getCommandMoreStrict("scoreboard", "players", option, "@s", this.#id);
-            cmd = Command.getCommand(cmd, ...args);
-            let result = Command.execute(entity, cmd);
-            if (result.statusCode !== StatusCode.success){
-                this.checkUnregistered();
-                //我觉得这里应该不会被执行到了，如果被执行到，请告诉我
-                throw new Error(`Could not ${option} score, `
-                    + "maybe entity or player disappeared?"
-                    + "\n  cause by: "
-                    + result.statusMessage);
-            }
-        } else {
-            let cmd = Command.getCommandMoreStrict("scoreboard", "players", option, name, this.#id);
-            cmd = Command.getCommand(cmd, ...args);
-            let result = Command.run(cmd);
-            if (result.statusCode !== StatusCode.success){
-                this.checkUnregistered();
-                if (Array.from(VanillaWorld.getPlayers({name})).length !== 0)
-                    throw new NameConflictError(name as string);
-                
-                //我觉得这里应该不会被执行到了，如果被执行到，请告诉我
-                throw new Error(`Could not ${option} score, `
-                    + "maybe entity or player disappeared?"
-                    + "\n  cause by: "
-                    + result.statusMessage);
-            }
-        }
-    }
-    
-    /**
      * 寻找用于在记分项上执行特定的操作的与分数持有者有关的信息。
      * @param {EntryValueType} one - 可能为分数持有者的值。
      */
-    static findCommandRequirement(one: EntryValueType): {name?: string, type: EntryType, entity?: EntityBase | Minecraft.Entity, scbid?: Minecraft.ScoreboardIdentity, entry?: Entry }{
+    static findCommandRequirement(one: EntryValueType): {
+        name?: string,
+        type: EntryType,
+        entity?: EntityValue,
+        scbid?: Minecraft.ScoreboardIdentity,
+        entry?: Entry
+    }{
         let name: string | undefined = undefined;
         let type: EntryType | Minecraft.ScoreboardIdentityType;
-        let entity: EntityType | undefined = undefined;
+        let entity: EntityValue | undefined = undefined;
         let scbid = (one instanceof Minecraft.ScoreboardIdentity) ? one : undefined;
         let entry = (one instanceof Entry) ? one : undefined;
         
@@ -496,30 +461,75 @@ class Objective {
     
     /**
      * 将分数持有者在记分项上的分数设置为指定的值。
-     * @deprecated 由于新版本移除了runCommand()，故原有的方法
-     * 不再可用，请改用 {@link Objective.postSetScore}。
      * @param {EntryValueType} one - 可能为分数持有者的值。
      * @param {number} score - 要设置的分数。
      * @throws 若分数不在可用的范围，抛出 `ScoreRangeError`。
      */
-    setScore(one: EntryValueType, score: number): number {
+    setScore(one: EntryValueType, score: number){
         checkScoreIsInRange(score);
-        this.__doPlayerCommand("set", one, score);
-        return score;
+        
+        let entry: Entry;
+        if (one instanceof Entry)
+            entry = one;
+        else
+            entry = Entry.guessEntry(one);
+        
+        if (entry.vanillaScbid)
+            this.vanillaObjective.setScore(entry.vanillaScbid, score);
+        
+        throw new Error("scbid doesn't initialize");
+    }
+    /**
+     * 为分数持有者在记分项上增加分数。
+     * @param {EntryValueType} one - 可能为分数持有者的值。
+     * @param score - 要增加的分数。
+     * @returns 执行成功后，此 `Promise` 将会敲定。
+     * @throws 若分数不在可用的范围，抛出 `ScoreRangeError`。
+     */
+    addScore(one: EntryValueType, score: number){
+        checkScoreIsInRange(score);
+        
+        let entry: Entry;
+        if (one instanceof Entry)
+            entry = one;
+        else
+            entry = Entry.guessEntry(one);
+        
+        score = this.getScore(entry) ?? 0 + score;
+        //取32位整数
+        score = score >> 0;
+        
+        if (entry.vanillaScbid)
+            this.vanillaObjective.setScore(entry.vanillaScbid, score);
+        
+        throw new Error("scbid doesn't initialize");
     }
     /**
      * 为分数持有者在记分项上减少分数。
-     * @deprecated 由于新版本移除了runCommand()，故原有的方法
-     * 不再可用，请改用 {@link Objective.postRemoveScore}。
      * @param {EntryValueType} one - 可能为分数持有者的值。
      * @param {number} score - 要减少的分数。
      * @returns {Promise<void>} 执行成功后，此 `Promise` 将会敲定。
      * @throws 若分数不在可用的范围，抛出 `ScoreRangeError`。
      */
-    removeScore(one: EntryValueType, score: number): void {
+    removeScore(one: EntryValueType, score: number){
         checkScoreIsInRange(score);
-        this.__doPlayerCommand("remove", one, score);
+        
+        let entry: Entry;
+        if (one instanceof Entry)
+            entry = one;
+        else
+            entry = Entry.guessEntry(one);
+        
+        score = this.getScore(entry) ?? 0 - score;
+        //取32位整数
+        score = score >> 0;
+        
+        if (entry.vanillaScbid)
+            this.vanillaObjective.setScore(entry.vanillaScbid, score);
+        
+        throw new Error("scbid doesn't initialize");
     }
+    
     /**
      * 为分数持有者在记分项上设置一个随机的分数。
      * @deprecated 由于新版本移除了runCommand()，故原有的方法
@@ -540,19 +550,8 @@ class Objective {
      * @throws 若分数不在可用的范围，抛出 `ScoreRangeError`。
      * @throws 若 `useBuiltIn` 为 `false` ，且 `min > max` 。
      */
-    randomScore(one: EntryValueType, min: number = -2147483647, max: number = 2147483647, useBuiltIn: boolean = true): void {
-        checkScoreIsInRange(min, max);
-        if (useBuiltIn) {
-            let vals = max - min;
-            let randomScore = vals * Math.random();
-            let result = Math.round(randomScore + min);
-            this.setScore(one, result);
-        } else {
-            if (min > max){
-                throw new Error("min > max");
-            }
-            this.__doPlayerCommand("random", one, min, max);
-        }
+    randomScore(one: EntryValueType, min: number = -2147483647, max: number = 2147483647, useBuiltIn: boolean = true){
+        return this.postRandomScore.apply(this, <any>arguments);
     }
     /**
      * 在记分项上重置指定分数持有者的分数。
@@ -561,61 +560,8 @@ class Objective {
      * @param {EntryValueType} one - 可能为分数持有者的值。
      * @returns {Promise<void>} 执行成功后，此 `Promise` 将会敲定。
      */
-    resetScore(one: EntryValueType): void {
-        this.__doPlayerCommand("reset", one);
-    }
-    /**
-     * 为分数持有者在记分项上增加分数。
-     * @deprecated 由于新版本移除了runCommand()，故原有的方法
-     * 不再可用，请改用 {@link Objective.postAddScore}。
-     * @param {EntryValueType} one - 可能为分数持有者的值。
-     * @param score - 要增加的分数。
-     * @returns 执行成功后，此 `Promise` 将会敲定。
-     * @throws 若分数不在可用的范围，抛出 `ScoreRangeError`。
-     */
-    addScore(one: EntryValueType, score: number): void {
-        checkScoreIsInRange(score);
-        this.__doPlayerCommand("add", one, score);
-    }
-    __doPlayerCommand(option: string, one: EntryValueType, ...args: any[]){
-        throw new Error("not implemented");
-    }
-}
-
-//即使ts不喜欢动态注入，我也要这么做
-//尽可能保证执行效果一致
-if (emitLegacyMode){
-    // @ts-ignore 旧版兼容，忽略类型不存在
-    if (overworld.runCommand){
-        Objective.prototype.__doPlayerCommand = Objective.prototype.__playerCommand
-    }/* else if (Minecraft.ScoreboardObjective.prototype.setScore){
-        
-    }*/ else {
-        // @ts-ignore
-        Objective.prototype.addScore = function addScore(this: Objective, one, score) {
-            // @ts-ignore
-            return this.postAddScore.apply(this, arguments);
-        };
-        // @ts-ignore
-        Objective.prototype.removeScore = function removeScore(this: Objective, one, score) {
-            // @ts-ignore
-            return this.postRemoveScore.apply(this, arguments);
-        };
-        // @ts-ignore
-        Objective.prototype.setScore = function setScore(this: Objective, one, score) {
-            // @ts-ignore
-            return this.postSetScore.apply(this, arguments);
-        };
-        // @ts-ignore
-        Objective.prototype.resetScore = function resetScore(this: Objective, one) {
-            // @ts-ignore
-            return this.postResetScore.apply(this, arguments);
-        };
-        // @ts-ignore
-        Objective.prototype.randomScore = function randomScore(this: Objective, one, min = -2147483648, max = 2147483647, useBuiltIn = true) {
-            // @ts-ignore
-            return this.postRandomScore.apply(this, arguments);
-        };
+    resetScore(one: EntryValueType){
+        return this.postResetScore.apply(this, <any>arguments);
     }
 }
 

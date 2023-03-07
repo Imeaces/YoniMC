@@ -31,8 +31,6 @@ execute if score @s yoni:guxi matches 0 if entity @s[tag=flag:status.not_alive] 
 execute if entity @s[tag=flag:status.not_alive] if score @s yoni:guxi matches -20 run scoreboard players set @s yoni:guxi_1 -1
 
 #: if unexpected kill and reset
-execute if score @s yoni:guxi_1 matches 0 run tell @s 意料之外的情况
-execute if score @s yoni:guxi_1 matches 0 run tellraw @s {"rawtext":[{"score":{"objective":"yoni:guxi", "name":"@s"}}]}
-execute if score @s yoni:guxi_1 matches 0 run tellraw @s {"rawtext":[{"score":{"objective":"alive", "name":"@s"}}]}
-execute if score @s yoni:guxi_1 matches 0 run tellraw @s {"rawtext":[{"score":{"objective":"yoni:guxi_1", "name":"@s"}}]}
-execute if score @s yoni:guxi_1 matches 0 run kill @s
+execute if score @s yoni:guxi_1 matches 0 run tellraw @s { "rawtext": [{ "translate": "意料之外的情况: \nyoni:guxi: %s\nyoni:guxi_1: %s","with": {"rawtext": [{"score": {"objective": "yoni:guxi","name": "@s"}},{"score": {"objective": "yoni:guxi_1","name": "@s"}}]}}]}
+execute if score @s yoni:guxi_1 matches 0 if entity @s[tag=flag:status.is_alive] run tellraw @s {"rawtext": [{"text":"flag:status.is_alive"}]}
+execute if score @s yoni:guxi_1 matches 0 if entity @s[tag=flag:status.not_alive] run tellraw @s {"rawtext": [{"text":"flag:status.not_alive"}]}

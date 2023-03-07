@@ -8,6 +8,9 @@ import {
     Entity,
     Player,
     SimulatedPlayer,
+    YoniEntity,
+    YoniPlayer,
+    YoniSimulatedPlayer,
 } from "./entity.js";
 import {
     Minecraft,
@@ -38,6 +41,7 @@ import * as YoniUtils from "./util/utils.js";
 import { ChatCommand } from "./util/ChatCommand.js";
 import { Location } from "./Location.js";
 import { assignAllPropertiesWithoutOverride } from "./lib/ObjectUtils.js";
+import { Dimension, YoniDimension } from "./dimension.js";
 
 const Utils = (()=>{
     let obj = {};
@@ -61,6 +65,13 @@ const Vanilla = {
 }
 
 export {
+    YoniPlayer,
+    YoniEntity,
+    YoniSimulatedPlayer,
+    YoniDimension,
+}
+
+export {
     EventTypes,
     EventListener,
     EventSignal,
@@ -71,6 +82,7 @@ export {
     Entry,
     
     World,
+    Dimension,
     
     dim,
     Minecraft,

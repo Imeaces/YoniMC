@@ -1,6 +1,6 @@
 import { EventListener, EventSignal, EventTriggerBuilder } from "../../event.js";
 import { PlayerEvent } from "./PlayerEvent.js";
-import { VanillaWorld } from "../../basis.js";
+import { VanillaWorld, Minecraft } from "../../basis.js";
 import { YoniScheduler, Schedule } from "../../schedule.js";
 
 export class PlayerJoinedEvent extends PlayerEvent {
@@ -8,12 +8,13 @@ export class PlayerJoinedEvent extends PlayerEvent {
         super(player);
     }
     async kickPlayer(){
-        this.player.kick("加入游戏被取消");
+        await this.player.kick("加入游戏被取消");
     }
 }
 
-export class PlayerDeadEventSignal extends EventSignal {
+export class PlayerJoinedEventSignal extends EventSignal {
 }
+
 
 const joiningPlayers = new Set();
 /**
@@ -31,9 +32,12 @@ const schedule = new Schedule({
         return;
     }
     
-    [...VanillaWorld.getPlayers()].forEach((pl)=>{
-        if (joiningPlayers.has(pl)){
-            joiningPlayers.delete(pl);
+    let onlinePlayers = Array.from(VanillaWorld.getPlayers());
+    
+    joiningPlayers.forEach((plName)=>{
+        let pl = onlinePlayers.find(pl => pl.name === plName);
+        if (pl != null){
+            joiningPlayers.delete(plName);
             trigger.triggerEvent(pl);
         }
     });
@@ -41,12 +45,12 @@ const schedule = new Schedule({
 
 const trigger = new EventTriggerBuilder()
     .id("yoni:playerJoined")
-    .eventSignalClass(PlayerDeadEventSignal)
+    .eventSignalClass(PlayerJoinedEventSignal)
     .eventClass(PlayerJoinedEvent)
     .whenFirstSubscribe(()=>{
         YoniScheduler.addSchedule(schedule);
         eventId = EventListener.register("minecraft:playerJoin", (event)=>{
-            joiningPlayers.add(event.player);
+            joiningPlayers.add(event.playerName);
         });
     })
     .whenLastUnsubscribe(()=>{

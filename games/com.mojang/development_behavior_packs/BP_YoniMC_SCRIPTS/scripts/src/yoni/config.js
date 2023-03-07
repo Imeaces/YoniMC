@@ -6,7 +6,7 @@ export const debug = true;
 
 //日志输出等级
 //0: none, 1: fatal, 2: error, 3: warn, 4: debug, 5: trace
-export const logLevel = 3;
+export const logLevel = 4;
 
 //是否将日志输出到ContentLog
 export const outputContentLog = true;

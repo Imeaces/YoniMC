@@ -28,14 +28,14 @@ scoreboard players random @s guxi:op5 0 10000
 #execute @s[tag=guxi:event_adding_energy] ~ ~ ~ scoreboard players add @s guxi:energy 1900
 execute if entity @s[tag=guxi:event_adding_energy] run scoreboard players add @s guxi:energy 38000
 
-execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..50}] run fill ~-1 ~ ~-1 ~1 ~ ~1 obsidian 0 replace lava 0
-execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..50}] run fill ~-1 ~ ~-1 ~1 ~ ~1 stone 0 replace lava -1
-execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..90}] run fill ~-1 ~ ~-1 ~1 ~ ~1 obsidian 0 replace flowing_lava 0
-execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..90}] run fill ~-1 ~ ~-1 ~1 ~ ~1 stone 0 replace flowing_lava -1
+execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..50}] run fill ~-1 ~ ~-1 ~1 ~ ~1 obsidian [] replace lava []
+execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..50}] run fill ~-1 ~ ~-1 ~1 ~ ~1 stone [] replace lava []
+execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..90}] run fill ~-1 ~ ~-1 ~1 ~ ~1 obsidian [] replace flowing_lava []
+execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..90}] run fill ~-1 ~ ~-1 ~1 ~ ~1 stone [] replace flowing_lava []
 
-execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..500}] run fill ~-1 ~ ~-1 ~1 ~ ~1 air 0 replace fire
+execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0..500}] run fill ~-1 ~ ~-1 ~1 ~ ~1 air [] replace fire
 
-execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0}] run fill ~-3 ~ ~-3 ~3 ~ ~3 obsidian 0 replace lava 0
-execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0}] run fill ~-3 ~ ~-3 ~3 ~ ~3 stone 0 replace lava -1
-execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0}] run fill ~-2 ~ ~-2 ~2 ~ ~2 stone 0 replace flowing_lava
+execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0}] run fill ~-3 ~ ~-3 ~3 ~ ~3 obsidian [] replace lava []
+execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0}] run fill ~-3 ~ ~-3 ~3 ~ ~3 stone [] replace lava []
+execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0}] run fill ~-2 ~ ~-2 ~2 ~ ~2 stone [] replace flowing_lava
 execute if entity @s[tag=guxi:event_adding_energy,scores={guxi:op5=0}] run scoreboard players add @s guxi:energies 103

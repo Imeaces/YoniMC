@@ -23,7 +23,7 @@ logger.info("检查yoni:playerJoined");
 });
 logger.info("已订阅yoni:playerJoined");
 
-EventListener.register("minecraft:entityHurt", (event)=> {
+EventListener.register("mcyoni:entityHurt", (event)=> {
     let { damagingEntity, hurtEntity, damage, cause } = event;
     damagingEntity = EntityBase.from(damagingEntity);
     hurtEntity = EntityBase.from(hurtEntity);
@@ -39,7 +39,7 @@ EventListener.register("minecraft:entityHurt", (event)=> {
         o.updateSubtitle(`${cause}: ${damage}`);
     }
 });
-EventListener.register("yoni:playerDead", (event)=>{
+EventListener.register("playerDead", (event)=>{
     let pl = event.player;
     let {x, y, z} = pl.location;
     let dim = pl.dimension;

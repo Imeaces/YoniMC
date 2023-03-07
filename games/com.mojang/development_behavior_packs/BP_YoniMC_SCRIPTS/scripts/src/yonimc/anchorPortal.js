@@ -7,7 +7,7 @@ import { EventListener,
     dim } from "../yoni/index.js";
 
 const radius = 8;
-EventListener.register("minecraft:beforeItemUseOn", (event)=>{
+EventListener.register("mcyoni:beforeItemUseOn", (event)=>{
     if (event.source.typeId !== "minecraft:player") return;
     
     let centerLocation = new Location(event.source.dimension, event.blockLocation);

@@ -14,7 +14,8 @@ function copyPropertiesWithoutOverride(target: {}, src: {}, accessKey: string | 
                 enumerable: propertyDescriptor.enumerable,
                 writable: false,
                 value: function (){
-                    return this[accessKey][key].apply(this[accessKey], arguments);
+                    const self = this[accessKey];
+                    return self[key].apply(self, arguments);
                 }
             });
         } else if (propertyDescriptor !== undefined) {

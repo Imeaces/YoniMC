@@ -1,6 +1,6 @@
 import { VanillaScoreboard, Minecraft, Gametest } from "../basis.js";
 import { EntityBase } from "../entity/EntityBase.js";
-import { EntityType } from "../entity/EntityTypeDefs.js";
+import { EntityValue } from "../entity/EntityTypeDefs.js";
 import Entity from "../entity/Entity.js";
 import Player from "../entity/Player.js";
 import { UnknownEntryError } from "./ScoreboardError.js";
@@ -57,7 +57,7 @@ export interface EntryQueryOptions {
     /**
      * 实体
      */
-    entity?: EntityBase | Minecraft.Entity;
+    entity?: EntityValue;
     /**
      * 类型
      */
@@ -81,7 +81,7 @@ class Entry {
         if (one instanceof Minecraft.ScoreboardIdentity)
             return Entry.findEntry({scbid: one});
         if (EntityBase.isEntity(one))
-            return Entry.findEntry({entity: one as EntityType});
+            return Entry.findEntry({entity: one});
         if (typeof one === "string")
             return Entry.findEntry({name: one, type: EntryType.FAKE_PLAYER});
         if (isFinite(one as number)){
@@ -96,9 +96,8 @@ class Entry {
      * @returns {Entry}
      */
     static findEntry(option: EntryQueryOptions): Entry {
-        
-        let { entity, id, name, scbid, type } = option;
-        entity = EntityBase.isEntity(entity) ? EntityBase.getMinecraftEntity(entity): null;
+        let { id, name, scbid, type, entity } = option;
+        let vanillaEntity: Minecraft.Entity | null = EntityBase.isEntity(entity) ? EntityBase.getMinecraftEntity(entity): null;
         
         let entry;
         
@@ -106,10 +105,10 @@ class Entry {
             name = scbid.displayName;
         }
         
-        //优先级: entity, scbid, id, name
-        if (entity != null && (type === EntryType.PLAYER || type === EntryType.ENTITY)){
+        //优先级: vanillaEntity, scbid, id, name
+        if (vanillaEntity != null && (type === EntryType.PLAYER || type === EntryType.ENTITY)){
         
-            entry = entityRecords.get(entity as Minecraft.Entity);
+            entry = entityRecords.get(vanillaEntity);
             
         }
         
@@ -374,23 +373,25 @@ class Entry {
      */
     constructor(option: EntryQueryOptions){
         let { entity, name, id, scbid, type } = option;
+        let vanillaEntity: Minecraft.Entity | null = null;
+        let vanillaScbid: Minecraft.ScoreboardIdentity | undefined = undefined;
         
         //处理时使用原版实体对象
         if (entity != null){
-            entity = EntityBase.getMinecraftEntity(entity);
+            vanillaEntity = EntityBase.getMinecraftEntity(entity);
         }
         
-        if (entity != null){
-            if (EntityBase.entityIsPlayer(entity)){
+        if (vanillaEntity != null){
+            if (EntityBase.entityIsPlayer(vanillaEntity)){
                 type = EntryType.PLAYER;
             } else {
                 type = EntryType.ENTITY;
             }
-            scbid = (<Minecraft.Entity>entity).scoreboard;
+            vanillaScbid = vanillaEntity.scoreboard;
             
             //若实体在计分板上所有记分项中都没有分数记录
             //其scbid为空
-            id = scbid?.id;
+            id = vanillaScbid?.id;
             
         } else {
             let condF: ((scbid: Minecraft.ScoreboardIdentity) => boolean) | null = null;
@@ -410,22 +411,22 @@ class Entry {
             }
             
             if (condF !== null){
-                scbid = Entry.findVanillaScoreboardParticipant(condF);
+                vanillaScbid = Entry.findVanillaScoreboardParticipant(condF);
             }
             
-            if (scbid != null){
-                type = scbid.type as unknown as EntryType;
-                name = scbid.displayName;
-                id = scbid.id;
+            if (vanillaScbid != null){
+                type = vanillaScbid.type as unknown as EntryType;
+                name = vanillaScbid.displayName;
+                id = vanillaScbid.id;
                 if (EntryType.PLAYER === type
                 || EntryType.ENTITY === type
                 ){
                     try {
                         //若记分对象所代表的实体没有被加载
                         //获取的时候可能会报错
-                        entity = scbid.getEntity();
+                        vanillaEntity = vanillaScbid.getEntity();
                     } catch {
-                        entity = undefined;
+                        vanillaEntity = null;
                     }
                 }
             } else if (id != null){
@@ -438,16 +439,12 @@ class Entry {
             ? id
             : undefined;
         
-        this.#entity = entity != null
-            ? EntityBase.getMinecraftEntity(entity) as Minecraft.Entity
-            : null;
+        this.#entity = vanillaEntity;
             
         this.#name = name as string;
         this.#type = type as unknown as EntryType;
         
-        this.#vanillaScbid = scbid != null
-            ? scbid
-            : undefined
+        this.#vanillaScbid = vanillaScbid;
         
     }
 }

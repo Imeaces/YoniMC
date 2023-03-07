@@ -1,19 +1,94 @@
-import { ChatCommand } from "./yoni/util/ChatCommand.js";
-import { Command } from "./yoni/command.js";
-import { Minecraft, dim, VanillaWorld, VanillaEvents, VanillaScoreboard, Gametest, runTask } from "./yoni/basis.js";
-import { EventListener } from "./yoni/event.js";
-import { getErrorMsg } from "./yoni/util/console.js";
-import { EntityBase, Player as YoniPlayer } from "./yoni/entity.js";
-import { send, say } from "./yoni/util/utils.js";
-import { Logger } from "./yoni/util/Logger.js";
-import { isDebug } from "./yoni/debug.js";
-import Scoreboard from "./yoni/scoreboard.js";
+import { ChatCommand, Command, Minecraft, dim, VanillaWorld, VanillaEvents, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, World } from "./yoni/index.js";
 import { getKeys } from "./yoni/lib/ObjectUtils.js";
-import { YoniScheduler } from "./yoni/schedule.js";
- 
+
 const logger = new Logger("TEST");
 
 
+import { Volume } from "./yoni/storage/Volume.js";
+
+YoniScheduler.runDelayTickTask(async () => {
+    let _commandResult: any = undefined;
+    let volumeArea = {
+        dimension: World.getDimension(0),
+        begin: new Location(1234, 72, 4321),
+        x: 3, y: 5, z: 2
+    };
+    let baseLocation = volumeArea.begin;
+    
+    let cmd = Command.getCommand("execute positioned", baseLocation.x, baseLocation.y, baseLocation.z, "run", "fill", "~", "~", "~",
+        "~"+(volumeArea.x-1), 
+        "~"+(volumeArea.y-1), 
+        "~"+(volumeArea.z-1), 
+        "barrel");
+    
+    console.debug(cmd);
+    
+    _commandResult = await Command.fetchExecute(volumeArea.dimension, cmd);
+    
+    if (_commandResult.statusCode !== 0)
+        throw new Error("未能填充区域");
+    
+    let volume = new Volume(volumeArea.dimension, volumeArea.begin, volumeArea.begin.clone().add(volumeArea).subtract([1,1,1]));
+    
+    let totalChunkCount = 0;
+    let totalBlockCount = 0;
+    for (let _i = 0; _i < volume.size; _i++){
+        let chunk = volume.getChunk(_i);
+        
+        globalThis._ = chunk;
+        
+        //throw new Error("运行已结束");
+    
+        logger.debug(chunk.mblock.location.toString());
+        
+        for (let _j = 0; _j < chunk.size; _j ++){
+            globalThis.__ = chunk.getBlock(_j);
+            totalBlockCount ++;
+            await 2;
+        }
+        
+        totalChunkCount++;
+        
+        await 1;
+    }
+    logger.info("totalChunkCount: {}, totalBlockCount: {}", totalChunkCount, totalBlockCount);
+
+}, 100, true);
+/*
+let { system, world } = Minecraft;
+
+system.runTimeout(async () => {
+    let volumeArea = {
+        dimension: world.getDimension("overworld"),
+        begin: { x: 1234, y: 72, z: 4321 },
+        x: 3, y: 5, z: 2
+    }
+    let baseLocation = volumeArea.begin;
+    
+    try {
+        await volumeArea.dimension.runCommandAsync(
+            "execute positioned"
+            +" "+baseLocation.x
+            +" "+baseLocation.y
+            +" "+baseLocation.z
+            +" run fill ~ ~ ~"
+            +" ~"+(volumeArea.x-1)
+            +" ~"+(volumeArea.y-1)
+            +" ~"+(volumeArea.z-1)
+            +" chest");
+    } catch {
+        throw new Error("未能填充区域");
+    }
+    
+    let volume = new Volume(volumeArea.dimension, volumeArea.begin, volumeArea);
+    
+    for (let _i = 0; _i < volume.size; _i++){
+        let chunk = volume.getChunk(_i);
+        logger.debug(chunk.mblock.toString());
+        await 1;
+    }
+}, 100);
+*/
 /*
 world.events.worldInitialize.subscribe((event)=>{
     let propDef = new DynamicPropertiesDefinition();
@@ -132,6 +207,7 @@ ChatCommand.registerCommand("test1", (sender, rawCommand, label, args)=>{
     }, true);
 });
 */
+/*
 ChatCommand.registerCommand("test4", (sender, rawCommand, label, args)=>{
     let objective = Scoreboard.getObjective("btestc", true);
     let i = 0;
@@ -153,7 +229,30 @@ ChatCommand.registerCommand("test4", (sender, rawCommand, label, args)=>{
             logger.debug("写入完成，用时{}", endW-startW, i);
         }
     }, 1, 1, false);
-});
+});*/
+/*
+ChatCommand.registerCommand("test5", (sender, _, __, args) => {
+    YoniScheduler.runTask(async () => {
+        sender.sendMessage("开始测试");
+        let location = new Location(args);
+        let cNull = 0;
+        let cUndefined = 0;
+        let count = 0;
+        for (; count < 30000; count++){
+            let targetBlock = location.dimension.vanillaDimension.getBlock(location.getVanillaBlockLocation());
+            if (targetBlock === null)
+                cNull ++;
+            else if (targetBlock === undefined)
+                cUndefindd ++;
+            await 1;
+        }
+        console.debug("count: {}, cNull: {}, cUndef: {}",
+            count,
+            cNull,
+            cUndefined
+        );
+    }, true);
+});*/
 /*
 ChatCommand.registerCommand("test3", (sender, rawCommand, label, args)=>{
     YoniScheduler.runDelayTickTask(()=>{
@@ -233,7 +332,7 @@ ChatCommand.registerCommand("test2333", (sender, rawCommand, label, args)=>{
 });
 
 */
-
+/*
 EventListener.register("minecraft:beforeDataDrivenEntityTriggerEvent", (event) => {
     logger.debug(event.id);
-});
+});*/

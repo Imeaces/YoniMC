@@ -176,7 +176,7 @@ export interface CommandResult {
  * @typedef {{runCommandAsync: (command: string) => CommandResult}} CommandSender 
  */
 export interface CommandSender {
-    runCommandAsync(command: string): CommandResult;
+    runCommandAsync(command: string): Promise<CommandResult> | Promise<|Minecraft.CommandResult>;
 }
 
 /**

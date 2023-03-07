@@ -4,8 +4,8 @@
         "name": "YoniMC Scripts",
         "description": "YoniMC 世界背后的真实逻辑",
         "uuid": "dc511c3c-ae31-11ed-a727-6f2d94c65240",
-        "version": [0, 7, 0],
-        "min_engine_version": [1, 19, 50]
+        "version": [0, 8, 0],
+        "min_engine_version": [1, 19, 70]
     },
     "modules": [
         {
@@ -13,7 +13,7 @@
             "type": "script",
             "language": "javascript",
             "uuid": "dc511ab6-ae31-11ed-a724-eb704f6e3aa8",
-            "version": [0, 7, 0],
+            "version": [0, 8, 0],
             "entry": "scripts/index.js"
         }
     ],

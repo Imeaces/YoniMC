@@ -15,19 +15,7 @@ YoniScheduler.runCycleTickTask(() => {
         && e.hasTag("stat:is_sneaking"))
             e.removeTag("stat:is_sneaking");
     });
-}, 4, 10, false);
-
-YoniScheduler.runCycleTickTask(async () => {
-    let healthO = Scoreboard.getObjective("health", true);
-    let maxHealthO = Scoreboard.getObjective("max_health", true);
-    
-    for (let player of World.getPlayers()){
-        let component = player.getHealthComponent();
-        
-        await healthO.postSetScore(player, Math.floor(component.current));
-        await maxHealthO.postSetScore(player, Math.floor(component.value));
-    }
-}, 20, 20, true);
+}, 4, 1, false);
 
 EventListener.register("itemUse", (event) => {
     let ent = event.source;

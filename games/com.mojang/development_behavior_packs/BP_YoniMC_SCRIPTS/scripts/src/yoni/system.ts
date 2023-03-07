@@ -1,40 +1,44 @@
-import { MinecraftSystem, VanillaEvents, runTask, Minecraft } from "./basis.js";
-import { assignAllPropertiesWithoutOverride } from "./lib/ObjectUtils.js";
+import { MinecraftSystem, runTask } from "./basis.js";
+import { YoniScheduler } from "./schedule.js";
 
-interface SystemClass {
-    run(func: () => void): void;
-    currentTick: number;
-    events: Minecraft.SystemEvents;
+class System {
+    run(callback: (...args: any[]) => void, ...args: any[]){
+        runTask(callback, ...args);
+    }
+    get events(){
+        return MinecraftSystem.events;
+    }
+    get currentTick(){
+        return MinecraftSystem.currentTick
+    }
+    
+    setInterval(callback: () => void, interval: number){
+        return YoniScheduler.runCycleTimerTask(callback, interval, interval);
+    }
+    setTimeout(callback: () => void, timeout: number = 0){
+        return YoniScheduler.runDelayTimerTask(callback, timeout);
+    }
+    setIntervalTick(callback: () => void, intervalTick: number){
+        return YoniScheduler.runCycleTickTask(callback, intervalTick, intervalTick);
+    }
+    setTimeoutTick(callback: () => void, timeoutTick: number){
+        return YoniScheduler.runDelayTickTask(callback, timeoutTick);
+    }
+    clearInterval(id: number){
+        return YoniScheduler.removeSchedule(id);
+    }
+    clearTimeout(id: number){
+        return YoniScheduler.removeSchedule(id);
+    }
+    clearIntervalTick(id: number){
+        return YoniScheduler.removeSchedule(id);
+    }
+    clearTimeoutTick(id: number){
+        return YoniScheduler.removeSchedule(id);
+    }
 }
 
-// @ts-ignore
-const system: SystemClass = {};
-
-assignAllPropertiesWithoutOverride(system, MinecraftSystem);
-
-if (!system.currentTick){
-    let currentTick = -1;
-    VanillaEvents.tick.subscribe((event)=>{
-        currentTick = event.currentTick;
-    });
-    Object.defineProperties(system, {
-        currentTick: {
-            configurable: true,
-            get(){
-                return currentTick;
-            },
-        }
-    });
-}
-
-if (!system.run){
-    Object.defineProperties(system, {
-        run: {
-            configurable: true,
-            value: runTask
-        },
-    });
-}
+const system = new System();
 
 export { system };
 export default system;

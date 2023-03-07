@@ -8,6 +8,7 @@ const eventList = [
   "./player/PlayerTeleportDimensionEvent.js",
   "./world/raid/RaidTriggerEvent.js",
   "./world/TickEvent.js",
+  "./mcyoni/_loadEvent.js",
 ];
 
 eventList.map(path=>import(path)).forEach(pro => pro.catch(logger.error));

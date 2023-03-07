@@ -1,4 +1,6 @@
-import { dim, Minecraft } from "./basis.js";
+import { Minecraft } from "./basis.js";
+import { Dimension, YoniDimension } from "./dimension.js";
+import { YoniBlock } from "./block.js";
 
 function makeNumber(v){
     v = Number(v);
@@ -8,9 +10,18 @@ function makeNumber(v){
 }
 
 /**
- * 一个复杂点的Location类
+ * 代表Minecraft中的特定位置，包含维度，坐标，旋转角。
  */
 class Location {
+    /**
+     * @param {Location} v
+     */
+    static #checkReadOnly(v){
+        if (v.#readOnly){
+            throw new TypeError("Read-only Location Object");
+        }
+    }
+    
     /**
      * @param {number} v
      * @returns {number}
@@ -34,6 +45,8 @@ class Location {
         return v;
     }
     
+    #readOnly = false;
+    
     #x = NaN;
     /**
      * @type {number}
@@ -42,8 +55,17 @@ class Location {
         return this.#x;
     }
     set x(v){
+        this.setX(v);
+    }
+    /**
+     * 设置此位置对应的 z 轴坐标。
+     * @param {number} v
+     */
+    setX(v){
+        Location.#checkReadOnly(this);
         v = makeNumber(v);
         this.#x = v;
+        return this;
     }
     
     #y = NaN;
@@ -54,8 +76,17 @@ class Location {
         return this.#y;
     }
     set y(v){
+        this.setY(v);
+    }
+    /**
+     * 设置此位置对应的 z 轴坐标。
+     * @param {number} v
+     */
+    setY(v){
+        Location.#checkReadOnly(this);
         v = makeNumber(v);
         this.#y = v;
+        return this;
     }
     
     #z = NaN;
@@ -66,8 +97,30 @@ class Location {
         return this.#z;
     }
     set z(v){
+        this.setZ(v);
+    }
+    /**
+     * 设置此位置对应的 z 轴坐标。
+     * @param {number} v
+     */
+    setZ(v){
+        Location.#checkReadOnly(this);
         v = makeNumber(v);
         this.#z = v;
+        return this;
+    }
+    
+    /**
+     * 设置此位置对应的坐标。
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     */
+    setPosition(x, y, z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        return this;
     }
     
     #rx = 0;
@@ -78,36 +131,59 @@ class Location {
         return this.#rx;
     }
     set rx(v){
+        this.setRx(v);
+    }
+    /**
+     * 设置此位置对应的 pitch 角。
+     * @param {number} v
+     */
+    setRx(v){
+        Location.#checkReadOnly(this);
         this.#rx = Location.normalizePitch(v);
+        return this;
     }
     
     #ry = 0;
     /**
+     * 此位置对应的 yaw 角。
      * @type {number}
      */
     get ry(){
         return this.#ry;
     }
     set ry(v){
+        this.setRy(v);
+    }
+    /**
+     * 设置此位置对应的 yaw 角。
+     * @param {number} v
+     */
+    setRy(v){
+        Location.#checkReadOnly(this);
         this.#ry = Location.normalizeYaw(v);
+        return this;
     }
     
-    // @ts-ignore
     #dimension;
     /**
-     * @type {Minecraft.Dimension}
+     * 此位置所在的维度。
+     * @type {YoniDimension}
      */
     get dimension(){
         return this.#dimension;
     }
-    /**
-     * @param {number|string|Minecraft.Dimension} v
-     */
     set dimension(v){
-        v = fromValueGetDimension(v);
-        this.#dimension = v;
+        this.setDimension(v);
     }
-    
+    /**
+     * 设置此位置所在的维度
+     * @param {DimensionLike} v
+     */
+    setDimension(v){
+        Location.#checkReadOnly(this);
+        this.#dimension = Dimension.dim(v);
+        return this;
+    }
     /**
      * @desc 代表一个MC中的位置，其中包括维度，坐标，旋转角
      * @desc 您可以以多种形式传递参数来构造一个Location
@@ -168,52 +244,57 @@ class Location {
         }
         
         if (dimension == null){
-            this.dimension = dim.overworld;
+            this.dimension = "minecraft:overworld";
         } else {
             this.dimension = dimension;
         }
     }
     /**
-     * @param {LocationParams} values
+     * @param {Location1Arg} value
      */
-    add(...values){
-        let { x, y, z } = makeLocation(values);
-        this.x += x;
-        this.y += y;
-        this.z += z;
-        return this;
+    add(value){
+        let { x, y, z } = makeLocation([value]);
+        let location = this.clone();
+        location.x += x;
+        location.y += y;
+        location.z += z;
+        return location;
     }
     /**
-     * @param {LocationParams} values
+     * @param {Location1Arg} value
      */
-    subtract(...values){
-        let { x, y, z } = makeLocation(values);
-        this.x -= x;
-        this.y -= y;
-        this.z -= z;
-        return this;
+    subtract(value){
+        let { x, y, z } = makeLocation([value]);
+        let location = this.clone();
+        location.x -= x;
+        location.y -= y;
+        location.z -= z;
+        return location;
     }
     /**
-     * @param {LocationParams} values
+     * @param {Location1Arg} value
      */
-    multiply(...values){
-        let { x, y, z } = makeLocation(values);
-        this.x *= x;
-        this.y *= y;
-        this.z *= z;
-        return this;
+    multiply(value){
+        let { x, y, z } = makeLocation([value]);
+        let location = this.clone();
+        location.x *= x;
+        location.y *= y;
+        location.z *= z;
+        return location;
     }
     /**
-     * 将坐标设置为原点
+     * 复制一个Location对象，然后将坐标设置为原点。
      */
     zero(){
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
-        return this;
+        let location = this.clone();
+        location.x = 0;
+        location.y = 0;
+        location.z = 0;
+        return location;
     }
     
     /**
+     * 计算此坐标与指定位置的距离。
      * @param {Location1Arg} loc
      */
     distance(loc){
@@ -224,7 +305,7 @@ class Location {
      * @param {Location1Arg} loc
      */
     distancrSquared(loc){
-        let fromLocation = new Location(loc);
+        let fromLocation = makeLocation([loc]);
         let { x, y, z } = this;
         let distance = 0;
         distance += Math.abs(fromLocation.x ** 2 - x ** 2);
@@ -240,7 +321,7 @@ class Location {
     }
     
     toVector(){
-        throw new Error("not implemented yet");
+        return this.getVanillaVector();
     }
     getDirection(){
         throw new Error("not implemented yet");
@@ -250,10 +331,10 @@ class Location {
     }
     
     /**
-     * @returns {Minecraft.Block} 此位置上的方块
+     * @returns {YoniBlock} 此位置上的方块。
      */
     getBlock(){
-        return this.dimension.getBlock(this.getVanillaBlockLocation());
+        return this.dimension.getBlock(this);
     }
     getBlockX(){
         return Math.floor(this.x);
@@ -289,28 +370,36 @@ class Location {
      * @returns {Minecraft.BlockLocation} 根据此位置创建一个原版的Minecraft.BlockLocation
      */
     getVanillaBlockLocation(){
+        let { x, y, z } = this;
+        x = Math.floor(x);
+        y = Math.floor(y);
+        z = Math.floor(z);
         if (Minecraft.BlockLocation){
-            let { x, y, z } = this;
-            return new Minecraft.BlockLocation(Math.floor(x), Math.floor(y), Math.floor(z));
+            return new Minecraft.BlockLocation(x, y, z);
         }
-        return this;
+        return { x, y, z };
     }
     /**
      * @returns {Minecraft.Location} 根据此位置创建一个原版的Minecraft.Location
      */
     getVanillaLocation(){
+        let { x, y, z } = this;
         if (Minecraft.Location){
-            let { x, y, z } = this;
             return new Minecraft.Location(x, y, z);
         }
-        return this;
+        return { x, y, z };
     }
     getVanillaVector(){
         let { x, y, z } = this;
         return new Minecraft.Vector(x, y, z);
     }
     isLoaded(){
-        throw new Error("not implemented yet");
+        try {
+            this.getBlock();
+            return true;
+        } catch {
+            return false;
+        }
     }
     getChunk(){
         throw new Error("not implemented yet");
@@ -320,6 +409,7 @@ class Location {
         throw new Error("not implemented yet");
     }
     /**
+     * 判断传入的位置是否与此位置对象代表的位置相同。
      * @param {Location1Arg} loc
      */
     equals(loc){
@@ -337,6 +427,7 @@ class Location {
         }
     }
     /**
+     * 判断传入的位置的坐标是否与此位置对象代表的坐标相同。
      * @param {Location1Arg} loc
      */
     equalsPosition(loc){
@@ -355,7 +446,7 @@ class Location {
     }
     
     toString(){
-        return "Location: " + JSON.stringify(this.toJSON());
+        return "Location: " + JSON.stringify(this);
     }
     toJSON(){
         let { x, y, z, rx, ry } = this;
@@ -379,39 +470,38 @@ class Location {
     static deserialize(v) {
         return new Location(JSON.parse(v));
     }
-}
-
-const DimensionValues = {
-    "minecraft:nether": dim.nether,
-    "nether": dim.nether,
-    "-1": dim.nether,
-    "minecraft:overworld": dim.overworld,
-    "overworld": dim.overworld,
-    "0": dim.overworld,
-    "minecraft:the_end": dim.theEnd,
-    "the_end": dim.theEnd,
-    "the end": dim.theEnd,
-    "theEnd": dim.theEnd,
-    "1": dim.theEnd
-}
-/**
- * @param {any} value
- */
-function fromValueGetDimension(value){
-    if (value instanceof Minecraft.Dimension){
-        return value;
-    } else if (value in DimensionValues){
-        return DimensionValues[value];
-    } else {
-        throw new Error("unknown dimension");
+    
+    /**
+     * 创建一个只读的Location对象。
+     * @param {LocationParams} values
+     * @returns {Readonly<Location>}
+     */
+    static createReadonly(...values){
+        let v = new Location(...values);
+        v.#readOnly = true;
+        return v;
+    }
+    /**
+     * 使用Location创建创建一个只读的Location对象。
+     * @param {Location} v
+     * @returns {Readonly<Location>}
+     */
+    static makeReadonly(v){
+        v = v.clone();
+        v.#readOnly = true;
+        return v;
     }
 }
+
+/**
+ * @typedef {ILocationCoords} Vector3
+ */
 
 /**
  * @typedef {-1|'minecraft:nether'|'nether'} NetherDimensionLike
  * @typedef {0|'minecraft:overworld'|'overworld'} OverworldDimensionLike
  * @typedef {1|'minecraft:the_end'|'the_end'|'theEnd'|'the end'} TheEndDimensionLike
- * @typedef {NetherDimensionLike|OverworldDimensionLike|TheEndDimensionLike|Minecraft.Dimension} DimensionLike
+ * @typedef {NetherDimensionLike|OverworldDimensionLike|TheEndDimensionLike|Minecraft.Dimension|YoniDimension} DimensionLike
  */
 /**
  * @typedef {{x: number, y: number, z: number, rx?: number, ry?: number, dimension?: DimensionLike}} ILocation
@@ -431,7 +521,7 @@ function fromValueGetDimension(value){
  * @typedef {[number, number]} ILocationRotationArray
  */
 /**
- * @typedef {{location: ILocationCoords, rotation: ILocationRotationValue, dimension: DimensionLike}} ILocationOfObject
+ * @typedef {{location: ILocationCoords, rotation?: ILocationRotationValue, dimension?: DimensionLike}} ILocationOfObject
  */
 /**
  * @typedef {ILocationOfObject|ILocation|ILocationArray} Location1Arg

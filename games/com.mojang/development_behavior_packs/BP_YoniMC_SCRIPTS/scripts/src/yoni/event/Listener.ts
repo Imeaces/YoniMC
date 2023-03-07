@@ -1,7 +1,10 @@
+// @ts-nocheck
+
 import { debug } from "../config.js";
 
 import { EventTypes, EventRegisterListener, getIdentifierInfo } from "./Types.js";
 import { logger } from "./logger.js";
+import { IEventSignal } from "./IEventSignal.js";
 
 /**
  * 事件监听管理
@@ -69,7 +72,7 @@ class Listener {
             eventType = EventTypes.get(eventType);
             this.#doDelayRegister({
                 eventName, idx,
-                args: [ idx, eventType, callback, eventFilters]
+                args: [idx, eventType, callback, ...eventFilters]
             });
         });
         return idx;
@@ -104,7 +107,8 @@ class Listener {
             eventType.subscribe(fireCallback, ...eventFilters);
             //logger.trace("已成功注册id为{}的回调", idx);
         } catch (e){
-            this.#callbacks[idx] = null;
+            if (!debug)
+                delete this.#callbacks[idx];
             logger.error("在注册id为{}的回调时发生错误 {}", idx, e);
             throw e;
         }
@@ -112,12 +116,12 @@ class Listener {
     
     /**
      * add a new callback function for specific event
-     * @param {EventIdentity} caller - the event identify 
-     * @param {Function} callback - callback function
-     * @params args - any arguments you want, they will be transmitted directly 
-     * @return {number} - id of the callback
+     * @param eventType - the event identify 
+     * @param callback - callback function
+     * @param eventFilters - any arguments you want, they will be transmitted directly 
+     * @returns {number} - id of the callback
      */
-    static register(eventType, callback, ...eventFilters){
+    static register(eventType: string | IEventSignal, callback: (...args: any[]) => void, ...eventFilters: any[]){
         let idx = this.#index;
         
         if (eventType?.constructor === String){
@@ -139,14 +143,14 @@ class Listener {
      * unregister event listener
      * @param {number} id - eventId
      */
-    static unregister(id){
-        if (this.#callbacks[id] !== null){
-            this.#callbacks[id] = null;
+    static unregister(id: number){
+        if (id in this.#callbacks){
+            delete this.#callbacks[id];
             logger.debug("移除了ID为{}的回调", id);
         } else {
             let idx = this.#callbacks.indexOf(id);
             if (idx !== -1){
-                this.#callbacks[idx] = null;
+                delete this.#callbacks[idx];
                 logger.debug("移除了ID为{}的回调", idx);
             }
         }

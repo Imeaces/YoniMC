@@ -29,17 +29,26 @@ let doEval;
         let { Minecraft, MinecraftGui, Gametest, dim, VanillaWorld, VanillaScoreboard, VanillaEvents, MinecraftSystem, runTask,
         SystemEvents, load, getKeys, logger, getErrorMsg, EventListener,
         EventTypes, events, Logger, Command, ChatCommand, send, say, EntityBase, sv,
-        setTimeout, clearTimeout, setInterval, clearInterval, ObjectUtils } = arguments[0];
-        return async function (sender, code){
-            let rt = eval(code);
-            globalThis._ = rt;
-            (async ()=> globalThis._await = await rt )();
+        setTimeout, clearTimeout, setInterval, clearInterval, ObjectUtils, World } = arguments[0];
+        return function (sender, code){
+            return (async () => {
+                globalThis._ = eval(code);
+                return globalThis._;
+            })()
+            .then(resolve => {
+                globalThis._await = resolve;
+            },
+            reject => {
+                globalThis._error = reject;
+                throw reject;
+            });
         };
     `)({
         Minecraft, MinecraftGui, Gametest, dim, VanillaWorld, VanillaScoreboard, VanillaEvents, MinecraftSystem, runTask,
         SystemEvents, load, getKeys, logger, getErrorMsg, EventListener,
         EventTypes, events, Logger, Command, ChatCommand, send, say, EntityBase, sv, ObjectUtils,
-        setTimeout, clearTimeout, setInterval, clearInterval
+        setTimeout, clearTimeout, setInterval, clearInterval, 
+        World
     });
 })();
 

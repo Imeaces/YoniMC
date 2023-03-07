@@ -66,8 +66,9 @@ class EventRegisterListener {
 function getNamespaceEventTypesMap(namespace){
     if (namespace === null){
         let rtmap = new Map();
-        for (let map of registeredEventTypes.values()){
-            for (let key of map.keys()){
+        //获取key的反序，这样，先注册的事件优先级就会变低
+        for (let map of Array.from(registeredEventTypes.values()).reverse()){
+            for (let key of Array.from(map.keys()).reverse()){
                 if (rtmap.has(key)){
                     continue;
                 }

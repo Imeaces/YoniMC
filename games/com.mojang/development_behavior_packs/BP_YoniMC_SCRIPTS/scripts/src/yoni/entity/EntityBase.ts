@@ -1,13 +1,16 @@
-// @ts-nocheck
 import {
     Minecraft,
     Gametest,
     VanillaWorld,
-    dim } from "../basis.js";
+} from "../basis.js";
 import { EntityClassRegistry } from "./EntityClassRegistry.js";
+import { DimensionLike } from "../Location.js";
+import { Dimension } from "../dimension.js";
+import { EntityValue } from "./EntityTypeDefs.js";
 
-import { EntityType, YoniEntityType, MinecraftEntityType } from "./EntityTypeDefs.js";
-import Player from "./Player.js";
+import YoniEntity from "./Entity.js";
+
+import YoniPlayer from "./Player.js";
 
 /**
  * 代表一个实体
@@ -15,20 +18,19 @@ import Player from "./Player.js";
 class EntityBase {
     
     /**
-     * @type {MinecraftEntityType}
+     * @type {Minecraft.Entity}
      */
     // @ts-ignore
-    vanillaEntity;
+    readonly vanillaEntity: Minecraft.Entity;
     
     /**
      * @hideconstructor
-     * @param {MinecraftEntityType} entity
+     * @param {Minecraft.Entity} entity
      */
-    constructor(entity){
+    constructor(entity: Minecraft.Entity){
     
-        //如果不是MCEntity则报错
-        if (!EntityBase.isMinecraftEntity(entity))
-            throw new TypeError("There is not a Minecraft Entity type");
+        if (!EntityClassRegistry.includesInSrcPrototype(Object.getPrototypeOf(entity)))
+            throw new TypeError("no mapping for the object proto");
         
         Object.defineProperty(this, "vanillaEntity", {
             configurable: false,
@@ -40,11 +42,11 @@ class EntityBase {
     
     /**
      * 检查一个东西是否为实体
-     * @param {any} obj - 任意
+     * @param {any} object - 任意
      * @throws 当不是实体的时候抛出错误
      */
-    static checkIsEntity(obj){
-        if (!EntityBase.isEntity(obj))
+    static checkIsEntity(object: any){
+        if (!EntityBase.isEntity(object))
             throw new TypeError("Not a Entity type");
     }
     
@@ -53,60 +55,60 @@ class EntityBase {
      * 
      * 如果要确保一定能获取到 YoniEntity 对象，请使用 {@link EntityBase.getYoniEntity}
      * @param {any} entity - 可以被认为是实体的东西，出于代码便利，允许传入任何值。实际上只有实体类型的对象才有效果。
-     * @return {YoniEntityType} 如果 `entity` 不为实体类型，则返回 `null`。
+     * @return {YoniEntity} 如果 `entity` 不为实体类型，则返回 `null`。
      */
-    static from(entity): YoniEntityType | null {
+    static from(entity: any): YoniEntity | null {
         return EntityClassRegistry.from(entity);
     }
     
     /**
      * 检测某个实体是否为玩家
-     * @param {EntityType} entity 要检测的实体
+     * @param {EntityValue} entity 要检测的实体
      * @returns {boolean}
      * @throws 当参数不是实体时抛出错误
      */
-    static entityIsPlayer(entity): entity is Player {
+    static entityIsPlayer(entity: EntityValue): entity is (Minecraft.Player | YoniPlayer ) {
         entity = EntityBase.getMinecraftEntity(entity);
         if (entity instanceof Minecraft.Player)
             return true;
         return false;
     }
-
+    
     /**
      * 获取所有存活的实体
      * @param {Minecraft.EntityQueryOptions} option
-     * @return {YoniEntityType[]}
+     * @return {YoniEntity[]}
      */
-    static getAliveEntities(option){
-        return getAliveEntities(option).map(_=>EntityBase.from(_));
+    static getAliveEntities(option: Minecraft.EntityQueryOptions): YoniEntity[] {
+        return Array.from(EntityBase.getDimensionEntities()).map(EntityBase.from) as unknown as YoniEntity[];
     }
     
     /**
      * 获取实体的minecraft:health组件
-     * @param {EntityType} entity 
+     * @param {EntityValue} entity 
      * @returns {Minecraft.EntityHealthComponent}
      */
-    static getHealthComponent(entity){
+    static getHealthComponent(entity: EntityValue): Minecraft.EntityHealthComponent {
         EntityBase.checkIsEntity(entity);
-        return entity.getComponent("minecraft:health");
+        return entity.getComponent("minecraft:health") as Minecraft.EntityHealthComponent;
     }
     
     /**
      * 获取实体的物品栏
-     * @param {EntityType} entity 
+     * @param {EntityValue} entity 
      * @returns {Minecraft.InventoryComponentContainer}
      */
-    static getInventory(entity: EntityType): Minecraft.InventoryComponentContainer {
+    static getInventory(entity: EntityValue): Minecraft.InventoryComponentContainer {
         EntityBase.checkIsEntity(entity);
-        return (<Minecraft.InventoryComponent>entity.getComponent("minecraft:inventory")).container;
+        return (<Minecraft.EntityInventoryComponent>entity.getComponent("minecraft:inventory")).container;
     }
     
     /**
      * 获取实体的血量
-     * @param {EntityType} entity
+     * @param {EntityValue} entity
      * @returns {number}
      */
-    static getCurrentHealth(entity: EntityType): number{
+    static getCurrentHealth(entity: EntityValue): number {
         let component = EntityBase.getHealthComponent(entity);
         return (component === undefined) ? 0 : component.current;
     }
@@ -115,7 +117,7 @@ class EntityBase {
      * @param {import('../Location.js').DimensionLike} dimension
      * @param {Minecraft.EntityQueryOptions} [options]
      */
-    static getDimensionEntities(dimension: import('../Location.js').DimensionLike, options: Minecraft.EntityQueryOptions, optionClass = Minecraft.EntityQueryOptions){
+    static getDimensionEntities(dimension?: DimensionLike, options?: Minecraft.EntityQueryOptions): Iterable<Minecraft.Entity> {
         if (!dimension){
             let ents = Object
                 .getOwnPropertyNames(Minecraft.MinecraftDimensionTypes)
@@ -130,135 +132,81 @@ class EntityBase {
         }
         
         if (!options){
-            return dim(dimension).getEntities();
+            return Dimension.dim(dimension).vanillaDimension.getEntities();
         }
         
-        let useInterface = false;
-        let requireTest = false;
-        try {
-            useInterface = this.#useInterface;
-            if (useInterface === null){
-                requireTest = true;
-            }
-        } catch {
-            requireTest = true;
-        }
-        
-        if (requireTest){
-            try {
-                new Minecraft.EntityQueryOptions();
-                useInterface = false;
-            } catch {
-                useInterface = true;
-            }
-            try {
-                this.#useInterface = useInterface;
-            } catch {}
-        }
-        
-        let useOptions = options;
-        if (!useInterface){
-            useOptions = new Minecraft.EntityQueryOptions();
-            
-            Object.assign(useOptions, options);
-        }
-        
-        return dim(dimension).getEntities(useOptions);
+        return Dimension.dim(dimension).vanillaDimension.getEntities(options);
     }
-    static #useInterface = null;
+    
     /**
      * @param {import('.../Location.js').DimensionLike}
      * @param {Minecraft.EntityQueryOptions} [options]
      */
-    static getWorldPlayers(options, optionClass = Minecraft.EntityQueryOptions){
+    static getWorldPlayers(options?: Minecraft.EntityQueryOptions): Iterable<Minecraft.Player> {
         if (!options){
             return VanillaWorld.getPlayers();
         }
         
-        let useInterface = false;
-        let requireTest = false;
-        try {
-            useInterface = this.#useInterface2;
-            if (useInterface === null){
-                requireTest = true;
-            }
-        } catch {
-            requireTest = true;
-        }
-        
-        if (requireTest){
-            try {
-                new Minecraft.EntityQueryOptions();
-                useInterface = false;
-            } catch {
-                useInterface = true;
-            }
-            try {
-                this.#useInterface2 = useInterface;
-            } catch {}
-        }
-        
-        let useOptions = options;
-        if (!useInterface){
-            useOptions = new Minecraft.EntityQueryOptions();
-            
-            Object.assign(useOptions, options);
-        }
-        
-        return dim(dimension).getEntities(useOptions);
+        return VanillaWorld.getPlayers(options);
     }
-    static #useInterface2 = null;
     
     /**
      * 获取所有存在的实体（包括死亡的玩家）
-     * @returns {EntityType[]}
+     * @returns {EntityValue[]}
      */
-    static getLoadedEntities(){
-        return getLoadedEntities().map(_=> EntityBase.from(_));
+    static getLoadedEntities(): Minecraft.Entity[] {
+        let entities = new Set<Minecraft.Entity>();
+        for (let e of EntityBase.getDimensionEntities()){
+            entities.add(e);
+        }
+        for (let p of EntityBase.getWorldPlayers()){
+            entities.add(p);
+        }
+        return Array.from(entities);
     }
     
     /**
      * 获取实体最大血量
-     * @param {EntityType} entity
+     * @param {EntityValue} entity
      * @returns {number}
      */
-    static getMaxHealth(entity){
+    static getMaxHealth(entity: EntityValue){
         let component = EntityBase.getHealthComponent(entity);
         return (component === undefined) ? 0 : component.value;
     }
     
     /**
      * 得到一个Minecraft.Entity
-     * @param {EntityType} entity
-     * @returns {MinecraftEntityType|null}
+     * @param {EntityValue} entity
+     * @returns {MinecraftEntityType}
      */
-    static getMinecraftEntity(entity){
+    static getMinecraftEntity(entity: EntityValue): Minecraft.Entity {
         EntityBase.checkIsEntity(entity);
         if (EntityBase.isMinecraftEntity(entity))
             return entity;
         else if (EntityBase.isYoniEntity(entity))
             return entity.vanillaEntity;
-        return null;
+        throw new Error("no reference");
     }
     
     /**
      * 得到一个Entity
-     * @param {EntityType} entity
+     * @param {EntityValue} entity
      * @returns {YoniEntityType}
      * @throws 如果参数不是实体将会抛出错误
      */
-    static getYoniEntity(entity: EntityType): YoniEntityType {
+    static getYoniEntity(entity: EntityValue): YoniEntity {
         EntityBase.checkIsEntity(entity);
-        return EntityBase.from(entity) as unknown as YoniEntityType;
+        return EntityBase.from(entity) as unknown as YoniEntity;
     }
     
     /**
      * 检测一个实体是否有指定的所有种族
-     * @param {EntityType} entity
+     * @param {EntityValue} entity
      * @param {...string} families
      * @returns {boolean}
      */
-    static hasFamilies(entity, ...families){
+    static hasFamilies(entity: EntityValue, ...families: string[]){
         entity = EntityBase.getMinecraftEntity(entity);
         const dimension = entity.dimension;
         const tryEntities = EntityBase.getDimensionEntities(dimension, {
@@ -275,11 +223,11 @@ class EntityBase {
     
     /**
      * 检测一个实体是否任一指定的种族
-     * @param {EntityType} entity
+     * @param {EntityValue} entity
      * @param {...string} families
      * @returns {boolean}
      */
-    static hasAnyFamily(entity, ...families){
+    static hasAnyFamily(entity: EntityValue, ...families: string[]){
         entity = EntityBase.getMinecraftEntity(entity);
         const dimension = entity.dimension;
         for (const family of families){
@@ -298,37 +246,43 @@ class EntityBase {
     
     /**
      * 检测一个实体是否有某个种族
-     * @param {EntityType} entity
+     * @param {EntityValue} entity
      * @param {string} family
      * @returns {boolean}
      */
-    static hasFamily(entity, family){
+    static hasFamily(entity: EntityValue, family: string){
         return EntityBase.hasFamilies(entity, family);
     }
     
     /**
      * 检测一个实体是否存在于世界上
-     * @param {EntityType} entity
+     * @param {EntityValue} entity
      * @returns {boolean}
      */
-    static isAliveEntity(entity){
+    static isAliveEntity(entity: EntityValue){
         entity = EntityBase.getMinecraftEntity(entity);
-        return getLoadedEntities().includes(entity);
+        for (let e of EntityBase.getDimensionEntities()){
+            if (e === entity) return true;
+        }
+        for (let p of EntityBase.getWorldPlayers()){
+            if (p === entity) return true;
+        }
+        return false;
     }
     
     /**
      * 检测一个实体是否活着
      * 物品、箭、烟花等不是活的
      * 死了的实体也不是活的
-     * @param {EntityType} entity
+     * @param {EntityValue} entity
      * @returns {boolean}
      */
-    static isAlive(entity){
+    static isAlive(entity: EntityValue){
         EntityBase.checkIsEntity(entity);
-        let comp = ent.getComponent("minecraft:health");
+        let comp = entity.getComponent("minecraft:health");
         if (comp == null)
             return false;
-        if (comp.current > 0)
+        if ((<Minecraft.EntityHealthComponent>comp).current > 0)
             return true;
         return false;
     }
@@ -338,7 +292,7 @@ class EntityBase {
      * @param {any} obj
      * @returns {boolean}
      */
-    static isEntity(obj): obj is (EntityBase | Minecraft.Entity){
+    static isEntity(obj: any): obj is (YoniEntity | Minecraft.Entity){
         if (EntityBase.isYoniEntity(obj))
             return true;
         if (EntityBase.isMinecraftEntity(obj))
@@ -351,7 +305,7 @@ class EntityBase {
      * @param {any} object
      * @returns {boolean}
      */
-    static isMinecraftEntity(object){
+    static isMinecraftEntity(object: any): object is Minecraft.Entity {
         if (object == null) return false;
         return EntityClassRegistry.includesInSrcPrototype(
             Object.getPrototypeOf(object)
@@ -363,7 +317,7 @@ class EntityBase {
      * @param {any} ent1
      * @param {any} ent2
      */
-    static isSameEntity(ent1, ent2){
+    static isSameEntity(ent1: any, ent2: any){
         if (EntityBase.isYoniEntity(ent1))
             ent1 = ent1.vanillaEntity;
         if (EntityBase.isYoniEntity(ent2))
@@ -376,19 +330,16 @@ class EntityBase {
      * @param {any} object
      * @returns {boolean}
      */
-    static isYoniEntity(object){
-        if (object instanceof EntityBase)
-            return true;
-        else
-            return false;
+    static isYoniEntity(object: any): object is YoniEntity {
+        return object instanceof EntityBase;
     }
     
     /**
      * 设置实体的血量
-     * @param {EntityType} entity
+     * @param {EntityValue} entity
      * @param {number} val
      */
-    static setCurrentHealth(entity, val){
+    static setCurrentHealth(entity: EntityValue, val: number){
         let component = EntityBase.getHealthComponent(entity);
         if (!component){
             throw new Error("No health component for this entity");

@@ -1,12 +1,9 @@
-// @ts-nocheck
-
 import {
     Minecraft,
     VanillaWorld, 
     StatusCode } from "../basis.js";
 import { dealWithCmd } from "../lib/utils.js";
 import { Command } from "../command.js";
-import { PlayerOnScreenDisplay } from "./player/PlayerOnScreenDisplay.js";
 import { copyPropertiesWithoutOverride } from "../lib/ObjectUtils.js";
 import { getNumber } from "../lib/getNumber.js";
 import { Entity } from "./Entity.js";
@@ -30,47 +27,30 @@ class Player extends Entity {
     }
     
     get [Symbol.toStringTag](){
-        if (this instanceof Player)
-            return `Player: { type: ${this.typeId}, name: ${this.name} }`;
+        let player = <YoniPlayer><unknown>this;
+        if (player instanceof Player)
+            return `Player: { type: ${player.typeId}, name: ${player.name} }`;
         return "Object (Player)";
     }
     
-    #onScreenDisplay: Minecraft.OnScreenDisplay = null;
-    get onScreenDisplay(){
-        if (this.vanillaEntity.onScreenDisplay){
-            return this.vanillaEntity.onScreenDisplay;
-        }
-        if (this.#onScreenDisplay === null){
-            this.#onScreenDisplay = new PlayerOnScreenDisplay(this);
-        }
-        return this.#onScreenDisplay;
-    }
-    
     /**
-     * 玩家的经验等级
+     * 玩家的经验等级。
      * @type {number}
      */
     get experienceLevel(){
-        let level = 0;
-        for (let i = 16384; i >= 1; i /= 2){
-            level += i;
-            let rt = VanillaWorld.getPlayers({ minLevel: level });
-            if ( ! Array.from( rt ).includes( this.vanillaEntity ) )
-            {
-                level -= i;
-            }
-        }
-        return level;
+        let player = <YoniPlayer><unknown>this;
+        return player.level;
     }
     
     /**
-     * 设置玩家的经验等级
+     * 设置玩家的经验等级。
      * @param {number} level
      */
-    setExperienceLevel(level){
+    setExperienceLevel(level: number){
         level = getNumber(level);
-        Command.addExecute(Command.PRIORITY_HIGHEST, this, "xp -24791l @s");
-        Command.addExecute(Command.PRIORITY_HIGHEST, this, `xp ${level}l @s`);
+        let player = <YoniPlayer><unknown>this;
+        if (player.level !== level)
+            player.addLevels(level - player.level);
     }
     
     /**
@@ -79,41 +59,57 @@ class Player extends Entity {
      * @throws 若未能成功将玩家踢出游戏，抛出错误。
      */
     async kick(msg?: string){
-        let rt = await Command.addParams(Command.PRIORITY_HIGHEST, "kick", this.name, msg);
+        let player = <YoniPlayer><unknown>this;
+        let rt;
+        if (msg)
+            rt = await Command.addParams(Command.PRIORITY_HIGHEST, "kick", player.name, msg);
+        else
+            rt = await Command.addParams(Command.PRIORITY_HIGHEST, "kick", player.name);
         if (rt.statusCode !== StatusCode.success){
             throw new Error(rt.statusMessage);
         }
     }
     
-    static #sendMessageMethod = Minecraft.Player.prototype.tell ?? Minecraft.Player.prototype.sendMessage ?? function sendMessageTo(...args){
-        let command = "tellraw @s " + JSON.stringify({ rawtext: [{ text: String(args) }] }, dealWithCmd);
-        Command.addExecute(Command.PRIORITY_HIGH, this, command);
-    }
-    
-    /**
-     * 向玩家发送消息
-     * @param {string} message
-     */
-    sendMessage(message: string): void {
-        Player.#sendMessageMethod.apply(this.vanillaPlayer, arguments);
-    }
-     
-    get gamemode(): "creative"|"survival"|"adventure"|"spectator" {
+    get gamemode(): Minecraft.GameMode {
+        let player = <YoniPlayer><unknown>this;
+        // @ts-ignore
         for (let gm of Object.getOwnPropertyNames(Minecraft.GameMode).map(k=>Minecraft.GameMode[k])){
-            for (let player of VanillaWorld.getPlayers({gameMode: gm})){
-                if (EntityBase.isSameEntity(this, player)){
+            for (let splayer of VanillaWorld.getPlayers({gameMode: gm})){
+                if (EntityBase.isSameEntity(splayer, player)){
                     return gm;
                 }
             }
         }
         throw new Error("unknown gamemode");
     }
-    set gamemode(v: 0|1|2|"c"|"a"|"s"|"d"|"creative"|"survival"|"adventure"|"spectator"|"default"){
-        let command = `gamemode ${v} @s`;
-        Command.addExecute(Command.PRIORITY_HIGHEST, this, command);
+    setGamemode(v: PlayerGameModeValue){
+        let player = <YoniPlayer><unknown>this;
+        let command = `gamemode ${<string>v} @s`;
+        Command.addExecute(Command.PRIORITY_HIGHEST, player, command);
     }
-
+    removeXp(xpCount: number){
+        let player = <YoniPlayer><unknown>this;
+        
+        if (player.xpEarnedAtCurrentLevel >= xpCount){
+            player.addExperience(-xpCount);
+            return;
+        }
+  
+        let v0 = player.xpEarnedAtCurrentLevel;
+        xpCount -= v0;
+        player.addExperience(-v0);
+  
+        while (xpCount > 0 && player.level > 0){
+            player.addLevels(-1);
+            xpCount -= player.totalXpNeededForNextLevel;
+        }
+  
+        if (xpCount < 0)
+            player.addExperience(xpCount);
+    }
 }
+
+type PlayerGameModeValue = Minecraft.GameMode | 0|1|2|"c"|"a"|"s"|"d"|"creative"|"survival"|"adventure"|"spectator"|"default";
 
 /* 修补 */
 copyPropertiesWithoutOverride(Player.prototype, Minecraft.Player.prototype, "vanillaEntity");

@@ -1,57 +1,45 @@
 import { runTask, MinecraftSystem } from "../../basis.js";
 import { EventSignal, Event, EventTriggerBuilder } from "../../event.js";
-import { Command } from "../../command.js";
 
 export class TickEventSignal extends EventSignal {}
 
 export class TickEvent extends Event {
-    get currentTick(){
-        return super.currentTick;
-    }
-    get deltaTime(){
-        return super.deltaTime;
-    }
+    currentTick;
+    deltaTime;
     constructor(currentTick, deltaTime){
         super({deltaTime, currentTick});
+        Object.freeze(this);
     }
 }
 
-//毕竟真正的tick事件目前没啥办法做到
-let tick = 0;
+const getTimeNs = (function (){
+    if (typeof __date_clock === "function")
+        return __date_clock;
+    return () => Date.now() * 1000;
+})();
 
-let shouldRun = false;
-
-let lastTickTimeMs;
-
-let lastTick = MinecraftSystem?.currentTick ?? -1;
-
-const triggerEvent = ()=>{
-    if (shouldRun)
-        runTask(triggerEvent);
-    else 
-        return;
-    
-    let currentTimeMs = __date_clock();
-    let deltaTime = (currentTimeMs - lastTickTimeMs) / 100000;
-    lastTickTimeMs = currentTimeMs;
-    let currentTick = tick++
-    if (currentTick - lastTick !== 1 && lastTick !== -1){
-        // console.fatal("游戏刻事件被跳过了 {} 次", currentTick - lastTick);
-    }
-    lastTick = currentTick;
-    trigger.triggerEvent(currentTick, deltaTime);
-};
-
-const trigger = new EventTriggerBuilder()
-    .id("yoni:tick")
+const trigger = new EventTriggerBuilder("yoni:tick")
     .eventSignalClass(TickEventSignal)
     .eventClass(TickEvent)
-    .whenFirstSubscribe(()=>{
-        shouldRun = true;
-        runTask(triggerEvent);
+    .whenFirstSubscribe(() => {
+        stop = false;
+        lastTickTimeNs = getTimeNs();
+        runTask(start);
     })
-    .whenLastUnsubscribe(()=>{
-        shouldRun = false;
+    .whenLastUnsubscribe(() => {
+        stop = true;
     })
     .build()
     .registerEvent();
+
+let lastTickTimeNs = 0;
+let stop = false;
+function start(){
+    if (stop) return;
+    runTask(start);
+    
+    let ct = getTimeNs();
+    let pt = (ct - lastTickTimeNs) / 1000000;
+    lastTickTimeNs = ct;
+    trigger.triggerEvent(MinecraftSystem.currentTick, pt);
+}
