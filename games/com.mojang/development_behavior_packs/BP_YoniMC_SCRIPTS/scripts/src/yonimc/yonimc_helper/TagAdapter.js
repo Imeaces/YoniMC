@@ -1,10 +1,7 @@
-import { Minecraft, VanillaWorld, dim } from "../yoni/basis.js";
-import { EntityBase } from "../yoni/entity.js";
-import Command from "../yoni/command.js";
-import { Scoreboard } from "../yoni/scoreboard.js";
-import { EventListener } from "../yoni/event.js";
-import { World } from "../yoni/world.js";
-import { YoniScheduler, Schedule } from "../yoni/schedule.js";
+import { Minecraft, VanillaWorld, dim,
+    EntityBase, Command, Scoreboard,
+    EventListener, World,
+    YoniScheduler, Schedule } from "../../yoni/index.js";
 
 YoniScheduler.runCycleTickTask(() => {
     World.getAllPlayers().forEach((e)=>{
