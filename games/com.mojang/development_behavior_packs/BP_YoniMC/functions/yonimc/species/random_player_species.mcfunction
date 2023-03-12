@@ -31,4 +31,4 @@ execute if entity @s[name=Silvigarabis] run scoreboard players set @s var_1 2
 #
 
 execute if score @s var_1 matches 1 run event entity @s species:as_minecraft_player
-execute if score @s var_1 matches 2 run event entity @s species:as_yoni_guxi
+execute if score @s var_1 matches 2 run event entity @s species:as_yonimc_guxi

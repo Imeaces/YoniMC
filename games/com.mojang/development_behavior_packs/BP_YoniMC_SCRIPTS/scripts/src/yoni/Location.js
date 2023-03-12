@@ -14,6 +14,13 @@ function makeNumber(v){
  */
 class Location {
     /**
+     * 处于零点的Location对象。
+     */
+    static get zero(){
+        return new Location(0, 0, 0);
+    }
+    
+    /**
      * @param {Location} v
      */
     static #checkReadOnly(v){
@@ -298,13 +305,13 @@ class Location {
      * @param {Location1Arg} loc
      */
     distance(loc){
-        let distance = this.distancrSquared(loc);
+        let distance = this.distanceSquared(loc);
         return Math.sqrt(distance);
     }
     /**
      * @param {Location1Arg} loc
      */
-    distancrSquared(loc){
+    distanceSquared(loc){
         let fromLocation = makeLocation([loc]);
         let { x, y, z } = this;
         let distance = 0;
@@ -314,12 +321,24 @@ class Location {
         return distance;
     }
     getLength(){
-        throw new Error("not implemented yet");
+        return this.distance(Location.zero);
     }
     getLengthSquared(){
-        throw new Error("not implemented yet");
+        return this.distanceSquared(Location.zero);
     }
     
+    /**
+     * @param {number} v
+     */
+    toFixed(v){
+        let { dimension, x, y, z, rx, ry } = this;
+        x = x.toFixed(v);
+        y = y.toFixed(v);
+        z = z.toFixed(v);
+        rx = rx.toFixed(v);
+        ry = ry.toFixed(v);
+        return new Location(dimension, x, y, z, rx, ry);
+    }
     toVector(){
         return this.getVanillaVector();
     }

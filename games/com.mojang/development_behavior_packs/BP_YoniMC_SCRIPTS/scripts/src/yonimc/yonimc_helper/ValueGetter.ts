@@ -3,7 +3,9 @@ import { Minecraft, VanillaWorld, dim,
     EventListener,
     World,
     YoniPlayer,
-    YoniScheduler } from "../../yoni/index.js";
+    YoniScheduler, Location, Objective } from "../../yoni/index.js";
+
+const MinecraftSystem = Minecraft.system;
 
 YoniScheduler.runCycleTickTask(() => {
     let healthO = Scoreboard.getObjective("health") ?? Scoreboard.addObjective("health");
@@ -30,4 +32,24 @@ YoniScheduler.runCycleTickTask(() => {
     //利用YoniScheduler处理Promise 
     return Promise.allSettled(promises);
     
-}, 1, 1, true);
+}, 1, 3, true);
+
+
+let lTick = MinecraftSystem.currentTick;
+YoniScheduler.runCycleTimerTask(()=>{
+    let cTick = MinecraftSystem.currentTick
+    let passTick = cTick - lTick;
+    let tps = passTick/2;
+    lTick = cTick;
+    Scoreboard.getObjective("world", true).postSetScore("tps", Math.floor(tps));
+}, 2000, 2000);
+
+
+YoniScheduler.runCycleTickTask(async () => {
+    let sobj = Scoreboard.getObjective("speed_rate", true) as Objective;
+    
+    for (let player of World.getAllPlayers()){
+        let length = new Location(player.velocity).getLength();
+        sobj.postSetScore(player, Math.floor(length * 100));
+    }
+}, 1, 3, true);

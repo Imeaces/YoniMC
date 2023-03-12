@@ -12,27 +12,27 @@ YoniScheduler.runCycleTickTask(() => {
         && e.hasTag("stat:is_sneaking"))
             e.removeTag("stat:is_sneaking");
     });
-}, 4, 1, false);
+}, 4, 10, false);
 
-EventListener.register("itemUse", (event) => {
+EventListener.register("minecraft:itemUse", (event) => {
     let ent = event.source;
     if (ent.hasTag("event:itemUse"))
         ent.removeTag("event:itemUse");
 });
 
-EventListener.register("itemUseOn", (event) => {
+EventListener.register("minecraft:itemUseOn", (event) => {
     let ent = event.source;
     if (ent.hasTag("event:itemUseOn"))
         ent.removeTag("event:itemUseOn");
 });
 
-EventListener.register("beforeItemUseOn", (event) => {
+EventListener.register("minecraft:beforeItemUseOn", (event) => {
     let ent = event.source;
     if (!ent.hasTag("event:itemUseOn"))
         ent.addTag("event:itemUseOn");
 });
 
-EventListener.register("beforeItemUse", (event)=> {
+EventListener.register("minecraft:beforeItemUse", (event)=> {
     let ent = event.source;
     if (!ent.hasTag("event:itemUse"))
        ent.addTag("event:itemUse");

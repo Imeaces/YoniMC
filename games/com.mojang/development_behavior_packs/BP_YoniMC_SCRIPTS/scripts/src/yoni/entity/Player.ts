@@ -107,6 +107,14 @@ class Player extends Entity {
         if (xpCount < 0)
             player.addExperience(xpCount);
     }
+    applyImpulse(vector: Minecraft.Vector3){
+        try {
+            super.applyImpulse(vector);
+        } catch (e){
+            //@ts-ignore
+            throw new Error(e);
+        }
+    }
 }
 
 type PlayerGameModeValue = Minecraft.GameMode | 0|1|2|"c"|"a"|"s"|"d"|"creative"|"survival"|"adventure"|"spectator"|"default";

@@ -13,3 +13,6 @@ scoreboard objectives add arg_1 dummy
 scoreboard objectives add arg_2 dummy
 scoreboard objectives add arg_3 dummy
 scoreboard objectives add arg_4 dummy
+
+scoreboard objectives add ret_0 dummy
+scoreboard objectives add ret_1 dummy

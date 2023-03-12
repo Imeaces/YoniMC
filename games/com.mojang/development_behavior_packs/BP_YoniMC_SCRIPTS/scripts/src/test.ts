@@ -4,8 +4,11 @@ import { getKeys } from "./yoni/lib/ObjectUtils.js";
 const logger = new Logger("TEST");
 
 
-import { Volume } from "./yoni/storage/Volume.js";
 
+
+/*
+
+import { Volume } from "./yoni/storage/Volume.js";
 YoniScheduler.runDelayTickTask(async () => {
     let _commandResult: any = undefined;
     let volumeArea = {
@@ -54,6 +57,7 @@ YoniScheduler.runDelayTickTask(async () => {
     logger.info("totalChunkCount: {}, totalBlockCount: {}", totalChunkCount, totalBlockCount);
 
 }, 100, true);
+*/
 /*
 let { system, world } = Minecraft;
 

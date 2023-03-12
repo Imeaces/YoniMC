@@ -8,8 +8,6 @@
 # 在限制范围外执行可能会有以下返回结果： 返回的结果等于最大值或最小值
 
 # 在执行entity/position之前，需要执行以下两条函数
-## 创建需要使用的记分项
-function entity/position/init
 ## 创建判定点
 function entity/createPoint
 

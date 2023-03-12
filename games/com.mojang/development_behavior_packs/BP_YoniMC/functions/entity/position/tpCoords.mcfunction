@@ -6,7 +6,6 @@
 # 没有任何状态返回，无论参数是否合法，执行者都会传送
 # 传送不会居中，会传送到坐标n.0的位置，并且会导致视角被设置为0,0
 
-function entity/position/init
 function entity/createPoint
 
 function entity/position/tpX
