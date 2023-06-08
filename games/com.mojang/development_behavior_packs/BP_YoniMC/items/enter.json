@@ -14,7 +14,9 @@
           "event": "guxi:enter",
           "target": "self"
         }
-      }
+      },
+      "tag:yonimc:test_1": {},
+      "tag:yonimc:test_2": {}
     },
     "events": {
       "guxi:enter": {

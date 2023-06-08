@@ -1,5 +1,5 @@
-import ChatCommand from "../yoni/util/ChatCommand.js";
-import Scoreboard from "../yoni/scoreboard.js";
+import { ChatCommand } from "yoni-mcscripts-lib";
+import { Scoreboard } from "yoni-mcscripts-lib";
 import { isDebug } from "./config.js";
 import { runFuncAsync } from "./lib/runFunc.js"
 import { logger } from "./logger.js";

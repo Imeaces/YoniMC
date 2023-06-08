@@ -1,3 +1,4 @@
+scoreboard objectives add pos:x dummy
 
 # get x pos
 scoreboard players set @e[tag=entity:point] pos:x -1048576

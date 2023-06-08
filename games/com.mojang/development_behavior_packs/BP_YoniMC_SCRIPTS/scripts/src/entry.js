@@ -1,6 +1,6 @@
 //先导入防止看门狗咬人的脚本
-import "./yoni/util/WatchBird.js";
-import { VanillaEvents } from "./yoni/basis.js";
+import { WatchBird } from "yoni-mcscripts-lib";
+import { VanillaEvents } from "yoni-mcscripts-lib";
 import "./sync_load.js";
  
 let originConsole = globalThis.console;
@@ -23,7 +23,7 @@ function fallbackLogger(){
 
 async function initLogger(){
     try {
-        let LoggerModule = await import("./yoni/util/Logger.js");
+        let LoggerModule = await import("yoni-mcscripts-lib");
         await setupLogger(LoggerModule.Logger);
     } catch {
         await fallbackLogger();

@@ -1,12 +1,12 @@
 import { ChatCommand,
     EventListener,
     Command,
-    Utils } from "../yoni/index.js";
+    Utils, Location } from "yoni-mcscripts-lib";
 
 const chainBlockList=[
   "minecraft:diamond_ore"
 ]
-let chainCount = 45;
+let chainCount = 120;
 
 ChatCommand.registerCommand("setchaincount", (sender, command, label, args)=>{
     if (isFinite(Number(args[0])))
@@ -37,7 +37,7 @@ EventListener.register("blockBreak", async (event)=>{
                     if (ox!=0 && oy!=0 && oz!=0){
                         continue;
                     } else {
-                        nearBlocks.push(dim.getBlock(block.location.offset(ox,oy,oz)));
+                        nearBlocks.push(dim.getBlock(new Location(block).offset(ox,oy,oz)));
                     }
                 }
             }
@@ -75,7 +75,7 @@ EventListener.register("blockBreak", async (event)=>{
         
     }
     for (let pos of new Set(blocksThatToBreak)){
-        Command.fetchExecute(dim, `setblock ${pos.replaceAll(/,/g, "\x20")} air 0 destroy`);
+        Command.fetchExecute(dim, `setblock ${pos.replaceAll(/,/g, "\x20")} air [] destroy`);
     }
     player.onScreenDisplay.setTitle(`${blocksThatToBreak.length}`);
     player.onScreenDisplay.updateSubtitle(`${blocksDetectCount}`);

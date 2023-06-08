@@ -1,7 +1,7 @@
-import { Scoreboard, FastScoreboard as Object } from "../../yoni/scoreboard.js";
-import { Minecraft } from "../../yoni/basis.js";
-import { EntityBase } from "../../yoni/entity.js";
-import { Events, EventListener, EventSignal } from "../../yoni/entity.js";
+import { Scoreboard, FastScoreboard as Object } from "yoni-mcscripts-lib";
+import { Minecraft } from "yoni-mcscripts-lib";
+import { EntityBase } from "yoni-mcscripts-lib";
+import { Events, EventListener, EventSignal } from "yoni-mcscripts-lib";
 
 Object("species");
 export const energyO = Object("guxi:energy");

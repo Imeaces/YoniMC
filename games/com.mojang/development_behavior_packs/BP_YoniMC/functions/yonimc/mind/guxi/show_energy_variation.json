@@ -1,0 +1,32 @@
+{"translate": "##%%s%%s@%%s%%s##",
+"with": {"rawtext": [
+    {"translate": "%%2",
+    "with": {"rawtext": [
+        {"selector": "@s[scores={md:0_va_e=1..}]"},
+        {"text": "+"},
+        {"text": "§§"}
+        ]}
+    },
+    {"translate": "%%2",
+    "with": {"rawtext": [
+        {"selector": "@s[scores={md:0_lst_e=!0}]"},
+        {"score": {"objective":"md:0_va_e", "name": "@s"}},
+        {"text": "§§"}
+        ]}
+    },
+    {"translate": "%%2",
+    "with": {"rawtext": [
+        {"selector": "@s[scores={md:0_va_el=1..}]"},
+        {"text": "+"},
+        {"text": "§§"}
+        ]}
+    },
+    {"translate": "%%2",
+    "with": {"rawtext": [
+        {"selector": "@s[scores={md:0_lst_el=!0}]"},
+        {"score": {"objective":"md:0_va_el", "name": "@s"}},
+        {"text": "§§"}
+        ]}
+    },
+]}}
+    

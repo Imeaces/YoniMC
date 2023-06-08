@@ -1,18 +1,18 @@
-import { Logger } from "../yoni/util/Logger.js";
+import { Logger } from "yoni-mcscripts-lib";
 
 let importList = [
-    "./command.js",
-    "./TagAdapter.js",
-    "./guxi.js",
-    //"./itemlore.js",
-    "./chat.js",
+    //"./anchorPortal.js",
     //"./levitation.js",
+    "./command.js",
+    "./guxi.js",
+    "./chat.js",
     "./server.js",
     "./notice.js",
-    "./guxi/hotbarctrl.js",
     "./guxi/fall_asleep.js",
     "./ChainDestroy.js",
-    "./anchorPortal.js"
+    //"./ChainDestroy_v2.js",
+    "./test.js",
+    "./yonimc_helper/helper.js",
 ];
 
 let logger = new Logger("Yonimc");

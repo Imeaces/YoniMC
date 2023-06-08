@@ -26,13 +26,17 @@ execute if score @s yoni:guxi matches -20 if entity @s[tag=flag:status.is_alive]
 execute if score @s yoni:guxi_1 matches 72 run function yonimc/species/guxi/respawn
 execute if score @s yoni:guxi_1 matches 72 run scoreboard players set @s yoni:guxi 0
 
+execute if score @s yoni:guxi matches -21 run damage @s 10000 none
+execute if score @s yoni:guxi matches -21 run tellraw @a {"rawtext":[{"translate":"%%s 消散了", "with":{"rawtext":[{"selector":"@s"}]}}]}
+
+execute if score @s yoni:guxi matches -21 run scoreboard players set @s yoni:guxi 0
+execute if score @s yoni:guxi matches -21 run scoreboard players set @s yoni:guxi_1 -1
+
 #: -1 no need to deal
 execute if score @s yoni:guxi matches 0 if entity @s[tag=flag:status.not_alive] run scoreboard players set @s yoni:guxi_1 -1
 execute if entity @s[tag=flag:status.not_alive] if score @s yoni:guxi matches -20 run scoreboard players set @s yoni:guxi_1 -1
 
 #: if unexpected kill and reset
-execute if score @s yoni:guxi_1 matches 0 run tell @s 意料之外的情况
-execute if score @s yoni:guxi_1 matches 0 run tellraw @s {"rawtext":[{"score":{"objective":"yoni:guxi", "name":"@s"}}]}
-execute if score @s yoni:guxi_1 matches 0 run tellraw @s {"rawtext":[{"score":{"objective":"alive", "name":"@s"}}]}
-execute if score @s yoni:guxi_1 matches 0 run tellraw @s {"rawtext":[{"score":{"objective":"yoni:guxi_1", "name":"@s"}}]}
-execute if score @s yoni:guxi_1 matches 0 run kill @s
+execute if score @s yoni:guxi_1 matches 0 run tellraw @s { "rawtext": [{ "translate": "意料之外的情况: \nyoni:guxi: %s\nyoni:guxi_1: %s","with": {"rawtext": [{"score": {"objective": "yoni:guxi","name": "@s"}},{"score": {"objective": "yoni:guxi_1","name": "@s"}}]}}]}
+execute if score @s yoni:guxi_1 matches 0 if entity @s[tag=flag:status.is_alive] run tellraw @s {"rawtext": [{"text":"flag:status.is_alive"}]}
+execute if score @s yoni:guxi_1 matches 0 if entity @s[tag=flag:status.not_alive] run tellraw @s {"rawtext": [{"text":"flag:status.not_alive"}]}

@@ -25,11 +25,6 @@ scoreboard players set default_exp_transform_count guxi:values 30
 scoreboard players set min_exp_transform_count guxi:values 24
 
 
-#var default guxi:ef_speed -2
-scoreboard players set default_speed_affect guxi:values -2
-scoreboard players set speed_affact_energy_multiplier_min guxi:values 15
-scoreboard players set speed_affact_energy_multiplier_max guxi:values 70
-
 #var default guxi:ef_mining -1
 scoreboard players set default_mining_affect guxi:values -1
 scoreboard players set mining_affact_energy_multiplier_min guxi:values 27
@@ -45,17 +40,14 @@ scoreboard players set default_resistance_affect guxi:values 0
 scoreboard players set resistance_affact_energy_multiplier_min guxi:values 14020
 scoreboard players set resistance_affact_energy_multiplier_max guxi:values 92812
 
-#var default guxi:ef_res 0
-scoreboard players set default_fire_immune_affect guxi:values 15
-
 #var default guxi:exp_st 40
 scoreboard players set default_max_exp_energy_volume guxi:values 40
 
 #:var lava_bucket_eat_energy
-scoreboard players set lava_bucket_energy_volume guxi:values 20000
+scoreboard players set lava_bucket_energy_volume guxi:values 983145
 
 #: creation_elytra
 scoreboard players set creation_elytra_boost_speed_energy guxi:values 262144
 scoreboard players set creation_elytra_keep_structure_energy guxi:values 436801
 scoreboard players set per_damage_drop_energy guxi:values 20000
-scoreboard players set energy_inside_yonimc_energy guxi:values 80000000
+scoreboard players set energy_inside_yonimc_energy guxi:values 82827272

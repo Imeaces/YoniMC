@@ -3,3 +3,4 @@
 *.mctemplate
 .txt
 /wd/
+*.diff

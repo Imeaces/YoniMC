@@ -1,11 +1,12 @@
-import { Logger, log } from "./yoni/util/Logger.js";
-import { load } from "./yoni/loader.js";
+import { Logger, log } from "yoni-mcscripts-lib";
+import { load } from "yoni-mcscripts-lib";
 
 let logger = new Logger("MAIN");
 
 const loadList = [
-    //"./test.js",
-    "./yonimc/main.js"
+    "./test.js",
+    "./wait_debug.js",
+    "./yonimc/main.js",
 ];
 
 Promise.allSettled(

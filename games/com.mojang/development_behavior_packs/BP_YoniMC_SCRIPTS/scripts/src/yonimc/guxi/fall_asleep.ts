@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { YoniScheduler, World, Player } from "../../yoni/index.js";
+import { YoniScheduler, World, Player } from "yoni-mcscripts-lib";
 
 let sleep_death_timer = new WeakMap<Player, number>();
 

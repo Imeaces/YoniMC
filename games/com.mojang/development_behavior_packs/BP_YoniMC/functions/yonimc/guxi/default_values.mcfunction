@@ -31,11 +31,6 @@ scoreboard objectives add guxi:exp_tr dummy
 scoreboard players operation @s guxi:exp_tr = default_exp_transform_count guxi:values 
 
 
-#var guxi:ef_speed - use effect to modify guxi's speed
-scoreboard objectives add guxi:ef_speed dummy
-#var default guxi:ef_speed -2
-scoreboard players operation @s guxi:ef_speed = default_speed_affect guxi:values
-
 #var guxi:ef_mining - use effect to modify guxi's mining speed
 scoreboard objectives add guxi:ef_mining dummy
 #var default guxi:ef_mining -1
@@ -51,28 +46,14 @@ scoreboard objectives add guxi:ef_res dummy
 #var default guxi:ef_res 0
 scoreboard players operation @s guxi:ef_res = default_resistance_affect guxi:values
 
-#var guxi:ef_fireimmu - use effect to modify guxi's fire immune 
-scoreboard objectives add guxi:ef_fireimmu dummy
-#var default guxi:ef_fireimmu 0
-scoreboard players operation @s guxi:ef_fireimmu = default_fire_immune_affect guxi:values
-
-#var guxi:ef_res - use value to keep guxi's resistance 
+#var guxi:keep_res - use value to keep guxi's resistance 
 scoreboard objectives add guxi:keep_res dummy
 #var default guxi:keep_res 0
 scoreboard players set @s guxi:keep_res 0
 
 scoreboard objectives add guxi:keep_ef dummy
-#var default guxi:keep_res 0
+#var default guxi:keep_ef 0
 scoreboard players set @s guxi:keep_ef 0
-
-
-#var guxi:like_player 0n 1y 2no
-scoreboard objectives add guxi:like_player dummy
-scoreboard players set @s guxi:like_player 0
-scoreboard objectives add guxi:is_player dummy
-scoreboard players set @s guxi:is_player 0
-scoreboard objectives add guxi:auto_player dummy
-scoreboard players set @s guxi:auto_player 1
 
 #var guxi:exp_st
 scoreboard objectives add guxi:exp_st dummy

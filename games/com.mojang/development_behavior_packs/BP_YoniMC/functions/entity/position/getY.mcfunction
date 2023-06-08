@@ -1,3 +1,5 @@
+scoreboard objectives add pos:y dummy
+
 # get y pos
 scoreboard players set @e[tag=entity:point] pos:y -32768
 tp @e[tag=entity:point] ~ -32768.0 ~ 0

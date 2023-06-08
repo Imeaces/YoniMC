@@ -1,4 +1,4 @@
-import { Logger } from "../../yoni/util/Logger.js";
+import { Logger } from "yoni-mcscripts-lib";
 
 const logger = new Logger();
 
