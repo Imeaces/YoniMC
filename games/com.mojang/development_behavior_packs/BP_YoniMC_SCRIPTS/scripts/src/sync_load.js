@@ -1,7 +1,7 @@
-import "./yoni/util/WatchBird.js";
-import { VanillaEvents, Minecraft } from "./yoni/basis.js";
-import { say } from "./yoni/util/utils.js";
-import { log } from "./yoni/util/Logger.js";
+import "yoni-mcscripts-lib";
+import { VanillaEvents, Minecraft } from "yoni-mcscripts-lib";
+import { say } from "yoni-mcscripts-lib";
+import { log } from "yoni-mcscripts-lib";
 
 VanillaEvents.worldInitialize.subscribe((event)=>{
     const { propertyRegistry } = event;
@@ -18,5 +18,5 @@ VanillaEvents.worldInitialize.subscribe((event)=>{
     propertyRegistry.registerEntityTypeDynamicProperties(props1,
         Minecraft.MinecraftEntityTypes.player);
     
-    log("测试完了");
+   // log("测试完了");
 });

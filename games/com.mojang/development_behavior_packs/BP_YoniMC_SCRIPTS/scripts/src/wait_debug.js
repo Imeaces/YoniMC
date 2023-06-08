@@ -1,4 +1,4 @@
-import { EventListener, Logger, Location, EntityBase } from "./yoni/index.js";
+import { EventListener, Logger, Location, EntityBase } from "yoni-mcscripts-lib";
 
 const logger = new Logger("WaitDebug");
 

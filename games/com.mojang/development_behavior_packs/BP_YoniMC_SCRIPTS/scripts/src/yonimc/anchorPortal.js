@@ -4,7 +4,7 @@ import { EventListener,
     Location,
     EntityBase,
     Command,
-    dim } from "../yoni/index.js";
+    dim } from "yoni-mcscripts-lib";
 
 const radius = 8;
 EventListener.register("mcyoni:beforeItemUseOn", (event)=>{

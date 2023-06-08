@@ -1,14 +1,43 @@
-import { ChatCommand, Command, Minecraft, dim, VanillaWorld, VanillaEvents, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, World } from "./yoni/index.js";
-import { getKeys } from "./yoni/lib/ObjectUtils.js";
+import { ChatCommand, Command, Minecraft, dim, VanillaWorld, VanillaEvents, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, World, YoniPlayer } from "yoni-mcscripts-lib";
+import { ObjectUtils } from "yoni-mcscripts-lib";
+
+const { getKeys } = ObjectUtils;
 
 const logger = new Logger("TEST");
-
-
-
+/*
+EventListener.register("minecraft:entityHurt", (event: Minecraft.EntityHurtEvent) => {
+    let entity = EntityBase.from(event.damageSource.damagingEntity);
+    
+    if (entity == null) return;
+    
+    if (!EntityBase.entityIsPlayer(entity))
+        return;
+    
+    let item = entity.getInventory().getItem(entity.selectedSlot);
+    
+    if (item == null)
+        entity.sendMessage("失败，啥也没有");
+    else
+        entity.sendMessage("成功，物品类型"+item.typeId);
+        
+    let lores = item.getLore();
+    
+    if (!isFinite(Number(lores[0])))
+        lores[0] = "0";
+    
+    lores[0] = String(parseInt(lores[0]) + 1);
+    
+    item.setLore(lores);
+    
+    YoniScheduler.runTask(()=>
+    (entity as YoniPlayer).getInventory().setItem((entity as YoniPlayer).selectedSlot, item));
+    
+});
+*/
 
 /*
 
-import { Volume } from "./yoni/storage/Volume.js";
+import { Volume } from "yoni-mcscripts-lib";
 YoniScheduler.runDelayTickTask(async () => {
     let _commandResult: any = undefined;
     let volumeArea = {
@@ -163,13 +192,13 @@ Array.from(EventTypes.getEventTypes().keys()).forEach(key=>{
 });
 */
 /*
-import { ByteBlock } from "./yoni/storage/ByteBlock.js";
+import { ByteBlock } from "yoni-mcscripts-lib";
 
 Scoreboard.getObjective("atestb", true);
 
 const blockDev = new ByteBlock("atestb");
 
-import { string2Byte as encodeUtf8 } from "./yoni/lib/text.js";
+import { string2Byte as encodeUtf8 } from "yoni-mcscripts-lib";
 
 //import { string as file_hex } from "./file_hex.js";
 

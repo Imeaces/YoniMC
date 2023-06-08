@@ -1,10 +1,9 @@
 {
-  "name": "yonimc_scripts",
-  "version": "1.0.0",
+  "name": "@silvigarabis/yonimc_scripts",
+  "version": "1.0.0-test.1",
   "description": "YoniMC Scripts",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: most test are only available on Minecraft runtime\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -16,20 +15,16 @@
     "gametest"
   ],
   "author": "Silvigarabis",
-  "license": "SEE LICENSE IN LICENSE.md",
+  "license": "CC-BY-NC-SA-4.0",
   "bugs": {
     "url": "https://github.com/Silvigarabis/YoniMC/issues"
   },
   "homepage": "https://github.com/Silvigarabis/YoniMC#readme",
   "dependencies": {
-    "@minecraft/server": "^1.1.0-beta.1.19.70-preview.23",
-    "@minecraft/server-admin": "^1.0.0-beta.release.1.19.50",
-    "@minecraft/server-gametest": "^1.0.0-beta.release.1.19.50",
-    "@minecraft/server-net": "^1.0.0-beta.release.1.19.50",
-    "@minecraft/server-ui": "^1.0.0-beta.1.19.70-preview.23",
-    "typescript": "^4.9.3"
+    "@minecraft/server-net": "^1.0.0-beta.1.19.80-stable",
+    "yoni-mcscripts-lib": "^0.9.1-dev.2"
   },
   "devDependencies": {
-    "@types/lokijs": "^1.5.7"
+    "typescript": "^4.9.3"
   }
 }

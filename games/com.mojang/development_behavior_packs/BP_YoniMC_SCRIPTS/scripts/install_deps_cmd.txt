@@ -1,5 +1,0 @@
-npm i @minecraft/server@1.1.0-beta.release.1.19.50
-npm i @minecraft/server-admin@1.0.0-beta.release.1.19.50
-npm i @minecraft/server-gametest@1.0.0-beta.release.1.19.50
-npm i @minecraft/server-net@1.0.0-beta.release.1.19.50
-npm i @minecraft/server-ui@1.0.0-beta.release.1.19.50

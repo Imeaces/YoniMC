@@ -1,4 +1,0 @@
-damage_sensor
-使用cause过滤伤害类型，并设置无伤害，可能导致游戏认为没有触发伤害
-用has_famage可以检测
-

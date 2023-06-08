@@ -1,6 +1,14 @@
-import { ChatCommand, Location } from "../yoni/index.js";
+import { ChatCommand, Location, EventListener, Utils } from "yoni-mcscripts-lib";
 import { logger } from "./logger.js";
 import { FakePlayerManager } from "./FakePlayer.js";
+
+const { say } = Utils;
+
+globalThis._=EventListener.register("minecraft:blockPlace", event => {
+    let { player, block } = event;
+    say(block.typeId);
+});
+//EventListener.unregister(_);
 
 let pl = null;
 let fff0 = async (sender, command, label, args) => {

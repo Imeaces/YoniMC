@@ -11,8 +11,8 @@ import {
     Dimension,
     YoniDimension,
     
-} from "../yoni/index.js";
-import { DimensionLike, Vector3 } from "../yoni/Location.js";
+} from "yoni-mcscripts-lib";
+import { DimensionLikeValue as DimensionLike, Vector3 } from "yoni-mcscripts-lib";
 import { logger } from "./logger.js";
 
 export class FakePlayer extends SimulatedPlayer {
@@ -111,7 +111,7 @@ export class FakePlayerManager {
         if (fakePlayers.has(name))
             return <YonimcFakePlayer>fakePlayers.get(name);
         
-        throw new Error("not such fake player");
+        throw new Error("no such fake player");
     }
     
     static removeFakePlayer(name: string){

@@ -1,13 +1,15 @@
-import { EventListener } from "../yoni/event.js";
-import { Scoreboard, Objective } from "../yoni/scoreboard.js";
-import { say } from "../yoni/util/utils.js";
+import { EventListener } from "yoni-mcscripts-lib";
+import { Scoreboard, Objective } from "yoni-mcscripts-lib";
+import { Utils } from "yoni-mcscripts-lib";
 import { logger } from "./logger.js";
 import { isServerMode } from "./server.js";
-import Command from "../yoni/command.js";
-import { EntityBase } from "../yoni/entity.js";
-import { YoniScheduler } from "../yoni/schedule.js";
-import { system } from "../yoni/system.js";
-import { World, Location } from "../yoni/index.js";
+import Command from "yoni-mcscripts-lib";
+import { EntityBase } from "yoni-mcscripts-lib";
+import { YoniScheduler } from "yoni-mcscripts-lib";
+import { system } from "yoni-mcscripts-lib";
+import { World, Location } from "yoni-mcscripts-lib";
+
+const say = Utils.say;
 
 logger.info("订阅yoni:playerJoined");
 EventListener.register("yoni:playerJoined", (event)=>{
@@ -38,7 +40,7 @@ EventListener.register("mcyoni:entityHurt", (event)=> {
         let o = hurtEntity.onScreenDisplay;
         o.setTitle("§r");
         o.updateSubtitle(`${cause}: ${damage}`);
-        hurtEntity.sendMessage(`${cause}: ${damage}`);
+        //hurtEntity.sendMessage(`${cause}: ${damage}`);
     }
 });
 EventListener.register("playerDead", (event)=>{

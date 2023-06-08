@@ -1,8 +1,8 @@
-import { EventListener, EventTriggerBuilder } from "yoni/event.js";
-import { YoniEntity } from "yoni/entity.js";
-import { Scoreboard } from "yoni/scoreboard.js";
-import { Location } from "yoni/Location.js";
-import { MinecraftGui } from "yoni/basis.js";
+import { EventListener, EventTriggerBuilder } from "yoni-mcscripts-lib";
+import { YoniEntity } from "yoni-mcscripts-lib";
+import { Scoreboard } from "yoni-mcscripts-lib";
+import { Location } from "yoni-mcscripts-lib";
+import { MinecraftGui } from "yoni-mcscripts-lib";
 
 class ChatPanel {
     defaultChatDistance = 20;

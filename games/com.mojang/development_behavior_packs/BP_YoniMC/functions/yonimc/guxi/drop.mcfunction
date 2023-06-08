@@ -1,6 +1,6 @@
 xp -21471l @s
-
-execute if entity @s[hasitem={location=slot.inventory,item=yonimc:energy,slot=0,quantity=1}] run replaceitem entity @s slot.inventory 0 air
+say drop
+execute if entity @s[hasitem={item=guxi:enter_attack,quantity=1..}] run clear @s guxi:enter_attack 0 1
 execute if entity @s[hasitem={location=slot.inventory,item=yonimc:energy,slot=2,quantity=1}] run replaceitem entity @s slot.inventory 2 air
 execute if entity @s[hasitem={location=slot.inventory,item=yonimc:energy,slot=4,quantity=1}] run replaceitem entity @s slot.inventory 4 air
 execute if entity @s[hasitem={location=slot.inventory,item=yonimc:energy,slot=6,quantity=1}] run replaceitem entity @s slot.inventory 6 air

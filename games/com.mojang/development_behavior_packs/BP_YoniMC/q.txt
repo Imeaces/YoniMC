@@ -1,7 +1,0 @@
-query.is_alive和query.scoreboard哪个更快？
-
-卡顿是否与多个命令模块有关？
-
-如何分离entity?
-
-地物到底怎么样才能生效？

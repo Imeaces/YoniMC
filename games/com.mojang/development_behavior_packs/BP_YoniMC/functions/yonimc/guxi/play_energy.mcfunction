@@ -77,5 +77,4 @@ execute if score @s var_0 matches 74751 run scoreboard players remove @s guxi:ex
 #: pp0 虽然来到这个世界是个意外，不过，还是不太想走呢
 ##0 可惜能量已经不够了
 execute if score @s guxi:pp_energy matches 0 if score @s guxi:energy_pool matches ..0 run scoreboard players set @s var_0 70052
-execute if score @s var_0 matches 70052 run kill @s
-execute if score @s var_0 matches 70052 run tellraw @a {"rawtext":[{"translate":"%%s 消散了", "with":{"rawtext":[{"selector":"@s"}]}}]}
+execute if score @s var_0 matches 70052 run scoreboard players set @s yoni:guxi -21

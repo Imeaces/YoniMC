@@ -1,6 +1,6 @@
-import EntityBase from "../../yoni/entity.js";
-import { EventListener, EventTriggerBuilder, EventSignal } from "../../yoni/event.js";
-import { Scoreboard } from "../../yoni/scoreboard.js";
+import EntityBase from "yoni-mcscripts-lib";
+import { EventListener, EventTriggerBuilder, EventSignal } from "yoni-mcscripts-lib";
+import { Scoreboard } from "yoni-mcscripts-lib";
 
 class HotbarChangedEvent{
     constructor(player, currentSlot, lastSlot){

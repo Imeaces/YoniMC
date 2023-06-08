@@ -26,6 +26,12 @@ execute if score @s yoni:guxi matches -20 if entity @s[tag=flag:status.is_alive]
 execute if score @s yoni:guxi_1 matches 72 run function yonimc/species/guxi/respawn
 execute if score @s yoni:guxi_1 matches 72 run scoreboard players set @s yoni:guxi 0
 
+execute if score @s yoni:guxi matches -21 run damage @s 10000 none
+execute if score @s yoni:guxi matches -21 run tellraw @a {"rawtext":[{"translate":"%%s 消散了", "with":{"rawtext":[{"selector":"@s"}]}}]}
+
+execute if score @s yoni:guxi matches -21 run scoreboard players set @s yoni:guxi 0
+execute if score @s yoni:guxi matches -21 run scoreboard players set @s yoni:guxi_1 -1
+
 #: -1 no need to deal
 execute if score @s yoni:guxi matches 0 if entity @s[tag=flag:status.not_alive] run scoreboard players set @s yoni:guxi_1 -1
 execute if entity @s[tag=flag:status.not_alive] if score @s yoni:guxi matches -20 run scoreboard players set @s yoni:guxi_1 -1

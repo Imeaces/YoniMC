@@ -7,8 +7,8 @@ execute unless score @s var_0 matches 0 run scoreboard players operation @s md:b
 execute unless score @s var_0 matches 0 run function yonimc/mind/operation/rotate_y_offset_init
 
 # 限制范围
-execute if score @s md:base_menu_v0 matches ..-1 run scoreboard players set @s md:base_menu_v0 6
-execute if score @s md:base_menu_v0 matches 7.. run scoreboard players set @s md:base_menu_v0 0
+execute if score @s md:base_menu_v0 matches ..-1 run scoreboard players set @s md:base_menu_v0 7
+execute if score @s md:base_menu_v0 matches 8.. run scoreboard players set @s md:base_menu_v0 0
 
 # titleraw @s actionbar {"rawtext": [{"score": {"objective": "md:base_menu_v0", "name": "@s" }}]}
 
@@ -68,3 +68,6 @@ execute if score @s md:base_menu_v0 matches 5 if score @s var_0 matches -301 run
 
 execute if score @s md:base_menu_v0 matches 6 run titleraw @s actionbar {"rawtext": [{"translate":"§7%%s§f|%%s\n§r","with":{"rawtext":[{"score":{"objective":"guxi:energy","name":"@s"}},{"score":{"objective":"guxi:energy_pool","name":"@s"}}]}}, {"translate": "§§#/eff: %%2", "with": {"rawtext": [{"selector": "@s[scores={guxi:keep_ef=!0}]"},{"text": "#!"},{"text": "#_"}]}},{"translate":"§r%%2§r","with":{"rawtext":[{"selector":"@s[scores={md:timer_076=1..}]"},{"translate":"\n>>#t: %%s","with":{"rawtext":[{"score":{"objective":"md:timer_076","name":"@s"}}]}}]}}]}
 execute if score @s md:base_menu_v0 matches 6 if score @s var_0 matches -301 run function yonimc/mind/guxi/goto/106_keep_ef
+
+execute if score @s md:base_menu_v0 matches 7 run titleraw @s actionbar {"rawtext": [{"translate":"§7%%s§f|%%s\n§r","with":{"rawtext":[{"score":{"objective":"guxi:energy","name":"@s"}},{"score":{"objective":"guxi:energy_pool","name":"@s"}}]}}, {"translate": "§§#.auto: %%2", "with": {"rawtext": [{"selector": "@s[scores={guxi:auto_energy=!0}]"},{"text": "#!"},{"text": "#_"}]}},{"translate":"§r%%2§r","with":{"rawtext":[{"selector":"@s[scores={md:timer_076=1..}]"},{"translate":"\n>>#t: %%s","with":{"rawtext":[{"score":{"objective":"md:timer_076","name":"@s"}}]}}]}}]}
+execute if score @s md:base_menu_v0 matches 7 if score @s var_0 matches -301 run function yonimc/mind/guxi/goto/107_auto_energy

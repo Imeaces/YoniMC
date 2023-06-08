@@ -1,8 +1,8 @@
-import { Command } from "../yoni/command.js";
-import { EventListener } from "../yoni/event.js";
-import { EntityBase } from "../yoni/entity.js";
-import { ChatCommand } from "../yoni/util/ChatCommand.js";
-import { Minecraft } from "../yoni/basis.js";
+import { Command } from "yoni-mcscripts-lib";
+import { EventListener } from "yoni-mcscripts-lib";
+import { EntityBase } from "yoni-mcscripts-lib";
+import { ChatCommand } from "yoni-mcscripts-lib";
+import { Minecraft } from "yoni-mcscripts-lib";
 const { MinecraftEffectTypes } = Minecraft;
 
 const regex = /@(?:all|here)\b/m;

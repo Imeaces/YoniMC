@@ -4,12 +4,110 @@
         "description": {
             "identifier": "yonimc:energy_block",
             "properties": {
-                "yoni:block_friction": [
-                    "smooth",
-                    "normal"
+                "yonimc:block_brightness_level": [
+                    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
                 ]
             }
+            
         },
+        "permutations": [
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 15",
+                "components": {
+            "minecraft:block_light_emission": 1
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 14",
+                "components": {
+            "minecraft:block_light_emission": 0.93
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 13",
+                "components": {
+            "minecraft:block_light_emission": 0.87
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 12",
+                "components": {
+            "minecraft:block_light_emission": 0.8
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 11",
+                "components": {
+            "minecraft:block_light_emission": 0.73
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 10",
+                "components": {
+            "minecraft:block_light_emission": 0.67
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 9",
+                "components": {
+            "minecraft:block_light_emission": 0.6
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 8",
+                "components": {
+            "minecraft:block_light_emission": 0.53
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 7",
+                "components": {
+            "minecraft:block_light_emission": 0.47
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 6",
+                "components": {
+            "minecraft:block_light_emission": 0.4
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 5",
+                "components": {
+            "minecraft:block_light_emission": 0.33
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 4",
+                "components": {
+            "minecraft:block_light_emission": 0.27
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 3",
+                "components": {
+            "minecraft:block_light_emission": 0.2
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 2",
+                "components": {
+            "minecraft:block_light_emission": 0.13
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 1",
+                "components": {
+            "minecraft:block_light_emission": 0.07
+                }
+            },
+            {
+                "condition": "query.block_property('yonimc:block_brightness_level') == 0",
+                "components": {
+            "minecraft:block_light_emission": 0
+                }
+            }
+        ], 
         "components": {
             "minecraft:destroy_time": 0,
             "minecraft:explosion_resistance": 3600000,
@@ -35,7 +133,18 @@
                     "render_method": "blend"
                 }
             },
+            "minecraft:on_placed": {
+                "target": "self",
+                "event": "yonimc:energy_block_placed"
+            },
             "minecraft:geometry": "geometry.yonimc.energy_block"
+        },
+        "events": {
+            "yonimc:energy_block_placed": {
+                "set_block_property": {
+                    "yonimc:block_brightness_level": "math.random_integer(0, 15)"
+                }
+            }
         }
     }
 }

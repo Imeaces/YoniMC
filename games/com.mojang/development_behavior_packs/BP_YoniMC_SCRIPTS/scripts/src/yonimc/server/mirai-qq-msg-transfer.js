@@ -1,9 +1,9 @@
-import { EventListener } from "../../yoni/event.js";
-import { VanillaWorld } from "../../yoni/basis.js";
-import { Logger } from "../../yoni/util/Logger.js";
-import { ChatCommand } from "../../yoni/util/ChatCommand.js";
+import { EventListener } from "yoni-mcscripts-lib";
+import { VanillaWorld } from "yoni-mcscripts-lib";
+import { Logger } from "yoni-mcscripts-lib";
+import { ChatCommand } from "yoni-mcscripts-lib";
 import { MiraiSession } from "./mirai-session.js";
-import { YoniScheduler } from "../../yoni/schedule.js";
+import { YoniScheduler } from "yoni-mcscripts-lib";
 
 import { API_URL, API_KEY, QQNumber, GroupNumbers, AdminList } from "./mirai-config.js";
 

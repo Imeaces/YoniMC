@@ -1,5 +1,5 @@
 import { MojangNet } from "./basis.js";
-import { Logger } from "../../yoni/util/Logger.js";
+import { Logger } from "yoni-mcscripts-lib";
 const { HttpRequest, http, HttpHeader } = MojangNet;
 
 export class MiraiSession {

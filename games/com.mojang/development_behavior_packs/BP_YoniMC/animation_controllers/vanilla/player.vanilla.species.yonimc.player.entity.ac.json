@@ -22,7 +22,7 @@
                 },
                 "spawn_start": {
                     "transitions": [
-                        { "loop0": "(1.0)" }
+                        { "loop0": "query.property('yonimc:species0') == 1" }
                     ],
                     "on_entry": [
                         "/say species as minecraft_player"

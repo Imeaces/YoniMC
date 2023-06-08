@@ -29,22 +29,27 @@
     },
     "scripts": {
         "animate": [
+            "test.ac",
+            
             "player.yonimc.species.guxi",
             "player.yonimc.species.vanilla.player",
             //{"player.yonimc.species.vanilla.": "query.property('yonimc:species0') == 0"},
             
             "entity.status.alive",
             "entity.status.sleeping",
+            "entity.status.wave_time",
             "entity.status.is_gliding"
     ]},
     "animations": {
         "entity.status.sleeping": "controller.animation.entity.status.is_sleeping",
         "entity.status.alive": "controller.animation.entity.status.alive",
         "entity.status.is_gliding": "controller.animation.entity.status.is_gliding",
+        "entity.status.wave_time": "controller.animation.entity.status.wave_time",
                
         "player.yonimc.species.guxi": "controller.animation.entity.player.yonimc.species.guxi",
-        "player.yonimc.species.vanilla.player": "controller.animation.entity.player.yonimc.species.vanilla.player"
+        "player.yonimc.species.vanilla.player": "controller.animation.entity.player.yonimc.species.vanilla.player",
         //"player.yonimc.species.vanilla": "controller.animation.entity.player.yonimc.species.vanilla"
+        "test.ac": "controller.animation.test.ac"
     }},
 
 "component_groups": {
@@ -110,41 +115,35 @@
             "guxi"
             ]},
         "minecraft:damage_sensor": {"triggers":[
-            {"cause": "lava",
-                "deals_damage": false,
-                "on_damage": {"event": "guxi:damage_cause_by_fire"}
-                },
-            {"cause": "magma",
-                "deals_damage": false,
-                "on_damage": {"event": "guxi:damage_cause_by_fire"}
-                },
-            {"cause": "fire",
-                "deals_damage": false,
-                "on_damage": {"event": "guxi:damage_cause_by_fire"}
-                },
-            {"cause": "fire_tick",
-                "deals_damage": false,
-                "on_damage": {"event": "guxi:damage_cause_by_fire"}
-                },
             {
                 "on_damage": {
-                    "filters": {
-                        "test": "has_damage",
-                        "subject": "self",
-                        "value": "sonic_boom"
-                        }
+                    "filters": {"any_of": [
+                        {"test": "is_family",
+                        "subject": "other",
+                        "value": "test_fam_002772"
+                        },
+                        {"test": "has_damage", "subject": "self", "value": "sonic_boom" },
+                        {"test": "has_damage", "subject": "self", "value": "suffocation" },
+                        {"test": "has_damage", "subject": "self", "value": "starve" }
+                        ]}
                     },
                 "deals_damage": false
                 },
-            {"cause": "suffocation",
+            {
+                "on_damage": {
+                    "filters": {"any_of": [
+                        {"test": "has_damage", "subject": "self", "value": "fire_tick" },
+                        {"test": "has_damage", "subject": "self", "value": "fire" },
+                        {"test": "has_damage", "subject": "self", "value": "lava" }
+                        ]},
+                    "event": "guxi:damage_cause_by_fire", "target": "self"
+                    },
                 "deals_damage": false
                 },
-            {"cause": "starve",
-                "deals_damage": false
+            {"cause": "magma", "deals_damage": false,
+                "on_damage": {"event": "guxi:damage_cause_by_fire", "target": "self"}
                 },
-            {"cause": "freezing",
-                "deals_damage": false
-                },
+            {"cause": "freezing", "deals_damage": false},
             {"cause": "stalactite",
                 "damage_multiplier": 2
                 },
@@ -152,6 +151,9 @@
                 "damage_multiplier": 2
                 },
             {"cause": "projectile",
+                "damage_multiplier": 1.5
+                },
+            {"cause": "fall",
                 "damage_multiplier": 1.5
                 },
             {"cause": "fatal",
@@ -190,6 +192,7 @@
             "minecraft:remove_raid_trigger",
             "minecraft:clear_add_bad_omen"
         ]},
+        "run_command": { "target": "self", "command": ["say yonimc:remove_all"]},
         "set_property": {"yonimc:species0": 0}
     },
     
@@ -215,7 +218,7 @@
         "run_command": {
             "target": "self",
             "command": [
-                "say fatal damage"
+                "function yonimc/guxi/trigger/damage_fatal"
                 ]
         }},
     "guxi:damage_cause_by_fire": {
@@ -262,8 +265,9 @@
         {"trigger": {"target": "self", "event": "yonimc:spawn_minecraft_player" }}
     ]},
     "yonimc:spawn_minecraft_player": {"sequence": [
-        {"add": { "component_groups": [ "minecraft:as_player" ] }},
-        {"set_property": {"yonimc:species0": 1}}
+        {"run_command": { "target": "self", "command": ["say yonimc:spawn_minecraft_player"]}},
+        {"set_property": {"yonimc:species0": 1}},
+        {"add": { "component_groups": [ "minecraft:as_player" ] }}
     ]},
     "minecraft:gain_bad_omen":{"add":{"component_groups":["minecraft:add_bad_omen"]}},
     "minecraft:clear_add_bad_omen":{"remove":{"component_groups":["minecraft:add_bad_omen"]},"add":{"component_groups":["minecraft:clear_bad_omen_spell_effect"]}},

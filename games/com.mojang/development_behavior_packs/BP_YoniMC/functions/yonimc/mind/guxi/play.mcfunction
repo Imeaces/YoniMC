@@ -11,3 +11,4 @@ execute if score @s mind matches 103 run function yonimc/mind/guxi/100/103_damag
 execute if score @s mind matches 104 run function yonimc/mind/guxi/100/104_res
 execute if score @s mind matches 105 run function yonimc/mind/guxi/100/105_keep_res
 execute if score @s mind matches 106 run function yonimc/mind/guxi/100/106_keep_ef
+execute if score @s mind matches 107 run function yonimc/mind/guxi/100/107_auto_energy

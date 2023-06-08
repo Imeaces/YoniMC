@@ -1,7 +1,7 @@
 import { Minecraft, VanillaWorld, dim,
     EntityBase, Command, Scoreboard,
     EventListener, World,
-    YoniScheduler, Schedule } from "../../yoni/index.js";
+    YoniScheduler, Schedule } from "yoni-mcscripts-lib";
 
 YoniScheduler.runCycleTickTask(() => {
     World.getAllPlayers().forEach((e)=>{

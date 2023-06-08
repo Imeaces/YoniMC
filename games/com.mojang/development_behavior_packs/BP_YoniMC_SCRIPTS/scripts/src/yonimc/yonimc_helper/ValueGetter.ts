@@ -3,7 +3,7 @@ import { Minecraft, VanillaWorld, dim,
     EventListener,
     World,
     YoniPlayer,
-    YoniScheduler, Location, Objective } from "../../yoni/index.js";
+    YoniScheduler, Location, Objective } from "yoni-mcscripts-lib";
 
 const MinecraftSystem = Minecraft.system;
 

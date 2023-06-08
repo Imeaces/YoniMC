@@ -5,10 +5,10 @@ import { ChatCommand,
     EntityBase,
     Location,
     Minecraft, Logger,
-    YoniPlayer } from "../yoni/index.js";
+    YoniPlayer } from "yoni-mcscripts-lib";
 
-import { Dimension, YoniDimension } from "../yoni/dimension.js";
-import { Vector3 } from "../yoni/Location.js";
+import { Dimension, YoniDimension } from "yoni-mcscripts-lib";
+import { Vector3 } from "yoni-mcscripts-lib";
 import { FakePlayerManager, YonimcFakePlayer } from "./FakePlayer.js";
 
 //////////////////////
@@ -302,6 +302,9 @@ function getSurroundingLocs(v: Vector3): Location[]{
     return rt;
 }
 async function startChainDestroy2(center: Location, player: YoniPlayer, blockType: Minecraft.BlockType, chainCount = Config.maxChainCount){
+    
+    logger.debug("startChainDestroy2:: center: {}", center.toString());
+    
     //存储方块坐标字符串
     let detectBlockStack: string[] = [];
     let detectedLocs = new Set<string>();
