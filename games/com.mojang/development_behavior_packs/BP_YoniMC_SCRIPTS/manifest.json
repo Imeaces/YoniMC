@@ -39,7 +39,7 @@
         "authors": [
             "Silvigarabis"
         ],
-        "license": "CC-BY-NC-SA-4.0",
+        "license": "CC-BY-NC-4.0",
         "url": "https://github.com/Silvigarabis/YoniMC"
     },
     "capabilities": ["script_eval"]

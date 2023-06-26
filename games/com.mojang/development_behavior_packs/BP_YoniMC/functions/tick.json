@@ -1,7 +1,6 @@
 {
   "values": [
     "yonimc/timer",
-    "yonimc/create_base_scb",
-    "test"
+    "yonimc/create_base_scb"
   ]
 }

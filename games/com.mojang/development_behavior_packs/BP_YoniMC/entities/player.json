@@ -33,14 +33,14 @@
             "player.yonimc.species.guxi",
             "player.yonimc.species.winging_human",
             "player.yonimc.species.infinity_ghost",
+            "player.yonimc.species.sil",
             //{"player.yonimc.species.vanilla.": "query.property('yonimc:species0') == 0"},
             
             "entity.status.alive",
             "entity.status.sleeping",
             "entity.status.wave_time",
             "entity.status.is_gliding",
-            "entity.status.is_jumping",
-            "entity.status.is_flying"
+            "entity.status.is_jumping"
     ]},
     "animations": {
         "entity.status.sleeping": "controller.animation.entity.status.is_sleeping",
@@ -48,8 +48,8 @@
         "entity.status.is_gliding": "controller.animation.entity.status.is_gliding",
         "entity.status.wave_time": "controller.animation.entity.status.wave_time",
         "entity.status.is_jumping": "controller.animation.entity.status.is_jumping",
-        "entity.status.is_flying": "controller.animation.entity.status.is_flying",
         
+        "player.yonimc.species.sil": "controller.animation.entity.player.yonimc.species.sil",
         "player.yonimc.species.vanilla.player": "controller.animation.entity.player.yonimc.species.vanilla.player",
         "player.yonimc.species.guxi": "controller.animation.entity.player.yonimc.species.guxi",
         "player.yonimc.species.winging_human": "controller.animation.entity.player.yonimc.species.winging_human",
@@ -217,6 +217,29 @@
         ]}
     },
     
+    "yonimc:as_sil": {
+        "minecraft:type_family": { "family": [
+            "human",
+            "player",
+            "yonimc",
+            "sil"
+            ]},
+        "minecraft:health": { "value": 5 },
+        "minecraft:movement": { "value": 0.075 },
+        "minecraft:scale": { "value": 0.25 },
+        "minecraft:damage_sensor": {"triggers":[
+            {"cause": "stalagmite", 
+                 "deals_damage": false
+                },
+            {"cause": "suffocation", 
+                 "deals_damage": false
+                },
+            {"cause": "fall", 
+                 "deals_damage": false
+                }
+        ]}
+    },
+    
     "health:max_40": {"minecraft:health": {"max": 40,"min": 0}},
     "health:max_25": {"minecraft:health": {"max": 25,"min": 0}},
     "health:max_16": {"minecraft:health": {"max": 16,"min": 0}},
@@ -353,6 +376,26 @@
         {"run_command": { "target": "self", "command": ["say yonimc:spawn_infinity_ghost"]}},
         {"add": { "component_groups": [ "yonimc:as_infinity_ghost" ] }},
         {"set_property": {"yonimc:species0": 6}}
+    ]},
+    
+    //sil
+    "species:as_sil": {"sequence": [
+        {"trigger": {"target": "self", "event": "yonimc:remove_all" }},
+        {"trigger": {"target": "self", "event": "yonimc:spawn_sil" }}
+    ]},
+    "yonimc:spawn_sil": {"sequence": [
+        {"run_command": { "target": "self", "command": ["say yonimc:spawn_sil"]}},
+        {"add": { "component_groups": [ "dummy:player_defaults" ] }},
+        {"add": { "component_groups": [ "yonimc:as_sil" ] }},
+        {"set_property": {"yonimc:species0": 7}}
+    ]},
+    "sil:event_loop": {"sequence": [
+        {"filters": {"none_of": [{"test": "has_ability", "value": "mayfly"}]},
+            "run_command": { "target": "self", "command": ["ability @s mayfly true"]}},
+        {"filters": {"test": "has_ability", "value": "flying"},
+            "run_command": { "target": "self", "command": [
+                "effect @s hunger 1 0 true"]
+            }}
     ]},
     
     // test events
