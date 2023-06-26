@@ -1,0 +1,33 @@
+{
+  "format_version": "1.18.10",
+  "minecraft:camera_entity": {
+    "description": {
+      "identifier": "minecraft:nonfree"
+    },
+    "components": {
+      "minecraft:camera": {
+        "field_of_view": 66.0,
+        "near_clipping_plane": 0.025,
+        "far_clipping_plane": 2500.0
+      },
+      "minecraft:stationary_camera": {
+        "pos": [ 0, 0, 0 ],
+        "rot": [ 0, 0 ]
+      },
+      "minecraft:redirect_camera_input": {},
+      "minecraft:camera_shake": {
+        "frequency": 10.0,
+        "amplitude": 5.0,
+        "noise_multiplier": 4.0
+      },
+      "minecraft:camera_render_first_person_objects": {},
+      "minecraft:camera_player_sleep_vignette": {},
+      "minecraft:camera_portal_distortion": {},
+      "minecraft:vr_comfort_move": {},
+      "minecraft:camera_liquid_offset": {},
+      "minecraft:camera_player_bob": {},
+      "minecraft:gameplay_affects_fov": {},
+      "minecraft:player_state_affects_rendering": {}
+    }
+  }
+}

@@ -1,15 +1,18 @@
 import { logger } from "./logger.js";
+import { isServerMode, setServerMode } from "./config.js";
 
-let serverMode = false;
-
-export function isServerMode(){
-    return serverMode;
-}
-
-import('./server/mirai-qq-msg-transfer.js')
-.then(()=>{
-    serverMode = true;
-    logger.info("已经导入YoniMC Server");
-}).catch((e)=>{
-    logger.debug("未能导入服务器内容，可能是由于当前并未运行在服务器 {}", e);
-});
+import("./server/basis")
+.then(() => {
+    setServerMode(true);
+    logger.info("服务器模式");
+})
+.then(async () => {
+    if ( isServerMode() ){
+        await import("./server/mirai-qq-msg-transfer");
+        logger.info("已经导入YoniMC Server");
+    }
+})
+.catch((e) => {
+    setServerMode(false);
+    logger.debug("未能导入服务器内容，可能是由于当前并未运行在服务器", e);
+})

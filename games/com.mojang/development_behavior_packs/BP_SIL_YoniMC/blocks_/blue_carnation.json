@@ -1,0 +1,43 @@
+{
+    "format_version": "1.18.10",
+    "minecraft:block": {
+        "description": {
+            "identifier": "yonimc:blue_carnation"
+        },
+        "components": {
+            "minecraft:creative_category": {
+                "category": "nature",
+                "group": "itemGroup.name.flower"
+            },
+            "minecraft:selection_box": {
+                "origin": [-3, 0, -3],
+                "size": [6, 8, 6]
+            },
+            "minecraft:block_collision": false,
+            "minecraft:block_light_emission": 1,
+            "minecraft:block_light_filter": 0,
+            "minecraft:geometry": "geometry.yonimc.blue_carnation",
+            "minecraft:placement_filter": {
+                "conditions": [
+                    {
+                        "block_filter": [
+                            {
+                                "tags": "query.any_tag('grass', 'dirt')"
+                            }
+                        ],
+                        "allowed_faces": [ "up" ]
+                    }
+                ]
+            },
+            "minecraft:breathability": "air",
+            "minecraft:material_instances": {
+                "*": {
+                    "texture": "blue_carnation",
+                    "render_method": "blend",
+                    "ambient_occlusion": false
+                }
+            },
+            "tag:yonimc_dreamy": {}
+        }
+    }
+}

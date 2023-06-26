@@ -5,7 +5,7 @@ let logger = new Logger("MAIN");
 
 const loadList = [
     "./test.js",
-    "./wait_debug.js",
+    "./test/wait_debug.js",
     "./yonimc/main.js",
 ];
 

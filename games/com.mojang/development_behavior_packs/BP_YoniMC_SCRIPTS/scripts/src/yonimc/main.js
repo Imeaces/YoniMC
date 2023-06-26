@@ -1,27 +1,29 @@
-import { Logger } from "yoni-mcscripts-lib";
+import { logger } from "./util/logger";
 
 let importList = [
-    //"./anchorPortal.js",
-    //"./levitation.js",
-    "./command.js",
-    "./guxi.js",
-    "./chat.js",
-    "./server.js",
-    "./notice.js",
-    "./guxi/fall_asleep.js",
-    "./ChainDestroy.js",
-    //"./ChainDestroy_v2.js",
-    "./test.js",
-    "./yonimc_helper/helper.js",
+    "chainDestroy/ChainDestroy",
+
+    "test",
+    
+    "species",
+    "server",
+    
+    "yonimcHelper/helper",
+
+    "util/command",
+    "util/chat",
+    "util/notice",
 ];
 
-let logger = new Logger("Yonimc");
-
-importList.forEach(path=>{
-    import(path)
-    .catch(e => {
-        logger.error("导入{}的时候发生错误 {}", path, e);
-    });
+Promise.allSettled(function importAll(){
+    const promises = [];
+    for (const path of importList){
+        promises.push(import("./" + path)
+            .catch(e => logger.error("导入 {} 时发生错误", path, e))
+        );
+    }
+    return promises;
+}())
+.finally(function sayOk(){
+    logger.info("scripts YoniMC end");
 });
-
-logger.info("scripts YoniMC end");

@@ -1,0 +1,1 @@
+scriptevent yonimc:species_winging despawn

@@ -1,0 +1,4 @@
+磁盘对象是一个Volume
+Volume有些众多Chunk
+Chunk上有一些Block
+Block可以读写一个由\u0000分割的字符串数组

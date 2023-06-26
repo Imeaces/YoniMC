@@ -1,9 +1,29 @@
-import { ChatCommand, Command, Minecraft, dim, VanillaWorld, VanillaEvents, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, World, YoniPlayer } from "yoni-mcscripts-lib";
+import { ChatCommand, Command, Minecraft, dim, VanillaWorld, VanillaEvents, EventTypes, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, World, YoniPlayer } from "yoni-mcscripts-lib";
 import { ObjectUtils } from "yoni-mcscripts-lib";
 
 const { getKeys } = ObjectUtils;
 
 const logger = new Logger("TEST");
+/*
+
+EventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub0(event: Minecraft.BeforeItemUseOnEvent){
+    logger.info("start sub0 {}", event.cancel);
+    logger.info("end sub0 {}", event.cancel);
+});
+
+EventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub1(event: Minecraft.BeforeItemUseOnEvent){
+    logger.info("start sub1 {}", event.cancel);
+    while (true);
+    logger.info("end sub1 {}", event.cancel);
+});
+
+EventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub2(event: Minecraft.BeforeItemUseOnEvent){
+    logger.info("start sub2 {}", event.cancel);
+    event.cancel = true;
+    logger.info("end sub2 {}", event.cancel);
+});
+*/
+
 /*
 EventListener.register("minecraft:entityHurt", (event: Minecraft.EntityHurtEvent) => {
     let entity = EntityBase.from(event.damageSource.damagingEntity);

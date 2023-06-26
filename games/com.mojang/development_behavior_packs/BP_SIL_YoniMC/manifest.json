@@ -1,0 +1,39 @@
+{
+    "format_version": 2,
+    "header": {
+        "name": "SIL",
+        "description": "一些不切实际的幻想",
+        "uuid": "6e13fa58-12ce-11ee-a8e1-9f52ccc6dee0",
+        "version": [0, 10, 2],
+        "min_engine_version": [1, 20, 0]
+    },
+    "modules": [
+        {
+            "description": "data:yoni",
+            "type": "data",
+            "uuid": "6e13e860-12ce-11ee-a8c9-7f797f90363c",
+            "version": [0, 10, 2]
+        },
+        {
+            "description": "scripts:yoni",
+            "type": "script",
+            "language": "javascript",
+            "uuid": "dc511ab6-ae35-11ed-a724-eb704f6e3aa8",
+            "version": [0, 8, 0],
+            "entry": "scripts/index.js"
+        }
+    ],
+    "dependencies": [
+        {
+            "module_name": "@minecraft/server",
+            "version": "1.4.0-beta"
+        }
+     ],
+    "metadata": {
+        "authors": [
+            "Silvigarabis"
+        ],
+        "license": "CC BY-NC-SA 4.0",
+        "url": "https://github.com/Silvigarabis/YoniMC"
+    }
+}

@@ -29,25 +29,31 @@
     },
     "scripts": {
         "animate": [
-            "test.ac",
-            
-            "player.yonimc.species.guxi",
             "player.yonimc.species.vanilla.player",
+            "player.yonimc.species.guxi",
+            "player.yonimc.species.winging_human",
+            "player.yonimc.species.infinity_ghost",
             //{"player.yonimc.species.vanilla.": "query.property('yonimc:species0') == 0"},
             
             "entity.status.alive",
             "entity.status.sleeping",
             "entity.status.wave_time",
-            "entity.status.is_gliding"
+            "entity.status.is_gliding",
+            "entity.status.is_jumping",
+            "entity.status.is_flying"
     ]},
     "animations": {
         "entity.status.sleeping": "controller.animation.entity.status.is_sleeping",
         "entity.status.alive": "controller.animation.entity.status.alive",
         "entity.status.is_gliding": "controller.animation.entity.status.is_gliding",
         "entity.status.wave_time": "controller.animation.entity.status.wave_time",
-               
-        "player.yonimc.species.guxi": "controller.animation.entity.player.yonimc.species.guxi",
+        "entity.status.is_jumping": "controller.animation.entity.status.is_jumping",
+        "entity.status.is_flying": "controller.animation.entity.status.is_flying",
+        
         "player.yonimc.species.vanilla.player": "controller.animation.entity.player.yonimc.species.vanilla.player",
+        "player.yonimc.species.guxi": "controller.animation.entity.player.yonimc.species.guxi",
+        "player.yonimc.species.winging_human": "controller.animation.entity.player.yonimc.species.winging_human",
+        "player.yonimc.species.infinity_ghost": "controller.animation.entity.player.yonimc.species.infinity_ghost",
         //"player.yonimc.species.vanilla": "controller.animation.entity.player.yonimc.species.vanilla"
         "test.ac": "controller.animation.test.ac"
     }},
@@ -58,7 +64,7 @@
     "minecraft:clear_bad_omen_spell_effect":{"minecraft:spell_effects":{}},
     "minecraft:raid_trigger":{"minecraft:raid_trigger":{"triggered_event":{"event":"minecraft:remove_raid_trigger","target":"self"}},"minecraft:spell_effects":{"remove_effects":"bad_omen"}},
     
-    "minecraft:as_player":{
+    "dummy:player_defaults": {
         "minecraft:experience_reward":{"on_death":"Math.Min(query.player_level*7,100)"},
         "minecraft:type_family":{"family":["player","minecraft_player"]},
         "minecraft:is_hidden_when_invisible":{},
@@ -82,6 +88,10 @@
         "minecraft:rideable":{"seat_count":2,"family_types":["parrot_tame"],"pull_in_entities":true,"seats":[{"position":[0.4,-0.2,-0.1],"min_rider_count":0,"max_rider_count":0,"lock_rider_rotation":0},{"position":[-0.4,-0.2,-0.1],"min_rider_count":1,"max_rider_count":2,"lock_rider_rotation":0}]},
         "minecraft:block_climber":{},
         "minecraft:environment_sensor":{"triggers":{"filters":{"all_of":[{"test":"has_mob_effect","subject":"self","value":"bad_omen"},{"test":"is_in_village","subject":"self","value":true}]},"event":"minecraft:trigger_raid"}}
+    },
+    
+    "minecraft:as_player":{
+       // now in "dummy:player_defaults"
     },
     
     "setvalue:30:mark_variant": {"minecraft:mark_variant": { "value": 30 }},
@@ -163,16 +173,78 @@
             ]}
     },
     
+    "yonimc:as_winging": {
+        "minecraft:type_family": { "family": [
+            "human",
+            "player",
+            "yonimc",
+            "winging_human",
+            "winging"
+            ]},
+        "minecraft:scale": { "value": 0.87 },
+        "minecraft:health": { "value": 16 },
+        "minecraft:movement": { "value": 0.124 },
+        "minecraft:damage_sensor": {"triggers":[
+            {"cause": "starve", 
+                "damage_multiplier": 2
+                },
+            {"cause": "fall", 
+                "damage_modifier": -30
+                },
+            {"cause": "stalagmite",
+                "damage_multiplier": -15
+                },
+            {"cause": "fly_into_wall", 
+                "damage_modifier": -10
+            }
+        ]}
+    },
+    
+    "yonimc:as_infinity_ghost": {
+        "minecraft:type_family": { "family": [
+            "human",
+            "player",
+            "yonimc",
+            "infinity_ghost",
+            "ghost"
+            ]},
+        "minecraft:health": { "value": 10 },
+        "minecraft:movement": { "value": 0.3 },
+        "minecraft:damage_sensor": {"triggers":[
+            {"cause": "fatal", 
+                 "deals_damage": false
+                }
+        ]}
+    },
+    
+    "health:max_40": {"minecraft:health": {"max": 40,"min": 0}},
     "health:max_25": {"minecraft:health": {"max": 25,"min": 0}},
+    "health:max_16": {"minecraft:health": {"max": 16,"min": 0}},
     "health:max_15": {"minecraft:health": {"max": 15,"min": 0}},
     "health:max_5": {"minecraft:health": {"max": 5,"min": 0}},
+    "movement:value_0.127": {"minecraft:scale": { "value": 0.127 }},
+    "movement:value_0.124": {"minecraft:scale": { "value": 0.124 }},
+    "movement:value_0.1": {"minecraft:scale": { "value": 0.1 }},
+    "movement:value_0.07": {"minecraft:scale": { "value": 0.07 }},
     
     "yonimc:as_spirit": {
         "minecraft:health": {"max": 40,"min": 0},
         "minecraft:scale": { "value": 1.1 },
         "minecraft:type_family": {
             "family": [ "player", "yonimc", "spirit" ] }
+    },
+    
+    "yonimc:test": {
+        "minecraft:environment_sensor":{"triggers":[
+            {"filters":{"all_of":[{"test":"has_mob_effect","subject":"self","value":"bad_omen"},{"test":"is_in_village","subject":"self","value":true}]},"event":"minecraft:trigger_raid"},
+            {"filters": { "test": "has_ability", "value": "flying" },
+            "event": "yonimc:test_1"},
+            {"filters": {"none_of":[{ "test": "has_ability", "value": "flying" }]},
+            "event": "yonimc:test_2"}
+          ]}
     }
+    
+    
 },
 
 "components": {
@@ -186,11 +258,29 @@
     
     "yonimc:remove_all": {
         "remove": { "component_groups": [
-            "yonimc:as_guxi",
-            "yonimc:as_spirit",
-            "minecraft:as_player",
-            "minecraft:remove_raid_trigger",
-            "minecraft:clear_add_bad_omen"
+"minecraft:add_bad_omen",
+"minecraft:clear_bad_omen_spell_effect",
+"minecraft:raid_trigger",
+"dummy:player_defaults",
+"minecraft:as_player",
+"yonimc:as_guxi",
+"yonimc:as_winging",
+"yonimc:as_infinity_ghost",
+"yonimc:as_spirit",
+"health:max_40",
+"health:max_25",
+"health:max_16",
+"health:max_15",
+"health:max_5",
+"setvalue:30:mark_variant",
+"setvalue:20:mark_variant",
+"setvalue:2695:variant",
+"setvalue:0:variant",
+"setvalue:42:variant",
+"movement:value_0.127",
+"movement:value_0.124",
+"movement:value_0.1",
+"movement:value_0.07"
         ]},
         "run_command": { "target": "self", "command": ["say yonimc:remove_all"]},
         "set_property": {"yonimc:species0": 0}
@@ -211,6 +301,7 @@
         {"trigger": {"target": "self", "event": "yonimc:spawn_yoni_guxi" }}
     ]},
     "yonimc:spawn_yoni_guxi": {"sequence": [
+        {"run_command": { "target": "self", "command": ["say yonimc:spawn_yoni_guxi"]}},
         {"add": { "component_groups": [ "yonimc:as_guxi" ] }},
         {"set_property": {"yonimc:species0": 2}}
     ]},
@@ -235,8 +326,46 @@
         {"trigger": {"target": "self", "event": "yonimc:spawn_yoni_spirit" }}
     ]},
     "yonimc:spawn_yoni_spirit": {"sequence": [
+        {"run_command": { "target": "self", "command": ["say yonimc:spawn_yoni_spirit"]}},
+        {"add": { "component_groups": [ "dummy:player_defaults" ] }},
         {"add": { "component_groups": [ "yonimc:as_spirit" ] }},
         {"set_property": {"yonimc:species0": 3}}
+    ]},
+    
+    //winging
+    "species:as_winging_human": {"sequence": [
+        {"trigger": {"target": "self", "event": "yonimc:remove_all" }},
+        {"trigger": {"target": "self", "event": "yonimc:spawn_yoni_winging" }}
+    ]},
+    "yonimc:spawn_yoni_winging": {"sequence": [
+        {"run_command": { "target": "self", "command": ["say yonimc:spawn_yoni_winging"]}},
+        {"add": { "component_groups": [ "dummy:player_defaults" ] }},
+        {"add": { "component_groups": [ "yonimc:as_winging" ] }},
+        {"set_property": {"yonimc:species0": 5}}
+    ]},
+    
+    //infinity_ghost
+    "species:as_infinity_ghost": {"sequence": [
+        {"trigger": {"target": "self", "event": "yonimc:remove_all" }},
+        {"trigger": {"target": "self", "event": "yonimc:spawn_infinity_ghost" }}
+    ]},
+    "yonimc:spawn_infinity_ghost": {"sequence": [
+        {"run_command": { "target": "self", "command": ["say yonimc:spawn_infinity_ghost"]}},
+        {"add": { "component_groups": [ "yonimc:as_infinity_ghost" ] }},
+        {"set_property": {"yonimc:species0": 6}}
+    ]},
+    
+    // test events
+    "yonimc:test_0": {"sequence": [
+        {"add": { "component_groups": [ "yonimc:test" ] }}
+    ]},
+    "yonimc:test_1": {"sequence": [
+        {"run_command": { "target": "self", "command": ["tag @s add flag:status.is_flying"]}},
+        {"run_command": { "target": "self", "command": ["tag @s remove flag:status.not_fly"]}}
+    ]},
+    "yonimc:test_2": {"sequence": [
+        {"run_command": { "target": "self", "command": ["tag @s remove flag:status.is_flying"]}},
+        {"run_command": { "target": "self", "command": ["tag @s add flag:status.not_fly"]}}
     ]},
     
     //////////////
@@ -267,7 +396,7 @@
     "yonimc:spawn_minecraft_player": {"sequence": [
         {"run_command": { "target": "self", "command": ["say yonimc:spawn_minecraft_player"]}},
         {"set_property": {"yonimc:species0": 1}},
-        {"add": { "component_groups": [ "minecraft:as_player" ] }}
+        {"add": { "component_groups": [ "dummy:player_defaults", "minecraft:as_player" ] }}
     ]},
     "minecraft:gain_bad_omen":{"add":{"component_groups":["minecraft:add_bad_omen"]}},
     "minecraft:clear_add_bad_omen":{"remove":{"component_groups":["minecraft:add_bad_omen"]},"add":{"component_groups":["minecraft:clear_bad_omen_spell_effect"]}},

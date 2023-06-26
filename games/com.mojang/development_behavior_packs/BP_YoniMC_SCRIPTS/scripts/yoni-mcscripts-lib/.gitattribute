@@ -1,0 +1,12 @@
+text=auto
+
+*.mcpack binary
+*.png binary
+*.zip binary
+
+*.js text eof=lf
+*.ts text eof=lf
+*.json text eof=lf
+*.txt text eof=lf
+
+**/*.json linguist-language=jsonc

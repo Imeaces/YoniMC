@@ -1,0 +1,58 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.entity.player.yonimc.species.sil": {
+            //while (true)
+            //    run func
+            "initial_state": "init",
+            "states": {
+                "init": {
+                    "transitions": [
+                        { "loop0": "query.property('yonimc:species0') == 7" },
+                        { "spawn_wait": "(1.0)"}
+                    ],
+                    "on_entry": [
+                    ]
+                },
+                "spawn_wait": {
+                    "transitions": [
+                        { "spawn_start": "query.property('yonimc:species0') == 7" }
+                    ]
+                },
+                "spawn_start": {
+                    "transitions": [
+                        { "loop0": "(1.0)" }
+                    ],
+                    "on_entry": [
+                    ]
+                },
+                "drop": {
+                    "transitions": [
+                        { "init": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "/function yonimc/species/sil/despawn"
+                    ]
+                },
+                "loop0": {
+                    "transitions": [
+                        { "loop1": "query.property('yonimc:species0') == 7" },
+                        { "drop": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "/function sil"
+                    ]
+                },
+                "loop1": {
+                    "transitions": [
+                        { "loop0": "query.property('yonimc:species0') == 7" },
+                        { "drop": "(1.0)" }
+                    ],
+                    "on_entry": [
+                        "/function sil"
+                    ]
+                }
+            }
+        }
+    }
+}

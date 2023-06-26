@@ -1,0 +1,13 @@
+{
+    "format_version": "1.12",
+    "minecraft:recipe_furnace": {
+        "description": {
+            "identifier": "yonimc:burn_light_toget_energy"
+        },
+        "tags": [
+            "furnace"
+        ],
+        "input": "minecraft:shroomlight",
+        "output": "yonimc:energy"
+    }
+}

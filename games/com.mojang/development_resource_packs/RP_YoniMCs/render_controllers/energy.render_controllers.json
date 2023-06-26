@@ -1,0 +1,16 @@
+{
+  "format_version": "1.10.0",
+  "render_controllers": {
+    "controller.render.energy_light": {
+      "geometry": "Geometry.default",
+      "materials": [ { "*": "Material.default" } ],
+      "textures": [ "Texture.default" ],
+      "filter_lighting": true
+    },
+    "controller.render.flow_energy": {
+      "geometry": "Geometry.default",
+      "materials": [ { "*": "Material.default" } ],
+      "textures": [ "Texture.default" ]
+    }
+  }
+}

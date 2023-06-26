@@ -1,0 +1,42 @@
+{
+  "dependencies": {
+    "@minecraft/server": "^1.3.0-beta.1.20.0-stable",
+    "@minecraft/server-gametest": "^1.0.0-beta.1.20.0-stable",
+    "@minecraft/server-ui": "^1.1.0-beta.1.20.0-stable",
+    "@minecraft/vanilla-data": "^1.20.0"
+  },
+  "devDependencies": {
+    "typescript": "4.9.3"
+  },
+  "name": "yoni-mcscripts-lib",
+  "description": "对Vanilla Scripts API进行了一定程度的重新封装，且仍在不断添加",
+  "version": "0.11.0",
+  "types": "@types/yoni-mcscripts-lib/yoni-mcscripts-lib.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Silvigarabis/yoni-mcscripts-lib.git"
+  },
+  "keywords": [
+    "minecraft-addon",
+    "minecraft-bedrock",
+    "gametest",
+    "scriptsapi"
+  ],
+  "author": "Silvigarabis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Silvigarabis/yoni-mcscripts-lib/issues"
+  },
+  "homepage": "https://github.com/Silvigarabis/yoni-mcscripts-lib#readme",
+  "files": [
+    "@types/",
+    "yoni-mcscripts-lib.js",
+    "src/",
+    "yoni/",
+    "tsconfig.json"
+  ]
+}

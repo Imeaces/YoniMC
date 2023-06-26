@@ -1,0 +1,9 @@
+NormalChunk
+
+代表filenode的起始位置
+
+文件信息存储在Block0
+
+#FileType#\u0000#FileSize#\u0000#CreateTime#\u0000#ModifyTime#\u0000#AccessTime#\u0000
+
+其余块用作数据存储

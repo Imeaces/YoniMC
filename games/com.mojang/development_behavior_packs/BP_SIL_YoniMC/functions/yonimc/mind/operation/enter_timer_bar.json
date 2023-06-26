@@ -1,0 +1,14 @@
+{"translate":"§r%%2§r","with":{"rawtext":[{"selector":"@s[scores={md:timer_076=1..}]"},{"translate":"\n>>#t: %%s","with":{"rawtext":[{"score":{"objective":"md:timer_076","name":"@s"}}]}}]}}
+
+/*
+{"translate":"%%2",
+"with":{"rawtext":[
+    {"selector":"@s[scores={md:timer_076=1..}]"},
+    {"translate":"\n>>#t: %%s",
+    "with":{"rawtext":[
+        {"score":{
+        "objective":"md:timer_076",
+        "name":"@s"}}
+    ]}}
+]}}
+*/

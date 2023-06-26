@@ -1,0 +1,30 @@
+分区使用了一整个Volume来实现
+
+分区中Volume有多种Chunk
+
+5种Chunk
+
+SuperChunk
+
+EmptyChunk
+
+DeletedChunk
+
+NormalChunk
+
+DataChunk
+
+分区中有多种块
+
+SuperChunk 超级块 用于存储文件系统信息
+必须占用Chunk0
+记录文件系统的基础信息
+也记录了根目录位于哪个NormalChunk
+
+EmptyChunk 未被占用，也未存储过任何数据的Chunk
+
+NormalChunk 代表一个filenode的Chunk，包含与文件相关的信息，以及数据
+
+DataChunk 只用于存储数据
+
+DeletedChunk 曾经使用，但是现在已不使用的块，且块上可能仍含有数据

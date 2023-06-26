@@ -1,0 +1,74 @@
+{
+  "format_version": "1.18.10",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "yoni:guxi",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": true,
+      "properties": {
+        "guxi:energy": {
+          "values": {
+            "max": 36,
+            "min": 0
+          },
+          "default": 36
+        }
+      }
+    },
+    "permutations":[
+      {
+        "condition":"query.actor_property('guxi:energy') <= 0",
+        "components":{
+          "minecraft:health": {
+            "max": 0,
+            "value": 0
+          }
+        }
+      }
+    ],
+    "events": {
+      "guxi:drop_energy": {
+        "set_actor_property": {
+          "guxi:energy": "math.min(36, math.max(0, query.actor_property('guxi:energy')-1))"
+        }
+      },
+      "guxi:raise_energy": {
+        "set_actor_property": {
+          "guxi:energy": "math.min(36, math.max(0, query.actor_property('guxi:energy')+1))"
+        }
+      }
+    },
+    "component_groups": {},
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "guxi",
+          "mob",
+          "yoni",
+          "energy_entity"
+        ]
+      },
+      "minecraft:health": {
+        "max": 60,
+        "value": 60,
+        "min": 0
+      },
+      "minecraft:physics": {},
+      "minecraft:nameable": {
+        "always_show": false,
+        "allow_name_tag_renaming": false
+      },
+      "minecraft:block_climber": true,
+      "minecraft:loot": {
+        "table": "loot_tables/empty.json"
+      },
+      "minecraft:can_climb": true,
+      "minecraft:collision_box": {
+        "width": 0.432,
+        "height": 1.296
+      },
+      "minecraft:conditional_bandwidth_optimization": {}
+    }
+  }
+}

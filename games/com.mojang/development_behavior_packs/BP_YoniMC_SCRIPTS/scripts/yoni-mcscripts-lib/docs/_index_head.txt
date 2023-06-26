@@ -1,0 +1,5 @@
+# yoni mcscripts lib
+
+前往[yoni](./yoni/)目录查看文档
+
+#

@@ -1,0 +1,7 @@
+文件系统是一个B树
+
+每个磁盘上的Chunk在文件系统中被称为VBlock
+VBlock有三种类型：SuperVBlock, DataVBlock, FileNodeVBlock
+SuperVBlock以其他格式存储文件系统相关信息，并链接到一个FileNodeVBlock(directory)
+每个FileNodeVBlock都是一个节点，链接到多个DataVBlock
+FileNodeVBlock(directory)同时还链接别的FileNodeVBlock

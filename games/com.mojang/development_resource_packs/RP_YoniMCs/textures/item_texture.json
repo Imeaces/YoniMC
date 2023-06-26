@@ -1,0 +1,26 @@
+{
+    "resource_pack_name": "YoniMC",
+    "texture_name": "atlas.items",
+    "texture_data": {
+        "core": {
+            "textures": [
+                "textures/core"
+            ]
+        },
+        "energy": {
+            "textures": [
+                "textures/items/energy"
+            ]
+        },
+        "apple_diamond": {
+            "textures": [
+                "textures/items/yonimc_apple_diamond"
+            ]
+        },
+        "pack_icon": {
+            "textures": [
+                "pack_icon"
+            ]
+        }
+    }
+}

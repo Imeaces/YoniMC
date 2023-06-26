@@ -1,0 +1,27 @@
+{
+  "format_version": "1.16.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "guxi:enter",
+      "category": "items"
+    },
+    "components": {
+      "minecraft:icon": {
+        "texture": "ender_pearl"
+      },
+      "minecraft:on_use": {
+        "on_use": {
+          "event": "guxi:enter",
+          "target": "self"
+        }
+      },
+      "tag:yonimc:test_1": {},
+      "tag:yonimc:test_2": {}
+    },
+    "events": {
+      "guxi:enter": {
+        "swing": {}
+      }
+    }
+  }
+}
