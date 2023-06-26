@@ -2,5 +2,5 @@
 *.mcaddon
 *.mctemplate
 .txt
-/wd/
+/.wd/
 *.diff

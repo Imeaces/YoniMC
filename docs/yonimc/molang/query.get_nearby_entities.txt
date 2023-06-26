@@ -1,0 +1,1 @@
+query.get_nearby_entities 获取到的实体没有顺序
