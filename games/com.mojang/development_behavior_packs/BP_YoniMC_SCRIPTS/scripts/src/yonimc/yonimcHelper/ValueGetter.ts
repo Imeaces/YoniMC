@@ -1,11 +1,9 @@
-import { Minecraft, VanillaWorld, dim,
+import { Minecraft, MinecraftSystem, VanillaWorld, dim,
     EntityBase, Command, Scoreboard,
     EventListener,
-    World,
+    world as World,
     YoniPlayer,
     YoniScheduler, Location, Objective } from "yoni-mcscripts-lib";
-
-const MinecraftSystem = Minecraft.system;
 
 YoniScheduler.runCycleTickTask(() => {
     let healthO = Scoreboard.getObjective("health") ?? Scoreboard.addObjective("health");

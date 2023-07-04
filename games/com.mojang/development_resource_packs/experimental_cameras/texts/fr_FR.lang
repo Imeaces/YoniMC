@@ -1,0 +1,7 @@
+﻿commands.camera.description=Affiche une instruction pour l'appareil photo	#
+commands.camera.success=Des instructions de caméra ont été envoyées aux joueurs suivants : %s	#
+commands.camera.unknown.preset=Nom de préréglage de la caméra inconnu	#
+commands.camera.invalid=Mode de commande de la caméra invalide	#
+commands.camera.invalid.color=Les valeurs de couleurs du fondu doivent être des entiers allant de 0 à 255	#
+commands.camera.invalid.easing=Le passage aux caméras non fixes n'est pas pris en charge	#
+commands.camera.invalid.time=Les durées du fondu doivent aller de 0 à 10 secondes	#

@@ -1,0 +1,7 @@
+﻿commands.camera.description=Requisita uma instrução de câmera	#
+commands.camera.success=Enviou uma instrução de câmera para os seguintes jogadores: %s	#
+commands.camera.unknown.preset=Nome de predefinição da câmera desconhecido	#
+commands.camera.invalid=Modo de comando da câmera inválido	#
+commands.camera.invalid.color=Os valores de cor de Desvanecimento devem ser inteiros de 0 a 255	#
+commands.camera.invalid.easing=Não há suporte para a suavização de câmeras móveis	#
+commands.camera.invalid.time=As durações de Desvanecimento devem estar entre 0 e 10 segundos	#

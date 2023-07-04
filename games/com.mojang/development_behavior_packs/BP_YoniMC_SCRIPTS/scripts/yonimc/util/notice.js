@@ -1,11 +1,11 @@
 import { EventListener } from "yoni-mcscripts-lib";
-import { Utils } from "yoni-mcscripts-lib";
+import { YoniUtils as Utils } from "yoni-mcscripts-lib";
 import { logger } from "./../util/logger.js";
 import { isServerMode } from "../config.js";
 import { EntityBase } from "yoni-mcscripts-lib";
 import { YoniScheduler } from "yoni-mcscripts-lib";
-import { World } from "yoni-mcscripts-lib";
-import { TPSCounter } from "../../util/TPSCounter.js";
+import { world as World } from "yoni-mcscripts-lib";
+import { TPSCounter } from "yoni-mcscripts-lib";
 const say = Utils.say;
 EventListener.register("yoni:playerJoined", (event) => {
     if (isServerMode()) {

@@ -6,6 +6,8 @@ let importList = [
     "guxi/main",
     
     "guxi/fallAsleep",
+    
+    "sil/index",
 ];
 
 const logger = new Logger("Species");

@@ -1,33 +1,31 @@
-import { logger } from "./logger.js";
-import { EventListener, YoniScheduler, Location, EntityBase, Command, dim } from "yoni-mcscripts-lib";
+import { logger } from "../util/logger.js";
+import { EventListener, YoniScheduler, Location, EntityBase, Command, Minecraft, dim } from "yoni-mcscripts-lib";
 const radius = 8;
-EventListener.register("mcyoni:beforeItemUseOn", (event) => {
+EventListener.register("minecraft:beforeEvents.ItemUseOn", (event) => {
     if (event.source.typeId !== "minecraft:player")
         return;
-    let centerLocation = new Location(event.source.dimension, event.blockLocation);
-    if (centerLocation.dimension === dim.theEnd)
+    let centerLocation = new Location(event.source.dimension, event.block);
+    if (centerLocation.dimension.vanillaDimension === dim.theEnd)
         return;
-    let source = EntityBase.from(event.source);
+    let source = EntityBase.getYoniEntity(event.source);
     let block = centerLocation.getBlock();
     if (block.typeId !== "minecraft:respawn_anchor")
         return;
-    let chargeLevel = block.permutation.getProperty("respawn_anchor_charge").value;
+    let chargeLevel = block.permutation.getState("respawn_anchor_charge");
     if (chargeLevel !== 4)
         return;
     event.cancel = true;
-    teleportNearToNewDimension(centerLocation, (centerLocation.dimension === dim.overworld) ?
+    teleportNearToNewDimension(centerLocation, (centerLocation.dimension.vanillaDimension === dim.overworld) ?
         dim.nether :
         dim.overworld).catch(logger.error);
 });
 async function teleportNearToNewDimension(centerLocation, toDimension) {
     let affaceEntities = Array.from(centerLocation.dimension.getPlayers({
-        dimension: centerLocation.dimension,
         location: centerLocation.getVanillaLocation(),
         maxDistance: radius
     }));
-    console.debug(affaceEntities.length);
     let toLocation = centerLocation.clone();
-    toLocation.dimension = toDimension;
+    toLocation.setDimension(toDimension);
     if (toDimension === dim.overworld) {
         toLocation.x /= 8;
         toLocation.z /= 8;
@@ -37,7 +35,7 @@ async function teleportNearToNewDimension(centerLocation, toDimension) {
         toLocation.z *= 8;
     }
     affaceEntities.filter(e => e.typeId === "minecraft:player")
-        .map(pl => Entity.from(pl))
+        .map(pl => EntityBase.getYoniEntity(pl))
         .forEach((pl) => {
         pl.sendMessage("连接维度意识");
     });
@@ -48,7 +46,7 @@ async function teleportNearToNewDimension(centerLocation, toDimension) {
             allowUnderwater: false,
             causesFire: true
         }); //testing
-        affaceEntities.map(e => EntityBase.from(e))
+        affaceEntities.map(e => EntityBase.getYoniEntity(e))
             .forEach((e) => {
             e.teleport(toLocation);
             if (e.typeId === "minecraft:player") {

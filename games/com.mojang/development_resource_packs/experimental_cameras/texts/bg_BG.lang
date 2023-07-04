@@ -1,0 +1,7 @@
+﻿commands.camera.description=Дава инструкция за камера	#
+commands.camera.success=Изпратена е инструкция за камера на следните играчи: %s	#
+commands.camera.unknown.preset=Неизвестно име на предварителни настройки на камерата	#
+commands.camera.invalid=Невалиден команден режим на камерата	#
+commands.camera.invalid.color=Стойностите на избледняването на цвета трябва да са цели числа от 0 до 255	#
+commands.camera.invalid.easing=Не се поддържа преминаване към нестационарни камери	#
+commands.camera.invalid.time=Продължителността на избледняването трябва да е между 0 и 10 секунди	#

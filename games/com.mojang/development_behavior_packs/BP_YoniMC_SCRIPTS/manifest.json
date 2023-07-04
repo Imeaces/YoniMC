@@ -5,7 +5,7 @@
         "description": "YoniMC 世界背后的真实逻辑",
         "uuid": "dc511c3c-ae31-11ed-a727-6f2d94c65240",
         "version": [0, 8, 1],
-        "min_engine_version": [1, 19, 80]
+        "min_engine_version": [1, 20, 0]
     },
     "modules": [
         {
@@ -20,7 +20,7 @@
     "dependencies": [
         {
             "module_name": "@minecraft/server",
-            "version": "1.2.0-beta"
+            "version": "1.4.0-beta"
         },
         {
             "module_name": "@minecraft/server-gametest",
@@ -28,7 +28,7 @@
         },
         {
             "module_name": "@minecraft/server-ui",
-            "version": "1.0.0-beta"
+            "version": "1.1.0-beta"
         }/*,
         {
             "module_name": "@minecraft/server-net",

@@ -1,7 +1,0 @@
-一片区域
-一堆容器方块
-一串chunk序列，区块有多个block
-spfschunk和普通fschunk，fschunk有多个block
-拥有不同状态的fschunk，其中有多个block
-一堆fileNode或数据块
-根目录，目录，普通文件

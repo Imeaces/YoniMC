@@ -1,4 +1,4 @@
-import { VanillaEvents } from "yoni-mcscripts-lib";
+import { VanillaWorld } from "yoni-mcscripts-lib";
 import "./sync_load.js";
 let originConsole = globalThis.console;
 let logger = null;
@@ -33,4 +33,4 @@ function load() {
         logger.fatal("在加载主函数的时候出现错误 {}", e);
     });
 }
-VanillaEvents.worldInitialize.subscribe(load);
+VanillaWorld.afterEvents.worldInitialize.subscribe(load);

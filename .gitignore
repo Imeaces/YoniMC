@@ -1,7 +1,3 @@
 *.mcworld
 *.mcaddon
 *.mctemplate
-.txt
-/.wd/
-*.diff
-/.assets/

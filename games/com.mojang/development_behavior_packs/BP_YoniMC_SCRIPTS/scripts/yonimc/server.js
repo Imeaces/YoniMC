@@ -1,4 +1,4 @@
-import { logger } from "./logger.js";
+import { logger } from "./util/logger.js";
 import { isServerMode, setServerMode } from "./config.js";
 import("./server/basis")
     .then(() => {

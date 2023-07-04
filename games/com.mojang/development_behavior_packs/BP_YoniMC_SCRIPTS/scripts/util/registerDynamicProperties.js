@@ -1,6 +1,7 @@
-import "yoni-mcscripts-lib";
-import { VanillaEvents, Minecraft } from "yoni-mcscripts-lib";
-VanillaEvents.worldInitialize.subscribe((event) => {
+import { Minecraft } from "yoni-mcscripts-lib";
+import { YoniUtils } from "yoni-mcscripts-lib";
+const { say, log } = YoniUtils;
+Minecraft.world.afterEvents.worldInitialize.subscribe((event) => {
     const { propertyRegistry } = event;
     const props = new Minecraft.DynamicPropertiesDefinition();
     props.defineString("yoni:test_1", 9984);

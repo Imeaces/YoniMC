@@ -1,14 +1,14 @@
 import { EventListener } from "yoni-mcscripts-lib";
 import { Scoreboard, Objective } from "yoni-mcscripts-lib";
-import { Utils } from "yoni-mcscripts-lib";
+import { YoniUtils as Utils } from "yoni-mcscripts-lib";
 import { logger } from "./../util/logger.js";
 import { isServerMode } from "../config.js";
-import Command from "yoni-mcscripts-lib";
+import { Command } from "yoni-mcscripts-lib";
 import { EntityBase } from "yoni-mcscripts-lib";
 import { YoniScheduler } from "yoni-mcscripts-lib";
 import { system } from "yoni-mcscripts-lib";
-import { World, Location } from "yoni-mcscripts-lib";
-import { TPSCounter } from "../../util/TPSCounter.js";
+import { world as World, Location } from "yoni-mcscripts-lib";
+import { TPSCounter } from "yoni-mcscripts-lib";
 
 const say = Utils.say;
 

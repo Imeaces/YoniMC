@@ -1,5 +1,4 @@
-import { Minecraft, Scoreboard, World, YoniScheduler, Location } from "yoni-mcscripts-lib";
-const MinecraftSystem = Minecraft.system;
+import { MinecraftSystem, Scoreboard, world as World, YoniScheduler, Location } from "yoni-mcscripts-lib";
 YoniScheduler.runCycleTickTask(() => {
     let healthO = Scoreboard.getObjective("health") ?? Scoreboard.addObjective("health");
     let maxHealthO = Scoreboard.getObjective("max_health") ?? Scoreboard.addObjective("max_health");

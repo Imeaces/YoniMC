@@ -1,4 +1,4 @@
-import { EventListener, Minecraft, YoniScheduler as Scheduler, World as world, EntityBase } from "yoni-mcscripts-lib";
+import { EventListener, Minecraft, YoniScheduler as Scheduler, world, EntityBase } from "yoni-mcscripts-lib";
 const fireRecoverTime = 55;
 const fireCooldownTimer = new Map();
 const fireworkRocketItem = (function createItem() {
@@ -19,20 +19,20 @@ EventListener.register("yoni:playerJoined", (event) => {
     const player = event.player;
     updateWingingPlayer(player);
 });
-EventListener.register("minecraft:beforeItemUse", (event) => {
+EventListener.register("minecraft:beforeEvents.ItemUse", (event) => {
     if (EntityBase.from(event.source)?.hasFamily("winging_human")
         && event.source.location.y > 540
         && event.item.getLore().join("\u0000") === "\x00\x00") {
         event.cancel = true;
     }
 });
-EventListener.register("minecraft:beforeItemUseOn", (event) => {
+EventListener.register("minecraft:beforeEvents.ItemUseOn", (event) => {
     if (EntityBase.from(event.source)?.hasFamily("winging_human")
         && event.item.getLore().join("\u0000") === "\x00\x00") {
         event.cancel = true;
     }
 });
-EventListener.register("minecraft:beforeItemUse", (event) => {
+EventListener.register("minecraft:beforeEvents.ItemUse", (event) => {
     if (EntityBase.from(event.source)?.hasFamily("winging_human")
         && event.source
             .getComponent("minecraft:equipment_inventory")
@@ -43,7 +43,7 @@ EventListener.register("minecraft:beforeItemUse", (event) => {
         event.cancel = true;
     }
 });
-EventListener.register("system:scriptEventReceive", (event) => {
+EventListener.register("system:afterEvents.scriptEventReceive", (event) => {
     if (event.id !== "yonimc:species_winging")
         return;
     const player = EntityBase.from(event.sourceEntity);

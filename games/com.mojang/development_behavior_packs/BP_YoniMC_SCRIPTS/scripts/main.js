@@ -1,11 +1,30 @@
 import { Logger } from "yoni-mcscripts-lib";
+import { VanillaWorld } from "yoni-mcscripts-lib";
 let logger = new Logger("MAIN");
-const loadList = [
-    "./test.js",
-    "./test/wait_debug.js",
-    "./yonimc/main.js",
+let importList = [
+    "test.js",
+    "test/wait_debug.js",
+    "yonimc/main.js",
 ];
-Promise.allSettled(loadList
-    .map(path => import(path))
-    .map(pro => pro.catch(logger.error)))
-    .finally(() => logger.info("scripts MAIN end"));
+VanillaWorld.afterEvents.worldInitialize.subscribe(loadMain);
+async function loadMain() {
+    try {
+        await importAll();
+    }
+    finally {
+        logger.info("scripts MAIN end");
+    }
+}
+function importAll() {
+    const promises = [];
+    for (const path of importList) {
+        let recPath = "./" + path;
+        let proLoad = import(recPath)
+            .catch(catchError);
+        promises.push(proLoad);
+        function catchError(e) {
+            logger.error("导入 {} 时发生错误", path, e);
+        }
+    }
+    return Promise.allSettled(promises);
+}

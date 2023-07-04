@@ -1,7 +1,7 @@
 import { ChatCommand,
     EventListener,
     Command,
-    Utils,
+    YoniUtils as Utils,
     EntityBase,
     Location,
     Minecraft, Logger,
@@ -24,7 +24,7 @@ const Config = new (class Config {
 //////////////////////
 //  listener        ///
 //////////////////////
-EventListener.register("blockBreak", (event: any) => {
+EventListener.register("minecraft:afterEvents.blockBreak", (event: any) => {
     let { player, dimension, block, brokenBlockPermutation } : { player: Minecraft.Player, dimension: YoniDimension, block: Minecraft.Block, brokenBlockPermutation: Minecraft.BlockPermutation } = event;
     dimension = Dimension.dim(dimension);
     
@@ -33,7 +33,7 @@ EventListener.register("blockBreak", (event: any) => {
     let yplayer = <YoniPlayer>EntityBase.from(player);
     
     if (isChainDestoryTool(
-        yplayer.getInventory().getItem(yplayer.selectedSlot).typeId)
+        yplayer.getInventory().getItem(yplayer.selectedSlot)?.typeId)
     )
      
     startChainDestroy2(new Location(block), 
@@ -376,14 +376,15 @@ const group_blocktype_definitions: string[][] = [
     ["minecraft:coal_ore", "minecraft:deepslate_coal_ore"],
     ["minecraft:copper_ore", "minecraft:deepslate_copper_ore"],
 ];
-function isChainDestoryTool(id: string){
+function isChainDestoryTool(id?: string){
+    id = id ?? "minecraft:air";
     return id.match(
         /^(.+_((pick)?axe|hoe|sowrd|shovel))|shears$/) !== null
 }
 function getMainHandItem(player: YoniPlayer|YonimcFakePlayer){
     return player.getInventory().getItem(player.selectedSlot);
 }
-function setMainHandItem(player: YoniPlayer|YonimcFakePlayer, item: Minecraft.ItemStack){
+function setMainHandItem(player: YoniPlayer|YonimcFakePlayer, item?: Minecraft.ItemStack){
     return player.getInventory().setItem(player.selectedSlot, item);
 }
 /*

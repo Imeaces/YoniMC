@@ -21,8 +21,12 @@
   },
   "homepage": "https://github.com/Silvigarabis/YoniMC#readme",
   "dependencies": {
+    "@minecraft/server": "^1.4.0-beta.1.20.10-preview.21",
+    "@minecraft/server-gametest": "^1.0.0-beta.1.20.10-preview.21",
     "@minecraft/server-net": "^1.0.0-beta.1.19.80-stable",
-    "yoni-mcscripts-lib": "^0.9.1-hotfix.1"
+    "@minecraft/server-ui": "^1.1.0-beta.1.20.10-preview.21",
+    "@minecraft/vanilla-data": "^1.20.10-preview.21",
+    "yoni-mcscripts-lib": "^0.11.1-beta"
   },
   "devDependencies": {
     "typescript": "4.9.3"

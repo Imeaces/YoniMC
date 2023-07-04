@@ -1,4 +1,4 @@
-import { EventListener, World, YoniScheduler } from "yoni-mcscripts-lib";
+import { EventListener, world as World, YoniScheduler } from "yoni-mcscripts-lib";
 YoniScheduler.runCycleTickTask(() => {
     World.getAllPlayers().forEach((e) => {
         if (e.isSneaking === true
@@ -9,22 +9,22 @@ YoniScheduler.runCycleTickTask(() => {
             e.removeTag("stat:is_sneaking");
     });
 }, 4, 10, false);
-EventListener.register("minecraft:itemUse", (event) => {
+EventListener.register("minecraft:afterEvents.itemUse", (event) => {
     let ent = event.source;
     if (ent.hasTag("event:itemUse"))
         ent.removeTag("event:itemUse");
 });
-EventListener.register("minecraft:itemUseOn", (event) => {
+EventListener.register("minecraft:afterEvents.itemUseOn", (event) => {
     let ent = event.source;
     if (ent.hasTag("event:itemUseOn"))
         ent.removeTag("event:itemUseOn");
 });
-EventListener.register("minecraft:beforeItemUseOn", (event) => {
+EventListener.register("minecraft:beforeEvents.ItemUseOn", (event) => {
     let ent = event.source;
     if (!ent.hasTag("event:itemUseOn"))
         ent.addTag("event:itemUseOn");
 });
-EventListener.register("minecraft:beforeItemUse", (event) => {
+EventListener.register("minecraft:beforeEvents.ItemUse", (event) => {
     let ent = event.source;
     if (!ent.hasTag("event:itemUse"))
         ent.addTag("event:itemUse");

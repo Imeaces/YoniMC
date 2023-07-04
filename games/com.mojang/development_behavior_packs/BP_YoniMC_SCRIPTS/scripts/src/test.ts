@@ -1,4 +1,4 @@
-import { ChatCommand, Command, Minecraft, dim, VanillaWorld, VanillaEvents, EventTypes, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, World, YoniPlayer } from "yoni-mcscripts-lib";
+import { ChatCommand, Command, Minecraft, dim, VanillaWorld, EventTypes, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, world, YoniPlayer } from "yoni-mcscripts-lib";
 import { ObjectUtils } from "yoni-mcscripts-lib";
 
 const { getKeys } = ObjectUtils;

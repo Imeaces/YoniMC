@@ -1,0 +1,7 @@
+﻿commands.camera.description=Antaa ohjeen kameran käyttöön	#
+commands.camera.success=Kameraohje lähetettiin seuraaville pelaajille: %s	#
+commands.camera.unknown.preset=Tuntematon kameran esiasetuksen nimi	#
+commands.camera.invalid=Virheellinen kameran komentotila	#
+commands.camera.invalid.color=Häivytyksen väriarvojen on oltava kokonaislukuja 0–255	#
+commands.camera.invalid.easing=Muihin kuin paikallaan oleviin kameroihin siirtymistä ei tueta	#
+commands.camera.invalid.time=Häivytyksen keston on oltava 0–10 sekuntia	#

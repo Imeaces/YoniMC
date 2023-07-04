@@ -1,0 +1,7 @@
+﻿commands.camera.description=Εκδίδει οδηγίες κάμερας	#
+commands.camera.success=Έστειλε μια οδηγία κάμερας στους ακόλουθους παίκτες: %s	#
+commands.camera.unknown.preset=Άγνωστο προκαθορισμένο όνομα κάμερας	#
+commands.camera.invalid=Μη έγκυρη λειτουργία εντολής κάμερας	#
+commands.camera.invalid.color=Οι τιμές χρώματος εξασθένισης πρέπει να είναι ακέραιοι αριθμοί από το 0 έως το 255	#
+commands.camera.invalid.easing=Η απρόσκοπτη εναλλαγή σε μη στάσιμες κάμερες δεν υποστηρίζεται	#
+commands.camera.invalid.time=Οι διάρκειες εξασθένισης πρέπει να είναι μεταξύ 0 και 10 δευτερολέπτων.	#

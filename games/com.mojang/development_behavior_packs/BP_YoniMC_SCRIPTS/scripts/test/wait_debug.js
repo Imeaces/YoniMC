@@ -1,6 +1,6 @@
 import { EventListener, Logger, EntityBase } from "yoni-mcscripts-lib";
 const logger = new Logger("WaitDebug");
-EventListener.register("minecraft:entityHurt", (event) => {
+EventListener.register("minecraft:afterEvents.entityHurt", (event) => {
     if (event.cause !== "charging")
         return;
     logger.fatal("§l§4出现了！！！charging伤害出现了！！！");

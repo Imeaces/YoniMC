@@ -14,13 +14,13 @@ ChatCommand.registerCommand("qq", (sender, rawCommand, label) => {
     let message = rawCommand.slice(label.length + 1);
     broadcastMessage(`<${sender.name}> ${message}`);
 });
-EventListener.register("minecraft:playerLeave", (event) => {
+EventListener.register("minecraft:afterEvents.playerLeave", (event) => {
     broadcastMessage(`玩家 ${event.playerName} 离开了游戏`);
 });
 EventListener.register("yoni:playerJoined", (event) => {
     broadcastMessage(`玩家 ${event.player.name} 加入了游戏`);
 });
-EventListener.register("chat", (event) => {
+EventListener.register("afterEvents.chat", (event) => {
     let { message, sender } = event;
     broadcastMessage(`<${sender.name}> ${message}`);
 });

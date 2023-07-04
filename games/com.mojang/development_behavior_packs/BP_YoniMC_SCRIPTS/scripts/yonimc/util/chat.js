@@ -4,7 +4,7 @@ import { EntityBase } from "yoni-mcscripts-lib";
 import { Minecraft } from "yoni-mcscripts-lib";
 const { MinecraftEffectTypes } = Minecraft;
 const regex = /@(?:all|here)\b/m;
-EventListener.register("chat", (event) => {
+EventListener.register("beforeEvents.chatSend", (event) => {
     let runner = EntityBase.getYoniEntity(event.sender);
     if (regex.test(event.message) && !event.sender.getEffect(MinecraftEffectTypes["darkness"])) {
         Command.fetchExecute(runner, "title @a title @s");

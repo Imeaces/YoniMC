@@ -1,7 +1,7 @@
 import { ChatCommand,
     EventListener,
     Command,
-    Utils, Location } from "yoni-mcscripts-lib";
+    YoniUtils as Utils, Location } from "yoni-mcscripts-lib";
 
 const chainBlockList=[
   "minecraft:diamond_ore"
@@ -15,7 +15,7 @@ ChatCommand.registerCommand("setchaincount", (sender, command, label, args)=>{
         sender.sendMessage("不是数字");
 });
 
-EventListener.register("blockBreak", async (event)=>{
+EventListener.register("minecraft:afterEvents.blockBreak", async (event)=>{
     const { player, dimension, block, brokenBlockPermutation } = event;
     if (!player.isSneaking || player.selectedSlot !== 2) return;
     

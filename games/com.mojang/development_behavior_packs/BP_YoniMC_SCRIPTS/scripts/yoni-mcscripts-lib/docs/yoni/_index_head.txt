@@ -1,5 +1,0 @@
-# index.js
-
-此文件导出一系列模块，同时会修改globalThis
-
-#

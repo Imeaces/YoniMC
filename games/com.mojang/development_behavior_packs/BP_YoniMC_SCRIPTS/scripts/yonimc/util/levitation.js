@@ -1,14 +1,14 @@
 import { YoniScheduler, Schedule } from "yoni-mcscripts-lib";
-import { World } from "yoni-mcscripts-lib";
+import { world } from "yoni-mcscripts-lib";
 import { Minecraft } from "yoni-mcscripts-lib";
 const { MinecraftEffectTypes } = Minecraft;
 YoniScheduler.addSchedule(new Schedule({
     async: false,
     type: Schedule.tickCycleSchedule,
-    delay: parseInt(10 * Math.random()),
+    delay: Math.floor(10 * Math.random()),
     period: 10
 }, () => {
-    World.getPlayers().forEach((player) => {
+    world.getAllPlayers().forEach((player) => {
         if (player.selectedSlot !== 8)
             return;
         if (player.rotation.x <= -85) {

@@ -9,12 +9,12 @@ class ChatPanel {
     chatDistanceObjective = Scoreboard.getObjective("chatpanel:data0", true);
     constructor() {
         this.chatDistance =
-            EventListener.register("minecraft:beforeChat", (event) => {
+            EventListener.register("minecraft:beforeEvents.chatSend", (event) => {
                 let { message, sender } = event;
                 event.cancel = true;
                 this.onChat(sender, message).catch(console.error);
             });
-        EventListener.register("minecraft:itemUse", (event) => {
+        EventListener.register("minecraft:afterEvents.itemUse", (event) => {
             console.log("cond itemuse");
             if (event.source.typeId !== "minecraft:player") {
                 console.log("cond not player");

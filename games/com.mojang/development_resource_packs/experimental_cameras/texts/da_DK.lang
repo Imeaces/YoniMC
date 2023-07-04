@@ -1,0 +1,7 @@
+﻿commands.camera.description=Udsender en kamerainstruktion	#
+commands.camera.success=Sendte en kamerainstruktion til følgende spillere: %s	#
+commands.camera.unknown.preset=Ukendt navn til kameraindstilling	#
+commands.camera.invalid=Ugyldig kamerakommandotilstand	#
+commands.camera.invalid.color=Overtoningsfarveværdierne skal være hele tal fra 0 til 255	#
+commands.camera.invalid.easing=Lempelse til ikke-stationære kameraer understøttes ikke	#
+commands.camera.invalid.time=Varigheden af overtoninger skal være mellem 0 og 10 sekunder	#

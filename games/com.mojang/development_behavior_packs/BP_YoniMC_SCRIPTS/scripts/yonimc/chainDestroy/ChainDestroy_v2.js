@@ -12,13 +12,13 @@ const Config = new (class Config {
 //////////////////////
 //  listener        ///
 //////////////////////
-EventListener.register("blockBreak", (event) => {
+EventListener.register("minecraft:afterEvents.blockBreak", (event) => {
     let { player, dimension, block, brokenBlockPermutation } = event;
     dimension = Dimension.dim(dimension);
     if (!player.isSneaking)
         return;
     let yplayer = EntityBase.from(player);
-    if (isChainDestoryTool(yplayer.getInventory().getItem(yplayer.selectedSlot).typeId))
+    if (isChainDestoryTool(yplayer.getInventory().getItem(yplayer.selectedSlot)?.typeId))
         startChainDestroy2(new Location(block), yplayer, brokenBlockPermutation.type).catch(logger.error);
 });
 ChatCommand.registerCommand("setchainradius", (sender, command, label, args) => {
@@ -292,6 +292,7 @@ const group_blocktype_definitions = [
     ["minecraft:copper_ore", "minecraft:deepslate_copper_ore"],
 ];
 function isChainDestoryTool(id) {
+    id = id ?? "minecraft:air";
     return id.match(/^(.+_((pick)?axe|hoe|sowrd|shovel))|shears$/) !== null;
 }
 function getMainHandItem(player) {

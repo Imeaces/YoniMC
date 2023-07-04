@@ -19,6 +19,13 @@
         {
             "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
             "version": [0, 8, 3]
+        },
+        {"uuid": "20fe6cc3-c2ee-4adc-9c9c-03240887a34d",
+        "version": [
+            0,
+            0,
+            2
+        ]
         }
     ],
     "metadata": {

@@ -1,4 +1,4 @@
-import { Entity, Player, Vector, world, system, Vector3, Dimension, XYRotation as Rotation } from "@minecraft/server";
+import { Entity, Player, Vector, world, system, Vector3, Dimension } from "@minecraft/server";
 
 function isMoving(entity: Entity){
     const velocity = entity.getVelocity();

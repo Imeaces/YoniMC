@@ -10,13 +10,12 @@ import {
     EventListener,
     YoniScheduler,
     Schedule,
-    World,
-    Player,
-    Entity,
+    world as World,
+    YoniPlayer as Player,
+    YoniEntity as Entity,
     Objective,
     system,
 } from "yoni-mcscripts-lib";
-import { ScoreboardAccessor } from "yoni-mcscripts-lib";
 
 const { MinecraftEffectTypes, EntityDamageCause } = Minecraft;
 
@@ -130,7 +129,7 @@ function isGuxi(entity: any){
 type _HurtEvent = { hurtEntity: Entity, damagingEntity: Entity | undefined, cause: Minecraft.EntityDamageCause, damage: number, damagingProjectile: Entity | undefined, cancel: boolean };
 
 //处理攻击相关
-EventListener.register("mcyoni:entityHurt", (event: _HurtEvent) => {
+EventListener.register("mcyoni:afterEvents.entityHurt", (event: _HurtEvent) => {
     let { hurtEntity, damagingEntity, cause, damage, damagingProjectile } = event;
     
     if (isGuxi(hurtEntity))
@@ -237,7 +236,7 @@ function GuxiHurt(event: _HurtEvent){
     }
 }
 
-function useEnergy(event: Minecraft.ItemUseEvent | Minecraft.ItemUseOnEvent){
+function useEnergy(event: Minecraft.ItemUseAfterEvent | Minecraft.ItemUseOnAfterEvent){
     
     let source = EntityBase.getYoniEntity(event.source);
     
@@ -248,7 +247,7 @@ function useEnergy(event: Minecraft.ItemUseEvent | Minecraft.ItemUseOnEvent){
         return;
     
     let player = source;
-    let itemst = event.item;
+    let itemst = EntityBase.getItemInMainHand(source) as Minecraft.ItemStack;
     
     if (itemst.typeId === "minecraft:firework_rocket"
     && objectives.cre_ely.getScore(player) === 2
@@ -261,7 +260,7 @@ function useEnergy(event: Minecraft.ItemUseEvent | Minecraft.ItemUseOnEvent){
     
 }
 
-EventListener.register("minecraft:itemUse", (event: Minecraft.ItemUseOnEvent) => {
+EventListener.register("minecraft:afterEvents.itemUse", (event: Minecraft.ItemUseOnAfterEvent) => {
 
     let source = EntityBase.getYoniEntity(event.source);
     
@@ -272,7 +271,7 @@ EventListener.register("minecraft:itemUse", (event: Minecraft.ItemUseOnEvent) =>
         return;
     
     let player = source;
-    let itemst = event.item;
+    let itemst = EntityBase.getItemInMainHand(source) as Minecraft.ItemStack;
     
     if (itemst.typeId === "minecraft:lava_bucket"){
         //冷却岩浆获得能量
@@ -301,8 +300,8 @@ EventListener.register("minecraft:itemUse", (event: Minecraft.ItemUseOnEvent) =>
     }
 });
 
-EventListener.register("minecraft:itemUse", useEnergy);
-EventListener.register("minecraft:itemUseOn", useEnergy);
+EventListener.register("minecraft:afterEvents.itemUse", useEnergy);
+EventListener.register("minecraft:afterEvents.itemUseOn", useEnergy);
 // val_0001 记录了一个位置以及数字的类型
 // val_0002 玩家最后一次触碰的方块的位置，以及触碰方块的时间
 // val_0003 当前记录的值_玩家最后一次触碰的方块的位置，以及触碰方块的时间
@@ -312,7 +311,7 @@ type LocationAndNumber = [Location, number];
 let PlayerLastTouchRecord = new WeakMap<Player, LocationAndNumber>();
 let PlayerLastBlockDestructionRecord = new WeakMap<Player, LocationAndNumber>();
 
-EventListener.register("minecraft:entityHit", (event: Minecraft.EntityHitEvent) => {
+EventListener.register("minecraft:afterEvents.entityHit", (event: Minecraft.EntityHitAfterEvent) => {
     if (!event.hitBlock) return;
     
     let player = EntityBase.getYoniEntity(event.entity) as Player;
@@ -329,7 +328,7 @@ EventListener.register("minecraft:entityHit", (event: Minecraft.EntityHitEvent) 
     entityTypes: ["minecraft:player"]
 });
 
-EventListener.register("minecraft:blockBreak", (event: Minecraft.BlockBreakEvent) => {
+EventListener.register("minecraft:afterEvents.blockBreak", (event: Minecraft.BlockBreakAfterEvent) => {
     let player = EntityBase.getYoniEntity(event.player) as Player;
     
     let curTick = system.currentTick;

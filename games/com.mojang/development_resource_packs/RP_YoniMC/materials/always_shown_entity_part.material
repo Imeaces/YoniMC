@@ -1,0 +1,8 @@
+{
+  "materials": {
+    "version": "1.0.0",
+    "always_shown_entity_part:entity_alphatest": {
+      {"depthFunc": "Always"}
+    }
+  }
+}

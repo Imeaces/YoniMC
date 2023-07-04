@@ -1,0 +1,8 @@
+commands.camera.description=Issues a camera instruction
+commands.camera.success=Sent a camera instruction to the following players: %s
+commands.camera.unknown.preset=Unknown camera preset name
+commands.camera.invalid=Invalid camera command mode
+commands.camera.invalid.color=Fade color values must be integers from 0 to 255
+commands.camera.invalid.easing=Easing to non-stationary cameras is not supported
+commands.camera.invalid.time=Fade durations must be between 0 and 10 seconds
+commands.camera.invalid.pitch=Camera pitch (X rotation) must be between -90 and 90 degrees

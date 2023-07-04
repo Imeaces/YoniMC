@@ -1,0 +1,7 @@
+﻿commands.camera.description=Emite una instrucción de cámara	#
+commands.camera.success=Envió una instrucción de cámara a los siguientes jugadores: %s	#
+commands.camera.unknown.preset=Nombre predeterminado de cámara desconocida	#
+commands.camera.invalid=Modo de comando de cámara incorrecto	#
+commands.camera.invalid.color=Los valores de difuminado del color deben ser números enteros del 0 a 255	#
+commands.camera.invalid.easing=No se admite la transición a cámaras móviles	#
+commands.camera.invalid.time=La duración del difuminado debe estar entre 0 y 10 segundos	#

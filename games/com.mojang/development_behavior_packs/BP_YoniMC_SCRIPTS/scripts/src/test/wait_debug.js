@@ -2,7 +2,7 @@ import { EventListener, Logger, Location, EntityBase } from "yoni-mcscripts-lib"
 
 const logger = new Logger("WaitDebug");
 
-EventListener.register("minecraft:entityHurt", (event) => {
+EventListener.register("minecraft:afterEvents.entityHurt", (event) => {
     if (event.cause !== "charging")
         return;
     

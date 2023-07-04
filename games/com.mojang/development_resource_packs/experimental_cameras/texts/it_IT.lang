@@ -1,0 +1,7 @@
+﻿commands.camera.description=Invia un comando alla fotocamera	#
+commands.camera.success=Hai inviato un comando per la visuale ai seguenti giocatori: %s	#
+commands.camera.unknown.preset=Nome preimpostazione visuale sconosciuto	#
+commands.camera.invalid=Modalità di comando della visuale non valida	#
+commands.camera.invalid.color=I valori dei colori sfumati devono essere numeri interi compresi tra 0 e 255	#
+commands.camera.invalid.easing=Il passaggio alle visuali mobili non è supportato	#
+commands.camera.invalid.time=La durata delle sfumature devoe essere compresa tra 0 e 10 secondi	#

@@ -1,0 +1,7 @@
+﻿commands.camera.description=Kamera talimatı verir	#
+commands.camera.success=Şu oyunculara kamera talimatı gönderildi: %s	#
+commands.camera.unknown.preset=Bilinmeyen kamera ön ayar adı	#
+commands.camera.invalid=Geçersiz kamera komut modu	#
+commands.camera.invalid.color=Renk solma değerleri 0'dan 255'e kadar bir tamsayı olmalıdır	#
+commands.camera.invalid.easing=Sabit olmayan kameralara geçiş desteklenmez	#
+commands.camera.invalid.time=Solma süreleri 0 ile 10 saniye arasında olmalıdır	#

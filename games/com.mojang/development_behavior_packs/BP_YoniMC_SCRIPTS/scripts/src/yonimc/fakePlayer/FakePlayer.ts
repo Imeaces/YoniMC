@@ -6,7 +6,7 @@ import {
     Minecraft,
     Location,
     YoniSimulatedPlayer,
-    SimulatedPlayer,
+    EntityClass,
     Command,
     Dimension,
     YoniDimension,
@@ -16,7 +16,7 @@ import { DimensionLikeValue as DimensionLike, Vector3 } from "yoni-mcscripts-lib
 
 const logger = new Logger("FakePlayer");
 
-export class FakePlayer extends SimulatedPlayer {
+export class FakePlayer extends EntityClass.SimulatedPlayer {
     constructor(player: Gametest.SimulatedPlayer | YoniSimulatedPlayer, spawnDimension: DimensionLike, structureBlockLocation: Vector3){
         super(EntityBase.getMinecraftEntity(player));
         
@@ -47,7 +47,7 @@ export class FakePlayer extends SimulatedPlayer {
         this.#blockBreakHandler = handler;
         
         if (this.#breakBlockCounter === -2){
-            this.#breakBlockCounter = EventListener.register("minecraft:blockBreak", (event: Minecraft.BlockBreakEvent) => {
+            this.#breakBlockCounter = EventListener.register("minecraft:beforeEvents.blockBreak", (event: Minecraft.BlockBreakAfterEvent) => {
                 if (EntityBase.isSameEntity(event.player, this)){
                 
                     this.#blockBreakCount++;
@@ -79,7 +79,7 @@ export class FakePlayer extends SimulatedPlayer {
     }
 }
 
-export type YonimcFakePlayer = FakePlayer & Gametest.SimulatedPlayer;
+export type YonimcFakePlayer = FakePlayer & YoniSimulatedPlayer;
 
 export class FakePlayerManager {
     static async createFakePlayer(

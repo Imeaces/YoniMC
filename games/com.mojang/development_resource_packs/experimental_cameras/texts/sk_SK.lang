@@ -1,0 +1,7 @@
+﻿commands.camera.description=Vydá pokyn pre kameru	#
+commands.camera.success=Pokyn pre kameru sa odoslal nasledujúcim hráčom: %s	#
+commands.camera.unknown.preset=Neznámy názov prednastavenia kamery	#
+commands.camera.invalid=Neplatný príkazový režim fotoaparátu	#
+commands.camera.invalid.color=Hodnoty blednutia farieb musia byť v celých číslach v rozsahu od 0 do 255	#
+commands.camera.invalid.easing=Zjednodušenie na nestacionárne kamery nie je podporované	#
+commands.camera.invalid.time=Trvanie blednutia musí mať hodnotu od 0 do 10 sekúnd	#

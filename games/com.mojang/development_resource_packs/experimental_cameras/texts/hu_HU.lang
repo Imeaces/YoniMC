@@ -1,0 +1,7 @@
+﻿commands.camera.description=Kamerautasítást ad ki	#
+commands.camera.success=Kamerautasítást adott ki a következő játékosoknak: %s	#
+commands.camera.unknown.preset=Ismeretlen kameraminta-név	#
+commands.camera.invalid=Érvénytelen kameraparancs-mód	#
+commands.camera.invalid.color=Az átmenet színértékeinek 0 és 255 közé kell esniük	#
+commands.camera.invalid.easing=A nem helyhez kötött kamerákra való áttérés nem támogatott	#
+commands.camera.invalid.time=Az átmenet hosszának 0 és 10 másodperc közé kell esnie	#

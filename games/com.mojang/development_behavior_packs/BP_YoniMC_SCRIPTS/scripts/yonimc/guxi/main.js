@@ -85,7 +85,7 @@ function isGuxi(entity) {
     return false;
 }
 //处理攻击相关
-EventListener.register("mcyoni:entityHurt", (event) => {
+EventListener.register("mcyoni:afterEvents.entityHurt", (event) => {
     let { hurtEntity, damagingEntity, cause, damage, damagingProjectile } = event;
     if (isGuxi(hurtEntity))
         GuxiHurt(event);
@@ -176,7 +176,7 @@ function useEnergy(event) {
     if (!EntityBase.entityIsPlayer(source))
         return;
     let player = source;
-    let itemst = event.item;
+    let itemst = EntityBase.getItemInMainHand(source);
     if (itemst.typeId === "minecraft:firework_rocket"
         && objectives.cre_ely.getScore(player) === 2
         && player.selectedSlot === 8) {
@@ -184,14 +184,14 @@ function useEnergy(event) {
         removeScoreAsync(player, objectives.energy, values.creation_elytra_boost_speed_energy);
     }
 }
-EventListener.register("minecraft:itemUse", (event) => {
+EventListener.register("minecraft:afterEvents.itemUse", (event) => {
     let source = EntityBase.getYoniEntity(event.source);
     if (!isGuxi(source))
         return;
     if (!EntityBase.entityIsPlayer(source))
         return;
     let player = source;
-    let itemst = event.item;
+    let itemst = EntityBase.getItemInMainHand(source);
     if (itemst.typeId === "minecraft:lava_bucket") {
         //冷却岩浆获得能量
         let backItemst = new Minecraft.ItemStack(Minecraft.MinecraftItemTypes.bucket, 1);
@@ -214,11 +214,11 @@ EventListener.register("minecraft:itemUse", (event) => {
         addScoreAsync(player, objectives.energy, values.energy_inside_yonimc_energy);
     }
 });
-EventListener.register("minecraft:itemUse", useEnergy);
-EventListener.register("minecraft:itemUseOn", useEnergy);
+EventListener.register("minecraft:afterEvents.itemUse", useEnergy);
+EventListener.register("minecraft:afterEvents.itemUseOn", useEnergy);
 let PlayerLastTouchRecord = new WeakMap();
 let PlayerLastBlockDestructionRecord = new WeakMap();
-EventListener.register("minecraft:entityHit", (event) => {
+EventListener.register("minecraft:afterEvents.entityHit", (event) => {
     if (!event.hitBlock)
         return;
     let player = EntityBase.getYoniEntity(event.entity);
@@ -234,7 +234,7 @@ EventListener.register("minecraft:entityHit", (event) => {
 }, {
     entityTypes: ["minecraft:player"]
 });
-EventListener.register("minecraft:blockBreak", (event) => {
+EventListener.register("minecraft:afterEvents.blockBreak", (event) => {
     let player = EntityBase.getYoniEntity(event.player);
     let curTick = system.currentTick;
     let interval;

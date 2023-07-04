@@ -1,0 +1,7 @@
+﻿commands.camera.description=カメラの説明書を発行します	#
+commands.camera.success=次のプレイヤーにカメラの説明書を送りました: %s	#
+commands.camera.unknown.preset=不明なカメラ プリセット名	#
+commands.camera.invalid=無効なカメラ コマンド モード	#
+commands.camera.invalid.color=フェード カラーの値は 0 から 255 の間の整数を指定してください	#
+commands.camera.invalid.easing=非定常カメラのイージングはサポートされていません	#
+commands.camera.invalid.time=フェード期間は 0 から 10 秒のいずれかを指定してください	#

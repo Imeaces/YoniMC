@@ -1,0 +1,7 @@
+﻿commands.camera.description=發出相機指示	#
+commands.camera.success=向以下玩家傳送了攝影機指令：%s	#
+commands.camera.unknown.preset=未知的攝影機預設名稱	#
+commands.camera.invalid=無效的攝影機指令模式	#
+commands.camera.invalid.color=淡出色值必須是 0 到 255 之間的整數	#
+commands.camera.invalid.easing=不支援非固定鏡頭的加/減速	#
+commands.camera.invalid.time=淡出持續時間必須介於 0 到 10 秒之間	#

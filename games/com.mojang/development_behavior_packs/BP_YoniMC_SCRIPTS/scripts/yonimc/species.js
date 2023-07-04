@@ -3,6 +3,7 @@ let importList = [
     "winging/main",
     "guxi/main",
     "guxi/fallAsleep",
+    "sil/index",
 ];
 const logger = new Logger("Species");
 Promise.allSettled(function importAll() {

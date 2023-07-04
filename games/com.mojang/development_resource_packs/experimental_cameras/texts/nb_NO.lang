@@ -1,0 +1,7 @@
+﻿commands.camera.description=Gir en kamerainstruksjon	#
+commands.camera.success=Sendte en kamerainstruksjon til følgende spillere: %s	#
+commands.camera.unknown.preset=Ukjent navn på forhåndsinnstilt kamera	#
+commands.camera.invalid=Ugyldig kamerakommandomodus	#
+commands.camera.invalid.color=Nedtoningsfargeverdiene må være heltall fra 0 til 255	#
+commands.camera.invalid.easing=Lettelser til ikke-stasjonære kameraer støttes ikke	#
+commands.camera.invalid.time=Nedtoningsvarigheten må være mellom 0 og 10 sekunder	#

@@ -1,4 +1,4 @@
-import { YoniScheduler, World, YoniPlayer as Player } from "yoni-mcscripts-lib";
+import { YoniScheduler, world as World, YoniPlayer as Player } from "yoni-mcscripts-lib";
 
 let sleepTimer = new WeakMap<Player, number>();
 

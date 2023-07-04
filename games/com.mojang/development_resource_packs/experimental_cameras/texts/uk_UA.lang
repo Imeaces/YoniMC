@@ -1,0 +1,7 @@
+﻿commands.camera.description=Видає інструкцію камери	#
+commands.camera.success=Інструкцію камери надіслано наступним гравцям: %s	#
+commands.camera.unknown.preset=Невідома назва заготовки камери	#
+commands.camera.invalid=Неприпустимий командний режим камери	#
+commands.camera.invalid.color=Значення вицвітаючого кольору мають бути цілими числами від 0 до 255	#
+commands.camera.invalid.easing=Плавний перехід до нестаціонарних камер не підтримується	#
+commands.camera.invalid.time=Тривалість вицвітання має становити від 0 до 10 секунд	#

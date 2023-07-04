@@ -1,4 +1,4 @@
-import { YoniScheduler, World } from "yoni-mcscripts-lib";
+import { YoniScheduler, world as World } from "yoni-mcscripts-lib";
 let sleepTimer = new WeakMap();
 function addSleepTimer(guxi) {
     guxi.sendMessage("§4#不要睡过去");

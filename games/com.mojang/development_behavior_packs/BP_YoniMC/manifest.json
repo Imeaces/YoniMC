@@ -5,7 +5,7 @@
         "description": "YoniMC 可能的不一样的世界",
         "uuid": "36dba2f9-9f68-439e-b290-080296f73e53",
         "version": [0, 10, 2],
-        "min_engine_version": [1, 19, 70]
+        "min_engine_version": [1, 20, 0]
     },
     "modules": [
         {

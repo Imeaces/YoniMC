@@ -1,6 +1,6 @@
-import { Gametest, EventListener, EntityBase, Minecraft, Location, SimulatedPlayer, Command, Dimension, Logger, } from "yoni-mcscripts-lib";
+import { Gametest, EventListener, EntityBase, Minecraft, Location, EntityClass, Command, Dimension, Logger, } from "yoni-mcscripts-lib";
 const logger = new Logger("FakePlayer");
-export class FakePlayer extends SimulatedPlayer {
+export class FakePlayer extends EntityClass.SimulatedPlayer {
     constructor(player, spawnDimension, structureBlockLocation) {
         super(EntityBase.getMinecraftEntity(player));
         this.simulateInfo = Object.freeze({
@@ -23,7 +23,7 @@ export class FakePlayer extends SimulatedPlayer {
         let handler = new Object();
         this.#blockBreakHandler = handler;
         if (this.#breakBlockCounter === -2) {
-            this.#breakBlockCounter = EventListener.register("minecraft:blockBreak", (event) => {
+            this.#breakBlockCounter = EventListener.register("minecraft:beforeEvents.blockBreak", (event) => {
                 if (EntityBase.isSameEntity(event.player, this)) {
                     this.#blockBreakCount++;
                 }

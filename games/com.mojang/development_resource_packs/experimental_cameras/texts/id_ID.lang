@@ -1,0 +1,7 @@
+﻿commands.camera.description=Menampilkan instruksi kamera	#
+commands.camera.success=Instruksi kamera terkirim ke pemain berikut: %s	#
+commands.camera.unknown.preset=Nama prasetel kamera tidak dikenal	#
+commands.camera.invalid=Mode perintah kamera tidak valid	#
+commands.camera.invalid.color=Nilai warna pudar harus berupa integer dari 0 hingga 255	#
+commands.camera.invalid.easing=Berpindah ke kamera nonstasioner tidak didukung	#
+commands.camera.invalid.time=Durasi pudar harus antara 0 dan 10 detik	#

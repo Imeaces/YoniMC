@@ -1,0 +1,107 @@
+{
+   "content" : [
+      {
+         "path" : "contents.json"
+      },
+      {
+         "path" : "texts/zh_TW.lang"
+      },
+      {
+         "path" : "texts/zh_CN.lang"
+      },
+      {
+         "path" : "texts/tr_TR.lang"
+      },
+      {
+         "path" : "manifest.json"
+      },
+      {
+         "path" : "texts/sv_SE.lang"
+      },
+      {
+         "path" : "texts/sk_SK.lang"
+      },
+      {
+         "path" : "texts/pt_BR.lang"
+      },
+      {
+         "path" : "texts/nl_NL.lang"
+      },
+      {
+         "path" : "texts/it_IT.lang"
+      },
+      {
+         "path" : "texts/cs_CZ.lang"
+      },
+      {
+         "path" : "texts/id_ID.lang"
+      },
+      {
+         "path" : "texts/nb_NO.lang"
+      },
+      {
+         "path" : "texts/hu_HU.lang"
+      },
+      {
+         "path" : "texts/ru_RU.lang"
+      },
+      {
+         "path" : "texts/fr_CA.lang"
+      },
+      {
+         "path" : "texts/pt_PT.lang"
+      },
+      {
+         "path" : "texts/en_GB.lang"
+      },
+      {
+         "path" : "texts/fi_FI.lang"
+      },
+      {
+         "path" : "texts/pl_PL.lang"
+      },
+      {
+         "path" : "texts/es_ES.lang"
+      },
+      {
+         "path" : "texts/fr_FR.lang"
+      },
+      {
+         "path" : "texts/en_US.lang"
+      },
+      {
+         "path" : "texts/uk_UA.lang"
+      },
+      {
+         "path" : "cameras/free.json"
+      },
+      {
+         "path" : "texts/es_MX.lang"
+      },
+      {
+         "path" : "texts/de_DE.lang"
+      },
+      {
+         "path" : "texts/bg_BG.lang"
+      },
+      {
+         "path" : "cameras/free_first_person_noeffect.json"
+      },
+      {
+         "path" : "texts/ja_JP.lang"
+      },
+      {
+         "path" : "texts/da_DK.lang"
+      },
+      {
+         "path" : "texts/el_GR.lang"
+      },
+      {
+         "path" : "cameras/free_first_person.json"
+      },
+      {
+         "path" : "texts/ko_KR.lang"
+      }
+   ],
+   "version" : 1
+}

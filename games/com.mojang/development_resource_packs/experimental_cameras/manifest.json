@@ -1,0 +1,30 @@
+{
+    "format_version": 2,
+    "header": {
+        "description": "Experimental cameras resource pack",
+        "name": "experimental cameras",
+        "uuid": "20fe6cc3-c2ee-4adc-9c9c-03240887a34d",
+        "version": [
+            0,
+            0,
+            2
+        ],
+        "min_engine_version": [
+            1,
+            18,
+            0
+        ]
+    },
+    "modules": [
+        {
+            "description": "Experimental cameras resource pack",
+            "type": "resources",
+            "uuid": "edf1b054-0ead-4181-9576-cc2c023f3e23",
+            "version": [
+                0,
+                0,
+                2
+            ]
+        }
+    ]
+}

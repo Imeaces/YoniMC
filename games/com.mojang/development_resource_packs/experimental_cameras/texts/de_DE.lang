@@ -1,0 +1,7 @@
+﻿commands.camera.description=Gibt eine Kameraanweisung aus	#
+commands.camera.success=Kameraanweisung an folgenden Spieler geschickt: %s	#
+commands.camera.unknown.preset=Unbekannter Name der Kameravoreinstellung	#
+commands.camera.invalid=Ungültiger Kamerabefehlsmodus	#
+commands.camera.invalid.color=Verblassungsfarbwerte müssen ganzen Zahlen von 0 bis 255 entsprechen	#
+commands.camera.invalid.easing=Sanfter Übergang zu nicht stationären Kameras wird nicht unterstützt	#
+commands.camera.invalid.time=Verblassungsdauer muss zwischen 0 und 10 Sekunden liegen	#
