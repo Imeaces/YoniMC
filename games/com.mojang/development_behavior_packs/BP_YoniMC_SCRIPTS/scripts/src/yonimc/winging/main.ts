@@ -111,7 +111,7 @@ Scheduler.runCycleTickTask(function getHungerOnGliding(){
         .forEach(player => {
             appendEffect(
                 player,
-                Minecraft.MinecraftEffectTypes.hunger,
+                Minecraft.EffectTypes.get("hunger") as Minecraft.EffectType,
                 fireRecoverTime,
                 2,
                 false
@@ -126,7 +126,7 @@ function addFire(player: Player){
     //logger.info("addFire");
     let slownessEffectLevel = 0;
     try {
-       slownessEffectLevel = player.getEffect(Minecraft.MinecraftEffectTypes.slowness).amplifier;
+       slownessEffectLevel = player.getEffect(Minecraft.EffectTypes.get("slowness") as Minecraft.EffectType)?.amplifier ?? 0;
     } catch { // no effect
     }
      
@@ -159,7 +159,7 @@ function addFire(player: Player){
         lastSlotItem.amount += 1;
     }
     
-    appendEffect(player, Minecraft.MinecraftEffectTypes.hunger, fireRecoverTime, 0, false);
+    appendEffect(player, Minecraft.EffectTypes.get("hunger") as Minecraft.EffectType, fireRecoverTime, 0, false);
     
     player.getInventory().setItem(8, lastSlotItem);
 }

@@ -1,9 +1,135 @@
-import { ChatCommand, Command, Minecraft, dim, VanillaWorld, EventTypes, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, world, YoniPlayer } from "yoni-mcscripts-lib";
-import { ObjectUtils } from "yoni-mcscripts-lib";
+import { ChatCommand, Command, Minecraft, dim, VanillaWorld, EventTypes, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, world, YoniPlayer, system } from "yoni-mcscripts-lib";
+import { ObjectUtils, TimeoutLib } from "yoni-mcscripts-lib";
 
 const { getKeys } = ObjectUtils;
 
 const logger = new Logger("TEST");
+
+EventListener.register(world.beforeEvents.pistonActivate, (event: Minecraft.PistonActivateBeforeEvent) => {
+    TimeoutLib.setInterval(function (){
+        try {
+            dim.overworld.runCommand("help");
+            logger.info("success");
+        } catch(e){
+            logger.error(e);
+        }
+    }, 0);
+});
+
+/*
+VanillaWorld.afterEvents.pistonActivate.subscribe(function (){
+    system.run(rf);
+    function rf(){
+        if (rf.c){
+            logger.info("system.run添加的第二个回调触发的时间", system.currentTick);
+            return;
+        }
+        logger.info("system.run添加的第一个回调触发的时间", system.currentTick);
+        system.run(rf);
+        rf.c = true;
+    }
+});
+*/
+
+/*
+import * as Minecraft from "@minecraft/server";
+
+Minecraft.world.afterEvents.pistonActivate.subscribe(trigger);
+Minecraft.world.beforeEvents.pistonActivate.subscribe(trigger);
+
+let generator: Generator<any> | null = null;
+
+function trigger(){
+    try {
+        if (generator == null){
+            generator = gen();
+        } else {
+            generator.next();
+            generator = null;
+        }
+    } catch(e){
+        //logger.error(e);
+        //logger不是自带的
+        if (e instanceof Error){
+            console.error(`${e.name}: ${e.message}\n${e.stack}`);
+        } else {
+            console.error(String(e));
+        }
+    }
+}
+
+function* gen(){
+    let i = 0;
+    for (;;){
+        Minecraft.world.getDimension("overworld").runCommand("say "+i);
+        yield i++;
+    }
+}
+*/
+
+/*
+Minecraft.world.afterEvents.pistonActivate.subscribe(trigger);
+Minecraft.world.beforeEvents.pistonActivate.subscribe(trigger);
+Minecraft.system.runInterval(trigger, 1);
+//YoniScheduler.runCycleTickTask(trigger, 0, 1);
+
+let lastTriggerTime = -1;
+let seq: string[] = [];
+function trigger(event?: any){
+    if (lastTriggerTime !== system.currentTick){
+        lastTriggerTime = system.currentTick;
+        seq.length = 0;
+    }
+    
+    if (event && Object.getPrototypeOf(event) === Minecraft.PistonActivateBeforeEvent.prototype){
+        seq.push("before");
+    } else if (event && Object.getPrototypeOf(event) === Minecraft.PistonActivateAfterEvent.prototype){
+        seq.push("after");
+    } else {
+        seq.push("runInterval");
+    }
+    
+    if (seq.length === 3){
+        logger.info("result from pistonActivate:", seq);
+    }
+}
+
+Minecraft.world.afterEvents.itemUse.subscribe(trigger2);
+Minecraft.world.beforeEvents.itemUse.subscribe(trigger2);
+Minecraft.system.runInterval(trigger2, 1);
+//YoniScheduler.runCycleTickTask(trigger2, 0, 1);
+
+let lastTriggerTime2 = -1;
+let seq2: string[] = [];
+function trigger2(event?: any){
+    if (lastTriggerTime2 !== system.currentTick){
+        lastTriggerTime2 = system.currentTick;
+        seq2.length = 0;
+    }
+    
+    if (event && Object.getPrototypeOf(event) === Minecraft.ItemUseBeforeEvent.prototype){
+        seq2.push("before");
+    } else if (event && Object.getPrototypeOf(event) === Minecraft.ItemUseAfterEvent.prototype){
+        seq2.push("after");
+    } else {
+        seq2.push("runInterval");
+    }
+    
+    if (seq2.length === 3){
+        logger.info("result from itemUse:", seq2);
+    }
+}
+*/
+
+/*
+EventListener.register("minecraft:beforeEvents.pistonActivate", (event: Minecraft.PistonActivateBeforeEvent) => {
+    logger.info("minecraft:beforeEvents.pistonActivate on tick {}", system.currentTick);
+    YoniScheduler.runDelayTickTask(r, 0);
+});
+function r(){
+    dim(0).runCommand("say run async on "+system.currentTick);
+}
+*/
 /*
 
 EventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub0(event: Minecraft.BeforeItemUseOnEvent){

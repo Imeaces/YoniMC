@@ -1,18 +1,32 @@
-import { system, world } from "yoni-mcscripts-lib";
+import { system, world, YoniPlayer, Minecraft } from "yoni-mcscripts-lib";
 import { func_5 } from "./a.js";
+
+let pls = new WeakSet<YoniPlayer>();
 
 system.setIntervalTick(function tick(){
 
 world.getAllPlayers().forEach(player => {
-    if (!player.hasFamily("sil")) return;
-    
+    if (player.hasFamily("sil")){
+        pls.add(player);
+    } else {
+         if (pls.has(player)){
+             player.fetchCommand("camera @s clear");
+             pls.delete(player);
+         }
+         return;
+    }
     let l, u, cam;
     let loc = player.getHeadLocation();
     let { x: hx, y: hy, z: hz } = loc;
     
+    let cameraId = "minecraft:free ease 0.2 out_circ";
+    
     try {
-        let block = player.getBlockFromViewDirection();
-        let { x, y, z } = block;
+        let blockHit = player.getBlockFromViewDirection();
+        if (!blockHit)
+            throw "e";
+        
+        let { x, y, z } = blockHit.block as Minecraft.Block;
         
         x += 0.5;
         y += 0.5;
@@ -36,17 +50,19 @@ world.getAllPlayers().forEach(player => {
     
     u = hy - player.location.y - 0.4;
     
-    if (player.dimension.getBlock(loc)?.isSolid())
-        cam = player.getRotation().x;
-    else
-        cam = -func_5(-player.getRotation().x, l, u);
-
+    if (player.dimension.getBlock(loc)?.isSolid()){
+        cam = player.rotation.x;
+        cameraId = "minecraft:third_person";
+    } else {
+        cam = -func_5(-player.rotation.x, l, u);
+    }
     
-    let deg = `l: ${l} u: ${u} cam: ${cam} rel: ${player.getRotation().x}`;
-    player.onScreenDisplay.setActionBar(deg);
+    let deg = `l: ${l} u: ${u} cam: ${cam} rel: ${player.rotation.x}`;
+    player.onScreenDisplay.setActionBar(deg+"\n"+`camera @s set ${cameraId} pos ~ ~0.4 ~ rot ${cam} ~`);
     
     //player.runCommandAsync(`execute rotated ~ 0 positioned ^ ^0.4 ^0.2 run camera @s set minecraft:free ease 0.2 out_circ pos ~ ~ ~ rot ${cam} ~`);
-    player.runCommandAsync(`camera @s set yonimc:free_first_person_noeffect ease 0.2 out_circ pos ~ ~0.4 ~ rot ${cam} ~`);
+    player.runCommandAsync(`camera @s set ${cameraId} pos ~ ~0.4 ~ rot ${cam} ~`);
+    //player.runCommandAsync(`camera @s set ${cameraId} pos ~ ~0.4 ~ rot ${cam} ~`);
     //你说我直接facing会不会快一点
 });
 

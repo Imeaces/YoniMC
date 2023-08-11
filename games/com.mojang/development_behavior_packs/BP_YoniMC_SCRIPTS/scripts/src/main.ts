@@ -7,6 +7,7 @@ let importList = [
     "test.js",
     "test/wait_debug.js",
     "yonimc/main.js",
+    "vein_mining/main.js"
 ];
 
 VanillaWorld.afterEvents.worldInitialize.subscribe(loadMain);

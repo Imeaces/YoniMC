@@ -21,7 +21,7 @@ export class FakePlayer extends EntityClass.SimulatedPlayer {
         super(EntityBase.getMinecraftEntity(player));
         
         this.simulateInfo = Object.freeze({
-            spawnDimension: Dimension.dim(spawnDimension),
+            spawnDimension: Dimension.toDimension(spawnDimension),
             structureBlockLocation: Location.createReadonly(spawnDimension, structureBlockLocation),
         });
     }

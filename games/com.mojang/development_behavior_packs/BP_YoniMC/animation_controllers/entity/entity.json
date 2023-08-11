@@ -165,39 +165,6 @@
           ]
         }
       }
-    },
-    "controller.animation.entity.status.is_flying": {
-      "initial_state": "default",
-      "states": {
-        "default": {
-          "on_entry": [
-              "/tag @s remove flag:status.not_fly",
-              "/tag @s remove flag:status.is_flying"
-          ],
-          "transitions": [
-            { "is_sleeping": "query.is_flying" },
-            { "not_sleep": "!query.is_flying" }
-          ]
-        },
-        "not_sleep": {
-          "on_entry": [
-              "/tag @s add flag:status.not_fly",
-              "/tag @s remove flag:status.is_flying"
-          ],
-          "transitions": [
-            { "default": "(1.0)" }
-          ]
-        },
-        "is_sleeping": {
-          "on_entry": [
-              "/tag @s remove flag:status.not_fly",
-              "/tag @s add flag:status.is_flying"
-          ],
-          "transitions": [
-            { "default": "(1.0)" }
-          ]
-        }
-      }
     }
   }
 }

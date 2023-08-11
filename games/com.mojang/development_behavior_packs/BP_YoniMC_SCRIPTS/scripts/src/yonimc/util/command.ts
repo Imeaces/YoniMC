@@ -3,7 +3,7 @@ import { Scoreboard } from "yoni-mcscripts-lib";
 import { isDebug } from "./../config.js";
 import { runFuncAsync } from "../lib/runFunc.js"
 import { logger } from "../util/logger.js";
-import { TPSCounter } from "../../util/TPSCounter.js";
+import { getTPSInfo } from "./notice";
 
 //自杀命令
 if (isDebug())
@@ -18,5 +18,5 @@ ChatCommand.registerCommand("cls", (sender) => {
 });
 
 ChatCommand.registerCommand("tps", (sender) => {
-    sender.sendMessage(String (TPSCounter.getTPS()));
+    sender.sendMessage(getTPSInfo());
 });

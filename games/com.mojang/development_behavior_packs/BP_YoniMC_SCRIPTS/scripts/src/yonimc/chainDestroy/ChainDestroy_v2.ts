@@ -26,7 +26,7 @@ const Config = new (class Config {
 //////////////////////
 EventListener.register("minecraft:afterEvents.blockBreak", (event: any) => {
     let { player, dimension, block, brokenBlockPermutation } : { player: Minecraft.Player, dimension: YoniDimension, block: Minecraft.Block, brokenBlockPermutation: Minecraft.BlockPermutation } = event;
-    dimension = Dimension.dim(dimension);
+    dimension = Dimension.toDimension(dimension);
     
     if (!player.isSneaking) return;
     
@@ -98,7 +98,7 @@ async function holdDiggerPlayer(){
     return result;
 }
 
-const { MinecraftEffectTypes } = Minecraft;
+const { EffectTypes } = Minecraft;
 
 async function makeDiggerPlayer(digger: YonimcFakePlayer, player: YoniPlayer){
     if (digger.gamemode !== player.gamemode){
@@ -115,11 +115,11 @@ async function makeDiggerPlayer(digger: YonimcFakePlayer, player: YoniPlayer){
         let comp = <Minecraft.EntityScaleComponent>digger.getComponent("scale");
         comp.value = 0.0001;
     } catch {}
-    digger.addEffect(MinecraftEffectTypes.haste, 20000000, 127, true);
-    digger.addEffect(MinecraftEffectTypes.instantHealth, 20000000, 127, true);
-    digger.addEffect(MinecraftEffectTypes.resistance, 20000000, 127, true);
-    digger.addEffect(MinecraftEffectTypes.fireResistance, 20000000, 127, true);
-    digger.addEffect(Minecraft.MinecraftEffectTypes.invisibility, 20000000, 127, true);
+    digger.addEffect(EffectTypes.get("haste") as Minecraft.EffectType, 20000000, 127, true);
+    digger.addEffect(EffectTypes.get("instant_health") as Minecraft.EffectType, 20000000, 127, true);
+    digger.addEffect(EffectTypes.get("resistance") as Minecraft.EffectType, 20000000, 127, true);
+    digger.addEffect(EffectTypes.get("fireResistance") as Minecraft.EffectType, 20000000, 127, true);
+    digger.addEffect(Minecraft.EffectTypes.get("invisibility") as Minecraft.EffectType, 20000000, 127, true);
 }
 
 const diggerPlayerIdleLocation = new Location("overworld", 0, -99, 0);

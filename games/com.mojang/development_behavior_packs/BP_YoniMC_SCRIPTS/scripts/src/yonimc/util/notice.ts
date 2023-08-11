@@ -48,12 +48,16 @@ EventListener.register("playerDead", (event)=>{
 
 TPSCounter.maxRecordTicks += 18000;
 
+let tpsInfo = "";
+export function getTPSInfo(){
+    return tpsInfo;
+}
 YoniScheduler.runCycleTickTask(function (){
     const tps1s = TPSCounter.getTPS();
     const tps1m = TPSCounter.getTPS(60);
     const tps5m = TPSCounter.getTPS(5 * 60);
     const tps15m = TPSCounter.getTPS(15 * 60);
-    const text = `TPS from last 1s, 1m, 5m, 15m: ${tps1s}, ${tps1m}, ${tps5m}, ${tps15m}`;
+    tpsInfo = `TPS from last 1s, 1m, 5m, 15m: ${tps1s}, ${tps1m}, ${tps5m}, ${tps15m}`;
     
-    World.getAllPlayers().forEach(p => p.onScreenDisplay.setActionBar(text));
+    World.getAllPlayers().forEach(p => p.onScreenDisplay.setActionBar(tpsInfo));
 }, 1, 1, false);

@@ -1,6 +1,6 @@
 import { ChatCommand, Location, EventListener, YoniUtils as Utils, Minecraft } from "yoni-mcscripts-lib";
-import { logger } from "./util/logger";
-/*
+import { logger } from "../util/logger";
+
 EventListener.register("entityMovement", function (event){
     const { entity } = event;
     const { dimension } = entity;
@@ -13,4 +13,4 @@ EventListener.register("entityMovement", function (event){
         new Minecraft.MolangVariableMap()
     );
     
-}, { entityTypes: ["minecraft:player"] });*/
+}, { entityTypes: ["minecraft:player"] });

@@ -17,7 +17,7 @@ import {
     system,
 } from "yoni-mcscripts-lib";
 
-const { MinecraftEffectTypes, EntityDamageCause } = Minecraft;
+const { EffectTypes, EntityDamageCause } = Minecraft;
 
 const logger = new Logger("Species.guxi");
 
@@ -294,7 +294,7 @@ EventListener.register("minecraft:afterEvents.itemUse", (event: Minecraft.ItemUs
             removeScoreAsync(player, objectives.energy, cost);
     } else if (itemst.typeId === "yonimc:energy"){
         //抽取yonimc:energy中的能量
-        player.addEffect(Minecraft.MinecraftEffectTypes["instantHealth"], 1, 20, false);
+        player.addEffect(Minecraft.EffectTypes.get("instant_health") as Minecraft.EffectType, 1, 20, false);
         addScoreAsync(player, objectives.energy, values.energy_inside_yonimc_energy);
     
     }
@@ -310,8 +310,8 @@ EventListener.register("minecraft:afterEvents.itemUseOn", useEnergy);
 type LocationAndNumber = [Location, number];
 let PlayerLastTouchRecord = new WeakMap<Player, LocationAndNumber>();
 let PlayerLastBlockDestructionRecord = new WeakMap<Player, LocationAndNumber>();
-
-EventListener.register("minecraft:afterEvents.entityHit", (event: Minecraft.EntityHitAfterEvent) => {
+/* 严重的兼容问题
+EventListener.register("minecraft:afterEvents.entityHit", (event: Minecraft.EntityHitEntityAfterEvent) => {
     if (!event.hitBlock) return;
     
     let player = EntityBase.getYoniEntity(event.entity) as Player;
@@ -327,7 +327,7 @@ EventListener.register("minecraft:afterEvents.entityHit", (event: Minecraft.Enti
 }, {
     entityTypes: ["minecraft:player"]
 });
-
+*/
 EventListener.register("minecraft:afterEvents.blockBreak", (event: Minecraft.BlockBreakAfterEvent) => {
     let player = EntityBase.getYoniEntity(event.player) as Player;
     
