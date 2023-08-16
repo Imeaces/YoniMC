@@ -1,11 +1,11 @@
-import { ChatCommand, Command, Minecraft, dim, VanillaWorld, EventTypes, VanillaScoreboard, Gametest, runTask, EventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, world, YoniPlayer, system } from "yoni-mcscripts-lib";
+import { ChatCommand, Command, Minecraft, dim, VanillaWorld, LegacyEventTypes, VanillaScoreboard, Gametest, runTask, LegacyEventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, world, YoniPlayer, system } from "yoni-mcscripts-lib";
 import { ObjectUtils, TimeoutLib } from "yoni-mcscripts-lib";
 
 const { getKeys } = ObjectUtils;
 
 const logger = new Logger("TEST");
 
-EventListener.register(world.beforeEvents.pistonActivate, (event: Minecraft.PistonActivateBeforeEvent) => {
+LegacyEventListener.register(world.beforeEvents.pistonActivate, (event: Minecraft.PistonActivateBeforeEvent) => {
     TimeoutLib.setInterval(function (){
         try {
             dim.overworld.runCommand("help");
@@ -122,7 +122,7 @@ function trigger2(event?: any){
 */
 
 /*
-EventListener.register("minecraft:beforeEvents.pistonActivate", (event: Minecraft.PistonActivateBeforeEvent) => {
+LegacyEventListener.register("minecraft:beforeEvents.pistonActivate", (event: Minecraft.PistonActivateBeforeEvent) => {
     logger.info("minecraft:beforeEvents.pistonActivate on tick {}", system.currentTick);
     YoniScheduler.runDelayTickTask(r, 0);
 });
@@ -132,18 +132,18 @@ function r(){
 */
 /*
 
-EventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub0(event: Minecraft.BeforeItemUseOnEvent){
+LegacyEventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub0(event: Minecraft.BeforeItemUseOnEvent){
     logger.info("start sub0 {}", event.cancel);
     logger.info("end sub0 {}", event.cancel);
 });
 
-EventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub1(event: Minecraft.BeforeItemUseOnEvent){
+LegacyEventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub1(event: Minecraft.BeforeItemUseOnEvent){
     logger.info("start sub1 {}", event.cancel);
     while (true);
     logger.info("end sub1 {}", event.cancel);
 });
 
-EventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub2(event: Minecraft.BeforeItemUseOnEvent){
+LegacyEventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub2(event: Minecraft.BeforeItemUseOnEvent){
     logger.info("start sub2 {}", event.cancel);
     event.cancel = true;
     logger.info("end sub2 {}", event.cancel);
@@ -151,7 +151,7 @@ EventTypes.get("minecraft:beforeItemUseOn").subscribe(function sub2(event: Minec
 */
 
 /*
-EventListener.register("minecraft:entityHurt", (event: Minecraft.EntityHurtEvent) => {
+LegacyEventListener.register("minecraft:entityHurt", (event: Minecraft.EntityHurtEvent) => {
     let entity = EntityBase.from(event.damageSource.damagingEntity);
     
     if (entity == null) return;
@@ -277,13 +277,13 @@ world.events.worldInitialize.subscribe((event)=>{
 });
 */
 /*
-EventListener.register("worldInitialize", (event)=>{
+LegacyEventListener.register("worldInitialize", (event)=>{
     let propDef = new DynamicPropertiesDefinition();
     propDef.defineString("aTestA", 9992);
     event.propertyRegistry.registerWorldDynamicProperties(propDef);
 });
 /*
-EventListener.register("minecraft:beforeItemUseOn", (event)=>{
+LegacyEventListener.register("minecraft:beforeItemUseOn", (event)=>{
     let e = event.source;
     let loc = e.location;
     let dim = e.dimension;
@@ -296,23 +296,23 @@ EventListener.register("minecraft:beforeItemUseOn", (event)=>{
 });
 */
 /*
-EventListener.register("yoni:playerTeleportDimension", (event)=>{
+LegacyEventListener.register("yoni:playerTeleportDimension", (event)=>{
     event.player.sendMessage("你切换了维度，现在是"+event.newDimension.id+"，原来是"+event.oldDimension.id);
     
 });
 
 
-EventListener.register("yoni:raidEventTrigger", (event)=>{
+LegacyEventListener.register("yoni:raidEventTrigger", (event)=>{
     event.source.onScreenDisplay.setTitle("你遭遇了袭击！");
 });
 
-EventListener.register("minecraft:beforePlayerSleep", (event)=>{
+LegacyEventListener.register("minecraft:beforePlayerSleep", (event)=>{
     const player = EntityBase.from(event.player);
     player.sendMessage("不许睡");
     event.cancel = true;
 });
 
-EventListener.register("blockBreak", event => {
+LegacyEventListener.register("blockBreak", event => {
     if(typeof(event.player) === "object"){
         if(typeof(event.player.last_break) === "number"){
             var offest = Date.now() - event.player.last_break
@@ -329,9 +329,9 @@ VanillaWorld.events.effectAdd.subscribe(event => {
 });
 */
 /*
-Array.from(EventTypes.getEventTypes().keys()).forEach(key=>{
+Array.from(LegacyEventTypes.getLegacyEventTypes().keys()).forEach(key=>{
     if (key!=="minecraft:tick"&&key.startsWith("minecraft:")){
-        EventListener.register(key,()=>{
+        LegacyEventListener.register(key,()=>{
             console.debug("触发了事件{}",key);
         });
     }
@@ -512,6 +512,6 @@ ChatCommand.registerCommand("test2333", (sender, rawCommand, label, args)=>{
 
 */
 /*
-EventListener.register("minecraft:beforeDataDrivenEntityTriggerEvent", (event) => {
+LegacyEventListener.register("minecraft:beforeDataDrivenEntityTriggerEvent", (event) => {
     logger.debug(event.id);
 });*/

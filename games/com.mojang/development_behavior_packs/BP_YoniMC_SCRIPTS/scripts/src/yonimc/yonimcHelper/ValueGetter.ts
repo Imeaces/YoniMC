@@ -1,6 +1,6 @@
 import { Minecraft, MinecraftSystem, VanillaWorld, dim,
     EntityBase, Command, Scoreboard,
-    EventListener,
+    LegacyEventListener,
     world as World,
     YoniPlayer,
     YoniScheduler, Location, Objective } from "yoni-mcscripts-lib";

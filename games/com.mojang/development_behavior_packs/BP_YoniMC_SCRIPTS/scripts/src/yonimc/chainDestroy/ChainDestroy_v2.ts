@@ -1,5 +1,5 @@
 import { ChatCommand,
-    EventListener,
+    LegacyEventListener,
     Command,
     YoniUtils as Utils,
     EntityBase,
@@ -24,7 +24,7 @@ const Config = new (class Config {
 //////////////////////
 //  listener        ///
 //////////////////////
-EventListener.register("minecraft:afterEvents.blockBreak", (event: any) => {
+LegacyEventListener.register("minecraft:afterEvents.blockBreak", (event: any) => {
     let { player, dimension, block, brokenBlockPermutation } : { player: Minecraft.Player, dimension: YoniDimension, block: Minecraft.Block, brokenBlockPermutation: Minecraft.BlockPermutation } = event;
     dimension = Dimension.toDimension(dimension);
     

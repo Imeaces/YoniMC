@@ -1,5 +1,5 @@
 import { logger } from "../util/logger.js";
-import { EventListener,
+import { LegacyEventListener,
     YoniScheduler,
     Location,
     EntityBase,
@@ -11,7 +11,7 @@ import { EventListener,
     dim } from "yoni-mcscripts-lib";
 
 const radius = 8;
-EventListener.register("minecraft:beforeEvents.ItemUseOn", (event: Minecraft.ItemUseOnBeforeEvent)=>{
+LegacyEventListener.register("minecraft:beforeEvents.ItemUseOn", (event: Minecraft.ItemUseOnBeforeEvent)=>{
     if (event.source.typeId !== "minecraft:player") return;
     
     let centerLocation = new Location(event.source.dimension, event.block);

@@ -1,4 +1,4 @@
-import { EventListener } from "yoni-mcscripts-lib";
+import { LegacyEventListener } from "yoni-mcscripts-lib";
 import { VanillaWorld } from "yoni-mcscripts-lib";
 import { Logger } from "yoni-mcscripts-lib";
 import { ChatCommand } from "yoni-mcscripts-lib";
@@ -20,15 +20,15 @@ ChatCommand.registerCommand("qq", (sender, rawCommand, label)=>{
     broadcastMessage(`<${sender.name}> ${message}`);
 });
 
-EventListener.register("minecraft:afterEvents.playerLeave", (event)=>{
+LegacyEventListener.register("minecraft:afterEvents.playerLeave", (event)=>{
     broadcastMessage(`玩家 ${event.playerName} 离开了游戏`);
 });
 
-EventListener.register("yoni:playerJoined", (event)=>{
+LegacyEventListener.register("yoni:playerJoined", (event)=>{
     broadcastMessage(`玩家 ${event.player.name} 加入了游戏`);
 });
 
-EventListener.register("afterEvents.chat", (event)=>{
+LegacyEventListener.register("afterEvents.chat", (event)=>{
     let { message, sender } = event;
     broadcastMessage(`<${sender.name}> ${message}`);
 });

@@ -1,4 +1,4 @@
-import { EventListener, EventTriggerBuilder } from "yoni-mcscripts-lib";
+import { LegacyEventListener, EventTriggerBuilder } from "yoni-mcscripts-lib";
 import { YoniEntity } from "yoni-mcscripts-lib";
 import { Scoreboard } from "yoni-mcscripts-lib";
 import { Location } from "yoni-mcscripts-lib";
@@ -11,12 +11,12 @@ class ChatPanel {
     chatDistanceObjective = Scoreboard.getObjective("chatpanel:data0", true);
     constructor(){
         this.chatDistance = 
-        EventListener.register("minecraft:beforeEvents.chatSend", (event) => {
+        LegacyEventListener.register("minecraft:beforeEvents.chatSend", (event) => {
             let { message, sender } = event;
             event.cancel = true;
             this.onChat(sender, message).catch(console.error);
         });
-        EventListener.register("minecraft:afterEvents.itemUse", (event) => {
+        LegacyEventListener.register("minecraft:afterEvents.itemUse", (event) => {
             console.log("cond itemuse");
             if (event.source.typeId !== "minecraft:player"){
             console.log("cond not player");

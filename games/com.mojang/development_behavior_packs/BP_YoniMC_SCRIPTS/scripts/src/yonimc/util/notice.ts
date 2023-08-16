@@ -1,4 +1,4 @@
-import { EventListener } from "yoni-mcscripts-lib";
+import { LegacyEventListener } from "yoni-mcscripts-lib";
 import { Scoreboard, Objective } from "yoni-mcscripts-lib";
 import { YoniUtils as Utils } from "yoni-mcscripts-lib";
 import { logger } from "./../util/logger.js";
@@ -12,7 +12,7 @@ import { TPSCounter } from "yoni-mcscripts-lib";
 
 const say = Utils.say;
 
-EventListener.register("yoni:playerJoined", (event)=>{
+LegacyEventListener.register("yoni:playerJoined", (event)=>{
     if (isServerMode()){
         say(`欢迎${event.player.name}游玩本服务器`, "服务器");
     } else {
@@ -20,7 +20,7 @@ EventListener.register("yoni:playerJoined", (event)=>{
     }
 });
 
-EventListener.register("mcyoni:entityHurt", (event)=> {
+LegacyEventListener.register("mcyoni:entityHurt", (event)=> {
     let { damagingEntity, hurtEntity, damage, cause } = event;
     damagingEntity = EntityBase.from(damagingEntity);
     hurtEntity = EntityBase.from(hurtEntity);
@@ -38,7 +38,7 @@ EventListener.register("mcyoni:entityHurt", (event)=> {
     }
 });
 
-EventListener.register("playerDead", (event)=>{
+LegacyEventListener.register("playerDead", (event)=>{
     let pl = event.player;
     let {x, y, z} = pl.location;
     let dim = pl.dimension;

@@ -1,4 +1,4 @@
-import { EventListener, Minecraft, YoniPlayer as Player, YoniScheduler as Scheduler, world, EntityBase } from "yoni-mcscripts-lib";
+import { LegacyEventListener, Minecraft, YoniPlayer as Player, YoniScheduler as Scheduler, world, EntityBase } from "yoni-mcscripts-lib";
 import { logger } from "../util/logger.js";
 
 const fireRecoverTime = 55;
@@ -21,12 +21,12 @@ const elytraItem = (function createItem(){
     return item;
 })();
 
-EventListener.register("yoni:playerJoined", (event: any) => {
+LegacyEventListener.register("yoni:playerJoined", (event: any) => {
     const player = event.player as Player;
     updateWingingPlayer(player);
 });
 
-EventListener.register("minecraft:beforeEvents.ItemUse",
+LegacyEventListener.register("minecraft:beforeEvents.ItemUse",
 (event: any) => {
     if (EntityBase.from(event.source)?.hasFamily("winging_human")
     && event.source.location.y > 540
@@ -35,7 +35,7 @@ EventListener.register("minecraft:beforeEvents.ItemUse",
     }
 });
 
-EventListener.register("minecraft:beforeEvents.ItemUseOn",
+LegacyEventListener.register("minecraft:beforeEvents.ItemUseOn",
 (event: any) => {
     if (EntityBase.from(event.source)?.hasFamily("winging_human")
     && event.item.getLore().join("\u0000") === "\x00\x00"){
@@ -43,7 +43,7 @@ EventListener.register("minecraft:beforeEvents.ItemUseOn",
     }
 });
 
-EventListener.register("minecraft:beforeEvents.ItemUse",
+LegacyEventListener.register("minecraft:beforeEvents.ItemUse",
 (event: any) => {
     if (EntityBase.from(event.source)?.hasFamily("winging_human")
     
@@ -59,7 +59,7 @@ EventListener.register("minecraft:beforeEvents.ItemUse",
     }
 });
 
-EventListener.register("system:afterEvents.scriptEventReceive", (event: Minecraft.ScriptEventCommandMessageAfterEvent) => {
+LegacyEventListener.register("system:afterEvents.scriptEventReceive", (event: Minecraft.ScriptEventCommandMessageAfterEvent) => {
     if (event.id !== "yonimc:species_winging")
         return;
     

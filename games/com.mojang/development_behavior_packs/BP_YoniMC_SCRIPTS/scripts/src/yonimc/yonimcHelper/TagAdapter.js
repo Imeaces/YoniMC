@@ -1,6 +1,6 @@
 import { Minecraft, VanillaWorld, dim,
     EntityBase, Command, Scoreboard,
-    EventListener, world as World,
+    LegacyEventListener, world as World,
     YoniScheduler, Schedule } from "yoni-mcscripts-lib";
 
 YoniScheduler.runCycleTickTask(() => {
@@ -14,25 +14,25 @@ YoniScheduler.runCycleTickTask(() => {
     });
 }, 4, 10, false);
 
-EventListener.register("minecraft:afterEvents.itemUse", (event) => {
+LegacyEventListener.register("minecraft:afterEvents.itemUse", (event) => {
     let ent = event.source;
     if (ent.hasTag("event:itemUse"))
         ent.removeTag("event:itemUse");
 });
 
-EventListener.register("minecraft:afterEvents.itemUseOn", (event) => {
+LegacyEventListener.register("minecraft:afterEvents.itemUseOn", (event) => {
     let ent = event.source;
     if (ent.hasTag("event:itemUseOn"))
         ent.removeTag("event:itemUseOn");
 });
 
-EventListener.register("minecraft:beforeEvents.ItemUseOn", (event) => {
+LegacyEventListener.register("minecraft:beforeEvents.ItemUseOn", (event) => {
     let ent = event.source;
     if (!ent.hasTag("event:itemUseOn"))
         ent.addTag("event:itemUseOn");
 });
 
-EventListener.register("minecraft:beforeEvents.ItemUse", (event)=> {
+LegacyEventListener.register("minecraft:beforeEvents.ItemUse", (event)=> {
     let ent = event.source;
     if (!ent.hasTag("event:itemUse"))
        ent.addTag("event:itemUse");

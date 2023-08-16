@@ -1,7 +1,7 @@
-import { ChatCommand, Location, EventListener, YoniUtils as Utils, Minecraft } from "yoni-mcscripts-lib";
+import { ChatCommand, Location, LegacyEventListener, YoniUtils as Utils, Minecraft } from "yoni-mcscripts-lib";
 import { logger } from "../util/logger";
 
-EventListener.register("entityMovement", function (event){
+LegacyEventListener.register("entityMovement", function (event){
     const { entity } = event;
     const { dimension } = entity;
     

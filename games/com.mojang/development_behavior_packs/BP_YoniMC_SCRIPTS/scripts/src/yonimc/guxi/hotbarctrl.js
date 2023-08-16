@@ -1,5 +1,5 @@
 import EntityBase from "yoni-mcscripts-lib";
-import { EventListener, EventTriggerBuilder, EventSignal } from "yoni-mcscripts-lib";
+import { LegacyEventListener, EventTriggerBuilder, EventSignal } from "yoni-mcscripts-lib";
 import { Scoreboard } from "yoni-mcscripts-lib";
 
 class HotbarChangedEvent{

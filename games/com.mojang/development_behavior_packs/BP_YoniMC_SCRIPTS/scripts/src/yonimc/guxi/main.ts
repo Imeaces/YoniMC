@@ -7,7 +7,7 @@ import {
     Command,
     Location,
     Scoreboard,
-    EventListener,
+    LegacyEventListener,
     YoniScheduler,
     Schedule,
     world as World,
@@ -129,7 +129,7 @@ function isGuxi(entity: any){
 type _HurtEvent = { hurtEntity: Entity, damagingEntity: Entity | undefined, cause: Minecraft.EntityDamageCause, damage: number, damagingProjectile: Entity | undefined, cancel: boolean };
 
 //处理攻击相关
-EventListener.register("mcyoni:afterEvents.entityHurt", (event: _HurtEvent) => {
+LegacyEventListener.register("mcyoni:afterEvents.entityHurt", (event: _HurtEvent) => {
     let { hurtEntity, damagingEntity, cause, damage, damagingProjectile } = event;
     
     if (isGuxi(hurtEntity))
@@ -260,7 +260,7 @@ function useEnergy(event: Minecraft.ItemUseAfterEvent | Minecraft.ItemUseOnAfter
     
 }
 
-EventListener.register("minecraft:afterEvents.itemUse", (event: Minecraft.ItemUseOnAfterEvent) => {
+LegacyEventListener.register("minecraft:afterEvents.itemUse", (event: Minecraft.ItemUseOnAfterEvent) => {
 
     let source = EntityBase.getYoniEntity(event.source);
     
@@ -300,8 +300,8 @@ EventListener.register("minecraft:afterEvents.itemUse", (event: Minecraft.ItemUs
     }
 });
 
-EventListener.register("minecraft:afterEvents.itemUse", useEnergy);
-EventListener.register("minecraft:afterEvents.itemUseOn", useEnergy);
+LegacyEventListener.register("minecraft:afterEvents.itemUse", useEnergy);
+LegacyEventListener.register("minecraft:afterEvents.itemUseOn", useEnergy);
 // val_0001 记录了一个位置以及数字的类型
 // val_0002 玩家最后一次触碰的方块的位置，以及触碰方块的时间
 // val_0003 当前记录的值_玩家最后一次触碰的方块的位置，以及触碰方块的时间
@@ -311,7 +311,7 @@ type LocationAndNumber = [Location, number];
 let PlayerLastTouchRecord = new WeakMap<Player, LocationAndNumber>();
 let PlayerLastBlockDestructionRecord = new WeakMap<Player, LocationAndNumber>();
 /* 严重的兼容问题
-EventListener.register("minecraft:afterEvents.entityHit", (event: Minecraft.EntityHitEntityAfterEvent) => {
+LegacyEventListener.register("minecraft:afterEvents.entityHit", (event: Minecraft.EntityHitEntityAfterEvent) => {
     if (!event.hitBlock) return;
     
     let player = EntityBase.getYoniEntity(event.entity) as Player;
@@ -328,7 +328,7 @@ EventListener.register("minecraft:afterEvents.entityHit", (event: Minecraft.Enti
     entityTypes: ["minecraft:player"]
 });
 */
-EventListener.register("minecraft:afterEvents.blockBreak", (event: Minecraft.BlockBreakAfterEvent) => {
+LegacyEventListener.register("minecraft:afterEvents.blockBreak", (event: Minecraft.BlockBreakAfterEvent) => {
     let player = EntityBase.getYoniEntity(event.player) as Player;
     
     let curTick = system.currentTick;
