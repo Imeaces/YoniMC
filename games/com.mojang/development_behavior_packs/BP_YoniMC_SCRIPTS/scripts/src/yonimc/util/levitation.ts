@@ -7,7 +7,7 @@ const { EffectTypes } = Minecraft;
 YoniScheduler.addSchedule(new Schedule (
 {
     async: false,
-    type: Schedule.tickCycleSchedule,
+    type: Schedule.cycleTickSchedule,
     delay: Math.floor(10 * Math.random()),
     period: 10
 },() => {

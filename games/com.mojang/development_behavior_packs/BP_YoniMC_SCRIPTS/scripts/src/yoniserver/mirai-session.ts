@@ -1,25 +1,26 @@
 import { MojangNet } from "./basis.js";
 import { Logger } from "yoni-mcscripts-lib";
-const { HttpRequest, http, HttpHeader } = MojangNet;
 
 export class MiraiSession {
     static logger = new Logger("MiraiSession");
     timeoutDelay = 5;
-    botQQNumber = null;
-    API_URL;
-    #API_KEY;
-    #sessionKey;
+    botQQNumber: number;
+    API_URL: string;
+    #API_KEY: string;
+    #sessionKey: string | null = null;
     
-    constructor (apiUrl, apiKey = "", botQQNumber = null){
+    constructor (apiUrl: string, apiKey = "", botQQNumber: number){
         this.API_URL = apiUrl;
         this.#API_KEY = apiKey;
         if (botQQNumber != null){
             this.botQQNumber = botQQNumber;
             this.refreshSession();
+        } else {
+            throw "throw";
         }
     }
     
-    async sendGroupMessage(groupId, message){
+    async sendGroupMessage(groupId: number, message: string){
         if (message == null || message.trim() == "") throw new Error("empty message");
         let body = {
             target: groupId,
@@ -31,16 +32,10 @@ export class MiraiSession {
             ]
         };
         let headers = { "Content-Type": "application/json" };
-        return await this.post("/sendGroupMessage", body, headers);
+        await this.post("/sendGroupMessage", body, headers);
     }
     
-    /**
-     * @param {string} url
-     * @param {{[key]: any}} contents
-     * @param {Array<{[key]: any}>} headers
-     * @returns {Promise<Object>}
-     */
-    async post(url, contents={}, headers={}, retryCount = 2){
+    async post(url: string, contents: Record<string, any>={}, headers: Record<string, any>={}, retryCount = 2): Promise<MojangNet.HttpResponse>{
         MiraiSession.logger.trace("new request, type: POST, retryCount: {}", retryCount);
         url = `${this.API_URL}/${url}`;
         
@@ -55,8 +50,8 @@ export class MiraiSession {
             }
             MiraiSession.logger.trace("request url: {}, type: POST", url);
             
-            let request = new HttpRequest(url)
-                .setMethod("POST")
+            let request = new MojangNet.HttpRequest(url)
+                .setMethod(MojangNet.HttpRequestMethod.Post)
                 .setTimeout(this.timeoutDelay)
                 .setBody(JSON.stringify(
                     Object.assign({ sessionKey }, contents)
@@ -78,15 +73,10 @@ export class MiraiSession {
             { cause: error });
     }
     
-    /**
-     * @param {string} url
-     * @param {{[key]: any}} args
-     * @param {Array<{[key]: any}>} headers
-     */
-    async get(url, args={}, headers={}, retryCount = 2){
+    async get(url: string, vargs: Record<string, any>={}, headers: Record<string, any>={}, retryCount = 2){
         MiraiSession.logger.trace("new request, type: GET, retryCount: {}", retryCount);
         url = `${this.API_URL}/${url}`;
-        args = Object.entries(args);
+        let args = Object.entries(vargs);
         
         let error;
         do {
@@ -112,8 +102,8 @@ export class MiraiSession {
             }
             MiraiSession.logger.trace("request url: {}, type: GET", fullUrl);
             
-            let request = new HttpRequest(fullUrl)
-                .setMethod("GET")
+            let request = new MojangNet.HttpRequest(fullUrl)
+                .setMethod(MojangNet.HttpRequestMethod.Get)
                 .setTimeout(this.timeoutDelay);
             for (let headerKey in headers){
                 request.addHeader(headerKey, headers[headerKey]);
@@ -130,7 +120,7 @@ export class MiraiSession {
         throw Object.assign(new Error("failed to get request"),
             { cause: error });
     }
-    static decodeResponse(httpResponse){
+    static decodeResponse(httpResponse: MojangNet.HttpResponse){
         if (! String(httpResponse.status).startsWith("2")){
             throw new Error(`http response failed with ${httpResponse.status}`);
         }
@@ -141,11 +131,11 @@ export class MiraiSession {
         let rt = JSON.parse(body); //if is wrong JSON text, it throws;
         return rt;
     }
-    static async performHttpRequest(httpRequest, retryCount=0){
+    static async performHttpRequest(httpRequest: MojangNet.HttpRequest, retryCount=0){
         let error;
         do {
             try {
-              let rt = await http.request(httpRequest);
+              let rt = await MojangNet.http.request(httpRequest);
               return rt;
             } catch (e){
                error = e;
@@ -161,8 +151,8 @@ export class MiraiSession {
         try {
             MiraiSession.logger.trace("refresh session use apiKey: ******, qq: {}, retryCount: {}", botQQNumber, retryCount);
             //make a request 
-            let verifyApiKeyRequest = new HttpRequest(this.API_URL+"/verify")
-                .setMethod("POST")
+            let verifyApiKeyRequest = new MojangNet.HttpRequest(this.API_URL+"/verify")
+                .setMethod(MojangNet.HttpRequestMethod.Post)
                 .setTimeout(this.timeoutDelay)
                 .setBody(JSON.stringify({
                     verifyKey: this.#API_KEY
@@ -184,8 +174,8 @@ export class MiraiSession {
             }
             MiraiSession.logger.trace("got new sessionkey: {}, binding...", unbindSessionKey);
             
-            let bindSessionRequest = new HttpRequest(this.API_URL+"/bind")
-                .setMethod("POST")
+            let bindSessionRequest = new MojangNet.HttpRequest(this.API_URL+"/bind")
+                .setMethod(MojangNet.HttpRequestMethod.Post)
                 .setTimeout(this.timeoutDelay)
                 .setBody(JSON.stringify({
                     sessionKey: unbindSessionKey,
@@ -212,11 +202,7 @@ export class MiraiSession {
     }
     sessionLastUpdateTime = 0;
     sessionUpdateDelay = 240000;
-    /**
-     * @param {boolean} force
-     * @param {number} retryCount
-     */
-    async getSession(force = false, retryCount = 1){
+    async getSession(force = false, retryCount = 1): Promise<string> {
         MiraiSession.logger.trace("getting session, force: {}, retryCount: {}", force, retryCount);
         //if there is a sessionKey and doesn't set force flag, and the key has a valid time
         //return this cached sessionKey
@@ -244,8 +230,8 @@ export class MiraiSession {
         
         do {
             MiraiSession.logger.trace("update info for session: {}", this.#sessionKey);
-            let getSessionInfoRequest = new HttpRequest(this.API_URL + "/sessionInfo?sessionKey=" + this.#sessionKey)
-                .setMethod("GET")
+            let getSessionInfoRequest = new MojangNet.HttpRequest(this.API_URL + "/sessionInfo?sessionKey=" + this.#sessionKey)
+                .setMethod(MojangNet.HttpRequestMethod.Get)
                 .setTimeout(this.timeoutDelay);
             let sessionInfoResponse = await MiraiSession.performHttpRequest(getSessionInfoRequest, retryCount);
             let sessionInfo;

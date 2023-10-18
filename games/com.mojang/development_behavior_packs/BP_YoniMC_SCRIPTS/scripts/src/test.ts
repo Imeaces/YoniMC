@@ -1,10 +1,143 @@
-import { ChatCommand, Command, Minecraft, dim, VanillaWorld, LegacyEventTypes, VanillaScoreboard, Gametest, runTask, LegacyEventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, world, YoniPlayer, system } from "yoni-mcscripts-lib";
+import { ChatCommand, Command, Minecraft, dim, VanillaWorld, LegacyEventTypes, VanillaScoreboard, Gametest, runTask, LegacyEventListener, EntityBase, Logger, Scoreboard, YoniScheduler, Location, world, YoniPlayer, system, eventManager, listenEvent, runImmediate } from "yoni-mcscripts-lib";
 import { ObjectUtils, TimeoutLib } from "yoni-mcscripts-lib";
-
-const { getKeys } = ObjectUtils;
 
 const logger = new Logger("TEST");
 
+/*
+let propReg: Minecraft.PropertyRegistry | null = null;
+listenEvent(Minecraft.WorldInitializeAfterEvent, (event) => {
+    propReg = event.propertyRegistry;
+    logger.info("Minecraft.WorldInitializeAfterEvent on {}", system.currentTick);
+    doReg(def1);
+    runImmediate(doReg, def2);
+    YoniScheduler.runDelayTickTask(() => {
+        doReg(def3);
+    }, 1);
+});
+
+const def1 = new Minecraft.DynamicPropertiesDefinition()
+.defineBoolean("yonimc:test_bool_1")
+.defineBoolean("yonimc:test_bool_2")
+.defineBoolean("yonimc:test_bool_3");
+
+const def4 = new Minecraft.DynamicPropertiesDefinition()
+.defineBoolean("yonimc:test_bool_4")
+.defineBoolean("yonimc:test_bool_5")
+.defineBoolean("yonimc:test_bool_6");
+
+const def2 = new Minecraft.DynamicPropertiesDefinition()
+.defineNumber("yonimc:test_num_1")
+.defineNumber("yonimc:test_num_2")
+.defineNumber("yonimc:test_num_3");
+
+const def3 = new Minecraft.DynamicPropertiesDefinition()
+.defineString("yonimc:test_str_1", 64)
+.defineString("yonimc:test_str_2", 64)
+.defineString("yonimc:test_str_3", 64);
+
+function doReg(def: Minecraft.DynamicPropertiesDefinition){
+    if (!propReg){
+        logger.error("no propReg");
+        return;
+    }
+    logger.info("do register on {}", system.currentTick);
+    try {
+        propReg.registerWorldDynamicProperties(def);
+        logger.info("Register succeeded");
+    } catch (e){
+        logger.error("Register failed: {}", e);
+    }
+}
+
+function doReg2(def: Minecraft.DynamicPropertiesDefinition){
+    if (!propReg){
+        logger.error("no propReg");
+        return;
+    }
+    logger.info("do register on {}", system.currentTick);
+    try {
+        propReg.registerWorldDynamicProperties(def);
+        logger.info("Register succeeded");
+    } catch (e){
+        logger.error("Register failed: {}", e);
+    }
+}
+
+YoniScheduler.runDelayTickTask(() => {
+    doReg2(def4);
+}, 200);
+
+YoniScheduler.runDelayTickTask(() => {
+    logger.info(300, system.currentTick);
+}, 300);
+
+YoniScheduler.runDelayTickTask(() => {
+    logger.info(301, system.currentTick);
+}, 301);
+
+YoniScheduler.runDelayTickTask(() => {
+    logger.info(302, system.currentTick);
+}, 302);
+
+YoniScheduler.runDelayTickTask(() => {
+    logger.info(303);
+    for (const p of dps){
+        let v = world.getDynamicProperty(p);
+        logger.info("prop {} is {}", p, v);
+    }
+}, 303);
+
+const dps = [
+"yonimc:test_num_1",
+"yonimc:test_num_2",
+"yonimc:test_num_3",
+"yonimc:test_str_1",
+"yonimc:test_str_2",
+"yonimc:test_str_3",
+"yonimc:test_bool_1",
+"yonimc:test_bool_2",
+"yonimc:test_bool_3",
+"yonimc:test_bool_4",
+"yonimc:test_bool_5",
+"yonimc:test_bool_6"
+];
+
+*/
+
+/*
+const logger = new Logger("TEST");
+LegacyEventListener.register("minecraft:afterEvents.chatSend", (event: Minecraft.ChatSendAfterEvent) => {
+    logger.info("现在我要抛出错误");
+    throw new Error();
+    
+});
+*/
+
+/*
+listenEvent(Minecraft.ChatSendAfterEvent, (event: Minecraft.ChatSendAfterEvent) => {
+    logger.info("现在我要抛出错误");
+    throw new Error();
+    
+});
+*/
+/*
+
+import * as Minecraft from "@minecraft/server";
+
+Minecraft.world.afterEvents.worldInitialize.subscribe((ev) => {
+    const defs = new Minecraft. DynamicPropertiesDefinition()
+        .defineString("yonimc:propf0", 10000);
+        
+    for (const entityType of Minecraft.EntityTypes.getAll()){
+    
+        ev.propertyRegistry.registerEntityTypeDynamicProperties(defs, entityType);
+    }
+    
+    console.warn("为所有实体添加了一条长度限制为10000的字符串类型的动态属性，且未出现报错");
+});
+*/
+
+/*
 LegacyEventListener.register(world.beforeEvents.pistonActivate, (event: Minecraft.PistonActivateBeforeEvent) => {
     TimeoutLib.setInterval(function (){
         try {
@@ -15,7 +148,7 @@ LegacyEventListener.register(world.beforeEvents.pistonActivate, (event: Minecraf
         }
     }, 0);
 });
-
+*/
 /*
 VanillaWorld.afterEvents.pistonActivate.subscribe(function (){
     system.run(rf);

@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "es2022",
 
-        "outDir": ".",
+        "outDir": "./dist",
         "sourceMap": false,
         "useDefineForClassFields": true,
         "removeComments": false,
@@ -32,7 +32,10 @@
         "allowJs": true,
         "checkJs": false,
 
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        
+        "incremental": true,
+        "tsBuildInfoFile": "./.tsbuildinfo"
     },
     "include": [
         "./src/**/*.ts",

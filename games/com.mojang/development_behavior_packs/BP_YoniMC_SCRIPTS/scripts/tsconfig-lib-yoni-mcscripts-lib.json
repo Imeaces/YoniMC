@@ -1,0 +1,9 @@
+//仅用作开发测试，你不应该使用它
+{
+  "extends": "../../yoni-mcscripts-lib/tsconfig",
+  "compilerOptions": {
+    "outDir": "./node_modules/yoni-mcscripts-lib/",
+    "declaration": true,
+    "declarationDir": "./node_modules/yoni-mcscripts-lib/@types/yoni-mcscripts-lib"
+  }
+}

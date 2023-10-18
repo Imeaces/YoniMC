@@ -6,31 +6,17 @@ import { Minecraft, MinecraftSystem, VanillaWorld, dim,
     YoniScheduler, Location, Objective } from "yoni-mcscripts-lib";
 
 YoniScheduler.runCycleTickTask(() => {
-    let healthO = Scoreboard.getObjective("health") ?? Scoreboard.addObjective("health");
-    let maxHealthO = Scoreboard.getObjective("max_health") ?? Scoreboard.addObjective("max_health");
+    let healthO = Scoreboard.getObjective("health", true);
+    let maxHealthO = Scoreboard.getObjective("max_health", true);
     
-    let promises: Promise<any>[] = [];
-    for (let _ of World.selectPlayers({tags: [ "test:health" ]})){
-        let player = <YoniPlayer>_;
+    for (let player of World.getPlayers({tags: [ "test:health" ]})){
         let currentHealth = Math.floor(player.getCurrentHealth());
         let maxHealth = Math.floor(player.getMaxHealth());
-        try {
-             healthO.setScore(player, currentHealth);
-        } catch {
-             promises[promises.length] = healthO.postSetScore(player, currentHealth);
-        }
-        
-        try {
-            maxHealthO.setScore(player, maxHealth);
-        } catch {
-             promises[promises.length] = maxHealthO.postSetScore(player, maxHealth);
-        }
+        healthO.setScore(player, currentHealth);
+        maxHealthO.setScore(player, maxHealth);
     }
     
-    //利用YoniScheduler处理Promise 
-    return Promise.allSettled(promises);
-    
-}, 1, 3, true);
+}, 1, 3, false);
 
 
 let lTick = MinecraftSystem.currentTick;
@@ -39,7 +25,7 @@ YoniScheduler.runCycleTimerTask(()=>{
     let passTick = cTick - lTick;
     let tps = passTick/2;
     lTick = cTick;
-    Scoreboard.getObjective("world", true).postSetScore("tps", Math.floor(tps));
+    Scoreboard.getObjective("world", true).setScore("tps", Math.floor(tps));
 }, 2000, 2000);
 
 
@@ -48,6 +34,6 @@ YoniScheduler.runCycleTickTask(async () => {
     
     for (let player of World.getAllPlayers()){
         let length = new Location(player.velocity).getLength();
-        sobj.postSetScore(player, Math.floor(length * 100));
+        sobj.setScore(player, Math.floor(length * 100));
     }
 }, 1, 3, true);

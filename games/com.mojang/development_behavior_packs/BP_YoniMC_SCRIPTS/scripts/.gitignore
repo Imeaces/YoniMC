@@ -1,12 +1,5 @@
-/yonimc/
-/yoni/
-/yoniext/
 /@types/
-main.js
-/package-lock.json
-/test.js
-/test/
-        
+
 # Logs
 logs
 *.log
